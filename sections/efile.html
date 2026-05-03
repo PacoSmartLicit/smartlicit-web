@@ -1,0 +1,483 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>eFile · SmartLicit</title>
+<meta name="description" content="Prototipo navegable eFile / Electronic File de SmartLicit" />
+<style>
+:root{
+  --lime:#B5F857;
+  --ink:#041912;
+  --green:#04560C;
+  --action:#1A990F;
+  --bg:#F9F8F3;
+  --surface:#FFFFFF;
+  --surface-soft:#FBFAF6;
+  --warm:#EBEAE5;
+  --warm-2:#CDCABF;
+  --muted:#66736D;
+  --muted-2:#8A948F;
+  --line:rgba(4,25,18,.10);
+  --line-2:rgba(4,25,18,.16);
+  --yellow:#F7BA14;
+  --orange:#F77214;
+  --red:#C62118;
+  --coral:#F7645C;
+  --efile-blue:#5462E2;
+  --efile-soft:#BBC0F3;
+  --efile-mid:#8189DD;
+  --efile-bright:#8B9BF7;
+  --efile-night:#060517;
+  --efile-deep:#080353;
+  --shadow:0 18px 46px rgba(4,25,18,.055);
+  --shadow-soft:0 8px 20px rgba(4,25,18,.04);
+  --header:72px;
+  --side:286px;
+  --radius:20px;
+  --radius-sm:14px;
+  --font:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  color:var(--ink);
+  background:
+    radial-gradient(circle at 84% 8%, rgba(84,98,226,.11), transparent 26rem),
+    radial-gradient(circle at 10% 94%, rgba(181,248,87,.13), transparent 28rem),
+    var(--bg);
+  font-family:var(--font);
+  letter-spacing:-.012em;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:geometricPrecision;
+}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+a{color:inherit;text-decoration:none}
+.hidden{display:none!important}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+.brand-mark{
+  --mark-bg:var(--efile-night);
+  --mark-bolt:var(--efile-bright);
+  width:36px;height:36px;display:inline-grid;place-items:center;position:relative;flex:0 0 auto;color:var(--mark-bolt);
+}
+.brand-mark:before{
+  content:"";position:absolute;inset:0;background:var(--mark-bg);
+  clip-path:polygon(50% 0%,61% 32%,100% 50%,61% 68%,50% 100%,39% 68%,0% 50%,39% 32%);
+}
+.bolt-shape{width:15px;height:22px;position:relative;z-index:1;background:var(--mark-bolt);clip-path:polygon(62% 0%,20% 52%,48% 52%,37% 100%,84% 38%,56% 38%)}
+.brand-mark.green{--mark-bg:var(--green);--mark-bolt:var(--lime)}
+.brand-mark.small{width:26px;height:26px}.brand-mark.small .bolt-shape{width:11px;height:16px}
+.topbar{height:var(--header);position:fixed;inset:0 0 auto 0;z-index:80;display:flex;align-items:center;gap:14px;padding:0 22px;background:rgba(255,255,255,.91);backdrop-filter:blur(18px);border-bottom:1px solid var(--line)}
+.mobile-toggle{display:none;width:40px;height:40px;border:1px solid var(--line);border-radius:14px;background:#fff;color:var(--ink);font-weight:900}
+.brand{display:flex;align-items:center;gap:10px;font-weight:840;font-size:19px;letter-spacing:-.035em;white-space:nowrap}
+.topnav{display:flex;align-items:center;gap:3px;margin-left:8px}
+.topnav a{font-size:13px;font-weight:770;color:var(--muted);padding:8px 10px;border-radius:999px;border:1px solid transparent;white-space:nowrap}
+.topnav a:hover{background:#F6F5F0;color:var(--ink);border-color:var(--line)}
+.topnav a.active{background:rgba(187,192,243,.55);border-color:rgba(84,98,226,.18);color:var(--efile-deep)}
+.search{position:relative;flex:1;min-width:220px;max-width:640px;margin-left:auto}
+.search:before{content:"⌕";position:absolute;left:14px;top:50%;transform:translateY(-52%);color:var(--muted);font-weight:900}
+.search input{width:100%;height:42px;border:1px solid var(--line);border-radius:999px;background:#FBFBF8;outline:0;padding:0 16px 0 42px;font-size:13px;color:var(--ink)}
+.search input:focus{border-color:rgba(84,98,226,.35);box-shadow:0 0 0 4px rgba(84,98,226,.12);background:#fff}
+.topstatus{display:flex;align-items:center;gap:8px;margin-left:2px}
+.pill{height:32px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--muted);display:inline-flex;align-items:center;gap:7px;padding:0 10px;font-size:11.5px;font-weight:850;white-space:nowrap}
+.pill.efile{background:rgba(187,192,243,.42);border-color:rgba(84,98,226,.18);color:var(--efile-deep)}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--action);display:inline-block}.dot.file{background:var(--efile-blue)}.dot.warn{background:var(--yellow)}
+.bell,.acct{height:40px;border:1px solid var(--line);background:#fff;color:var(--muted);display:grid;place-items:center;position:relative}
+.bell{width:40px;border-radius:14px}.bell:after{content:"";position:absolute;right:9px;top:9px;width:7px;height:7px;border-radius:50%;background:var(--orange);border:1px solid #fff}
+.acct{display:flex;gap:8px;align-items:center;border-radius:999px;padding:0 10px 0 6px;color:var(--ink);font-size:13px;font-weight:840}
+.avatar{width:28px;height:28px;border-radius:50%;background:var(--efile-night);color:#fff;display:grid;place-items:center;font-size:11px;font-weight:950}
+.sidebar{position:fixed;top:var(--header);left:0;bottom:0;width:var(--side);z-index:60;background:rgba(255,255,255,.89);backdrop-filter:blur(18px);border-right:1px solid var(--line);padding:18px 13px;overflow:auto}
+.sidehead{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;padding:0 8px 15px}
+.sidehead span{display:block;font-size:11px;color:var(--efile-deep);font-weight:950;text-transform:uppercase;letter-spacing:.1em}.sidehead strong{display:block;margin-top:4px;color:var(--muted);font-size:13px;line-height:1.3}
+.collapse{width:32px;height:32px;border:1px solid var(--line);border-radius:11px;background:#fff;color:var(--muted)}
+.side-nav{display:grid;gap:4px}.side-nav button{width:100%;border:0;background:transparent;color:var(--muted);display:flex;align-items:center;gap:10px;text-align:left;border-radius:14px;padding:10px 11px;font-size:13px;font-weight:790;position:relative}.side-nav button:hover{background:#F4F3EE;color:var(--ink)}.side-nav button.active{background:rgba(187,192,243,.42);color:var(--efile-deep)}.side-nav button.active:before{content:"";position:absolute;left:0;top:10px;bottom:10px;width:3px;border-radius:999px;background:var(--efile-blue)}
+.nav-count{margin-left:auto;min-width:22px;height:21px;border-radius:999px;background:#F2F2EE;color:var(--muted);display:grid;place-items:center;font-size:10.5px;font-weight:950}
+.side-section-title{margin:20px 8px 8px;color:var(--muted-2);font-size:10.5px;text-transform:uppercase;letter-spacing:.09em;font-weight:950}
+.sidecard{margin:18px 2px 0;padding:14px;background:#FBFBF8;border:1px solid var(--line);border-radius:18px}.sidecard h4{margin:0 0 9px;font-size:13px}.planrow{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-top:1px solid var(--line);font-size:12px;color:var(--muted)}.planrow strong{color:var(--ink)}.progress-line{height:8px;background:#F0EFE9;border-radius:999px;overflow:hidden;margin-top:10px}.progress-line span{display:block;height:100%;width:82%;background:var(--efile-blue);border-radius:inherit}
+.main{margin-left:var(--side);padding:96px 28px 46px;min-height:100vh}.content-max{max-width:1440px;margin:0 auto}.view{display:none}.view.active{display:block}.head{display:flex;justify-content:space-between;gap:18px;align-items:flex-start;margin-bottom:16px}.crumb{display:inline-flex;align-items:center;gap:8px;color:var(--efile-deep);font-size:11px;font-weight:950;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}.spark{width:8px;height:8px;border-radius:50%;background:var(--efile-blue);box-shadow:0 0 0 3px rgba(84,98,226,.18)}
+h1,h2,h3,p{margin:0}h1{font-size:clamp(28px,2.7vw,38px);line-height:1.08;letter-spacing:-.055em;font-weight:850}.lead{margin:9px 0 0;color:var(--muted);font-size:14px;line-height:1.55;max-width:820px}.actions-head{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.btn{min-height:38px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink);padding:0 12px;display:inline-flex;gap:8px;align-items:center;justify-content:center;font-size:12.5px;font-weight:870;text-decoration:none;white-space:nowrap}.btn:hover{border-color:rgba(4,25,18,.24);box-shadow:var(--shadow-soft);transform:translateY(-1px)}.btn.primary{background:var(--efile-night);border-color:var(--efile-night);color:#fff}.btn.primary .bolt-shape{background:var(--efile-bright)}.btn.soft{background:rgba(187,192,243,.31);border-color:rgba(84,98,226,.18);color:var(--efile-deep)}.btn.efile{background:rgba(84,98,226,.10);border-color:rgba(84,98,226,.22);color:var(--efile-deep)}.btn.ghost{background:transparent}.btn.slim{min-height:32px;border-radius:10px;font-size:11.5px;padding:0 9px}.btn.good{background:rgba(26,153,15,.08);border-color:rgba(26,153,15,.18);color:var(--green)}.btn.warn{background:rgba(247,186,20,.13);border-color:rgba(247,186,20,.22);color:#7A5200}.btn.danger{background:rgba(198,33,24,.08);border-color:rgba(198,33,24,.18);color:var(--red)}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:14px}.kpi,.card,.table-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow-soft)}.kpi{padding:15px;min-height:126px;display:flex;flex-direction:column;justify-content:space-between}.ktop{display:flex;justify-content:space-between;gap:10px;align-items:center}.kpi h3{color:var(--muted);font-size:11.5px;font-weight:950;text-transform:uppercase;letter-spacing:.06em}.kicon{width:32px;height:32px;border-radius:12px;background:rgba(187,192,243,.36);color:var(--efile-deep);display:grid;place-items:center}.kicon.warn{background:rgba(247,186,20,.13);color:#7A5200}.kicon.danger{background:rgba(198,33,24,.08);color:var(--red)}.kicon.good{background:rgba(181,248,87,.24);color:var(--green)}.num{font-size:30px;font-weight:950;letter-spacing:-.06em;margin-top:10px}.kpi p{margin-top:4px;color:var(--muted);font-size:12px;line-height:1.35}.trend{align-self:flex-start;border:1px solid rgba(84,98,226,.18);background:rgba(84,98,226,.08);color:var(--efile-deep);border-radius:999px;padding:4px 8px;font-size:10.5px;font-weight:950;margin-top:10px}.trend.good{border-color:rgba(26,153,15,.18);background:rgba(26,153,15,.08);color:var(--green)}.trend.warn{border-color:rgba(247,186,20,.24);background:rgba(247,186,20,.12);color:#7A5200}.trend.danger{border-color:rgba(198,33,24,.18);background:rgba(198,33,24,.07);color:var(--red)}
+.grid-2{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(320px,.75fr);gap:14px}.grid-2>*{min-width:0}.summary-layout{grid-template-columns:minmax(0,1fr) 360px;align-items:start}.summary-layout .stack{min-width:0}.grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.grid-4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.stack{display:grid;gap:12px}.card{padding:16px}.card-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;margin-bottom:12px}.card h2{font-size:18px;letter-spacing:-.035em}.card h3{font-size:15px;letter-spacing:-.025em}.card p{color:var(--muted);font-size:12.5px;line-height:1.45;margin-top:5px}.section-label{color:var(--muted-2);font-size:10.5px;text-transform:uppercase;letter-spacing:.09em;font-weight:950;margin-bottom:8px}.microcopy{color:var(--muted);font-size:12px;line-height:1.45}.divider{height:1px;background:var(--line);margin:14px 0}
+.badge{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:5px 8px;font-size:11px;font-weight:950;white-space:nowrap;border:1px solid var(--line);background:#F7F6F1;color:var(--muted)}.badge.good,.badge.active{background:rgba(26,153,15,.08);color:var(--green);border-color:rgba(26,153,15,.18)}.badge.warn{background:rgba(247,186,20,.13);color:#7A5200;border-color:rgba(247,186,20,.22)}.badge.danger,.badge.critical{background:rgba(198,33,24,.08);color:var(--red);border-color:rgba(198,33,24,.18)}.badge.efile{background:rgba(187,192,243,.36);color:var(--efile-deep);border-color:rgba(84,98,226,.18)}.badge.dark{background:var(--efile-night);color:#fff;border-color:var(--efile-night)}.badge.soft{background:rgba(181,248,87,.20);color:var(--green);border-color:rgba(26,153,15,.16)}
+.table-wrap{max-width:100%;overflow:auto;background:#fff;border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow-soft);margin-top:12px}table{width:100%;border-collapse:collapse;min-width:980px}th,td{padding:13px 14px;border-bottom:1px solid rgba(4,25,18,.07);text-align:left;font-size:12.5px;vertical-align:middle}th{color:var(--muted);font-size:10.5px;text-transform:uppercase;letter-spacing:.07em;font-weight:950;background:#FBFBF8}tr:last-child td{border-bottom:0}tbody tr:hover{background:#FCFCFA}.project-name{font-weight:900;font-size:13.5px;line-height:1.25}.sub{display:flex;gap:7px;flex-wrap:wrap;margin-top:5px;color:var(--muted);font-size:11.5px;font-weight:680}.cell-muted{color:var(--muted)}.row-actions{display:flex;gap:6px;justify-content:flex-end}.ray-action,.ray{height:34px;border:1px solid rgba(84,98,226,.22);background:#fff;color:var(--efile-deep);border-radius:12px;padding:0 9px;display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:950;white-space:nowrap;position:relative}.ray-action:hover,.ray:hover{background:rgba(187,192,243,.26)}.ray-action.done,.ray.done{border-color:rgba(26,153,15,.18);color:var(--green);background:rgba(26,153,15,.07)}.ray-action.locked{color:var(--muted);border-color:var(--line);background:#F8F8F5}.tip{visibility:hidden;opacity:0;position:absolute;right:0;bottom:calc(100% + 9px);width:278px;background:var(--ink);color:#fff;border-radius:13px;padding:10px 11px;font-size:11px;line-height:1.42;font-weight:650;text-align:left;box-shadow:var(--shadow);transition:.15s;z-index:20}.ray-action:hover .tip,.ray:hover .tip{visibility:visible;opacity:1}
+.filter-chips{display:flex;gap:7px;flex-wrap:wrap;margin:8px 0 10px}.filter-chip,.chip{height:31px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--muted);display:inline-flex;align-items:center;gap:6px;padding:0 10px;font-size:11.5px;font-weight:870}.filter-chip.active,.filter-chip:hover,.chip.active,.chip:hover{background:rgba(187,192,243,.29);border-color:rgba(84,98,226,.20);color:var(--efile-deep)}
+.field label{display:block;font-size:10.5px;color:var(--muted);font-weight:950;text-transform:uppercase;letter-spacing:.07em;margin-bottom:5px}.control{width:100%;height:42px;border:1px solid var(--line);background:#FBFBF8;border-radius:12px;padding:0 10px;outline:0;color:var(--ink);font-size:12.5px}textarea.control{height:auto;min-height:88px;padding:10px;resize:vertical}.control:focus,textarea:focus{border-color:rgba(84,98,226,.32);box-shadow:0 0 0 3px rgba(84,98,226,.12);background:#fff}.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.form-grid .full{grid-column:1/-1}.stepper{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:14px 0}.stepper .step,.step-pill{border:1px solid var(--line);border-radius:17px;background:#fff;padding:13px;display:flex;align-items:center;gap:10px}.step .n,.step-pill .n{width:28px;height:28px;border-radius:11px;background:#F3F2ED;color:var(--muted);display:grid;place-items:center;font-weight:950;font-size:12px}.step.active,.step-pill.active{border-color:rgba(84,98,226,.22);background:rgba(187,192,243,.22)}.step.active .n,.step-pill.active .n{background:var(--efile-night);color:#fff}.wizard-step{display:none}.wizard-step.active{display:block}
+.progress{height:9px;border-radius:999px;background:#F0EFEA;overflow:hidden}.progress span{display:block;height:100%;border-radius:inherit;background:var(--efile-blue)}.progress.good span{background:var(--action)}.progress.warn span{background:var(--yellow)}.metric-list{display:grid;gap:8px}.metric-row{display:grid;grid-template-columns:160px 1fr 42px;gap:10px;align-items:center;color:var(--muted);font-size:12.5px;font-weight:850}.timeline{display:grid;gap:10px;margin-top:12px}.event{display:grid;grid-template-columns:86px 1fr;gap:12px;padding:12px;border:1px solid var(--line);border-radius:16px;background:#FBFBF8}.event time{font-size:11.5px;color:var(--efile-deep);font-weight:950}.event strong{display:block;font-size:13px}.event span{display:block;margin-top:4px;color:var(--muted);font-size:12px;line-height:1.38}.callout{border:1px solid rgba(84,98,226,.20);background:rgba(187,192,243,.18);border-radius:20px;padding:16px}.warning{border-color:rgba(247,186,20,.24);background:rgba(247,186,20,.11)}.dangerbox{border-color:rgba(198,33,24,.18);background:rgba(198,33,24,.055)}.okbox{border-color:rgba(26,153,15,.18);background:rgba(26,153,15,.055)}.token-card{min-height:210px;display:flex;flex-direction:column;justify-content:space-between}.price{font-size:30px;font-weight:950;letter-spacing:-.06em;margin-top:8px}.price small{font-size:12px;color:var(--muted);font-weight:750}.checklist{display:grid;gap:8px;margin-top:10px}.check{display:flex;justify-content:space-between;gap:12px;align-items:center;border:1px solid var(--line);border-radius:14px;background:#FBFBF8;padding:10px 12px;font-size:12.5px}.check strong{font-weight:900}.perm-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:10px}.perm{border:1px solid var(--line);border-radius:16px;background:#FBFBF8;padding:12px;font-size:12.5px}.perm strong{display:block;font-size:13px}.perm span{display:block;color:var(--muted);margin-top:4px;font-size:12px}.modal-backdrop{position:fixed;inset:0;z-index:120;background:rgba(4,25,18,.42);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:28px}.modal-backdrop.open{display:flex}.modal{width:min(760px,100%);max-height:calc(100vh - 56px);overflow:auto;background:#fff;border-radius:26px;border:1px solid rgba(255,255,255,.36);box-shadow:0 28px 80px rgba(4,25,18,.28)}.modal-head{display:flex;justify-content:space-between;gap:18px;padding:20px 22px;border-bottom:1px solid var(--line)}.modal-head h2{font-size:22px}.modal-head p{margin-top:7px;color:var(--muted);font-size:13px;line-height:1.45}.x{width:36px;height:36px;border:1px solid var(--line);border-radius:13px;background:#fff;color:var(--muted);font-size:22px}.modal-body{padding:18px 22px 22px}.modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}.modal-item{border:1px solid var(--line);border-radius:16px;background:#FBFBF8;padding:12px}.modal-item span{display:block;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.07em;font-weight:900}.modal-item strong{display:block;margin-top:5px;font-size:13px}.consent{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line);background:#FBFBF8;border-radius:16px;padding:12px;color:var(--muted);font-size:12.5px;line-height:1.42}.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:16px}.toast{position:fixed;right:22px;bottom:22px;z-index:200;display:grid;gap:10px}.toast-item{width:min(420px,calc(100vw - 44px));border:1px solid rgba(84,98,226,.18);background:#fff;border-radius:18px;box-shadow:var(--shadow);padding:13px 14px;display:flex;gap:10px;align-items:flex-start}.toast-item strong{display:block;font-size:13px}.toast-item span{display:block;margin-top:3px;color:var(--muted);font-size:12px;line-height:1.35}.toast-icon{width:26px;height:26px;border-radius:10px;background:rgba(187,192,243,.36);color:var(--efile-deep);display:grid;place-items:center;flex:none;font-weight:950}.section-footer{margin-top:14px;color:var(--muted);font-size:11.5px;line-height:1.45}.solution-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.risk-list{list-style:none;padding:0;margin:0;display:grid;gap:10px}.risk-list li{border:1px solid var(--line);background:#fff;border-radius:16px;padding:12px 13px;display:flex;gap:10px;font-size:12.5px;color:var(--muted);line-height:1.42}.risk-list li:before{content:"";width:8px;height:8px;border-radius:50%;background:var(--red);margin-top:5px;flex:none}.footer-note{margin:28px 0 0;padding:15px;border:1px solid var(--line);border-radius:18px;background:#fff;color:var(--muted);font-size:12px;line-height:1.45}.dropzone{min-height:220px;border:1.5px dashed rgba(84,98,226,.32);background:rgba(187,192,243,.13);border-radius:24px;display:grid;place-items:center;text-align:center;padding:30px}.dropzone h2{font-size:22px;letter-spacing:-.04em}.dropzone p{max-width:620px;margin:8px auto 16px;color:var(--muted);font-size:13px;line-height:1.5}.file-seed-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.file-seed{border:1px solid var(--line);border-radius:16px;background:#FBFBF8;padding:13px}.file-seed strong{display:block;font-size:13px}.file-seed span{display:block;margin-top:4px;color:var(--muted);font-size:12px;line-height:1.35}.mobile-overlay{position:fixed;inset:var(--header) 0 0 0;background:rgba(4,25,18,.28);z-index:55;display:none}.mobile-overlay.open{display:block}
+@media(max-width:1180px){.topnav{display:none}.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.grid-2,.grid-3,.grid-4,.solution-grid{grid-template-columns:1fr}.perm-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:860px){.mobile-toggle{display:grid}.sidebar{transform:translateX(-102%);transition:transform .18s ease}.sidebar.open{transform:translateX(0)}.main{margin-left:0;padding:94px 16px 36px}.topstatus .pill:not(.efile){display:none}.search{display:none}.head{display:block}.actions-head{justify-content:flex-start;margin-top:12px}.kpis{grid-template-columns:1fr}.form-grid,.modal-grid,.perm-grid{grid-template-columns:1fr}.stepper{grid-template-columns:1fr}.topbar{padding:0 12px}.brand span:last-child{display:none}.toast{left:14px;right:14px}.toast-item{width:auto}}
+.site-nav .nav-bolt,.topnav .nav-bolt.b2b{color:#81C91C!important}.site-nav .gov-tender .nav-bolt,.site-nav .gov-pricing .nav-bolt,.topnav .nav-bolt.gov{color:#C62118!important}</style>
+
+<style id="slx-global-footer-style">
+.slx-global-footer{margin-top:42px;padding:44px 0 32px;border-top:1px solid var(--line,rgba(4,25,18,.10));background:#fff;color:var(--ink,#041912);clear:both}.slx-global-footer .slx-footer-container{width:min(1180px,calc(100% - 48px));margin-inline:auto}.slx-footer-grid{display:grid;grid-template-columns:1.25fr repeat(4,1fr);gap:24px}.slx-footer-brand{display:inline-flex;align-items:center;gap:10px;font-weight:850;letter-spacing:-.035em;font-size:20px;white-space:nowrap}.slx-footer-mark{--symbol-bg:#04560C;--symbol-bolt:#B5F857;width:34px;height:34px;position:relative;display:inline-grid;place-items:center;flex:none}.slx-footer-mark:before{content:"";position:absolute;inset:0;background:var(--symbol-bg);clip-path:polygon(50% 0%,61% 32%,100% 50%,61% 68%,50% 100%,39% 68%,0% 50%,39% 32%)}.slx-footer-mark span{position:relative;z-index:1;color:var(--symbol-bolt);font-weight:950;font-size:17px}.slx-global-footer h4{margin:0 0 12px;font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted2,var(--muted-2,#8A948F))}.slx-global-footer a,.slx-global-footer p{display:block;margin:0 0 9px;color:var(--muted,#66736D);font-size:14px;line-height:1.45;text-decoration:none}.slx-global-footer a:hover{color:var(--ink,#041912)}.slx-footer-bottom{margin-top:34px;display:flex;justify-content:space-between;gap:16px;color:var(--muted2,var(--muted-2,#8A948F));font-size:13px}.slx-footer-efile,.slx-footer-efile span{color:#063C83!important;font-weight:850}.slx-footer-gov span{color:#C62118}.slx-footer-product span{color:#81C91C}.slx-footer-drive span{color:#063C83;font-weight:900}@media (max-width:1080px){.slx-footer-grid{grid-template-columns:repeat(2,1fr)}}@media (max-width:700px){.slx-global-footer .slx-footer-container{width:min(100% - 24px,1180px)}.slx-footer-grid{grid-template-columns:1fr}.slx-footer-bottom{flex-direction:column}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <button class="mobile-toggle" id="mobileToggle" aria-label="Abrir navegación">☰</button>
+  <a class="brand" href="#resumen" data-view-link="resumen"><span class="brand-mark"><span class="bolt-shape"></span></span><span>SmartLicit</span></a>
+  <nav class="topnav" aria-label="Navegación global">
+    <a href="#tender">Tender</a><a href="#pricing">Pricing</a><a href="#file">File</a><a href="#lex">Lex</a><a class="active" href="#resumen" data-view-link="resumen">eFile</a><a href="#tender-gov">Tender Gov</a><a href="#pricing-gov">Pricing Gov</a><a href="#tokens" data-view-link="tokens">Planes</a><a href="#cuenta" data-view-link="cuenta">Mi Cuenta</a>
+  </nav>
+  <div class="search"><input placeholder="Buscar empresa, RFC, documento, trámite o eFile…" /></div>
+  <div class="topstatus">
+    <span class="pill efile"><span class="dot file"></span> eFile activo: <strong id="topEfile">Atlas Bio</strong></span>
+    <span class="pill">Tokens: <strong id="tokenCountTop">25</strong></span>
+    <span class="pill">22 abr 2026</span>
+    <button class="bell" aria-label="Notificaciones">•</button>
+    <button class="acct"><span class="avatar">PM</span><span>PM</span></button>
+  </div>
+</header>
+<div class="mobile-overlay" id="mobileOverlay"></div>
+<aside class="sidebar" id="sidebar">
+  <div class="sidehead">
+    <div><span>eFile</span><strong>Expediente electrónico inteligente</strong></div>
+    <button class="collapse" id="closeSide" title="Cerrar">‹</button>
+  </div>
+  <nav class="side-nav" aria-label="Vistas eFile">
+    <button data-view-link="resumen"><span>01</span> Resumen <span class="nav-count">8</span></button>
+    <button data-view-link="selector"><span>02</span> Selector de eFiles <span class="nav-count">3</span></button>
+    <button data-view-link="nuevo"><span>03</span> + eFile</button>
+    <button data-view-link="datos"><span>04</span> Datos generales</button>
+    <button data-view-link="legal"><span>05</span> Representación legal</button>
+    <button data-view-link="objeto"><span>06</span> Objeto social / actividad</button>
+    <button data-view-link="biblioteca"><span>07</span> Biblioteca documental</button>
+    <button data-view-link="vigencias"><span>08</span> Vigencias y alertas <span class="nav-count">3</span></button>
+    <button data-view-link="readiness"><span>09</span> Readiness</button>
+    <button data-view-link="instant"><span>10</span> Instant Documents <span class="nav-count">9</span></button>
+    <button data-view-link="tokens"><span>11</span> Tokens <span class="nav-count" id="sideTokens">25</span></button>
+    <button data-view-link="consumos"><span>12</span> Consumos</button>
+    <button data-view-link="auditoria"><span>13</span> Historial / auditoría</button>
+    <button data-view-link="integraciones"><span>14</span> Integraciones</button>
+    <button data-view-link="propuesta"><span>15</span> Propuesta IA / Experta + IA</button>
+    <button data-view-link="soluciones"><span>16</span> Relación con soluciones</button>
+    <button data-view-link="riesgos"><span>17</span> Riesgos / límites</button>
+    <button data-view-link="cuenta"><span>18</span> Cuenta / permisos</button>
+  </nav>
+  <div class="side-section-title">Cuenta</div>
+  <div class="sidecard">
+    <h4>Paco Méndez</h4>
+    <div class="planrow"><span>eFiles</span><strong>3 activos</strong></div>
+    <div class="planrow"><span>Tokens</span><strong id="tokenCountSide">25</strong></div>
+    <div class="planrow"><span>Readiness</span><strong>82%</strong></div>
+    <div class="progress-line"><span></span></div>
+  </div>
+</aside>
+<main class="main">
+<div class="content-max">
+
+<section id="resumen" class="view active">
+  <div class="head"><div><div class="crumb"><span class="spark"></span> SmartLicit / eFile / Resumen</div><h1>eFile</h1><p class="lead">El expediente electrónico inteligente de SmartLicit: identidad documental por empresa o persona física, con documentos, vigencias, validaciones, tokens, historial y trazabilidad en un solo lugar.</p></div><div class="actions-head"><button class="btn soft" data-view-link="instant">⚡ Actualizar Instant Files</button><button class="btn primary" data-view-link="nuevo"><span class="brand-mark small"><span class="bolt-shape"></span></span>+ eFile</button></div></div>
+  <div class="kpis">
+    <article class="kpi"><div class="ktop"><h3>eFiles activos</h3><span class="kicon">◈</span></div><div><div class="num">3</div><p>Empresas/personas físicas separadas.</p><span class="trend">Multiempresa</span></div></article>
+    <article class="kpi"><div class="ktop"><h3>Readiness promedio</h3><span class="kicon good">✓</span></div><div><div class="num">82%</div><p>Estado operativo general.</p><span class="trend good">Operable</span></div></article>
+    <article class="kpi"><div class="ktop"><h3>Por validar</h3><span class="kicon warn">!</span></div><div><div class="num">6</div><p>Documentos pendientes.</p><span class="trend warn">Atención</span></div></article>
+    <article class="kpi"><div class="ktop"><h3>Tokens disponibles</h3><span class="kicon">⚡</span></div><div><div class="num" id="tokenCountKpi">25</div><p>Saldo para documentos eFile.</p><span class="trend">5 tokens = 1 crédito</span></div></article>
+  </div>
+  <div class="grid-2 summary-layout">
+    <div class="stack">
+      <article class="card">
+        <div class="card-head"><div><div class="section-label">eFile activo</div><h2 id="summaryEfileName">Atlas Bioinsumos S.A. de C.V.</h2><p>Persona moral · RFC ABI240901KQ2 · Salud · Consumo clínico</p></div><span class="badge active">Operable</span></div>
+        <div class="grid-4">
+          <div class="callout"><strong>Readiness</strong><div class="price">82%</div><div class="progress"><span style="width:82%"></span></div></div>
+          <div class="callout"><strong>Licitaciones compatibles</strong><div class="price">24</div><p>Calculadas por objeto, vertical y documentación.</p></div>
+          <div class="callout warning"><strong>Propuesta IA</strong><div class="price">Parcial</div><p>Falta poder y 32-D.</p></div>
+          <div class="callout dangerbox"><strong>Experta + IA</strong><div class="price">Bloqueado</div><p>Validar poder y 32-D.</p></div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-head"><div><h2>Próximo mejor paso</h2><p>Actualiza tu opinión 32-D y valida el poder del representante legal antes de preparar una propuesta con IA.</p></div></div>
+        <div class="actions-head" style="justify-content:flex-start"><button class="btn efile open-instant" data-doc="Opinión 32-D SAT" data-action="Generar 32-D">⚡ Actualizar 32-D</button><button class="btn warn" data-view-link="legal">Validar poder</button><button class="btn ghost" data-view-link="readiness">Ver readiness</button></div>
+      </article>
+      <article class="card">
+        <div class="card-head"><div><h2>Alertas críticas</h2><p>La plataforma explica causa, impacto, acción y consumo antes de ejecutar.</p></div></div>
+        <div class="table-wrap"><table><thead><tr><th>Documento</th><th>Estado</th><th>Impacto</th><th>Acción</th><th>Costo</th></tr></thead><tbody><tr><td><strong>Opinión 32-D SAT</strong></td><td><span class="badge warn">Vence en 14 días</span></td><td>Propuesta IA</td><td><button class="ray-action open-instant" data-doc="Opinión 32-D SAT" data-action="Generar 32-D">⚡ Generar 32-D<span class="tip">Genera o actualiza este documento con Instant Files sin salir de SmartLicit. Esta acción requiere autorización y consume 1 token.</span></button></td><td>1 token</td></tr><tr><td><strong>Poder representante</strong></td><td><span class="badge warn">Por validar</span></td><td>Experta + IA</td><td><button class="btn slim warn" data-view-link="legal">Solicitar revisión</button></td><td>—</td></tr><tr><td><strong>CSF</strong></td><td><span class="badge warn">+30 días</span></td><td>Expediente base</td><td><button class="ray-action open-instant" data-doc="Constancia de Situación Fiscal" data-action="Actualizar CSF">⚡ Actualizar CSF<span class="tip">La CSF es un documento perecedero: confirma costo y consentimiento antes de actualizar.</span></button></td><td>1 token</td></tr><tr><td><strong>REPSE</strong></td><td><span class="badge">Sin validar</span></td><td>Servicios especializados</td><td><button class="ray-action open-instant" data-doc="REPSE" data-action="Consultar REPSE">⚡ Consultar REPSE</button></td><td>1 token</td></tr></tbody></table></div>
+      </article>
+    </div>
+    <aside class="stack">
+      <article class="card"><div class="card-head"><div><h2>SmartLicit</h2><p>Una sola inteligencia, múltiples soluciones.</p></div><span class="brand-mark"><span class="bolt-shape"></span></span></div><div class="divider"></div><p class="microcopy">eFile no es una carpeta pasiva. Es la identidad operativa viva que alimenta flujos de Smart Tender, Propuesta IA, Experta + IA, Smart Pricing, Smart Lex y, cuando aplique, flujos Gov.</p></article>
+      <article class="card"><h2>Reglas nucleares</h2><div class="checklist"><div class="check"><span>1 usuario = N eFiles</span><strong>Aislado</strong></div><div class="check"><span>1 plan puede servir a varios eFiles</span><strong>Compartido</strong></div><div class="check"><span>Documentos críticos</span><strong>Versionados</strong></div><div class="check"><span>Instant Files</span><strong>Consentimiento</strong></div></div></article>
+      <article class="card"><h2>Tokens</h2><p>1 documento avanzado de eFile = 1 token. Puedes comprar tokens sin plan activo, pero solo servirán para documentos de eFile.</p><div class="divider"></div><button class="btn efile" data-view-link="tokens">Ver paquetes</button></article>
+    </aside>
+  </div>
+</section>
+
+<section id="selector" class="view">
+  <div class="head"><div><div class="crumb"><span class="spark"></span> eFile / Selector</div><h1>Selector de eFiles</h1><p class="lead">Un usuario puede crear un eFile por cada empresa o persona física. Cada expediente conserva documentos, vigencias, readiness, consumos y trazabilidad independientes.</p></div><div class="actions-head"><button class="btn primary" data-view-link="nuevo">+ eFile</button></div></div>
+  <div class="grid-3">
+    <article class="card efile-option" data-short="Atlas Bio" data-full="Atlas Bioinsumos S.A. de C.V."><div class="card-head"><div><h2>Atlas Bioinsumos S.A. de C.V.</h2><p>Persona moral · RFC ABI240901KQ2</p></div><span class="badge active">Activo</span></div><div class="metric-list"><div class="metric-row"><span>Readiness</span><div class="progress"><span style="width:82%"></span></div><strong>82%</strong></div><div class="metric-row"><span>Licitaciones</span><div class="progress good"><span style="width:92%"></span></div><strong>24</strong></div><div class="metric-row"><span>Tokens usados</span><div class="progress"><span style="width:44%"></span></div><strong>11</strong></div></div><div class="divider"></div><button class="btn efile use-efile">Usar este eFile</button></article>
+    <article class="card efile-option" data-short="Infra Nova" data-full="Infra Nova S. de R.L."><div class="card-head"><div><h2>Infra Nova S. de R.L.</h2><p>Persona moral · RFC INO2311108A1</p></div><span class="badge warn">Parcial</span></div><div class="metric-list"><div class="metric-row"><span>Readiness</span><div class="progress"><span style="width:64%"></span></div><strong>64%</strong></div><div class="metric-row"><span>Licitaciones</span><div class="progress good"><span style="width:42%"></span></div><strong>8</strong></div><div class="metric-row"><span>Tokens usados</span><div class="progress"><span style="width:12%"></span></div><strong>3</strong></div></div><div class="divider"></div><button class="btn efile use-efile">Usar este eFile</button></article>
+    <article class="card efile-option" data-short="Ana Ríos" data-full="Ana Sofía Ríos Hernández"><div class="card-head"><div><h2>Ana Sofía Ríos Hernández</h2><p>PFAE · RFC RIHA930222TE3</p></div><span class="badge">Borrador</span></div><div class="metric-list"><div class="metric-row"><span>Readiness</span><div class="progress warn"><span style="width:48%"></span></div><strong>48%</strong></div><div class="metric-row"><span>Licitaciones</span><div class="progress good"><span style="width:28%"></span></div><strong>5</strong></div><div class="metric-row"><span>Tokens usados</span><div class="progress"><span style="width:0%"></span></div><strong>0</strong></div></div><div class="divider"></div><button class="btn efile use-efile">Usar este eFile</button></article>
+  </div>
+  <div class="grid-3" style="margin-top:14px"><article class="card"><h3>Licitaciones compatibles</h3><p>Se recalcula el listado según objeto social, vertical, permisos y readiness.</p></article><article class="card"><h3>Documentos y vigencias</h3><p>Cada empresa conserva biblioteca, alertas, versionado y consumos propios.</p></article><article class="card"><h3>Autollenado IA</h3><p>Propuesta IA y Experta + IA usan solo el eFile activo y autorizado.</p></article></div>
+</section>
+
+<section id="nuevo" class="view">
+  <div class="head"><div><div class="crumb"><span class="spark"></span> eFile / Alta desde documento</div><h1>+ eFile</h1><p class="lead">Crea un expediente a partir de cualquier documento relacionado con la nueva empresa o persona física: PDF, constancia fiscal, acta constitutiva, identificación, comprobante o Instant File disponible.</p></div><div class="actions-head"><button class="btn ghost">Guardar borrador</button><button class="btn primary next-step">Continuar</button></div></div>
+  <div class="stepper"><div class="step active" data-step="1"><span class="n">1</span><strong>Documento base</strong></div><div class="step" data-step="2"><span class="n">2</span><strong>Lectura automática</strong></div><div class="step" data-step="3"><span class="n">3</span><strong>Identidad detectada</strong></div><div class="step" data-step="4"><span class="n">4</span><strong>Readiness inicial</strong></div></div>
+  <div class="wizard-step active" data-wizard="1">
+    <div class="grid-2"><article class="card"><div class="card-head"><div><h2>Sube el primer documento del nuevo eFile</h2><p>El eFile nace desde evidencia documental. SmartLicit lee el documento, detecta si corresponde a persona moral o persona física, extrae identidad base y crea el expediente en borrador.</p></div><span class="badge efile">Documento semilla</span></div><div class="dropzone"><div><span class="brand-mark"><span class="bolt-shape"></span></span><h2>Arrastra o selecciona un documento base</h2><p>Puede ser CSF, acta constitutiva, opinión 32-D, identificación, comprobante de domicilio, poder, estado de cuenta o cualquier documento que identifique a la entidad.</p><div class="actions-head" style="justify-content:center"><button class="btn efile next-step">Subir PDF</button><button class="btn efile next-step">⚡ Generar CSF</button><button class="btn efile next-step">⚡ Extraer acta</button><button class="btn ghost next-step">Carga manual</button></div></div></div></article><article class="card"><h2>Documentos que pueden iniciar un eFile</h2><div class="file-seed-grid"><div class="file-seed"><strong>Constancia fiscal</strong><span>Identifica RFC, régimen, domicilio y nombre.</span></div><div class="file-seed"><strong>Acta constitutiva</strong><span>Identifica razón social, objeto y datos societarios.</span></div><div class="file-seed"><strong>Identificación oficial</strong><span>Inicia expediente de persona física.</span></div><div class="file-seed"><strong>Comprobante</strong><span>Complementa domicilio o evidencia operativa.</span></div></div><div class="divider"></div><p class="microcopy">Después de cargar o generar el documento, el usuario confirma el tipo de entidad y completa los campos faltantes. Ningún documento se mezcla con otro eFile.</p></article></div>
+  </div>
+  <div class="wizard-step" data-wizard="2"><article class="card"><h2>Lectura automática del documento</h2><p>SmartLicit identifica tipo de documento, posible RFC, nombre o razón social, domicilio, vigencia y campos útiles para crear el eFile.</p><div class="grid-3" style="margin-top:12px"><div class="callout okbox"><strong>Documento leído</strong><div class="price">CSF</div><p>PDF fiscal detectado.</p></div><div class="callout"><strong>Entidad probable</strong><div class="price">PM</div><p>Persona moral detectada.</p></div><div class="callout warning"><strong>Datos por confirmar</strong><div class="price">3</div><p>Domicilio, régimen y contacto.</p></div></div><div class="divider"></div><button class="btn primary next-step">Confirmar identidad</button></article></div>
+  <div class="wizard-step" data-wizard="3"><article class="card"><div class="card-head"><div><h2 id="formTitle">Identidad detectada</h2><p>El usuario confirma o corrige los campos extraídos antes de crear el expediente.</p></div><span class="badge efile">Paso 3</span></div><form class="form-grid" id="entityForm"></form><div class="divider"></div><button class="btn primary next-step">Calcular readiness inicial</button></article></div>
+  <div class="wizard-step" data-wizard="4"><article class="card"><h2>Readiness inicial</h2><p>El nuevo eFile queda creado en borrador u operable parcial. El sistema explica qué falta, qué se puede actualizar con Instant Files y qué bloquea Propuesta IA o Experta + IA.</p><div class="grid-3" style="margin-top:12px"><div class="callout okbox"><strong>Datos fiscales</strong><div class="price">Listos</div></div><div class="callout warning"><strong>Representación</strong><div class="price">Parcial</div></div><div class="callout dangerbox"><strong>Bloqueos IA</strong><div class="price">2</div></div></div><div class="divider"></div><button class="btn primary" data-view-link="selector">Finalizar y ver eFiles</button></article></div>
+</section>
+
+<section id="datos" class="view">
+  <div class="head"><div><div class="crumb"><span class="spark"></span> eFile / Datos generales</div><h1>Datos generales</h1><p class="lead">El usuario no ve un perfil plano; ve un centro operativo reusable para licitaciones, documentos y automatización.</p></div><div class="actions-head"><button class="btn soft">Editar datos</button><button class="btn efile open-instant" data-doc="Constancia de Situación Fiscal" data-action="Actualizar CSF">⚡ Actualizar CSF</button></div></div>
+  <div class="kpis"><article class="kpi"><div class="ktop"><h3>RFC</h3><span class="kicon">#</span></div><div><div class="num" style="font-size:22px">ABI2409…</div><p>ABI240901KQ2</p></div></article><article class="kpi"><div class="ktop"><h3>Domicilios</h3><span class="kicon good">⌂</span></div><div><div class="num">2</div><p>Capturados.</p></div></article><article class="kpi"><div class="ktop"><h3>Contactos</h3><span class="kicon">@</span></div><div><div class="num">3</div><p>Legal, licitaciones y administración.</p></div></article><article class="kpi"><div class="ktop"><h3>Vertical</h3><span class="kicon">◈</span></div><div><div class="num" style="font-size:22px">Salud</div><p>Consumo clínico.</p></div></article></div>
+  <div class="grid-2"><article class="card"><h2>Ficha editable</h2><div class="form-grid" style="margin-top:12px"><div class="field"><label>Razón social</label><input class="control" value="Atlas Bioinsumos S.A. de C.V."></div><div class="field"><label>Nombre corto</label><input class="control" value="Atlas Bio"></div><div class="field"><label>RFC</label><input class="control" value="ABI240901KQ2"></div><div class="field"><label>Nacionalidad</label><input class="control" value="Mexicana"></div><div class="field"><label>Régimen</label><input class="control" value="Persona moral"></div><div class="field"><label>Correo licitaciones</label><input class="control" value="licitaciones@atlasbio.mx"></div><div class="field full"><label>Domicilio fiscal</label><input class="control" value="Av. Reforma 220, CDMX"></div><div class="field"><label>Contacto legal</label><input class="control" value="María de la Vega"></div><div class="field"><label>Contacto licitaciones</label><input class="control" value="Eduardo Salas"></div></div></article><article class="card"><h2>Estado operativo</h2><div class="checklist"><div class="check"><span>Listo para Smart Tender</span><strong>Sí</strong></div><div class="check"><span>Listo para Smart Pricing</span><strong>Sí</strong></div><div class="check"><span>Listo para Propuesta IA</span><strong>Parcial</strong></div><div class="check"><span>Listo para Experta + IA</span><strong>Bloqueado</strong></div><div class="check"><span>Listo para Smart Lex</span><strong>Sí</strong></div><div class="check"><span>Smart File</span><strong>No aplica directamente</strong></div></div></article></div>
+</section>
+
+<section id="legal" class="view">
+  <div class="head"><div><div class="crumb"><span class="spark"></span> eFile / Representación</div><h1>Representación legal</h1><p class="lead">Acta, reformas y poderes cambian la elegibilidad real del eFile. El sistema debe explicar qué acredita personería, qué falta y qué bloquea.</p></div><div class="actions-head"><button class="btn soft">Confirmar extracción</button><button class="btn warn">Solicitar revisión</button></div></div>
+  <div class="callout warning"><strong>Bloqueo activo:</strong> No podemos continuar con Experta + IA porque falta validar el poder del representante autorizado para presentar propuestas.</div>
+  <div class="grid-2" style="margin-top:14px"><article class="card"><h2>Documentos de personería</h2><div class="table-wrap"><table><thead><tr><th>Documento</th><th>Versión</th><th>Fuente</th><th>Estado</th><th>Impacto</th><th>Acción</th></tr></thead><tbody><tr><td>Acta constitutiva</td><td>v3</td><td>Instant File / OCR</td><td><span class="badge good">Vigente</span></td><td>Objeto social</td><td><div class="row-actions"><button class="btn slim">Ver</button><button class="ray-action open-instant" data-doc="Acta constitutiva" data-action="Extraer acta">⚡ Extraer acta</button></div></td></tr><tr><td>Reformas y RPC</td><td>v1</td><td>Carga manual</td><td><span class="badge warn">Revisión</span></td><td>Objeto / personería</td><td><button class="btn slim warn">Validar</button></td></tr><tr><td>Poder general</td><td>v2</td><td>Notarial</td><td><span class="badge warn">Por validar</span></td><td>Propuesta IA</td><td><button class="btn slim warn">Solicitar revisión</button></td></tr><tr><td>Identificación representante</td><td>v1</td><td>Instant File</td><td><span class="badge good">Vigente</span></td><td>Identidad</td><td><div class="row-actions"><button class="btn slim">Ver</button><button class="ray-action open-instant" data-doc="Identificación representante" data-action="Extraer datos">⚡ Extraer datos</button></div></td></tr></tbody></table></div></article><article class="card"><h2>Representantes</h2><div class="table-wrap"><table style="min-width:650px"><thead><tr><th>Representante</th><th>Facultad</th><th>Documento</th><th>Estado</th><th>Bloquea</th></tr></thead><tbody><tr><td>María de la Vega</td><td>Firmar licitaciones</td><td>Poder 2025</td><td><span class="badge good">Vigente</span></td><td>No</td></tr><tr><td>Eduardo Salas</td><td>Presentar propuestas</td><td>Poder 2024</td><td><span class="badge warn">Por validar</span></td><td>Sí</td></tr><tr><td>Consejo de administración</td><td>Formalizar contratos</td><td>Acta + reformas</td><td><span class="badge good">Vigente</span></td><td>No</td></tr></tbody></table></div></article></div>
+</section>
+
+<section id="objeto" class="view">
+  <div class="head"><div><div class="crumb"><span class="spark"></span> eFile / Objeto social</div><h1>Objeto social y actividad</h1><p class="lead">El matching empieza aquí. eFile traduce texto jurídico o actividad empresarial en verticales, líneas de negocio y compatibilidad operativa.</p></div><div class="actions-head"><button class="btn soft">Editar actividad</button></div></div>
+  <div class="grid-2"><article class="card"><div class="card-head"><div><h2>Texto base</h2><p>Fuente: Acta constitutiva · OCR validado · Revisión humana recomendada.</p></div><span class="badge efile">OCR validado</span></div><p style="font-size:16px;line-height:1.55;color:var(--ink)">“La sociedad tendrá por objeto la compra, venta, distribución, importación, almacenamiento y comercialización de insumos médicos, consumibles clínicos, material de curación, equipo menor hospitalario y servicios complementarios de abastecimiento.”</p><div class="filter-chips"><span class="badge efile">Edición manual disponible</span><span class="badge">Fuente: Acta constitutiva</span><span class="badge warn">Revisión humana recomendada</span></div></article><article class="card"><h2>Líneas de negocio</h2><div class="filter-chips"><span class="chip active">Insumos médicos</span><span class="chip active">Material de curación</span><span class="chip active">Abasto hospitalario</span><span class="chip active">Equipo menor hospitalario</span><span class="chip active">Servicios complementarios</span></div><div class="divider"></div><h3>Compatibilidad estimada</h3><div class="metric-list" style="margin-top:10px"><div class="metric-row"><span>Guantes de nitrilo</span><div class="progress good"><span style="width:94%"></span></div><strong>94%</strong></div><div class="metric-row"><span>Cubrebocas quirúrgico</span><div class="progress"><span style="width:82%"></span></div><strong>82%</strong></div><div class="metric-row"><span>Servicio integral de limpieza</span><div class="progress warn"><span style="width:61%"></span></div><strong>61%</strong></div><div class="metric-row"><span>Equipamiento menor hospitalario</span><div class="progress"><span style="width:77%"></span></div><strong>77%</strong></div></div></article></div>
+  <div class="footer-note">Smart Tender usa este bloque para decidir qué licitaciones ve la entidad, con qué score y si la sugerencia requiere validación humana.</div>
+</section>
+
+<section id="biblioteca" class="view">
+  <div class="head"><div><div class="crumb"><span class="spark"></span> eFile / Biblioteca</div><h1>Biblioteca documental</h1><p class="lead">Documentos fiscales, legales, de cumplimiento, técnicos, bancarios y generados como Instant Files. Los documentos críticos no se sobreescriben: se versionan.</p></div><div class="actions-head"><button class="btn soft">Subir documento</button><button class="btn efile update-all-instant">⚡ Instant Files</button></div></div>
+  <div class="filter-chips" id="docFilters"><button class="filter-chip active" data-filter="all">Todos</button><button class="filter-chip" data-filter="legal">Legales</button><button class="filter-chip" data-filter="fiscal">Fiscales</button><button class="filter-chip" data-filter="compliance">Compliance</button><button class="filter-chip" data-filter="tecnico">Técnicos</button><button class="filter-chip" data-filter="bancario">Bancarios</button><button class="filter-chip" data-filter="instant">Instant Files</button><button class="filter-chip" data-filter="validar">Por validar</button><button class="filter-chip" data-filter="vencer">Próximos a vencer</button></div>
+  <div class="table-wrap"><table><thead><tr><th>Documento</th><th>Categoría</th><th>Versión</th><th>Vigencia</th><th>Estado</th><th>Fuente</th><th>Acción</th></tr></thead><tbody id="docTable"><tr data-cat="legal instant"><td>Acta constitutiva</td><td>Legal</td><td>v3</td><td>—</td><td><span class="badge good">Vigente</span></td><td>Instant File / carga</td><td><button class="ray-action open-instant" data-doc="Acta constitutiva" data-action="Extraer acta">⚡ Extraer acta</button></td></tr><tr data-cat="legal validar"><td>Reformas</td><td>Legal</td><td>v1</td><td>—</td><td><span class="badge warn">Revisión</span></td><td>Carga manual</td><td><button class="btn slim warn">Validar</button></td></tr><tr data-cat="legal validar"><td>Poder general</td><td>Legal</td><td>v2</td><td>Dic 2026</td><td><span class="badge warn">Por validar</span></td><td>Carga manual</td><td><button class="btn slim warn">Solicitar revisión</button></td></tr><tr data-cat="fiscal instant vencer"><td>Constancia de Situación Fiscal</td><td>Fiscal</td><td>v2</td><td>30 días sugeridos</td><td><span class="badge warn">Desactualizada</span></td><td>Instant Files</td><td><button class="ray-action open-instant" data-doc="Constancia de Situación Fiscal" data-action="Actualizar CSF">⚡ Actualizar CSF</button></td></tr><tr data-cat="compliance instant vencer"><td>Opinión 32-D SAT</td><td>Compliance</td><td>v1</td><td>14 días</td><td><span class="badge warn">Próxima</span></td><td>Instant Files</td><td><button class="ray-action open-instant" data-doc="Opinión 32-D SAT" data-action="Generar 32-D">⚡ Generar 32-D</button></td></tr><tr data-cat="compliance instant validar"><td>REPSE</td><td>Compliance</td><td>—</td><td>—</td><td><span class="badge">Sin validar</span></td><td>Instant Files</td><td><button class="ray-action open-instant" data-doc="REPSE" data-action="Consultar REPSE">⚡ Consultar REPSE</button></td></tr><tr data-cat="bancario instant"><td>Estado de cuenta</td><td>Bancario</td><td>v1</td><td>60 días</td><td><span class="badge good">Vigente</span></td><td>Instant File</td><td><button class="ray-action open-instant" data-doc="Estado de cuenta" data-action="Extraer estado">⚡ Extraer estado</button></td></tr><tr data-cat="bancario instant validar"><td>CLABE</td><td>Bancario</td><td>—</td><td>—</td><td><span class="badge">Pendiente</span></td><td>Instant Files</td><td><button class="ray-action open-instant" data-doc="CLABE" data-action="Validar CLABE">⚡ Validar CLABE</button></td></tr><tr data-cat="tecnico"><td>Ficha técnica guantes nitrilo</td><td>Técnico</td><td>v5</td><td>—</td><td><span class="badge good">Vigente</span></td><td>Manual</td><td><button class="btn slim">Ver</button></td></tr><tr data-cat="fiscal instant vencer"><td>Comprobante de domicilio</td><td>Fiscal</td><td>v1</td><td>30 días sugeridos</td><td><span class="badge warn">Próximo</span></td><td>Instant Files</td><td><button class="ray-action open-instant" data-doc="Comprobante de domicilio" data-action="Actualizar comprobante">⚡ Actualizar</button></td></tr></tbody></table></div>
+  <div class="footer-note">Regla visible: los documentos críticos no se sobreescriben. Se versionan y generan snapshot, auditoría y posible cambio de readiness.</div>
+</section>
+
+<section id="vigencias" class="view">
+  <div class="head"><div><div class="crumb"><span class="spark"></span> eFile / Vigencias</div><h1>Vigencias y alertas</h1><p class="lead">Cada alerta explica qué documento falta o vence, por qué importa, qué flujo afecta, qué acción corrige el problema y si consume tokens.</p></div><div class="actions-head"><button class="btn efile" data-view-link="instant">⚡ Actualizar disponibles</button></div></div>
+  <div class="kpis"><article class="kpi"><div class="ktop"><h3>Próximas a vencer</h3><span class="kicon warn">!</span></div><div><div class="num">3</div><p>Dentro de ventana operativa.</p></div></article><article class="kpi"><div class="ktop"><h3>Críticas</h3><span class="kicon danger">×</span></div><div><div class="num">1</div><p>Bloqueo potencial.</p></div></article><article class="kpi"><div class="ktop"><h3>Pendientes</h3><span class="kicon">?</span></div><div><div class="num">2</div><p>Requieren validación.</p></div></article><article class="kpi"><div class="ktop"><h3>Instant Files</h3><span class="kicon">⚡</span></div><div><div class="num">4</div><p>Actualizables ahora.</p></div></article></div>
+  <div class="grid-2"><article class="card"><h2>Timeline de vigencias</h2><div class="timeline"><div class="event"><time>12 May</time><div><strong>Opinión 32-D SAT</strong><span>Expira en 14 días. Afecta Propuesta IA. Puede actualizarse ahora con Instant Files. Costo: 1 token.</span></div></div><div class="event"><time>18 May</time><div><strong>Constancia IMSS</strong><span>Expira en 20 días. Afecta compliance operativo.</span></div></div><div class="event"><time>02 Jun</time><div><strong>Poder general</strong><span>Revisión interna programada por personería.</span></div></div><div class="event"><time>12 Jun</time><div><strong>CSF</strong><span>Vigencia operativa sugerida para revalidación.</span></div></div><div class="event"><time>20 Jun</time><div><strong>Comprobante de domicilio</strong><span>Recomendada actualización.</span></div></div></div></article><article class="stack"><div class="callout warning"><strong>Alerta preventiva</strong><p>Tu opinión 32-D está próxima a vencer. Este documento puede ser requerido para preparar una propuesta o completar un expediente. Puedes actualizarlo ahora con Instant Files. Costo: 1 token.</p></div><div class="callout"><strong>Advertencia no bloqueante</strong><p>Tu CSF tiene más de 30 días desde su última actualización. Puedes continuar, pero algunos procedimientos podrían requerir una versión más reciente.</p></div><div class="callout dangerbox"><strong>Bloqueo</strong><p>No podemos continuar con esta preparación de propuesta porque falta validar el poder del representante legal. Actualiza el documento o solicita revisión.</p></div></article></div>
+</section>
+
+<section id="readiness" class="view">
+  <div class="head"><div><div class="crumb"><span class="spark"></span> eFile / Readiness</div><h1>Readiness</h1><p class="lead">El eFile no bloquea sin explicar. Muestra completitud general, por bloque y por solución.</p></div><div class="actions-head"><button class="btn soft">Resolver bloqueos</button></div></div>
+  <div class="grid-2"><article class="card"><h2>Readiness por bloque</h2><div class="metric-list" style="margin-top:12px"><div class="metric-row"><span>General</span><div class="progress"><span style="width:82%"></span></div><strong>82%</strong></div><div class="metric-row"><span>Datos generales</span><div class="progress good"><span style="width:92%"></span></div><strong>92%</strong></div><div class="metric-row"><span>Representación legal</span><div class="progress"><span style="width:76%"></span></div><strong>76%</strong></div><div class="metric-row"><span>Compliance crítico</span><div class="progress warn"><span style="width:61%"></span></div><strong>61%</strong></div><div class="metric-row"><span>Documentos técnicos</span><div class="progress good"><span style="width:88%"></span></div><strong>88%</strong></div><div class="metric-row"><span>Trazabilidad</span><div class="progress good"><span style="width:94%"></span></div><strong>94%</strong></div></div></article><article class="card"><h2>Estados posibles</h2><div class="filter-chips"><span class="badge good">Completo</span><span class="badge active">Operable</span><span class="badge warn">Parcial</span><span class="badge danger">Bloqueado</span><span class="badge">Requiere revisión</span><span class="badge">No listo</span></div><div class="divider"></div><p class="microcopy">Tu eFile está 82% completo. Puedes usarlo para analizar oportunidades, pero necesitas actualizar tu opinión 32-D y validar un poder antes de preparar una propuesta con IA.</p></article></div>
+  <div class="table-wrap"><table><thead><tr><th>Solución</th><th>Estado</th><th>Motivo</th><th>Acción</th></tr></thead><tbody><tr><td>Smart Tender</td><td><span class="badge good">Listo</span></td><td>Puede analizar oportunidades compatibles.</td><td><button class="btn slim">Ver oportunidades</button></td></tr><tr><td>Smart Pricing</td><td><span class="badge good">Listo</span></td><td>Tiene giro, RFC y contexto suficiente.</td><td><button class="btn slim">Analizar precios</button></td></tr><tr><td>Propuesta IA</td><td><span class="badge warn">Parcial</span></td><td>Falta validar poder y actualizar 32-D.</td><td><button class="btn slim warn">Resolver bloqueos</button></td></tr><tr><td>Experta + IA</td><td><span class="badge danger">Bloqueado</span></td><td>Requiere Smart Tender, Smart Pricing y eFile activo sin bloqueos críticos.</td><td><button class="btn slim danger">Ver requisitos</button></td></tr><tr><td>Smart Lex</td><td><span class="badge good">Listo</span></td><td>Puede analizar documentos autorizados.</td><td><button class="btn slim">Abrir Smart Lex</button></td></tr><tr><td>Smart File</td><td><span class="badge">No aplica directamente</span></td><td>Smart File monitorea expedientes; no sustituye eFile.</td><td><button class="btn slim">Ver diferencia</button></td></tr><tr><td>Tender Gov</td><td><span class="badge efile">Institucional</span></td><td>Puede usar identidad/documentos institucionales cuando aplique.</td><td><button class="btn slim">Ver Gov</button></td></tr><tr><td>Pricing Gov</td><td><span class="badge efile">Institucional</span></td><td>Puede aportar identidad y permisos, pero no sustituye estudio de mercado.</td><td><button class="btn slim">Ver Gov</button></td></tr></tbody></table></div>
+</section>
+
+<section id="instant" class="view">
+  <div class="head"><div><div class="crumb"><span class="spark"></span> eFile / Instant Documents</div><h1>Instant Documents</h1><p class="lead">Genera, actualiza, extrae, valida o verifica documentos disponibles sin salir de SmartLicit, con consentimiento del usuario y consumo transparente de tokens.</p></div><div class="actions-head"><button class="btn efile" data-view-link="tokens">Comprar tokens</button></div></div>
+  <div class="callout"><strong>Regla de alcance:</strong> Instant Files no sustituye a SAT, IMSS, REPSE, INFONAVIT, bancos u otra autoridad. Opera como módulo de generación, descarga, extracción, validación o gestión documental automática, según el alcance técnico disponible.</div>
+  <div class="table-wrap"><table><thead><tr><th>Documento</th><th>Tipo</th><th>Disponible</th><th>Acción</th><th>Costo</th><th>Última ejecución</th><th>Resultado</th></tr></thead><tbody id="instantRows"><tr><td>Constancia de Situación Fiscal</td><td>Conector SAT</td><td>Sí</td><td><button class="ray-action open-instant" data-doc="Constancia de Situación Fiscal" data-action="Actualizar CSF">⚡ Actualizar CSF<span class="tip">Requiere autorización y consume 1 token.</span></button></td><td>1 token</td><td>12 Mar 2026</td><td class="result-cell">Desactualizada</td></tr><tr><td>Opinión 32-D SAT</td><td>Conector SAT</td><td>Sí</td><td><button class="ray-action open-instant" data-doc="Opinión 32-D SAT" data-action="Generar 32-D">⚡ Generar 32-D</button></td><td>1 token</td><td>01 Abr 2026</td><td class="result-cell">Vence en 14 días</td></tr><tr><td>REPSE</td><td>Conector</td><td>Sí</td><td><button class="ray-action open-instant" data-doc="REPSE" data-action="Consultar REPSE">⚡ Consultar REPSE</button></td><td>1 token</td><td>Nunca</td><td class="result-cell">Sin validar</td></tr><tr><td>Identificación oficial</td><td>Extractor</td><td>Sí</td><td><button class="ray-action open-instant" data-doc="Identificación oficial" data-action="Extraer datos">⚡ Extraer datos</button></td><td>1 token</td><td>02 Abr 2026</td><td class="result-cell">Vigente</td></tr><tr><td>Comprobante de domicilio</td><td>Extractor</td><td>Sí</td><td><button class="ray-action open-instant" data-doc="Comprobante de domicilio" data-action="Actualizar comprobante">⚡ Actualizar comprobante</button></td><td>1 token</td><td>20 Mar 2026</td><td class="result-cell">Próximo</td></tr><tr><td>Acta constitutiva</td><td>Extractor</td><td>Sí</td><td><button class="ray-action open-instant" data-doc="Acta constitutiva" data-action="Extraer acta">⚡ Extraer acta</button></td><td>1 token</td><td>15 Feb 2026</td><td class="result-cell">Vigente</td></tr><tr><td>Estado de cuenta</td><td>Extractor</td><td>Sí</td><td><button class="ray-action open-instant" data-doc="Estado de cuenta" data-action="Extraer estado">⚡ Extraer estado</button></td><td>1 token</td><td>10 Abr 2026</td><td class="result-cell">Vigente</td></tr><tr><td>CLABE</td><td>Validación</td><td>Sí</td><td><button class="ray-action open-instant" data-doc="CLABE" data-action="Validar CLABE">⚡ Validar CLABE</button></td><td>1 token</td><td>Nunca</td><td class="result-cell">Pendiente</td></tr><tr><td>Listas restrictivas</td><td>Validación</td><td>Sí</td><td><button class="ray-action open-instant" data-doc="Listas restrictivas" data-action="Validar ahora">⚡ Validar ahora</button></td><td>1 token</td><td>Nunca</td><td class="result-cell">Pendiente</td></tr><tr><td>Sello NOM-151</td><td>Evidencia</td><td>Sí</td><td><button class="ray-action open-instant" data-doc="Sello NOM-151" data-action="Sellar evidencia">⚡ Sellar evidencia</button></td><td>1 token</td><td>Nunca</td><td class="result-cell">Pendiente</td></tr></tbody></table></div>
+</section>
+
+<section id="tokens" class="view">
+  <div class="head"><div><div class="crumb"><span class="spark"></span> eFile / Tokens</div><h1>Tokens eFile</h1><p class="lead">Usa tokens para generar, actualizar o validar documentos disponibles desde eFile. Cada documento avanzado consume 1 token.</p></div><div class="actions-head"><button class="btn soft">Ver historial</button></div></div>
+  <div class="kpis"><article class="kpi"><div class="ktop"><h3>Disponibles</h3><span class="kicon">⚡</span></div><div><div class="num" id="tokenCountWallet">25</div><p>Saldo actual.</p></div></article><article class="kpi"><div class="ktop"><h3>Comprados</h3><span class="kicon good">+</span></div><div><div class="num" id="tokensBought">50</div><p>Histórico simulado.</p></div></article><article class="kpi"><div class="ktop"><h3>Consumidos</h3><span class="kicon warn">−</span></div><div><div class="num" id="tokensSpent">25</div><p>Documentos generados.</p></div></article><article class="kpi"><div class="ktop"><h3>Equivalencia</h3><span class="kicon">↔</span></div><div><div class="num">5:1</div><p>5 tokens = 1 crédito.</p></div></article></div>
+  <div class="grid-4"><article class="card token-card"><div><span class="badge efile">Free</span><h2>5 tokens</h2><div class="price">$0 <small>MXN</small></div><p>Paquete gratuito de arranque.</p></div><button class="btn efile buy-tokens" data-amount="5">Activar 5 tokens</button></article><article class="card token-card"><div><span class="badge efile">Lite</span><h2>10 tokens</h2><div class="price">$490 <small>MXN</small></div></div><button class="btn efile buy-tokens" data-amount="10">Comprar 10 tokens</button></article><article class="card token-card"><div><span class="badge efile">Plus</span><h2>25 tokens</h2><div class="price">$990 <small>MXN</small></div></div><button class="btn efile buy-tokens" data-amount="25">Comprar 25 tokens</button></article><article class="card token-card"><div><span class="badge efile">Max</span><h2>100 tokens</h2><div class="price">$2,990 <small>MXN</small></div></div><button class="btn efile buy-tokens" data-amount="100">Comprar 100 tokens</button></article></div>
+  <div class="grid-2" style="margin-top:14px"><article class="card"><h2>Reglas visibles</h2><ul class="risk-list" style="margin-top:10px"><li style="border-color:var(--line)">1 documento avanzado = 1 token.</li><li style="border-color:var(--line)">Los tokens no sustituyen planes.</li><li style="border-color:var(--line)">Tokens sin plan solo sirven para documentos de eFile.</li><li style="border-color:var(--line)">Comprar tokens no habilita Smart Tender, Smart Pricing, Smart File, Smart Lex, Tender Gov, Pricing Gov, Propuesta IA ni Experta + IA.</li></ul></article><article class="callout"><h2>Copy recomendado</h2><p>Puedes comprar tokens aunque no tengas un plan activo. En ese caso, los tokens solo servirán para generar, actualizar o validar documentos disponibles desde eFile.</p></article></div>
+</section>
+
+<section id="consumos" class="view">
+  <div class="head"><div><div class="crumb"><span class="spark"></span> eFile / Consumos</div><h1>Histórico de consumos</h1><p class="lead">El plan vive a nivel cuenta, pero cada consumo se atribuye al eFile que detonó la acción.</p></div><div class="actions-head"><button class="btn soft">Exportar CSV</button></div></div>
+  <div class="filter-chips"><button class="filter-chip active">Todos</button><button class="filter-chip">Atlas Bio</button><button class="filter-chip">Infra Nova</button><button class="filter-chip">Token</button><button class="filter-chip">Crédito</button><button class="filter-chip">Exitosa</button></div>
+  <div class="table-wrap"><table><thead><tr><th>Fecha</th><th>Usuario</th><th>eFile</th><th>Producto / funcionalidad</th><th>Tipo</th><th>Acción</th><th>Consumo</th><th>Saldo anterior</th><th>Saldo posterior</th><th>Folio</th><th>Estado</th></tr></thead><tbody id="consumptionRows"><tr><td>22/04/2026 10:42</td><td>Paco</td><td>Atlas Bio</td><td>eFile / Instant Files</td><td>Token</td><td>Generar 32-D</td><td>1 token</td><td>26</td><td>25</td><td>EF-000124</td><td><span class="badge good">Exitosa</span></td></tr><tr><td>21/04/2026 18:20</td><td>Paco</td><td>Atlas Bio</td><td>Smart Pricing</td><td>Crédito</td><td>Estudio de precio</td><td>1 crédito</td><td>8</td><td>7</td><td>SP-000081</td><td><span class="badge good">Exitosa</span></td></tr><tr><td>20/04/2026 09:11</td><td>Mariana</td><td>Infra Nova</td><td>eFile / Instant Files</td><td>Token</td><td>Actualizar CSF</td><td>1 token</td><td>27</td><td>26</td><td>EF-000123</td><td><span class="badge good">Exitosa</span></td></tr><tr><td>18/04/2026 14:03</td><td>Paco</td><td>Atlas Bio</td><td>Propuesta IA</td><td>Crédito</td><td>Preparar propuesta</td><td>1 crédito</td><td>9</td><td>8</td><td>ST-000033</td><td><span class="badge warn">Pendiente</span></td></tr><tr><td>15/04/2026 12:20</td><td>Staff SL</td><td>Atlas Bio</td><td>Experta + IA</td><td>Créditos</td><td>Ejecución experta</td><td>1 Smart Tender + 1 Smart Pricing</td><td>—</td><td>—</td><td>EX-000021</td><td><span class="badge efile">En proceso</span></td></tr></tbody></table></div>
+</section>
+
+<section id="auditoria" class="view">
+  <div class="head"><div><div class="crumb"><span class="spark"></span> eFile / Auditoría</div><h1>Historial y auditoría</h1><p class="lead">Snapshots, cambios relevantes, documentos generados, consentimientos y evidencia trazable por usuario, fecha y eFile.</p></div><div class="actions-head"><button class="btn primary" id="exportAudit">Exportar bitácora</button></div></div>
+  <div class="grid-2"><article class="card"><h2>Audit trail</h2><div class="timeline" id="auditTimeline"><div class="event"><time>22 Abr</time><div><strong>Opinión 32-D actualizada con Instant Files</strong><span>Consentimiento registrado. Consumo: 1 token. eFile: Atlas Bio.</span></div></div><div class="event"><time>21 Abr</time><div><strong>Snapshot documental</strong><span>Se generó snapshot por cambio en documento fiscal.</span></div></div><div class="event"><time>20 Abr</time><div><strong>Reforma societaria cargada</strong><span>Mariana cargó reforma societaria para revisión.</span></div></div><div class="event"><time>19 Abr</time><div><strong>Consentimiento Instant Files</strong><span>Paco autorizó consulta para CSF.</span></div></div><div class="event"><time>18 Abr</time><div><strong>Propuesta IA consultó eFile activo</strong><span>Uso documental autorizado para preparación.</span></div></div><div class="event"><time>15 Abr</time><div><strong>Experta + IA en proceso</strong><span>Staff SmartLicit ejecutó flujo experto bajo solicitud.</span></div></div></div></article><article class="stack"><div class="card"><h2>Evidencias</h2><div class="checklist"><div class="check"><span>Snapshots</span><strong>14</strong></div><div class="check"><span>Consentimientos activos</span><strong>8</strong></div><div class="check"><span>Revocaciones</span><strong>1</strong></div><div class="check"><span>Instant Documents</span><strong>11</strong></div></div></div><div class="callout"><strong>Regla de control</strong><p>Ningún documento sensible debe usarse en otro eFile sin autorización expresa del usuario.</p></div></article></div>
+</section>
+
+<section id="integraciones" class="view">
+  <div class="head"><div><div class="crumb"><span class="spark"></span> eFile / Integraciones</div><h1>Integraciones</h1><p class="lead">eFile se apoya en integraciones para operar con documentos, permisos, consentimiento y trazabilidad sin perder claridad de alcance.</p></div></div>
+  <div class="grid-4"><article class="card"><div class="card-head"><h2>Instant Files</h2><span class="badge good">Activa</span></div><p>Permite generar, actualizar, extraer, validar o verificar documentos disponibles desde eFile sin salir de SmartLicit.</p><div class="divider"></div><button class="btn efile" data-view-link="instant">Ver documentos disponibles</button></article><article class="card"><div class="card-head"><h2>Google Drive</h2><span class="badge good">Conectado</span></div><p>Repositorio documental conectado para carga, descarga o respaldo, según permisos.</p></article><article class="card"><div class="card-head"><h2>WhatsApp</h2><span class="badge">Informativo</span></div><p>Canal de alertas. El add-on WA comercial aplica para Smart File, no para eFile.</p></article><article class="card"><div class="card-head"><h2>PW3 / Identidad</h2><span class="badge good">Activa</span></div><p>Capa de identidad y permisos de cuenta para operar con consentimiento y trazabilidad.</p></article></div>
+  <div class="callout warning" style="margin-top:14px"><strong>Advertencia de producto:</strong> No presentar Instant Files como autoridad pública ni como sustituto de SAT, IMSS, REPSE, INFONAVIT, bancos u otra institución.</div>
+  <div class="card" style="margin-top:14px"><h2>Add-on WhatsApp para Smart File</h2><p>El add-on de WhatsApp aplica para Smart File, no para eFile. No se paga con tokens y no debe mezclarse con la compra de documentos desde eFile. Costo adicional al plan elegido.</p><div class="table-wrap"><table><thead><tr><th>Plan Smart File</th><th>Add-on WhatsApp</th></tr></thead><tbody><tr><td>Free</td><td>+$49 MXN / mes</td></tr><tr><td>Profesional</td><td>+$99 MXN / mes</td></tr><tr><td>Despacho</td><td>+$190 MXN / mes</td></tr><tr><td>Gran Despacho</td><td>+$290 MXN / mes</td></tr></tbody></table></div></div>
+</section>
+
+<section id="propuesta" class="view">
+  <div class="head"><div><div class="crumb"><span class="spark"></span> eFile / Propuesta IA</div><h1>eFile en preparación de propuesta</h1><p class="lead">Cuando el usuario prepara una propuesta sobre una licitación existente, SmartLicit revisa el eFile activo y alerta qué documentos están vencidos, próximos a vencer, incompletos o desactualizados.</p></div><div class="actions-head"><button class="btn efile" data-view-link="instant">Resolver documentos</button></div></div>
+  <div class="grid-2"><article class="card"><h2>Preflight documental</h2><div class="checklist"><div class="check"><span>eFile activo seleccionado</span><strong>Sí</strong></div><div class="check"><span>Datos generales completos</span><strong>Sí</strong></div><div class="check"><span>Objeto social compatible</span><strong>Sí</strong></div><div class="check"><span>Representante con facultades</span><strong>Por validar</strong></div><div class="check"><span>CSF vigente</span><strong>Advertencia</strong></div><div class="check"><span>Opinión 32-D vigente</span><strong>Próxima a vencer</strong></div><div class="check"><span>Documentos técnicos</span><strong>Parcial</strong></div><div class="check"><span>Tokens disponibles</span><strong>Sí</strong></div><div class="check"><span>Créditos Smart Tender / Pricing</span><strong>Sí</strong></div></div></article><article class="stack"><div class="card"><div class="card-head"><h2>Propuesta IA</h2><span class="badge warn">Parcial</span></div><p>Bloqueos: poder por validar, 32-D próxima a vencer.</p><div class="divider"></div><button class="btn warn">Resolver bloqueos</button></div><div class="card"><div class="card-head"><h2>Experta + IA</h2><span class="badge danger">Bloqueado</span></div><p>Requiere Smart Tender + Smart Pricing + eFile activo. Al ejecutarse por staff, consume 1 crédito Smart Tender + 1 crédito Smart Pricing.</p><div class="divider"></div><button class="ray-action locked">⚡ Enviar a Experta + IA<span class="tip">Envía esta licitación al equipo experto de SmartLicit para preparar tu propuesta con revisión humana asistida por IA. Requiere Smart Tender, Smart Pricing y eFile activo. Al ejecutarse, consume créditos de ambos planes.</span></button></div></article></div>
+  <div class="footer-note"><strong>Regla crítica:</strong> no decir que el usuario “crea la licitación” desde Smart Tender. Del lado proveedor, la licitación ya existe. Lo correcto es decir que analiza la oportunidad y prepara la propuesta.</div>
+</section>
+
+<section id="soluciones" class="view">
+  <div class="head"><div><div class="crumb"><span class="spark"></span> eFile / Ecosistema</div><h1>eFile como capa base del ecosistema</h1><p class="lead">eFile debe ser una capa reutilizable para SmartLicit, sin confundirse con ninguna solución específica.</p></div></div>
+  <div class="solution-grid"><article class="card"><h2>Smart Tender</h2><p>Encuentra, analiza, sigue y compite licitaciones. eFile aporta identidad documental, readiness y datos autorizados.</p></article><article class="card"><h2>Smart Pricing</h2><p>Entrega precio inteligente, precio público y precio por dependencia para B2B y B2C. eFile aporta contexto de la entidad que cotiza.</p></article><article class="card"><h2>Smart File</h2><p>Monitorea expedientes legales y cambios relevantes. No es eFile.</p></article><article class="card"><h2>Smart Lex</h2><p>Abogado de IA para abogados. Puede analizar documentos autorizados provenientes de eFile.</p></article><article class="card"><h2>Tender Gov</h2><p>Solución B2G para que dependencias y entidades creen y publiquen licitaciones. eFile no crea licitaciones gubernamentales.</p></article><article class="card"><h2>Pricing Gov</h2><p>Solución B2G para que gobierno genere estudios de mercado. eFile no sustituye estudios de mercado.</p></article><article class="card"><h2>Propuesta IA</h2><p>Inicia la preparación de una propuesta con asistencia de IA usando el eFile activo como fuente documental.</p></article><article class="card"><h2>Experta + IA</h2><p>Flujo con staff experto de SmartLicit y revisión humana asistida por IA. No reemplaza Smart Tender.</p></article></div>
+  <div class="callout" style="margin-top:14px"><strong>No confundir:</strong> eFile no es Smart File, no es Tender Gov, no es Pricing Gov, no es carpeta simple, no garantiza cumplimiento automático y no sustituye revisión legal.</div>
+</section>
+
+<section id="riesgos" class="view">
+  <div class="head"><div><div class="crumb"><span class="spark"></span> eFile / Límites</div><h1>Riesgos y límites</h1><p class="lead">La confianza se construye delimitando el producto con precisión. eFile reduce fricción y mejora trazabilidad, pero no promete aceptación ni adjudicación.</p></div></div>
+  <ul class="risk-list"><li>eFile no promete que el usuario cumple automáticamente con cualquier licitación.</li><li>eFile no garantiza que un documento será aceptado por cualquier autoridad o procedimiento.</li><li>eFile no sustituye revisión legal cuando hay impacto jurídico, técnico o reputacional.</li><li>eFile no mezcla documentos entre empresas o personas físicas.</li><li>eFile no usa documentos de un eFile en otro sin autorización expresa.</li><li>eFile no genera documentos sensibles sin consentimiento claro.</li><li>eFile no se presenta como autoridad fiscal, laboral, bancaria o regulatoria.</li><li>eFile no se confunde con Smart File.</li><li>eFile no afirma que Instant Files cubra todos los documentos de cualquier procedimiento.</li><li>eFile no oculta costos en tokens.</li><li>eFile no consume tokens sin confirmación.</li></ul>
+</section>
+
+<section id="cuenta" class="view">
+  <div class="head"><div><div class="crumb"><span class="spark"></span> eFile / Cuenta</div><h1>Cuenta y permisos</h1><p class="lead">Ningún usuario debe acceder a documentos o datos de un eFile sin permiso explícito.</p></div><div class="actions-head"><button class="btn soft">Invitar usuario</button></div></div>
+  <div class="table-wrap"><table><thead><tr><th>Usuario</th><th>Rol</th><th>Acceso</th><th>eFiles permitidos</th><th>Permisos</th></tr></thead><tbody><tr><td>Paco</td><td>Admin</td><td>Total</td><td>Todos</td><td>Comprar tokens, ejecutar Instant Files, editar</td></tr><tr><td>Mariana</td><td>Legal</td><td>Parcial</td><td>Atlas Bio, Infra Nova</td><td>Validar documentos, cargar archivos</td></tr><tr><td>Eduardo</td><td>Comercial</td><td>Lectura</td><td>Atlas Bio</td><td>Ver readiness, ver oportunidades</td></tr><tr><td>Staff SL</td><td>Experto</td><td>Temporal</td><td>Atlas Bio</td><td>Ejecutar Experta + IA bajo solicitud</td></tr></tbody></table></div>
+  <div class="perm-grid"><div class="perm"><strong>Ver eFile</strong><span>Consulta documental y readiness.</span></div><div class="perm"><strong>Editar datos</strong><span>Modifica identidad y campos base.</span></div><div class="perm"><strong>Subir documentos</strong><span>Carga manual con versionado.</span></div><div class="perm"><strong>Generar Instant Files</strong><span>Requiere consentimiento y tokens.</span></div><div class="perm"><strong>Comprar tokens</strong><span>Afecta wallet de cuenta.</span></div><div class="perm"><strong>Exportar auditoría</strong><span>Descarga bitácora.</span></div><div class="perm"><strong>Autorizar Propuesta IA</strong><span>Permite uso documental.</span></div><div class="perm"><strong>Autorizar Experta + IA</strong><span>Acceso temporal a staff experto.</span></div><div class="perm"><strong>Revocar consentimiento</strong><span>Control granular de permisos.</span></div></div>
+</section>
+
+</div>
+</main>
+
+<div class="modal-backdrop" id="instantModal">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="instantTitle">
+    <div class="modal-head"><div><div class="crumb"><span class="spark"></span> Confirmar Instant File</div><h2 id="instantTitle">Confirmar Instant File</h2><p>Autorizo a SmartLicit a procesar esta solicitud mediante Instant Files para generar, descargar, actualizar o validar este documento. Entiendo que la acción consume 1 token y que el resultado se guardará en el eFile seleccionado.</p></div><button class="x close-modal">×</button></div>
+    <div class="modal-body">
+      <div class="modal-grid"><div class="modal-item"><span>Documento</span><strong id="modalDoc">Opinión 32-D SAT</strong></div><div class="modal-item"><span>eFile destino</span><strong id="modalEfile">Atlas Bioinsumos S.A. de C.V.</strong></div><div class="modal-item"><span>Datos usados</span><strong>RFC, identidad fiscal, consentimiento</strong></div><div class="modal-item"><span>Módulo</span><strong>Instant Files</strong></div><div class="modal-item"><span>Costo</span><strong>1 token</strong></div><div class="modal-item"><span>Saldo actual</span><strong><span id="modalTokens">25</span> tokens</strong></div><div class="modal-item"><span>Resultado esperado</span><strong>Nueva versión documental + evidencia</strong></div><div class="modal-item"><span>Uso</span><strong>eFile / trámite externo / propuesta</strong></div></div>
+      <label class="consent"><input type="checkbox" id="consentCheck"> <span>Autorizo a SmartLicit a procesar esta solicitud mediante Instant Files para generar, descargar, actualizar o validar este documento. Entiendo que la acción consume 1 token y que el resultado se guardará en el eFile seleccionado.</span></label>
+      <div class="modal-actions"><button class="btn close-modal">Cancelar</button><button class="btn primary" id="confirmInstant">Confirmar y consumir 1 token</button></div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="buyModal">
+  <div class="modal" role="dialog" aria-modal="true"><div class="modal-head"><div><div class="crumb"><span class="spark"></span> Compra simulada</div><h2>Comprar tokens</h2><p>Esta simulación acredita tokens en el wallet eFile y actualiza el saldo visible.</p></div><button class="x close-modal">×</button></div><div class="modal-body"><div class="callout"><strong>Paquete seleccionado:</strong> <span id="buyAmount">10</span> tokens.</div><div class="modal-actions"><button class="btn close-modal">Cancelar</button><button class="btn primary" id="confirmBuy">Confirmar compra simulada</button></div></div></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+  const $ = (s,root=document)=>root.querySelector(s);
+  const $$ = (s,root=document)=>Array.from(root.querySelectorAll(s));
+  let tokens = 25;
+  let activeEfileShort = 'Atlas Bio';
+  let activeEfileFull = 'Atlas Bioinsumos S.A. de C.V.';
+  let pendingDoc = null;
+  let pendingRow = null;
+  let buyAmount = 0;
+  const views = $$('.view');
+  const navButtons = $$('[data-view-link]');
+  const sidebar = $('#sidebar');
+  const overlay = $('#mobileOverlay');
+
+  function updateTokenDisplays(){
+    ['#tokenCountTop','#tokenCountSide','#tokenCountKpi','#tokenCountWallet','#sideTokens','#modalTokens'].forEach(id=>{ const el=$(id); if(el) el.textContent=tokens; });
+  }
+  function showToast(title, msg){
+    const wrap = $('#toast');
+    const item = document.createElement('div');
+    item.className='toast-item';
+    item.innerHTML='<div class="toast-icon">✓</div><div><strong>'+title+'</strong><span>'+msg+'</span></div>';
+    wrap.appendChild(item);
+    setTimeout(()=>{item.style.opacity='0';item.style.transform='translateY(8px)';},3600);
+    setTimeout(()=>item.remove(),4300);
+  }
+  function setView(id, push=true){
+    if(!$('#'+id)) id='resumen';
+    views.forEach(v=>v.classList.toggle('active',v.id===id));
+    navButtons.forEach(b=>b.classList.toggle('active',b.dataset.viewLink===id));
+    if(push) history.replaceState(null,'','#'+id);
+    sidebar.classList.remove('open');overlay.classList.remove('open');
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  navButtons.forEach(el=>el.addEventListener('click',e=>{e.preventDefault();setView(el.dataset.viewLink)}));
+  window.addEventListener('hashchange',()=>setView(location.hash.replace('#','')||'resumen',false));
+  setView(location.hash.replace('#','')||'resumen',false);
+  $('#mobileToggle').addEventListener('click',()=>{sidebar.classList.add('open');overlay.classList.add('open')});
+  $('#closeSide').addEventListener('click',()=>{sidebar.classList.remove('open');overlay.classList.remove('open')});
+  overlay.addEventListener('click',()=>{sidebar.classList.remove('open');overlay.classList.remove('open')});
+
+  function openInstant(btn){
+    pendingDoc = {doc:btn.dataset.doc || 'Documento', action:btn.dataset.action || btn.textContent.trim()};
+    pendingRow = btn.closest('tr');
+    $('#modalDoc').textContent = pendingDoc.doc;
+    $('#modalEfile').textContent = activeEfileFull;
+    $('#consentCheck').checked=false;
+    $('#instantModal').classList.add('open');
+  }
+  document.addEventListener('click',e=>{
+    const u = e.target.closest('.open-instant');
+    if(u){openInstant(u);}
+    const close = e.target.closest('.close-modal');
+    if(close){ $$('.modal-backdrop').forEach(m=>m.classList.remove('open')); }
+  });
+  $('#confirmInstant').addEventListener('click',()=>{
+    if(!$('#consentCheck').checked){showToast('Falta autorización','Marca la casilla de consentimiento antes de consumir tokens.');return;}
+    if(tokens<1){showToast('Saldo insuficiente','Compra tokens para ejecutar esta acción documental.');return;}
+    tokens--; updateTokenDisplays();
+    if(pendingRow){
+      const result = pendingRow.querySelector('.result-cell'); if(result) result.textContent='Actualizado';
+      const btn = pendingRow.querySelector('.ray-action'); if(btn){btn.classList.add('done');}
+    }
+    const row = document.createElement('tr');
+    row.innerHTML='<td>22/04/2026 11:05</td><td>Paco</td><td>'+activeEfileShort+'</td><td>eFile / Instant Files</td><td>Token</td><td>'+pendingDoc.action+'</td><td>1 token</td><td>'+(tokens+1)+'</td><td>'+tokens+'</td><td>EF-000'+Math.floor(200+Math.random()*700)+'</td><td><span class="badge good">Exitosa</span></td>';
+    const body=$('#consumptionRows'); if(body) body.prepend(row);
+    const audit=document.createElement('div');
+    audit.className='event'; audit.innerHTML='<time>Ahora</time><div><strong>'+pendingDoc.doc+' actualizado como Instant File</strong><span>Consentimiento registrado. Consumo: 1 token. eFile: '+activeEfileShort+'.</span></div>';
+    const timeline=$('#auditTimeline'); if(timeline) timeline.prepend(audit);
+    $('#instantModal').classList.remove('open');
+    showToast('Documento generado correctamente','Se guardó una nueva versión en este eFile y se registró el consumo de 1 token.');
+  });
+  $$('.buy-tokens').forEach(btn=>btn.addEventListener('click',()=>{buyAmount=parseInt(btn.dataset.amount,10)||0;$('#buyAmount').textContent=buyAmount;$('#buyModal').classList.add('open');}));
+  $('#confirmBuy').addEventListener('click',()=>{
+    tokens += buyAmount;
+    const bought = $('#tokensBought'); if(bought) bought.textContent = Number(bought.textContent||0)+buyAmount;
+    updateTokenDisplays();$('#buyModal').classList.remove('open');
+    showToast('Compra simulada completada','Se acreditaron '+buyAmount+' tokens al wallet eFile.');
+  });
+  $$('.efile-option .use-efile').forEach(btn=>btn.addEventListener('click',()=>{
+    const card=btn.closest('.efile-option');
+    activeEfileShort=card.dataset.short; activeEfileFull=card.dataset.full;
+    $('#topEfile').textContent=activeEfileShort;
+    const sum=$('#summaryEfileName'); if(sum) sum.textContent=activeEfileFull;
+    showToast('eFile activo actualizado','Ahora operas con '+activeEfileShort+'.');
+  }));
+  $$('.filter-chip[data-filter]').forEach(chip=>chip.addEventListener('click',()=>{
+    $$('.filter-chip[data-filter]').forEach(c=>c.classList.remove('active')); chip.classList.add('active');
+    const f=chip.dataset.filter;
+    $$('#docTable tr').forEach(row=>row.style.display=(f==='all'||row.dataset.cat.includes(f))?'':'none');
+  }));
+
+  $$('.update-all-instant').forEach(btn=>btn.addEventListener('click',()=>{
+    const rows=$$('#docTable tr').filter(row=>row.dataset.cat && row.dataset.cat.includes('instant'));
+    const needed=rows.length;
+    if(!needed){showToast('Sin Instant Files','No hay documentos automáticos disponibles en esta vista.');return;}
+    if(tokens<needed){showToast('Saldo insuficiente','Necesitas '+needed+' tokens para actualizar todos los Instant Files técnicamente viables.');return;}
+    if(!window.confirm('Actualizar '+needed+' Instant Files técnicamente viables. Consumo estimado: '+needed+' tokens. ¿Confirmas?')) return;
+    tokens-=needed; updateTokenDisplays();
+    rows.forEach(row=>{
+      const state=row.querySelector('td:nth-child(5)'); if(state) state.innerHTML='<span class="badge good">Actualizado</span>';
+      const b=row.querySelector('.ray-action'); if(b) b.classList.add('done');
+    });
+    const body=$('#consumptionRows');
+    if(body){const row=document.createElement('tr');row.innerHTML='<td>22/04/2026 11:20</td><td>Paco</td><td>'+activeEfileShort+'</td><td>eFile / Instant Files</td><td>Token</td><td>Actualización masiva Instant Files</td><td>'+needed+' tokens</td><td>'+(tokens+needed)+'</td><td>'+tokens+'</td><td>EF-BULK-'+Math.floor(100+Math.random()*900)+'</td><td><span class="badge good">Exitosa</span></td>';body.prepend(row);}
+    showToast('Instant Files actualizados','Se actualizaron '+needed+' documentos técnicamente viables y se registró el consumo.');
+  }));
+
+  const pmFields=['Razón social','Nombre corto','RFC','Nacionalidad','Régimen','Domicilio fiscal','Domicilio de notificaciones','Correo de licitaciones','Teléfono','Contacto legal','Actividad principal','Vertical'];
+  const pfFields=['Nombre completo','Nombre corto','RFC','CURP','Régimen','Domicilio fiscal','Domicilio de notificaciones','Correo','Teléfono','Actividad principal','Vertical','e.firma'];
+  let entity='pm', wizard=1;
+  function renderEntityForm(){
+    const form=$('#entityForm'); if(!form) return;
+    const fields=entity==='pm'?pmFields:pfFields;
+    $('#formTitle').textContent='Datos generales · '+(entity==='pm'?'Persona moral':'Persona física');
+    form.innerHTML=fields.map((f,i)=>'<div class="field '+(f.includes('Domicilio')?'full':'')+'"><label>'+f+'</label><input class="control" value="'+(i===0?(entity==='pm'?'Atlas Bioinsumos S.A. de C.V.':'Ana Sofía Ríos Hernández'):'')+'"></div>').join('');
+  }
+  renderEntityForm();
+  $$('.entity-card').forEach(card=>card.addEventListener('click',()=>{entity=card.dataset.entity;$$('.entity-card').forEach(c=>c.classList.remove('selected'));card.classList.add('selected');renderEntityForm();}));
+  $$('.next-step').forEach(btn=>btn.addEventListener('click',()=>{wizard=Math.min(4,wizard+1);$$('.wizard-step').forEach(s=>s.classList.toggle('active',Number(s.dataset.wizard)===wizard));$$('.step').forEach(s=>s.classList.toggle('active',Number(s.dataset.step)===wizard));}));
+  $('#exportAudit').addEventListener('click',()=>showToast('Bitácora exportada','La exportación se ejecutó de forma simulada.'));
+  document.addEventListener('keydown',e=>{if(e.key==='Escape') $$('.modal-backdrop').forEach(m=>m.classList.remove('open'));});
+  updateTokenDisplays();
+})();
+</script>
+
+<footer class="slx-global-footer" aria-label="Footer SmartLicit">
+  <div class="slx-footer-container">
+    <div class="slx-footer-grid">
+      <div>
+        <div class="slx-footer-brand"><span class="slx-footer-mark" aria-hidden="true"><span>⚡</span></span><span>SmartLicit</span></div>
+        <p style="margin-top:14px;max-width:320px">Una sola inteligencia, múltiples soluciones para resolver trabajo profesional complejo.</p>
+      </div>
+      <div><h4>Soluciones</h4><a class="slx-footer-product" href="../tender.html" target="_top"><span>⚡</span> Tender</a><a class="slx-footer-product" href="../pricing.html" target="_top"><span>⚡</span> Pricing</a><a class="slx-footer-product" href="../file.html" target="_top"><span>⚡</span> File</a><a class="slx-footer-product" href="../lex.html" target="_top"><span>⚡</span> Lex</a></div>
+      <div><h4>Gobierno</h4><a class="slx-footer-gov" href="../tender-gov.html" target="_top"><span>⚡</span> Tender Gov</a><a class="slx-footer-gov" href="../pricing-gov.html" target="_top"><span>⚡</span> Pricing Gov</a><a href="../ipg.html" target="_top">IPG</a></div>
+      <div><h4>Plataforma</h4><a class="slx-footer-efile" href="../efile.html" target="_top"><span>⚡</span> eFile</a><a href="../planes.html" target="_top">Planes</a><a href="../blog.html" target="_top">Blog</a><a href="../mi-cuenta.html" target="_top">Mi Cuenta</a></div>
+      <div><h4>Workspace</h4><a class="slx-footer-drive" href="../gDrive.html" target="_top"><span>▰</span> Google Drive Workspace</a><a href="../mi-cuenta.html#facturacion" target="_top">Facturación</a><a href="../planes.html#tokens" target="_top">Tokens</a><a href="../mi-cuenta.html#integraciones" target="_top">Integraciones</a></div>
+    </div>
+    <div class="slx-footer-bottom"><span>© SmartLicit</span><span>Minimal premium · trazable · accionable.</span></div>
+  </div>
+</footer>
+
+</body>
+</html>

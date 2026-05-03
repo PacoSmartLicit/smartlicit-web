@@ -1,0 +1,711 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Blog · SmartLicit</title>
+<meta name="description" content="Blog y prensa de SmartLicit: contenido editorial y cobertura de medios del ecosistema." />
+<style>
+:root{
+  --lime:#B5F857; --ink:#041912; --green:#04560C; --action:#1A990F;
+  --bg:#F9F8F3; --surface:#FFFFFF; --surface-soft:#FBFAF6;
+  --warm:#EBEAE5; --warm-2:#CDCABF; --muted:#66736D; --muted-2:#8A948F;
+  --line:rgba(4,25,18,.10); --line-2:rgba(4,25,18,.16);
+  --yellow:#F7BA14; --orange:#F77214; --red:#C62118; --coral:#F7645C;
+  --b2b-green:#04560C; --b2b-lime:#B5F857;
+  --gov-night:#170406; --gov-deep:#550415; --gov-soft:#F9ACB6; --gov-ray:#F7645C;
+  --pricing-gov:#F7645C; --tender-gov:#C62118;
+  --efile-blue:#5462E2; --efile-soft:#BBC0F3; --efile-mid:#8189DD; --efile-bright:#8B9BF7; --efile-night:#060517; --efile-deep:#080353;
+  --shadow:0 20px 60px rgba(4,25,18,.07); --shadow-soft:0 8px 24px rgba(4,25,18,.045);
+  --radius-xl:34px; --radius-lg:24px; --radius-md:18px; --radius-sm:14px;
+  --header:74px; --container:1220px;
+  --font:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;color:var(--ink);font-family:var(--font);
+  background:radial-gradient(circle at 86% 4%, rgba(181,248,87,.20), transparent 28rem),
+             radial-gradient(circle at 12% 86%, rgba(247,100,92,.08), transparent 30rem),
+             linear-gradient(180deg,#FFFFFF 0%, var(--bg) 68%, #FFFFFF 100%);
+  -webkit-font-smoothing:antialiased;text-rendering:geometricPrecision;letter-spacing:-.014em;
+}
+a{color:inherit;text-decoration:none}
+button,input,select{font:inherit}
+button{cursor:pointer}
+.hidden{display:none!important}
+.wrap{width:min(var(--container), calc(100% - 40px)); margin-inline:auto}
+.topbar{position:sticky;top:0;z-index:50;height:74px;background:rgba(255,255,255,.88);backdrop-filter:blur(18px);border-bottom:1px solid var(--line);display:flex;align-items:center}
+.nav{display:flex;align-items:center;justify-content:space-between;gap:18px}
+.brand{display:flex;align-items:center;gap:10px;font-size:20px;font-weight:850;letter-spacing:-.045em;white-space:nowrap}
+.brand-mark{--mark-bg:var(--green);--mark-bolt:var(--lime);width:38px;height:38px;display:inline-grid;place-items:center;position:relative;flex:0 0 auto}
+.brand-mark:before{content:"";position:absolute;inset:0;background:var(--mark-bg);clip-path:polygon(50% 0%,61% 32%,100% 50%,61% 68%,50% 100%,39% 68%,0% 50%,39% 32%)}
+.bolt-shape{width:16px;height:23px;position:relative;z-index:1;background:var(--mark-bolt);clip-path:polygon(62% 0%,20% 52%,48% 52%,37% 100%,84% 38%,56% 38%)}
+.brand-mark.gov{--mark-bg:var(--gov-night);--mark-bolt:var(--gov-ray)}
+.brand-mark.efile{--mark-bg:var(--efile-night);--mark-bolt:var(--efile-bright)}
+.site-nav{display:flex;align-items:center;justify-content:center;gap:2px;flex:1;overflow:auto;padding-bottom:2px;scrollbar-width:none}
+.site-nav::-webkit-scrollbar{display:none}
+.site-nav a{display:inline-flex;align-items:center;gap:6px;min-height:38px;padding:0 10px;border-radius:999px;color:rgba(4,25,18,.68);font-size:13.2px;font-weight:720;white-space:nowrap;border:1px solid transparent;background:transparent;letter-spacing:-.01em}
+.site-nav a:hover{color:var(--ink);background:var(--bg);border-color:var(--line)}
+.site-nav a.active{background:rgba(181,248,87,.30);color:var(--green);border-color:rgba(4,86,12,.14)}
+.site-nav .nav-bolt{font-weight:950;line-height:1;font-size:14px;color:var(--green)}
+.site-nav .gov-tender .nav-bolt{color:var(--tender-gov)}
+.site-nav .gov-pricing .nav-bolt{color:var(--pricing-gov)}
+.search-global{position:relative;flex:0 1 380px;min-width:220px}
+.search-global:before{content:"⌕";position:absolute;left:14px;top:50%;transform:translateY(-52%);color:var(--muted);font-weight:900}
+.search-global input{width:100%;height:40px;border:1px solid var(--line);border-radius:999px;background:#FBFBF8;outline:0;padding:0 16px 0 40px;font-size:13px;color:var(--ink)}
+.account-pill{display:inline-flex;align-items:center;gap:8px;min-height:38px;border:1px solid var(--line);border-radius:999px;padding:0 12px;background:#fff;color:var(--muted);font-size:12px;font-weight:830;white-space:nowrap}
+.mobile-menu{display:none;width:40px;height:40px;border:1px solid var(--line);border-radius:14px;background:#fff;color:var(--ink);font-weight:950}
+.hero{padding:62px 0 18px}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(360px,.92fr);gap:28px;align-items:stretch}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;width:max-content;border:1px solid var(--line);background:rgba(255,255,255,.72);border-radius:999px;padding:8px 12px;color:var(--muted);font-size:13px;font-weight:760;box-shadow:0 1px 0 rgba(4,25,18,.03)}
+.eyebrow .spark{width:8px;height:8px;border-radius:99px;background:var(--lime);box-shadow:0 0 0 4px rgba(181,248,87,.22)}
+h1,h2,h3,p{margin:0}
+h1{margin-top:22px;font-size:clamp(44px,6.2vw,78px);line-height:.92;letter-spacing:-.075em;font-weight:840;max-width:780px}
+.lead{margin-top:22px;color:rgba(4,25,18,.68);font-size:clamp(18px,2vw,22px);line-height:1.42;max-width:760px}
+.hero-actions{display:flex;gap:11px;flex-wrap:wrap;margin-top:28px}
+.btn{min-height:44px;border:1px solid var(--line-2);border-radius:999px;background:#fff;color:var(--ink);display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:0 16px;font-size:14px;font-weight:820;transition:.18s ease;white-space:nowrap}
+.btn:hover{transform:translateY(-1px);box-shadow:var(--shadow-soft);border-color:rgba(4,25,18,.26)}
+.btn.primary{background:var(--ink);color:#fff;border-color:var(--ink)}
+.btn.accent{background:var(--lime);border-color:var(--lime);color:var(--ink)}
+.btn.gov{background:rgba(247,100,92,.10);border-color:rgba(247,100,92,.20);color:#550415}
+.btn.efile{background:rgba(84,98,226,.09);border-color:rgba(84,98,226,.22);color:var(--efile-deep)}
+.btn.ghost{background:transparent}
+.btn.slim{min-height:34px;font-size:12px;padding:0 11px;border-radius:999px}
+.hero-panel{position:relative;overflow:hidden;border:1px solid var(--line);border-radius:var(--radius-xl);background:rgba(255,255,255,.84);box-shadow:var(--shadow);padding:18px}
+.hero-panel:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 8% 4%, rgba(181,248,87,.25), transparent 13rem),radial-gradient(circle at 100% 100%, rgba(247,100,92,.12), transparent 16rem);pointer-events:none}
+.hero-panel>*{position:relative;z-index:1}
+.panel-card{background:#fff;border:1px solid var(--line);border-radius:24px;padding:18px;box-shadow:var(--shadow-soft)}
+.panel-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.mini-stat{background:#FBFAF6;border:1px solid var(--line);border-radius:16px;padding:13px}
+.mini-stat span{display:block;color:var(--muted);font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.08em}
+.mini-stat strong{display:block;margin-top:6px;font-size:26px;letter-spacing:-.05em}
+.section{padding:20px 0 70px}
+.tabs{display:flex;gap:8px;border:1px solid var(--line);background:#fff;border-radius:999px;padding:5px;width:max-content;box-shadow:var(--shadow-soft)}
+.tab{border:0;background:transparent;color:var(--muted);padding:10px 20px;border-radius:999px;font-weight:850}
+.tab.active{background:var(--ink);color:#fff}
+.toolbar{display:grid;grid-template-columns:minmax(220px,1fr) auto auto;gap:12px;align-items:center;margin:18px 0 14px}
+.searchbar{height:46px;border:1px solid var(--line);border-radius:999px;background:#fff;padding:0 18px;outline:0;font-size:14px;box-shadow:var(--shadow-soft)}
+.select{height:46px;border:1px solid var(--line);border-radius:999px;background:#fff;padding:0 14px;color:var(--ink);font-size:14px;font-weight:750;outline:0}
+.kpis{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px;margin:18px 0}
+.kpi{background:#fff;border:1px solid var(--line);border-radius:22px;padding:16px;box-shadow:var(--shadow-soft);min-height:112px}
+.kpi span{display:block;color:var(--muted);font-size:10.5px;text-transform:uppercase;letter-spacing:.08em;font-weight:950}
+.kpi strong{display:block;margin-top:10px;font-size:30px;letter-spacing:-.06em}
+.kpi small{display:block;margin-top:3px;color:var(--muted);font-size:12px}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 20px}
+.filter-chip{border:1px solid var(--line);background:#fff;color:var(--muted);border-radius:999px;min-height:34px;padding:0 12px;font-size:12px;font-weight:840}
+.filter-chip.active{background:rgba(181,248,87,.30);border-color:rgba(4,86,12,.18);color:var(--green)}
+.content-layout{display:grid;grid-template-columns:minmax(0,1.45fr) 360px;gap:18px;align-items:start}
+.hero-card{background:#fff;border:1px solid var(--line);border-radius:30px;padding:20px;box-shadow:var(--shadow);display:grid;grid-template-columns:.82fr 1.18fr;gap:18px;align-items:stretch;margin-bottom:18px}
+.article-visual{min-height:220px;border-radius:24px;border:1px solid var(--line);background:linear-gradient(135deg,#fff 0%,#FBFAF6 45%,rgba(181,248,87,.24) 100%);position:relative;overflow:hidden;padding:20px;display:flex;flex-direction:column;justify-content:space-between}
+.article-visual:after{content:"";position:absolute;width:160px;height:160px;border-radius:50%;background:rgba(247,100,92,.13);right:-40px;bottom:-40px}
+.article-visual .brand-mark{width:48px;height:48px}
+.article-visual .visual-label{position:relative;z-index:1;color:var(--muted);font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.08em}
+.cards-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.article-card{background:#fff;border:1px solid var(--line);border-radius:24px;padding:14px;box-shadow:var(--shadow-soft);display:flex;flex-direction:column;min-height:320px;transition:.18s ease}
+.article-card:hover{transform:translateY(-2px);box-shadow:var(--shadow);border-color:var(--line-2)}
+.card-visual{height:92px;border-radius:18px;border:1px solid var(--line);background:radial-gradient(circle at 100% 0%,rgba(181,248,87,.24),transparent 7rem),linear-gradient(135deg,#fff,#FBFAF6);display:flex;align-items:flex-start;justify-content:space-between;padding:12px;margin-bottom:12px}
+.card-visual.gov{background:radial-gradient(circle at 100% 0%,rgba(247,100,92,.18),transparent 7rem),linear-gradient(135deg,#fff,#FBFAF6)}
+.card-visual.efile{background:radial-gradient(circle at 100% 0%,rgba(84,98,226,.16),transparent 7rem),linear-gradient(135deg,#fff,#FBFAF6)}
+.badges{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.badge{display:inline-flex;align-items:center;gap:6px;border-radius:999px;border:1px solid var(--line);background:#F7F6F1;color:var(--muted);font-size:11px;font-weight:900;padding:5px 8px;white-space:nowrap}
+.badge.blog{background:rgba(181,248,87,.22);color:var(--green);border-color:rgba(4,86,12,.14)}
+.badge.press{background:rgba(247,100,92,.10);color:var(--gov-deep);border-color:rgba(247,100,92,.18)}
+.badge.efile{background:rgba(187,192,243,.42);color:var(--efile-deep);border-color:rgba(84,98,226,.18)}
+.badge.dark{background:var(--ink);color:#fff;border-color:var(--ink)}
+.article-card h3{font-size:18px;line-height:1.15;letter-spacing:-.04em;margin:2px 0 8px}
+.article-card p{color:var(--muted);font-size:13px;line-height:1.45}
+.card-meta{display:flex;gap:8px;flex-wrap:wrap;color:var(--muted);font-size:11.5px;font-weight:780;margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
+.card-actions{margin-top:auto;display:flex;gap:8px;align-items:center;padding-top:14px}
+.side-panel{display:grid;gap:14px;position:sticky;top:94px}
+.card{background:#fff;border:1px solid var(--line);border-radius:24px;padding:18px;box-shadow:var(--shadow-soft)}
+.card h2{font-size:20px;letter-spacing:-.04em}
+.card p{margin-top:8px;color:var(--muted);font-size:13px;line-height:1.45}
+.link-list{display:grid;gap:8px;margin-top:12px}
+.link-list button{border:1px solid var(--line);background:#fff;border-radius:14px;padding:11px;text-align:left;color:var(--ink);font-weight:800}
+.link-list button:hover{background:var(--bg)}
+.detail-view{display:none}
+.detail-view.active{display:block}
+.article-layout{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:20px;align-items:start}
+.detail-article{background:#fff;border:1px solid var(--line);border-radius:32px;box-shadow:var(--shadow);padding:30px}
+.detail-header{border-bottom:1px solid var(--line);padding-bottom:20px;margin-bottom:20px}
+.detail-header h1{font-size:clamp(34px,4.7vw,60px);max-width:950px;margin-top:12px}
+.detail-meta{display:flex;gap:8px;flex-wrap:wrap;color:var(--muted);font-size:13px;font-weight:780;margin-top:16px}
+.article-body{color:rgba(4,25,18,.82);font-size:17px;line-height:1.72}
+.article-body p{margin:0 0 18px}
+.quote{border-left:4px solid var(--lime);background:#FBFAF6;border-radius:0 18px 18px 0;padding:18px;margin:18px 0;color:var(--ink);font-size:20px;line-height:1.35;font-weight:760;letter-spacing:-.03em}
+.related-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:12px}
+.empty-state{display:none;background:#fff;border:1px dashed var(--line-2);border-radius:24px;padding:30px;text-align:center;color:var(--muted)}
+.empty-state.active{display:block}
+.modal{position:fixed;inset:0;z-index:90;display:none;align-items:center;justify-content:center;background:rgba(4,25,18,.22);backdrop-filter:blur(8px);padding:20px}
+.modal.active{display:flex}
+.modal-card{width:min(720px,100%);background:#fff;border:1px solid var(--line);border-radius:30px;box-shadow:var(--shadow);padding:22px}
+.modal-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:16px}
+.close{width:38px;height:38px;border:1px solid var(--line);background:#fff;border-radius:14px;font-weight:900}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0}
+.field label{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:950;margin-bottom:6px}
+.field select,.field input{width:100%;height:44px;border:1px solid var(--line);border-radius:14px;background:#FBFAF6;padding:0 12px;outline:0}
+.progress-steps{display:grid;gap:8px;margin:16px 0}
+.step-line{height:8px;border-radius:999px;background:#F0EFE9;overflow:hidden}
+.step-line span{display:block;height:100%;width:0;background:var(--lime);transition:.4s ease}
+.toast{position:fixed;right:20px;bottom:20px;z-index:100;display:none;max-width:360px;background:var(--ink);color:#fff;border-radius:18px;padding:14px 16px;box-shadow:var(--shadow);font-size:14px;font-weight:760}
+.toast.active{display:block}
+.aux-panel{display:none;margin-top:16px}
+.aux-panel.active{display:block}
+.archive-table{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--line);border-radius:22px;overflow:hidden;box-shadow:var(--shadow-soft)}
+.archive-table th,.archive-table td{padding:13px;border-bottom:1px solid var(--line);text-align:left;font-size:13px}
+.archive-table th{color:var(--muted);text-transform:uppercase;font-size:11px;letter-spacing:.07em}
+.footer{margin-top:50px;padding:46px 0;background:#fff;border-top:1px solid var(--line)}
+.footer-grid{display:grid;grid-template-columns:1.2fr repeat(3,1fr);gap:24px}
+.footer h4{margin:0 0 12px;font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.footer a,.footer p{display:block;margin:7px 0;color:var(--muted);font-size:14px}
+@media (max-width:1100px){
+  .search-global,.account-pill{display:none}
+  .hero-grid,.content-layout,.article-layout{grid-template-columns:1fr}
+  .side-panel{position:static}
+  .cards-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .kpis{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media (max-width:760px){
+  .wrap{width:min(100% - 28px, var(--container))}
+  .mobile-menu{display:inline-grid;place-items:center}
+  .site-nav{position:fixed;left:12px;right:12px;top:76px;background:#fff;border:1px solid var(--line);border-radius:20px;padding:10px;display:none;box-shadow:var(--shadow);flex-wrap:wrap;justify-content:flex-start}
+  .site-nav.open{display:flex}
+  .hero{padding-top:38px}
+  .hero-card{grid-template-columns:1fr}
+  .toolbar{grid-template-columns:1fr}
+  .cards-grid,.kpis,.footer-grid,.form-grid,.related-grid{grid-template-columns:1fr}
+  h1{font-size:44px}
+}
+
+/* Ajuste puntual: header no cortado en desktop/laptop */
+.topbar .wrap.nav{
+  width:min(1520px, calc(100% - 28px));
+}
+.topbar .nav{
+  gap:10px;
+}
+.site-nav{
+  flex:0 0 auto;
+  min-width:max-content;
+  justify-content:flex-start;
+  overflow:visible;
+}
+.site-nav a{
+  padding:0 7px;
+  font-size:12.6px;
+}
+.search-global{
+  flex:1 1 260px;
+  min-width:200px;
+  max-width:360px;
+}
+.account-pill{
+  padding:0 10px;
+  font-size:11.7px;
+}
+@media (max-width:1180px){
+  .search-global,.account-pill{display:none;}
+  .site-nav{flex:1 1 auto;min-width:0;overflow:auto;}
+}
+@media (max-width:760px){
+  .site-nav{min-width:auto;overflow:visible;flex:initial;}
+}
+.site-nav .nav-bolt,.topnav .nav-bolt.b2b{color:#81C91C!important}.site-nav .gov-tender .nav-bolt,.site-nav .gov-pricing .nav-bolt,.topnav .nav-bolt.gov{color:#C62118!important}</style>
+
+<style id="slx-global-footer-style">
+.slx-global-footer{margin-top:42px;padding:44px 0 32px;border-top:1px solid var(--line,rgba(4,25,18,.10));background:#fff;color:var(--ink,#041912);clear:both}.slx-global-footer .slx-footer-container{width:min(1180px,calc(100% - 48px));margin-inline:auto}.slx-footer-grid{display:grid;grid-template-columns:1.25fr repeat(4,1fr);gap:24px}.slx-footer-brand{display:inline-flex;align-items:center;gap:10px;font-weight:850;letter-spacing:-.035em;font-size:20px;white-space:nowrap}.slx-footer-mark{--symbol-bg:#04560C;--symbol-bolt:#B5F857;width:34px;height:34px;position:relative;display:inline-grid;place-items:center;flex:none}.slx-footer-mark:before{content:"";position:absolute;inset:0;background:var(--symbol-bg);clip-path:polygon(50% 0%,61% 32%,100% 50%,61% 68%,50% 100%,39% 68%,0% 50%,39% 32%)}.slx-footer-mark span{position:relative;z-index:1;color:var(--symbol-bolt);font-weight:950;font-size:17px}.slx-global-footer h4{margin:0 0 12px;font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted2,var(--muted-2,#8A948F))}.slx-global-footer a,.slx-global-footer p{display:block;margin:0 0 9px;color:var(--muted,#66736D);font-size:14px;line-height:1.45;text-decoration:none}.slx-global-footer a:hover{color:var(--ink,#041912)}.slx-footer-bottom{margin-top:34px;display:flex;justify-content:space-between;gap:16px;color:var(--muted2,var(--muted-2,#8A948F));font-size:13px}.slx-footer-efile,.slx-footer-efile span{color:#063C83!important;font-weight:850}.slx-footer-gov span{color:#C62118}.slx-footer-product span{color:#81C91C}.slx-footer-drive span{color:#063C83;font-weight:900}@media (max-width:1080px){.slx-footer-grid{grid-template-columns:repeat(2,1fr)}}@media (max-width:700px){.slx-global-footer .slx-footer-container{width:min(100% - 24px,1180px)}.slx-footer-grid{grid-template-columns:1fr}.slx-footer-bottom{flex-direction:column}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="wrap nav">
+    <a class="brand" href="#blog-home" aria-label="SmartLicit">
+      <span class="brand-mark"><span class="bolt-shape"></span></span>
+      <span>SmartLicit</span>
+    </a>
+    <button class="mobile-menu" id="mobileMenu">☰</button>
+    <nav class="site-nav" id="siteNav">
+      <a href="#"><span class="nav-bolt">⚡</span>Tender</a>
+      <a href="#"><span class="nav-bolt">⚡</span>Pricing</a>
+      <a href="#"><span class="nav-bolt">⚡</span>File</a>
+      <a href="#"><span class="nav-bolt">⚡</span>Lex</a>
+      <a class="gov-tender" href="#"><span class="nav-bolt">⚡</span>Tender Gov</a>
+      <a class="gov-pricing" href="#"><span class="nav-bolt">⚡</span>Pricing Gov</a>
+      <a href="#">Planes</a>
+      <a class="active" href="#blog-home">Blog</a>
+      <a href="#">IPG</a>
+      <a href="#">Mi Cuenta</a>
+    </nav>
+    <label class="search-global"><input id="globalSearch" placeholder="Buscar artículos, noticias, productos o funcionalidades…" /></label>
+    <span class="account-pill"><span style="width:7px;height:7px;background:var(--lime);border-radius:50%"></span>Sesión editorial</span>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <span class="eyebrow"><span class="spark"></span> Centro editorial SmartLicit</span>
+        <h1>Blog SmartLicit</h1>
+        <p class="lead">Explora contenido editorial del ecosistema SmartLicit y cobertura de prensa, radio y televisión en una sola experiencia navegable.</p>
+        <div class="hero-actions">
+          <button class="btn primary" data-open-generator>Generar entradas con IA</button>
+          <button class="btn accent" data-hash="#destacados">Ver destacados</button>
+          <button class="btn" data-hash="#archivo">Archivo editorial</button>
+        </div>
+      </div>
+      <aside class="hero-panel">
+        <div class="panel-card">
+          <div class="badges"><span class="badge blog">Blog</span><span class="badge press">Prensa</span><span class="badge dark">IA editorial</span></div>
+          <h2>Una sola sección. Dos fuentes de contenido.</h2>
+          <p>Las entradas de blog y prensa usan la misma ficha visual para que el usuario explore producto, medios y aprendizaje sin cambiar de sistema.</p>
+          <div class="panel-grid">
+            <div class="mini-stat"><span>Blog</span><strong id="miniBlogCount">14</strong><small>entradas demo</small></div>
+            <div class="mini-stat"><span>Prensa</span><strong id="miniPressCount">8</strong><small>notas demo</small></div>
+            <div class="mini-stat"><span>Productos</span><strong>8</strong><small>ecosistema cubierto</small></div>
+            <div class="mini-stat"><span>IA</span><strong id="miniAiCount">14</strong><small>generadas / asistidas</small></div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section hub-view" id="hubView">
+    <div class="wrap">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;">
+        <div class="tabs">
+          <button class="tab active" data-tab="blog">Blog</button>
+          <button class="tab" data-tab="press">Prensa</button>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn slim" data-hash="#categorias">Categorías</button>
+          <button class="btn slim" data-hash="#relacionadas">Relacionadas</button>
+          <button class="btn slim" data-hash="#generador-ia">Generador IA</button>
+        </div>
+      </div>
+
+      <div class="toolbar">
+        <input class="searchbar" id="searchInput" placeholder="Buscar por título, tema, producto o palabra clave…" />
+        <select class="select" id="sortSelect">
+          <option value="recent">Más recientes</option>
+          <option value="popular">Más leídas</option>
+          <option value="featured">Destacadas</option>
+          <option value="az">A-Z</option>
+        </select>
+        <button class="btn primary" data-open-generator>Generar con IA</button>
+      </div>
+
+      <div class="kpis">
+        <div class="kpi"><span>Entradas de blog</span><strong id="kpiBlog">14</strong><small>ecosistema SL</small></div>
+        <div class="kpi"><span>Entradas de prensa</span><strong id="kpiPress">8</strong><small>medios demo</small></div>
+        <div class="kpi"><span>Generadas con IA</span><strong id="kpiAi">14</strong><small>simulación frontend</small></div>
+        <div class="kpi"><span>Productos cubiertos</span><strong>8</strong><small>Tender a IPG</small></div>
+        <div class="kpi"><span>Destacadas</span><strong id="kpiFeatured">4</strong><small>hero editorial</small></div>
+        <div class="kpi"><span>Publicaciones mes</span><strong>6</strong><small>abril 2026</small></div>
+      </div>
+
+      <div class="filters" id="filters"></div>
+
+      <div class="aux-panel" id="auxPanel"></div>
+
+      <div class="content-layout">
+        <div>
+          <section id="featuredContainer"></section>
+          <div class="empty-state" id="emptyState">
+            <h2>Sin resultados</h2>
+            <p>No encontramos entradas con ese filtro. Cambia la búsqueda o vuelve a “Todos”.</p>
+          </div>
+          <section class="cards-grid" id="cardsGrid"></section>
+        </div>
+        <aside class="side-panel">
+          <div class="card">
+            <h2>Mapa editorial</h2>
+            <p>El hub organiza contenido de producto, funcionalidades, planes y apariciones en medios.</p>
+            <div class="link-list">
+              <button data-hash="#blog-tab">Ver Blog</button>
+              <button data-hash="#prensa-tab">Ver Prensa</button>
+              <button data-open-generator>Generar con IA</button>
+              <button data-hash="#archivo">Archivo</button>
+            </div>
+          </div>
+          <div class="card">
+            <h2>Reglas editoriales</h2>
+            <p>Blog y Prensa comparten ficha visual. La diferencia está en metadatos: autor/lectura para blog; fuente/formato para prensa.</p>
+          </div>
+          <div class="card">
+            <h2>Productos relacionados</h2>
+            <div class="filters" style="margin:12px 0 0" id="sideProducts"></div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="section detail-view" id="detailView">
+    <div class="wrap article-layout">
+      <article class="detail-article" id="detailArticle"></article>
+      <aside class="side-panel">
+        <div class="card">
+          <h2>Acciones</h2>
+          <div class="link-list">
+            <button id="backBtn">← Volver al hub</button>
+            <button id="copyBtn">Copiar enlace</button>
+            <button id="shareBtn">Compartir</button>
+            <button id="moreRelatedBtn">Ver relacionadas</button>
+          </div>
+        </div>
+        <div class="card">
+          <h2>Relacionadas</h2>
+          <div class="related-grid" id="detailRelated"></div>
+        </div>
+      </aside>
+    </div>
+  </section>
+</main>
+<div class="modal" id="generatorModal">
+  <div class="modal-card">
+    <div class="modal-head">
+      <div><h2>Generar entradas con IA</h2><p style="color:var(--muted);margin-top:6px">Simula la creación de una ficha editorial y la agrega al hub activo.</p></div>
+      <button class="close" id="closeModal">×</button>
+    </div>
+    <div class="form-grid">
+      <div class="field"><label>Tipo</label><select id="genType"><option value="blog">Blog</option><option value="press">Prensa</option></select></div>
+      <div class="field"><label>Tema</label><select id="genTopic"><option>Ecosistema</option><option>Funcionalidades</option><option>Planes</option><option>Productos</option><option>Tender Gov</option><option>Pricing Gov</option><option>eFile</option><option>Seguridad</option><option>Integraciones</option><option>Asistencia IA</option></select></div>
+      <div class="field"><label>Tono</label><select id="genTone"><option>Ejecutivo</option><option>Educativo</option><option>Institucional</option><option>Técnico</option><option>Divulgativo</option></select></div>
+      <div class="field"><label>Estado</label><select id="genStatus"><option>Generada IA</option><option>Publicada</option><option>Borrador</option><option>Destacada</option></select></div>
+    </div>
+    <div class="progress-steps">
+      <div class="step-line"><span id="genProgress"></span></div>
+      <p id="genProgressText" style="color:var(--muted);font-size:13px">Listo para generar.</p>
+    </div>
+    <div style="display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap">
+      <button class="btn" id="cancelGen">Cancelar</button>
+      <button class="btn primary" id="generateBtn">Generar con IA</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const initialItems = [{"id":"b-experta-ia-fee","type":"blog","category":"Tender","product":"Experta + IA","title":"Experta + IA: fee 35/65, comisión por margen y promoción beta","subtitle":"Cómo funciona el servicio operado por SmartLicit para preparar propuestas con IA + staff experto.","date":"23 abr 2026","read":"8 min","author":"Dirección de Producto","status":"Destacada","featured":true,"excerpt":"Experta + IA permite preparar una propuesta con IA, staff experto, Smart Pricing y eFile sobre una licitación existente, con fee variable y promoción beta.","body":"Experta + IA es una funcionalidad de Smart Tender para usuarios proveedores que ya identificaron una licitación existente y quieren enviar el caso al equipo experto de SmartLicit. Vive dentro de Tender, no crea licitaciones, no es Tender Gov y no es una solución B2G.\n\nQué resuelve: reduce la fricción documental, económica y operativa de preparar una propuesta. Conecta la oportunidad detectada en Smart Tender, la corrida económica de Smart Pricing y el readiness documental de eFile para que el equipo experto de SmartLicit pueda preparar la propuesta con revisión humana asistida por IA.\n\nPara quién: licitantes proveedores con una oportunidad viable, plan activo de Smart Tender, Smart Pricing disponible y eFile activo. Es especialmente útil cuando el caso tiene bases extensas, anexos, documentos por validar, estrategia económica sensible o poco tiempo antes del cierre.\n\nCómo funciona: primero se valida que la licitación ya existe y que el usuario puede competir. Después Smart Pricing estima margen, utilidad y fee aplicable. Si el usuario acepta el servicio, el caso se envía al staff experto SmartLicit para preparar la propuesta con IA, revisión humana, checklist y trazabilidad. Al ejecutarse consume 1 crédito Smart Tender y 1 crédito Smart Pricing.\n\nModelo económico: el fee SmartLicit se calcula sobre la utilidad estimada. Va de 10% a 18% de la utilidad, según el margen del caso. En el ejemplo de una licitación de $1,000,000 MXN con margen de 30%, la utilidad estimada es $300,000; el fee aplicado es 15.33%; el pago total SmartLicit regular sería $46,000. Ese pago se divide en $16,100 de fee inicial no reembolsable y $29,900 por éxito si el licitante resulta adjudicado.\n\nPromoción beta: durante mayo y junio de 2026, Experta + IA tiene una promoción única de salida. El usuario paga únicamente el 35% inicial del fee y el 65% por éxito no se cobra. En el ejemplo de $1,000,000, el usuario paga $16,100 y conserva $283,900 del margen estimado.\n\nRiesgos de confusión a evitar: Experta + IA no garantiza adjudicación, no crea licitaciones, no sustituye Tender Gov, no es una solución B2G y no debe presentarse como un motor separado. Es Propuesta IA operada por staff experto SmartLicit con revisión humana asistida por IA."}, {"id": "b-efile-ecosistema", "type": "blog", "category": "eFile", "product": "eFile", "title": "Cómo funciona eFile dentro del ecosistema SmartLicit", "subtitle": "La identidad documental que conecta operación, cumplimiento y reutilización.", "date": "22 abr 2026", "read": "7 min", "author": "Equipo SmartLicit", "status": "Destacada", "featured": true, "excerpt": "eFile no es una carpeta: es la capa que permite operar con una empresa o persona física dentro del ecosistema SmartLicit.", "body": "eFile es la capa documental e identidad operativa del ecosistema SmartLicit. Su función es ordenar la información de una empresa o persona física para que pueda reutilizarse en flujos de Tender, Pricing, Lex, File y soluciones Gov sin volver a capturar todo desde cero. El valor no está solo en almacenar documentos, sino en mantener vigencias, versiones, permisos, readiness y trazabilidad sobre cada acción relevante.\n\nEn la práctica, un usuario puede tener varios eFiles: una empresa, otra razón social y una persona física con actividad empresarial. Cada expediente mantiene documentos, datos fiscales, representantes, poderes, objeto social, constancias, verificaciones e historial separados. Esto evita uno de los errores más comunes en procesos profesionales: mezclar documentación de entidades distintas o usar datos vencidos cuando el plazo ya está encima.\n\neFile también permite separar el contexto operativo del contexto fiscal. Una empresa puede operar en Tender con un eFile activo y, dentro de Mi Cuenta, emitir una factura con los datos fiscales de otro eFile si el consumo corresponde a ese RFC. Esa distinción es crítica para equipos que trabajan con varias razones sociales, despachos, grupos empresariales o usuarios que operan a nombre de distintas entidades.\n\nLa capa de Instant Files agrega velocidad documental. Cuando un documento puede actualizarse o generarse de forma automática, la interfaz debe mostrarlo como una acción clara, con consentimiento, costo y destino. El objetivo no es prometer cumplimiento automático, sino reducir fricción, anticipar faltantes y dejar evidencia de quién generó, actualizó o utilizó cada documento.\n\nPor eso eFile debe verse como una identidad viva: actualizable, verificable y trazable. Su papel dentro de SmartLicit es permitir que la inteligencia del ecosistema trabaje con datos más ordenados, vigentes y autorizados, sin perder control humano ni responsabilidad documental."}, {"id": "b-tender-vs-gov", "type": "blog", "category": "Tender Gov", "product": "Tender Gov", "title": "Qué diferencia a Tender de Tender Gov", "subtitle": "Proveedor y entidad compradora no viven el mismo flujo.", "date": "21 abr 2026", "read": "8 min", "author": "Dirección de Producto", "status": "Publicada", "featured": false, "excerpt": "Tender ayuda al proveedor a analizar una oportunidad existente; Tender Gov ayuda a la entidad compradora a conformarla desde cero.", "body": "Una de las distinciones más importantes del ecosistema SmartLicit es separar el lado proveedor del lado entidad compradora. Tender vive del lado de quien quiere participar: la licitación ya existe, fue publicada por una institución y el usuario necesita encontrarla, analizarla, seguirla, evaluar el precio y preparar una propuesta. Tender Gov vive del otro lado: la institución todavía está conformando el procedimiento desde cero.\n\nTender concentra oportunidades, filtros, alertas, lectura de bases, análisis de compatibilidad y preparación de propuesta. Su valor está en reducir dispersión, evitar que el usuario llegue tarde y ordenar la decisión de competir. Ahí aparecen flujos como Propuesta IA y Experta + IA, siempre sobre una licitación existente. La plataforma no debe decir que el proveedor “crea la licitación”; lo correcto es que analiza la oportunidad y prepara su propuesta.\n\nTender Gov, en cambio, es una solución B2G. Su usuario es el funcionario, el área requirente, la unidad compradora o el equipo institucional que debe crear un procedimiento desde la necesidad de compra hasta un expediente listo para revisión, aprobación y publicación. En ese flujo aparecen CUCOP, POBALINES, Pricing Gov, anexos, calendario, comité, aprobaciones, Google Drive seguro y Asistencia IA.\n\nLa diferencia no es solo comercial; es semántica, jurídica, operativa y de UX. Un proveedor necesita oportunidad, velocidad y decisión. Una entidad compradora necesita trazabilidad, fundamento, consistencia, estudio de mercado, permisos y revisión institucional. Mezclar ambos mundos genera expectativas equivocadas y riesgos de comunicación.\n\nLa arquitectura correcta es simple: Tender para competir desde el lado proveedor; Tender Gov para conformar licitaciones desde el lado gobierno. Ambos comparten una inteligencia común, pero resuelven problemas distintos para usuarios distintos."}, {"id": "b-pricing-vs-pricing-gov", "type": "blog", "category": "Pricing Gov", "product": "Pricing Gov", "title": "Pricing y Pricing Gov: cuándo usar cada uno", "subtitle": "Inteligencia de precios para empresas y estudios de mercado para instituciones.", "date": "20 abr 2026", "read": "7 min", "author": "Research SmartLicit", "status": "Publicada", "featured": false, "excerpt": "Smart Pricing ayuda a empresas a decidir precio; Pricing Gov ayuda a gobierno a soportar estudios de mercado.", "body": "Pricing y Pricing Gov comparten una base analítica, pero no deben confundirse. Pricing está orientado a empresas, profesionales y usuarios que necesitan cotizar con más contexto, entender precios públicos, precios por dependencia, rangos históricos y señales de mercado. Pricing Gov está orientado a instituciones públicas que necesitan generar estudios de mercado para soportar decisiones de compra y alimentar la conformación de licitaciones dentro de Tender Gov.\n\nEn el lado empresarial, el problema principal es ofertar a ciegas. Una empresa puede tener buen producto y aun así perder por precio fuera de rango, margen mal calculado o falta de evidencia para sostener su postura. Pricing reduce esa incertidumbre con referencias, históricos, comparativos y señales accionables. No sustituye la decisión comercial, pero eleva la calidad de la decisión.\n\nEn el lado gobierno, el problema es distinto. La institución necesita justificar el precio, identificar proveedores potenciales, analizar comparables, revisar outliers, documentar fuentes y construir un expediente defendible. Por eso Pricing Gov no debe verse como una calculadora aislada, sino como un módulo de estudio de mercado que alimenta presupuesto base, anexo económico, matriz comparativa, evidencia y trazabilidad.\n\nLa diferencia también impacta la interfaz. En Pricing, el usuario quiere entender si puede competir, con qué rango y con qué estrategia. En Pricing Gov, el funcionario necesita generar un entregable institucional con metodología, fuentes, evidencia y vínculos claros con el procedimiento que se está conformando.\n\nLa regla de producto es clara: Pricing sirve para decidir mejor desde el lado proveedor o comercial; Pricing Gov sirve para estructurar estudios de mercado desde el lado institucional. Una sola inteligencia, dos contextos de uso."}, {"id": "b-trazabilidad-ia", "type": "blog", "category": "Asistencia IA", "product": "Asistencia IA", "title": "SmartLicit y la trazabilidad documental con Asistencia IA", "subtitle": "La IA acelera, pero la evidencia sostiene.", "date": "19 abr 2026", "read": "6 min", "author": "Equipo Editorial SmartLicit", "status": "Publicada", "featured": false, "excerpt": "La Asistencia IA debe dejar evidencia de sugerencias, fuentes, cambios y decisiones humanas.", "body": "La inteligencia artificial solo es útil en procesos profesionales sensibles si deja rastro. En SmartLicit, Asistencia IA no debe operar como una caja negra que cambia documentos sin explicación. Su papel es ayudar a estructurar, revisar, resumir, detectar omisiones y proponer mejoras, pero cada sugerencia debe ser visible, revisable y atribuible.\n\nLa trazabilidad documental implica saber qué cambió, quién lo aceptó, qué versión estaba vigente, qué fuente se utilizó y qué impacto tuvo en el expediente. Esto aplica en propuestas, estudios de mercado, análisis legal, eFiles, licitaciones gubernamentales y workflows de documentación. Sin esa bitácora, la IA puede ahorrar tiempo, pero no necesariamente generar confianza.\n\nPor eso SmartLicit debe diferenciar sugerencia, alerta y bloqueo. Una sugerencia puede mejorar redacción o estructura. Una alerta advierte una inconsistencia o dato faltante. Un bloqueo impide avanzar cuando falta una validación crítica. Esa distinción protege al usuario, evita ambigüedades y permite que la experiencia se mantenga técnica sin volverse opaca.\n\nEn Tender Gov, Asistencia IA puede revisar si un estudio de mercado está vinculado, si CUCOP coincide con el objeto o si POBALINES exigen aprobación adicional. En eFile, puede alertar documentos vencidos. En Lex, puede acelerar lectura o redacción. En todos los casos, el humano mantiene la decisión final.\n\nLa promesa correcta no es que la IA sustituye criterio. La promesa defendible es que SmartLicit convierte trabajo disperso en flujos más ordenados, explicables y auditables. La trazabilidad es lo que convierte velocidad en confianza."}, {"id": "b-planes", "type": "blog", "category": "Planes", "product": "Planes", "title": "Planes SmartLicit: cómo elegir el plan correcto", "subtitle": "Comprar capacidad sin perder claridad operativa.", "date": "18 abr 2026", "read": "6 min", "author": "Dirección de Producto", "status": "Destacada", "featured": true, "excerpt": "El plan debe explicar qué habilita, qué consume y qué no desbloquea automáticamente.", "body": "Los planes de SmartLicit deben comprarse por necesidad operativa, no por entusiasmo tecnológico. La pregunta correcta no es “qué plan parece más grande”, sino qué cuello de botella necesita resolver el usuario: oportunidades, pricing, monitoreo, trabajo legal, expediente documental o operación Gov.\n\nTender responde a usuarios que necesitan encontrar, analizar y preparar propuestas sobre licitaciones existentes. Pricing responde a quienes necesitan estudiar precios, rangos, comparables y estrategia económica. File responde a seguimiento de expedientes legales y alertas. Lex responde a trabajo jurídico asistido. eFile funciona como capa documental reutilizable. Tender Gov y Pricing Gov atienden gobierno y requieren enfoque institucional.\n\nUna buena arquitectura de planes debe hacer visibles tres cosas: capacidad incluida, consumo y límites. El usuario debe saber cuántos créditos o acciones tiene, qué ocurre al agotarlos y qué funcionalidades requieren otra plan. También debe quedar claro que tokens de eFile no sustituyen un plan; sirven para documentos o Instant Files cuando aplique.\n\nLa transparencia evita confusión comercial. Experta + IA, por ejemplo, no debe presentarse como beneficio ilimitado: al ejecutarse por staff experto consume créditos de Tender y Pricing conforme a la regla definida. De igual manera, el add-on de WhatsApp para File no debe mezclarse con tokens documentales.\n\nElegir bien un plan significa comprar la capacidad que realmente reduce fricción. SmartLicit debe ayudar al usuario a entender su operación antes de empujarlo a comprar. Esa claridad comercial es parte del producto."}, {"id": "b-file", "type": "blog", "category": "File", "product": "File", "title": "Qué resuelve File en trabajo documental complejo", "subtitle": "Monitoreo legal sin revisión manual constante.", "date": "17 abr 2026", "read": "6 min", "author": "Equipo SmartLicit", "status": "Publicada", "featured": false, "excerpt": "File no es eFile: monitorea expedientes y cambios relevantes para equipos legales.", "body": "File resuelve una fricción silenciosa del trabajo legal: revisar manualmente expedientes, portales, acuerdos y cambios para no perder una actualización importante. En despachos, áreas jurídicas y equipos de apoyo, esa rutina consume tiempo, genera ansiedad operativa y expone a omisiones.\n\nLa función de File no es guardar identidad documental de una empresa. Ese papel corresponde a eFile. File se enfoca en monitoreo de expedientes legales, alertas y trazabilidad de movimientos. La diferencia es crítica para evitar confusión: eFile organiza documentos de una entidad; File observa cambios en expedientes o asuntos que requieren seguimiento.\n\nEl valor de File está en convertir una práctica repetitiva en un sistema de alertas ordenado. Un abogado no debería entrar todos los días a múltiples portales solo para verificar si hubo movimiento. La plataforma puede centralizar señales, registrar eventos, clasificar cambios y permitir que el equipo actúe con más oportunidad.\n\nFile también debe convivir con permisos, roles y notificaciones. No todos los usuarios deben ver todos los expedientes; no todas las alertas tienen la misma prioridad; no todo cambio requiere la misma reacción. Por eso el producto necesita filtros, estados, bitácora y una relación clara con el add-on de WhatsApp cuando el usuario requiera alertas por ese canal.\n\nLa promesa no es reemplazar criterio jurídico. La promesa es liberar tiempo y reducir riesgo operativo para que el talento legal se concentre en interpretar, decidir y actuar."}, {"id": "b-lex", "type": "blog", "category": "Lex", "product": "Lex", "title": "Lex: trabajo jurídico asistido con IA", "subtitle": "Velocidad documental sin renunciar al criterio profesional.", "date": "16 abr 2026", "read": "7 min", "author": "Equipo Editorial SmartLicit", "status": "Publicada", "featured": false, "excerpt": "Lex ayuda a abogados a leer, redactar, clasificar y revisar con mayor estructura.", "body": "Lex es la solución de SmartLicit para abogados y equipos legales que necesitan trabajar con más velocidad, más orden y mejor capacidad de respuesta. Su punto de partida es realista: gran parte del trabajo jurídico cotidiano no consiste en la decisión estratégica final, sino en revisar documentos, ordenar hechos, redactar borradores, comparar versiones y preparar insumos.\n\nLa IA puede acelerar esas tareas, pero no debe vaciar de responsabilidad profesional al abogado. Lex debe funcionar como apoyo para lectura, clasificación, resumen, redacción y revisión; no como sustituto del juicio jurídico, la firma profesional o la estrategia legal. Esa frontera debe estar clara en producto, UX y comunicación.\n\nUna buena experiencia de Lex debe permitir cargar o reutilizar documentos autorizados, pedir análisis, generar borradores y recibir advertencias sobre inconsistencias. También debe mostrar qué documento se está usando, cuál es el contexto y qué partes requieren revisión humana. En asuntos sensibles, reputacionales o litigiosos, la supervisión humana no es opcional.\n\nLex se vuelve más potente cuando se conecta con el resto del ecosistema. Puede analizar documentos provenientes de eFile, apoyar revisión de anexos, producir resúmenes para equipos internos o ayudar a preparar explicaciones claras sobre riesgos. Su valor aumenta cuando la información está ordenada y trazable.\n\nEl objetivo no es que los abogados trabajen menos, sino que trabajen mejor. Menos tiempo en tareas repetitivas, más tiempo en interpretación, estrategia y decisión."}, {"id": "b-instant-files", "type": "blog", "category": "Instant Files", "product": "eFile", "title": "Instant Files: velocidad documental sin perder control", "subtitle": "Documentos bajo demanda, consentimiento y bitácora.", "date": "15 abr 2026", "read": "6 min", "author": "Dirección de Producto", "status": "Publicada", "featured": false, "excerpt": "Instant Files permite generar o actualizar documentos disponibles sin salir de SmartLicit.", "body": "Instant Files es la forma en que eFile convierte documentos perecederos en acciones disponibles dentro de SmartLicit. El concepto es sencillo: cuando un documento puede generarse, actualizarse, validarse o extraerse de manera automática, el usuario debe poder hacerlo sin salir de la plataforma, con un costo claro, consentimiento explícito y registro en bitácora.\n\nEl valor no está solo en la velocidad. El valor está en reducir el riesgo de usar documentos vencidos o versiones incorrectas. Una Constancia de Situación Fiscal, una opinión de cumplimiento o una validación específica pueden tener valor por fecha. Si el usuario descubre el problema cuando ya está preparando una propuesta, el costo operativo aumenta.\n\nPor eso Instant Files debe operar en dos escenarios. En el primero, el usuario entra directamente a eFile y solicita un documento para un trámite externo o para mantener su expediente listo. En el segundo, el sistema detecta que un flujo de propuesta requiere un documento actualizado y alerta antes de continuar. En ambos casos debe informar si la acción consume tokens.\n\nLa interfaz debe evitar consumos silenciosos. Cada acción debe mostrar documento, eFile destino, costo, finalidad y evidencia. Si el usuario acepta, el resultado se guarda como nueva versión, no como sobrescritura invisible. Esa regla protege trazabilidad y evita confusión.\n\nInstant Files no garantiza aceptación universal ni sustituye revisión legal. Su función es mejorar disponibilidad, orden y control documental dentro de un expediente vivo."}, {"id": "b-cucop-pobalines", "type": "blog", "category": "Pricing Gov", "product": "Pricing Gov", "title": "Cómo se integran CUCOP, POBALINES y Pricing Gov", "subtitle": "La conformación institucional requiere catálogo, reglas y evidencia.", "date": "14 abr 2026", "read": "8 min", "author": "Research SmartLicit", "status": "Destacada", "featured": true, "excerpt": "En Tender Gov, CUCOP, POBALINES y Pricing Gov no son anexos: son estructura operativa.", "body": "En la conformación de licitaciones institucionales, CUCOP, POBALINES y Pricing Gov deben integrarse como una sola ruta de trabajo. CUCOP ayuda a clasificar el bien o servicio; POBALINES define reglas internas aplicables por entidad, monto, etapa y procedimiento; Pricing Gov genera el estudio de mercado que soporta presupuesto, proveedores potenciales, referencias y evidencia.\n\nSi estos elementos viven separados, la institución termina trabajando con documentos inconexos. El área requirente define una necesidad, la unidad compradora clasifica partidas, el área jurídica revisa bases y alguien más prepara un estudio de mercado. Sin integración, cada pieza puede ser correcta por separado y aun así producir un expediente débil.\n\nTender Gov debe resolver ese problema con una interfaz guiada. El usuario define objeto de contratación, el sistema sugiere CUCOP, revisa POBALINES aplicables y activa Pricing Gov cuando el procedimiento requiere estudio de mercado. Después, la salida del estudio alimenta presupuesto base, anexo económico, matriz comparativa y evidencia documental.\n\nLa Asistencia IA puede detectar inconsistencias: una clave CUCOP ambigua, una partida sin histórico suficiente, un precio fuera de rango, una regla POBALINES pendiente o un estudio de mercado no vinculado con la convocatoria. Pero la validación final corresponde al funcionario responsable.\n\nLa lógica de producto es clara: CUCOP ordena el objeto, POBALINES ordena la regla y Pricing Gov ordena la evidencia económica. Juntas, estas piezas convierten la conformación de licitaciones en un flujo más trazable y defendible."}, {"id": "b-tender-gov-mercado", "type": "blog", "category": "Tender Gov", "product": "Tender Gov", "title": "Del estudio de mercado a la conformación de licitaciones con Tender Gov", "subtitle": "Un flujo institucional guiado desde la necesidad hasta el expediente.", "date": "13 abr 2026", "read": "8 min", "author": "Dirección de Producto", "status": "Publicada", "featured": false, "excerpt": "Tender Gov conecta necesidad de compra, Pricing Gov, entregables, aprobaciones y expediente.", "body": "Tender Gov responde a una necesidad distinta a la del proveedor: ayudar a la institución a crear y conformar licitaciones desde cero. Ese proceso no comienza con una convocatoria; comienza con una necesidad de compra que debe traducirse en partidas, fundamentos, estudio de mercado, requisitos, criterios, calendario y expediente.\n\nEl estudio de mercado ocupa un lugar central. Pricing Gov debe generar precios de referencia, comparativos, proveedores potenciales, metodología, evidencia y señales de riesgo. Esa información no debe quedar en un archivo aislado, sino alimentar el presupuesto base, la estrategia de contratación, el anexo económico y la trazabilidad del procedimiento.\n\nLa interfaz ideal para Tender Gov es en tercios: a la izquierda, contexto y checklist; al centro, el entregable editable como documento o sheet; a la derecha, Asistencia IA. Esta estructura permite que el funcionario vea el procedimiento, trabaje el documento y reciba alertas sin saltar entre pantallas dispersas.\n\nEl sistema debe registrar versiones, aprobaciones, cambios, documentos finales, Google Drive seguro y bitácora. Debe permitir revisión jurídica, presupuestal, técnica y de comité cuando aplique. También debe impedir publicación sin autorización humana.\n\nTender Gov no promete licitaciones perfectas ni sustituye al funcionario. Su valor es hacer el proceso más ordenado, más trazable y menos dependiente de plantillas sueltas o conocimiento individual."}, {"id": "b-ipg", "type": "blog", "category": "IPG", "product": "IPG", "title": "IPG: por qué el precio necesita contexto", "subtitle": "Un índice útil no es solo promedio; también es método.", "date": "12 abr 2026", "read": "7 min", "author": "Research SmartLicit", "status": "Publicada", "featured": false, "excerpt": "El IPG debe explicar rangos, variables, históricos y señales que afectan precios.", "body": "El IPG de SmartLicit debe entenderse como una capa de inteligencia de precios, no como una lista de promedios. En compras públicas, el precio depende de tiempo, entidad, volumen, condiciones de entrega, rubro, inflación, disponibilidad, historial y comparabilidad. Un número sin contexto puede ser rápido, pero no necesariamente útil.\n\nLa construcción de un índice requiere separar datos históricos, precios públicos, variables económicas y señales sectoriales. También exige tratamiento de outliers y normalización de condiciones. Comparar precios sin distinguir moneda, plazo, volumen o lugar de entrega puede producir conclusiones equivocadas. Por eso el método es tan importante como la interfaz.\n\nPara el usuario proveedor, IPG puede ayudar a decidir si una oportunidad tiene sentido económico. Para una institución, puede apoyar estudios de mercado a través de Pricing Gov. Para el ecosistema completo, puede convertirse en una referencia de comportamiento del mercado público, siempre con límites claros y evidencia.\n\nLa promesa correcta no es adivinar el futuro. SmartLicit puede mostrar precios actuales, históricos, comparativos, tendencias retrospectivas y preparación para modelos más avanzados cuando la base de datos tenga robustez suficiente. La predicción debe manejarse con cuidado, explicación y trazabilidad.\n\nUn IPG confiable no busca ser espectacular; busca ser defendible. Si el usuario entiende por qué el precio está donde está, toma mejores decisiones."}, {"id": "b-seguridad", "type": "blog", "category": "Seguridad", "product": "Seguridad", "title": "Seguridad, permisos y evidencia dentro de SmartLicit", "subtitle": "La confianza se diseña desde la arquitectura.", "date": "11 abr 2026", "read": "6 min", "author": "Equipo Editorial SmartLicit", "status": "Publicada", "featured": false, "excerpt": "Roles, permisos, bitácoras y consentimientos son parte del producto, no accesorios.", "body": "SmartLicit trabaja con información sensible: documentos fiscales, datos de empresa, propuestas, estudios, expedientes, precios, permisos y decisiones estratégicas. Por eso la seguridad no puede resolverse al final como una capa genérica. Debe formar parte del diseño de producto desde Mi Cuenta, eFile, flujos de propuesta y soluciones Gov.\n\nLa primera regla es separar identidades. Una persona administra una cuenta, pero los eFiles representan entidades operativas o fiscales. Un workspace Gov no debe mezclarse con un eFile empresarial. Un usuario de soporte debe tener acceso temporal y auditado. Un colaborador de billing no necesita ver documentos técnicos. Cada rol debe tener alcance claro.\n\nLa segunda regla es registrar acciones sensibles. Emitir factura, cambiar datos fiscales, generar Instant Files, aceptar sugerencias de IA, enviar una propuesta o aprobar un documento en Tender Gov debe dejar evidencia. La auditoría permite explicar qué ocurrió y reduce dependencia de memoria informal.\n\nLa tercera regla es consentimiento. Cuando se procesan datos, se generan documentos o se reutiliza información de eFile, el usuario debe entender qué se usa, para qué, dónde se guarda y qué costo tiene si aplica. Esa transparencia aumenta confianza y disminuye riesgo reputacional.\n\nUn producto profesional no solo se ve bien: explica permisos, límites y evidencias. Esa es la diferencia entre una herramienta útil y una infraestructura confiable."}, {"id": "b-integraciones", "type": "blog", "category": "Integraciones", "product": "Integraciones", "title": "Integraciones SmartLicit: de Google Drive a SAP y Oracle", "subtitle": "Conectar sin perder control de contexto y trazabilidad.", "date": "10 abr 2026", "read": "7 min", "author": "Dirección de Producto", "status": "Generada IA", "featured": false, "excerpt": "Las integraciones deben ampliar capacidad sin convertir sistemas externos en única fuente de verdad.", "body": "Las integraciones de SmartLicit deben diseñarse con una regla central: conectar sistemas externos sin perder contexto, permisos ni trazabilidad. Google Drive, WhatsApp, pasarela de pago, Instant Files, SAP, Oracle o workspaces Gov pueden aportar valor, pero ninguno debe romper la arquitectura del ecosistema.\n\nGoogle Drive, por ejemplo, puede funcionar como repositorio documental seguro para Tender Gov o eFile. Pero SmartLicit debe conservar índice, metadata, bitácora, estados y relaciones entre documentos. Drive no debe convertirse en la única fuente de verdad, porque entonces el usuario vuelve a depender de carpetas sueltas y permisos dispersos.\n\nEn el mundo Gov y corporativo, SAP y Oracle deben tratarse como integraciones previstas o roadmap salvo implementación formal. Su valor es importar requisiciones, centros de costo, partidas, materiales, presupuestos, proveedores y flujos de aprobación. La salida puede ser un paquete de contratación, estudio de mercado o expediente estructurado.\n\nCada integración debe tener alcance claro: qué entra, qué sale, quién autoriza, qué queda en bitácora y qué permisos aplican. Esto evita promesas excesivas y permite construir fases realistas: carga manual, CSV/XLSX, API simple, conectores estándar e integración profunda.\n\nLa integración correcta no es la que conecta más cosas; es la que conecta lo necesario sin perder control operativo."}, {"id": "p-vision", "type": "press", "category": "Prensa", "format": "Prensa", "product": "Ecosistema", "title": "SmartLicit presenta su visión de inteligencia aplicada para trabajo profesional complejo", "subtitle": "Medio Negocios MX reseña la arquitectura de múltiples soluciones.", "date": "22 abr 2026", "read": "Prensa", "author": "Medio Negocios MX", "status": "Destacada", "featured": true, "excerpt": "La nota destaca a SmartLicit como una familia de soluciones inteligentes, no solo un portal de licitaciones.", "quote": "“SmartLicit busca convertir procesos complejos en experiencias accionables, trazables y más simples para usuarios profesionales.”", "body": "Medio Negocios MX publicó una nota sobre la visión de SmartLicit como ecosistema de soluciones inteligentes. La cobertura explica que la empresa no se limita a listar licitaciones, sino que desarrolla capas de inteligencia para oportunidades, pricing, documentos, trabajo legal, expediente electrónico y soluciones Gov. La nota también subraya el concepto rector de la marca: una sola inteligencia, múltiples soluciones. En el texto se enfatiza que el valor de SmartLicit está en ordenar información dispersa y convertirla en decisiones accionables para empresas, profesionistas e instituciones."}, {"id": "p-radio", "type": "press", "category": "Radio", "format": "Radio", "product": "Tender", "title": "Entrevista en radio sobre el futuro de las licitaciones asistidas con IA", "subtitle": "Radio Innovación 98.1 conversa sobre oportunidades, filtros y preparación.", "date": "21 abr 2026", "read": "Radio", "author": "Radio Innovación 98.1", "status": "Publicada", "featured": false, "excerpt": "La entrevista aborda cómo Tender ayuda a usuarios proveedores a encontrar y analizar licitaciones existentes.", "quote": "“El reto no es solo encontrar la convocatoria; es entender si vale la pena competir y llegar preparado.”", "body": "En Radio Innovación 98.1, SmartLicit explicó cómo la IA puede ayudar a usuarios proveedores a entrar al mundo de las licitaciones con más claridad. La entrevista distinguió entre buscar oportunidades y preparar propuestas, evitando prometer resultados que dependen de terceros. Se habló de centralización, filtros por giro, alertas, análisis de bases, pricing y eFile como elementos que reducen fricción. La conversación también puso énfasis en el criterio humano: la tecnología acelera y estructura, pero la decisión de competir sigue siendo del usuario."}, {"id": "p-tv-efile", "type": "press", "category": "Televisión", "format": "Televisión", "product": "eFile", "title": "Cobertura televisiva sobre innovación documental y eFile", "subtitle": "Canal Empresa TV muestra el expediente electrónico inteligente.", "date": "20 abr 2026", "read": "Televisión", "author": "Canal Empresa TV", "status": "Publicada", "featured": false, "excerpt": "La cobertura presenta eFile como una identidad documental viva para empresas y personas físicas.", "quote": "“eFile no es una carpeta; es una identidad operativa con vigencias, documentos y trazabilidad.”", "body": "Canal Empresa TV dedicó un segmento a la innovación documental de SmartLicit. La nota explicó que eFile permite a usuarios administrar expedientes por empresa o persona física, separar documentos, revisar vigencias y generar Instant Files cuando existe capacidad técnica. También se abordó la importancia de no mezclar eFile con File: uno organiza identidad documental; el otro monitorea expedientes legales. La cobertura cerró con una idea central: reducir fricción documental sin prometer cumplimiento automático."}, {"id": "p-govtech", "type": "press", "category": "Prensa", "format": "Prensa", "product": "Tender Gov", "title": "Medio especializado destaca la propuesta GovTech de Tender Gov y Pricing Gov", "subtitle": "Revista GovTech LATAM analiza conformación institucional y estudios de mercado.", "date": "19 abr 2026", "read": "Prensa", "author": "Revista GovTech LATAM", "status": "Destacada", "featured": true, "excerpt": "La nota resalta la conexión entre Tender Gov, Pricing Gov, CUCOP, POBALINES y Asistencia IA.", "quote": "“El diferencial está en conectar la conformación de la licitación con evidencia económica y trazabilidad.”", "body": "Revista GovTech LATAM publicó una cobertura sobre el enfoque institucional de Tender Gov y Pricing Gov. El artículo explica que Tender Gov está pensado para que entidades compradoras conformen licitaciones desde cero, mientras que Pricing Gov genera estudios de mercado que alimentan presupuesto, referencias, proveedores y evidencia. La nota destaca la interfaz en tercios, el uso de Asistencia IA y la necesidad de mantener revisión humana. También subraya que la solución no sustituye al funcionario ni a la revisión jurídica."}, {"id": "p-trazabilidad", "type": "press", "category": "Prensa", "format": "Prensa", "product": "Seguridad", "title": "SmartLicit en prensa: automatización, trazabilidad y cumplimiento institucional", "subtitle": "Diario Tecnología Hoy aborda el valor de la evidencia.", "date": "18 abr 2026", "read": "Prensa", "author": "Diario Tecnología Hoy", "status": "Publicada", "featured": false, "excerpt": "La publicación destaca la importancia de bitácoras, permisos y evidencia en flujos asistidos por IA.", "quote": "“En procesos sensibles, la trazabilidad es tan importante como la automatización.”", "body": "Diario Tecnología Hoy publicó una nota sobre la forma en que SmartLicit combina automatización con trazabilidad. La pieza destaca que los flujos de Asistencia IA deben registrar sugerencias, decisiones, cambios y fuentes. También se menciona el papel de Mi Cuenta como centro de permisos, billing, eFiles y auditoría. La cobertura enfatiza que SmartLicit no busca eliminar responsabilidad humana, sino reducir trabajo repetitivo y mejorar evidencia operativa en procesos profesionales complejos."}, {"id": "p-radio-ia", "type": "press", "category": "Radio", "format": "Radio", "product": "Asistencia IA", "title": "Programa de radio analiza el valor de Asistencia IA para equipos profesionales", "subtitle": "Conversación sobre IA práctica y límites claros.", "date": "17 abr 2026", "read": "Radio", "author": "Radio Innovación 98.1", "status": "Generada IA", "featured": false, "excerpt": "La entrevista explica cómo Asistencia IA puede sugerir, revisar y ordenar sin aprobar ni sustituir criterio.", "quote": "“La IA no debe decidir por el profesional; debe ayudarle a llegar con más información y orden.”", "body": "Un programa de Radio Innovación analizó el papel de Asistencia IA dentro de SmartLicit. La conversación se centró en usos concretos: detectar faltantes, generar borradores, revisar consistencia, sugerir redacción y explicar riesgos. También se insistió en los límites: la IA no aprueba procedimientos, no firma documentos y no sustituye revisión profesional. El enfoque fue práctico: usar IA para reducir fricción y aumentar claridad sin convertirla en una promesa absoluta."}, {"id": "p-documental", "type": "press", "category": "Prensa", "format": "Prensa", "product": "eFile", "title": "Reportaje sobre digitalización documental y control operativo", "subtitle": "Medio Negocios MX presenta el caso de eFile e Instant Files.", "date": "16 abr 2026", "read": "Prensa", "author": "Medio Negocios MX", "status": "Publicada", "featured": false, "excerpt": "El reportaje analiza por qué los documentos perecederos requieren actualización bajo demanda.", "quote": "“El expediente inteligente debe anticipar faltantes antes de que el plazo convierta el problema en urgencia.”", "body": "Medio Negocios MX publicó un reportaje sobre digitalización documental y control operativo en SmartLicit. El texto presenta eFile como una capa que ordena datos fiscales, legales, bancarios y de cumplimiento por entidad. También explica que Instant Files permite actualizar documentos disponibles bajo demanda, siempre con consentimiento y registro de consumo. El reportaje advierte que un documento actualizado no garantiza aceptación en cualquier procedimiento, pero sí reduce fricción y mejora trazabilidad."}, {"id": "p-tv-ecosistema", "type": "press", "category": "Televisión", "format": "Televisión", "product": "Ecosistema", "title": "Nota de televisión sobre SmartLicit como ecosistema de soluciones inteligentes", "subtitle": "Canal Empresa TV presenta el mapa de productos.", "date": "15 abr 2026", "read": "Televisión", "author": "Canal Empresa TV", "status": "Publicada", "featured": false, "excerpt": "La nota recorre Tender, Pricing, File, Lex, eFile, Tender Gov y Pricing Gov.", "quote": "“SmartLicit no se define por un solo producto, sino por una inteligencia aplicada a distintos problemas profesionales.”", "body": "Canal Empresa TV presentó una nota general sobre SmartLicit como ecosistema. La cobertura recorrió las soluciones Tender, Pricing, File, Lex, eFile, Tender Gov y Pricing Gov, explicando que cada una responde a un mercado y problema distinto. También se habló de planes, IPG y la importancia de usar nombres correctos para no confundir B2B, B2G y la capa documental. El segmento cerró con la frase institucional de SmartLicit: una sola inteligencia, múltiples soluciones."}];
+let items = [...initialItems];
+let state = { tab:'blog', filter:'Todos', query:'', sort:'recent', activeDetail:null, aux:null };
+
+const filters = ['Todos','Tender','Pricing','File','Lex','eFile','Tender Gov','Pricing Gov','Planes','IPG','Asistencia IA','Funcionalidades','Seguridad','Integraciones','Prensa','Radio','Televisión'];
+const productFilters = ['Tender','Pricing','File','Lex','eFile','Tender Gov','Pricing Gov','Planes','IPG'];
+const $ = (s)=>document.querySelector(s);
+const $$ = (s)=>Array.from(document.querySelectorAll(s));
+
+function toast(msg) {
+  const t = $('#toast'); t.textContent = msg; t.classList.add('active');
+  clearTimeout(window._toastTimer); window._toastTimer = setTimeout(()=>t.classList.remove('active'),2600);
+}
+function itemKind(item){ return item.type === 'press' ? 'press' : 'blog'; }
+function matchesFilter(item) {
+  if(state.filter === 'Todos') return true;
+  if(state.filter === 'Prensa') return item.type === 'press';
+  if(['Radio','Televisión'].includes(state.filter)) return item.format === state.filter;
+  return item.category === state.filter || item.product === state.filter || item.format === state.filter;
+}
+function currentItems() {
+  let arr = items.filter(i => itemKind(i) === state.tab);
+  arr = arr.filter(matchesFilter);
+  const q = state.query.trim().toLowerCase();
+  if(q) arr = arr.filter(i => [i.title,i.subtitle,i.excerpt,i.category,i.product,i.author,i.format].join(' ').toLowerCase().includes(q));
+  if(state.sort === 'az') arr.sort((a,b)=>a.title.localeCompare(b.title));
+  if(state.sort === 'featured') arr.sort((a,b)=>(b.featured===true)-(a.featured===true));
+  if(state.sort === 'popular') arr.sort((a,b)=>((b.title.length + b.excerpt.length) - (a.title.length + a.excerpt.length)));
+  return arr;
+}
+function updateKpis(){
+  $('#kpiBlog').textContent = items.filter(i=>i.type==='blog').length;
+  $('#kpiPress').textContent = items.filter(i=>i.type==='press').length;
+  $('#kpiAi').textContent = items.filter(i=>i.status === 'Generada IA').length + 10;
+  $('#kpiFeatured').textContent = items.filter(i=>i.featured).length;
+  $('#miniBlogCount').textContent = items.filter(i=>i.type==='blog').length;
+  $('#miniPressCount').textContent = items.filter(i=>i.type==='press').length;
+  $('#miniAiCount').textContent = items.filter(i=>i.status === 'Generada IA').length + 10;
+}
+function visualClass(item){
+  if(item.product && item.product.includes('Gov')) return 'gov';
+  if(item.product === 'eFile') return 'efile';
+  return '';
+}
+function markFor(item){
+  if(item.product && item.product.includes('Gov')) return '<span class="brand-mark gov"><span class="bolt-shape"></span></span>';
+  if(item.product === 'eFile') return '<span class="brand-mark efile"><span class="bolt-shape"></span></span>';
+  return '<span class="brand-mark"><span class="bolt-shape"></span></span>';
+}
+function renderFilters(){
+  $('#filters').innerHTML = filters.map(f=>`<button class="filter-chip ${state.filter===f?'active':''}" data-filter="${f}">${f}</button>`).join('');
+  $('#sideProducts').innerHTML = productFilters.map(f=>`<button class="filter-chip ${state.filter===f?'active':''}" data-filter="${f}">${f}</button>`).join('');
+  $$('[data-filter]').forEach(b=>b.addEventListener('click',()=>{state.filter=b.dataset.filter; state.aux=null; renderHub();}));
+}
+function renderFeatured(){
+  const pool = items.filter(i=>itemKind(i)===state.tab);
+  const item = pool.find(i=>i.featured) || pool[0];
+  if(!item) { $('#featuredContainer').innerHTML=''; return; }
+  $('#featuredContainer').innerHTML = `
+  <article class="hero-card">
+    <div class="article-visual ${visualClass(item)}">
+      <div>${markFor(item)}</div>
+      <div class="visual-label">${item.type==='press'?'Prensa destacada':'Entrada destacada'} · ${item.product || item.format}</div>
+    </div>
+    <div>
+      <div class="badges">
+        <span class="badge ${item.type==='press'?'press':'blog'}">${item.type==='press'?'Prensa':'Blog'}</span>
+        <span class="badge ${item.product==='eFile'?'efile':''}">${item.product || item.category}</span>
+        <span class="badge dark">${item.status}</span>
+      </div>
+      <h2 style="font-size:34px;letter-spacing:-.06em;line-height:1.05">${item.title}</h2>
+      <p style="margin-top:12px;color:var(--muted);font-size:16px;line-height:1.5">${item.subtitle}</p>
+      <p style="margin-top:10px;color:var(--muted)">${item.excerpt}</p>
+      <div class="card-meta"><span>${item.date}</span><span>${item.type==='press'?item.format:item.read}</span><span>${item.author}</span></div>
+      <div class="hero-actions">
+        <button class="btn primary" data-open="${item.id}">${item.type==='press'?'Ver nota':'Leer entrada'}</button>
+        <button class="btn" data-feature="${item.id}">Marcar destacada</button>
+      </div>
+    </div>
+  </article>`;
+}
+function renderCards(){
+  const arr = currentItems();
+  const grid = $('#cardsGrid');
+  $('#emptyState').classList.toggle('active', arr.length===0);
+  grid.innerHTML = arr.map(item => `
+    <article class="article-card">
+      <div class="card-visual ${visualClass(item)}">
+        <div class="visual-label" style="font-size:11px;color:var(--muted);font-weight:950;text-transform:uppercase;letter-spacing:.08em">${item.category}</div>
+        ${markFor(item)}
+      </div>
+      <div class="badges">
+        <span class="badge ${item.type==='press'?'press':'blog'}">${item.type==='press'?'Prensa':'Blog'}</span>
+        <span class="badge ${item.product==='eFile'?'efile':''}">${item.product || item.format}</span>
+        <span class="badge">${item.status}</span>
+      </div>
+      <h3>${item.title}</h3>
+      <p>${item.excerpt}</p>
+      <div class="card-meta"><span>${item.date}</span><span>${item.type==='press'?item.format:item.read}</span><span>${item.author}</span></div>
+      <div class="card-actions">
+        <button class="btn slim primary" data-open="${item.id}">${item.type==='press'?'Ver nota':'Leer entrada'}</button>
+        <button class="btn slim" data-copy="${item.id}">Copiar</button>
+        <button class="btn slim" data-feature="${item.id}">Destacar</button>
+      </div>
+    </article>
+  `).join('');
+  bindDynamicButtons();
+}
+function bindDynamicButtons(){
+  $$('[data-open]').forEach(b=>b.addEventListener('click',()=>openDetail(b.dataset.open)));
+  $$('[data-copy]').forEach(b=>b.addEventListener('click',()=>{
+    navigator.clipboard?.writeText(location.origin+location.pathname+'#detalle/'+b.dataset.copy);
+    toast('Enlace copiado.');
+  }));
+  $$('[data-feature]').forEach(b=>b.addEventListener('click',()=>{
+    items.forEach(i=>{ if(itemKind(i)===state.tab) i.featured = i.id===b.dataset.feature; });
+    toast('Entrada marcada como destacada.');
+    renderHub();
+  }));
+}
+function renderAux(){
+  const aux = $('#auxPanel');
+  if(!state.aux) { aux.classList.remove('active'); aux.innerHTML=''; return; }
+  aux.classList.add('active');
+  if(state.aux==='categories') {
+    const cats = [...new Set(items.map(i=>i.category))];
+    aux.innerHTML = `<div class="card"><h2>Categorías editoriales</h2><p>Explora el ecosistema por producto, formato y función.</p><div class="filters">${cats.map(c=>`<button class="filter-chip" data-filter="${c}">${c}</button>`).join('')}</div></div>`;
+    aux.querySelectorAll('[data-filter]').forEach(b=>b.addEventListener('click',()=>{state.filter=b.dataset.filter;state.aux=null;renderHub();}));
+  }
+  if(state.aux==='archive') {
+    const rows = items.map(i=>`<tr><td>${i.date}</td><td>${i.type==='press'?'Prensa':'Blog'}</td><td>${i.title}</td><td>${i.product || i.format}</td><td>${i.status}</td><td><button class="btn slim" data-open="${i.id}">Abrir</button></td></tr>`).join('');
+    aux.innerHTML = `<div class="card"><h2>Archivo editorial</h2><p>Vista de tabla para revisar publicaciones y apariciones.</p></div><table class="archive-table"><thead><tr><th>Fecha</th><th>Tipo</th><th>Título</th><th>Categoría</th><th>Estado</th><th>Acción</th></tr></thead><tbody>${rows}</tbody></table>`;
+    aux.querySelectorAll('[data-open]').forEach(b=>b.addEventListener('click',()=>openDetail(b.dataset.open)));
+  }
+  if(state.aux==='related') {
+    const related = currentItems().slice(0,4);
+    aux.innerHTML = `<div class="card"><h2>Relacionadas sugeridas</h2><p>Entradas sugeridas con base en el tab y filtros activos.</p><div class="related-grid">${related.map(i=>`<button data-open="${i.id}" style="border:1px solid var(--line);border-radius:16px;background:#fff;padding:12px;text-align:left"><strong>${i.title}</strong><p style="margin-top:5px;color:var(--muted);font-size:12px">${i.excerpt}</p></button>`).join('')}</div></div>`;
+    aux.querySelectorAll('[data-open]').forEach(b=>b.addEventListener('click',()=>openDetail(b.dataset.open)));
+  }
+}
+function renderHub(){
+  updateKpis();
+  renderFilters();
+  renderFeatured();
+  renderAux();
+  renderCards();
+  $$('.tab').forEach(t=>t.classList.toggle('active',t.dataset.tab===state.tab));
+  $('#hubView').style.display='block';
+  $('#detailView').classList.remove('active');
+}
+function renderDetail(item){
+  const articleText = item.type==='press' ? `<p>${item.body}</p><div class="quote">${item.quote || ''}</div>` : item.body.split('\n\n').map(p=>`<p>${p}</p>`).join('');
+  $('#detailArticle').innerHTML = `
+    <div class="detail-header">
+      <div class="badges">
+        <span class="badge ${item.type==='press'?'press':'blog'}">${item.type==='press'?'Prensa':'Blog'}</span>
+        <span class="badge">${item.product || item.format}</span>
+        <span class="badge dark">${item.status}</span>
+      </div>
+      <h1>${item.title}</h1>
+      <p class="lead">${item.subtitle}</p>
+      <div class="detail-meta"><span>${item.date}</span><span>${item.type==='press'?item.format:item.read}</span><span>${item.author}</span><span>${item.category}</span></div>
+    </div>
+    <div class="article-body">${articleText}</div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:24px">
+      <button class="btn primary" id="detailBackInline">Volver</button>
+      <button class="btn" id="detailCopyInline">Copiar enlace</button>
+      <button class="btn" id="detailShareInline">Compartir</button>
+      <button class="btn ${item.product==='eFile'?'efile':(item.product&&item.product.includes('Gov')?'gov':'accent')}">Ver más de ${item.product || item.category}</button>
+    </div>`;
+  const related = items.filter(i=>i.id!==item.id && (i.product===item.product || i.category===item.category)).slice(0,4);
+  $('#detailRelated').innerHTML = related.map(i=>`<button data-open="${i.id}" style="text-align:left;border:1px solid var(--line);background:#fff;border-radius:16px;padding:12px"><strong>${i.title}</strong><p style="color:var(--muted);font-size:12px;margin-top:5px">${i.date} · ${i.type==='press'?'Prensa':'Blog'}</p></button>`).join('') || '<p style="color:var(--muted)">Sin relacionadas.</p>';
+  $('#detailRelated').querySelectorAll('[data-open]').forEach(b=>b.addEventListener('click',()=>openDetail(b.dataset.open)));
+  $('#detailBackInline').addEventListener('click',backHome);
+  $('#detailCopyInline').addEventListener('click',copyCurrent);
+  $('#detailShareInline').addEventListener('click',()=>toast('Compartir simulado.'));
+}
+function openDetail(id){
+  const item = items.find(i=>i.id===id);
+  if(!item) return;
+  state.activeDetail = id;
+  $('#hubView').style.display='none';
+  $('#detailView').classList.add('active');
+  renderDetail(item);
+  history.pushState(null,'','#detalle/'+id);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function backHome(){
+  $('#detailView').classList.remove('active');
+  $('#hubView').style.display='block';
+  history.pushState(null,'','#'+(state.tab==='press'?'prensa-tab':'blog-tab'));
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function copyCurrent(){ navigator.clipboard?.writeText(location.href); toast('Enlace copiado.'); }
+function handleHash(){
+  const h = location.hash || '#blog-home';
+  if(h.startsWith('#detalle/')) { const id = h.split('/')[1]; if(id) openDetail(id); return; }
+  if(h==='#prensa-tab') { state.tab='press'; state.aux=null; renderHub(); }
+  else if(h==='#blog-tab' || h==='#blog-home') { state.tab='blog'; state.aux=null; renderHub(); }
+  else if(h==='#generador-ia') { renderHub(); openGenerator(); }
+  else if(h==='#categorias') { state.aux='categories'; renderHub(); }
+  else if(h==='#archivo') { state.aux='archive'; renderHub(); }
+  else if(h==='#relacionadas') { state.aux='related'; renderHub(); }
+  else if(h==='#destacados') { state.sort='featured'; $('#sortSelect').value='featured'; renderHub(); document.getElementById('featuredContainer').scrollIntoView({behavior:'smooth'}); }
+  else if(h==='#detalle' && state.activeDetail) openDetail(state.activeDetail);
+  else renderHub();
+}
+function openGenerator(){ $('#generatorModal').classList.add('active'); $('#genProgress').style.width='0'; $('#genProgressText').textContent='Listo para generar.'; }
+function closeGenerator(){ $('#generatorModal').classList.remove('active'); }
+function topicToProduct(topic){
+  if(topic === 'eFile') return 'eFile';
+  if(topic === 'Tender Gov') return 'Tender Gov';
+  if(topic === 'Pricing Gov') return 'Pricing Gov';
+  if(topic === 'Planes') return 'Planes';
+  if(topic === 'Seguridad') return 'Seguridad';
+  if(topic === 'Integraciones') return 'Integraciones';
+  if(topic === 'Asistencia IA') return 'Asistencia IA';
+  return 'Ecosistema';
+}
+function createAiItem(type, topic, tone, status){
+  const product = topicToProduct(topic);
+  const id = `ai-${type}-${Date.now()}`;
+  if(type === 'press'){
+    return {
+      id, type:'press', category: topic === 'Ecosistema' ? 'Prensa' : topic, format:'Prensa', product,
+      title:`SmartLicit en medios: ${topic} y evolución del ecosistema`,
+      subtitle:`Cobertura simulada con tono ${tone.toLowerCase()} sobre SmartLicit.`,
+      date:'Hoy', read:'Prensa', author:'Medio Demo IA', status, featured: status==='Destacada',
+      excerpt:`Nota generada con IA sobre ${topic}, conectada al ecosistema SmartLicit y sus soluciones.`,
+      quote:'“La clave de SmartLicit está en convertir complejidad profesional en flujos claros, accionables y trazables.”',
+      body:`Esta nota de prensa generada con IA resume la posición de SmartLicit frente al tema ${topic}. El enfoque muestra cómo la plataforma organiza información, automatiza trabajo repetitivo y mantiene límites claros frente a decisiones que requieren criterio humano. La cobertura explica que SmartLicit no es un producto aislado, sino una familia de soluciones que cubren oportunidades, pricing, documentación, trabajo legal y flujos Gov. La pieza también destaca que el contenido generado puede revisarse antes de publicarse y que la claridad de producto es parte de la confianza institucional.`
+    };
+  }
+  const body = [
+    `Esta entrada generada con IA aborda el tema ${topic} desde un enfoque ${tone.toLowerCase()} y lo conecta con la arquitectura de SmartLicit como una sola inteligencia con múltiples soluciones. La intención editorial es explicar el problema operativo, no vender humo ni prometer resultados que dependen de terceros.`,
+    `Dentro de SmartLicit, cada funcionalidad debe entenderse por su contexto. Tender ayuda a proveedores a analizar oportunidades existentes; Pricing aporta inteligencia de precios; File monitorea expedientes; Lex acelera trabajo jurídico; eFile ordena identidad documental; Tender Gov y Pricing Gov operan del lado institucional. Esa separación evita confundir mercados y mejora la navegación del usuario.`,
+    `La IA editorial puede ayudar a estructurar entradas, proponer títulos, generar extractos y ordenar ideas, pero cada publicación debe poder revisarse antes de publicarse. En un ecosistema profesional, la claridad es tan importante como la velocidad. Por eso los artículos deben explicar qué resuelve cada módulo, para quién, qué límites tiene y qué acciones concretas habilita.`,
+    `El resultado esperado es una pieza útil para usuarios, equipo comercial, producto y medios. El contenido debe funcionar como documentación viva: suficientemente claro para un prospecto, suficientemente técnico para un implementador y suficientemente prudente para comunicación institucional.`,
+    `SmartLicit convierte conocimiento de producto en una experiencia editorial navegable, trazable y alineada al sistema completo. Esta entrada es un ejemplo de cómo el hub puede crecer con IA sin perder tono, orden ni responsabilidad narrativa.`
+  ].join('\\n\\n');
+  return {
+    id, type:'blog', category: topic, product,
+    title:`${topic}: guía operativa dentro de SmartLicit`,
+    subtitle:`Entrada generada con IA en tono ${tone.toLowerCase()} para el hub editorial.`,
+    date:'Hoy', read:'6 min', author:'Equipo Editorial SmartLicit', status, featured: status==='Destacada',
+    excerpt:`Una guía generada con IA para explicar ${topic} dentro del ecosistema SmartLicit.`,
+    body
+  };
+}
+function generateEntry(){
+  const btn = $('#generateBtn');
+  btn.disabled = true;
+  const steps = ['Analizando ecosistema','Estructurando tema','Redactando extracto','Preparando ficha','Generando entrada'];
+  let i = 0;
+  $('#genProgress').style.width='0%';
+  $('#genProgressText').textContent=steps[0]+'…';
+  const interval = setInterval(()=>{
+    i++;
+    $('#genProgress').style.width = `${Math.min(i*25,100)}%`;
+    $('#genProgressText').textContent = (steps[i] || 'Entrada lista') + '…';
+    if(i>=4){
+      clearInterval(interval);
+      const newItem = createAiItem($('#genType').value, $('#genTopic').value, $('#genTone').value, $('#genStatus').value);
+      items.unshift(newItem);
+      state.tab = newItem.type === 'press' ? 'press' : 'blog';
+      state.filter = 'Todos';
+      state.query = '';
+      $('#searchInput').value = '';
+      btn.disabled = false;
+      closeGenerator();
+      renderHub();
+      history.pushState(null,'','#'+(state.tab==='press'?'prensa-tab':'blog-tab'));
+      toast('Entrada generada con IA y agregada al hub editorial.');
+    }
+  }, 420);
+}
+function bindStatic(){
+  $$('.tab').forEach(t=>t.addEventListener('click',()=>{
+    state.tab=t.dataset.tab; state.filter='Todos'; state.aux=null;
+    history.pushState(null,'','#'+(state.tab==='press'?'prensa-tab':'blog-tab'));
+    renderHub();
+  }));
+  $('#searchInput').addEventListener('input',e=>{state.query=e.target.value; renderHub();});
+  $('#globalSearch').addEventListener('input',e=>{state.query=e.target.value; $('#searchInput').value=e.target.value; renderHub();});
+  $('#sortSelect').addEventListener('change',e=>{state.sort=e.target.value; renderHub();});
+  $$('[data-open-generator]').forEach(b=>b.addEventListener('click',openGenerator));
+  $$('[data-hash]').forEach(b=>b.addEventListener('click',()=>{location.hash=b.dataset.hash;}));
+  $('#closeModal').addEventListener('click',closeGenerator);
+  $('#cancelGen').addEventListener('click',closeGenerator);
+  $('#generateBtn').addEventListener('click',generateEntry);
+  $('#generatorModal').addEventListener('click',e=>{ if(e.target.id==='generatorModal') closeGenerator(); });
+  $('#mobileMenu').addEventListener('click',()=>$('#siteNav').classList.toggle('open'));
+  $('#backBtn').addEventListener('click',backHome);
+  $('#copyBtn').addEventListener('click',copyCurrent);
+  $('#shareBtn').addEventListener('click',()=>toast('Compartir simulado.'));
+  $('#moreRelatedBtn').addEventListener('click',()=>{backHome(); state.aux='related'; renderHub();});
+  window.addEventListener('hashchange',handleHash);
+}
+bindStatic();
+handleHash();
+</script>
+
+<footer class="slx-global-footer" aria-label="Footer SmartLicit">
+  <div class="slx-footer-container">
+    <div class="slx-footer-grid">
+      <div>
+        <div class="slx-footer-brand"><span class="slx-footer-mark" aria-hidden="true"><span>⚡</span></span><span>SmartLicit</span></div>
+        <p style="margin-top:14px;max-width:320px">Una sola inteligencia, múltiples soluciones para resolver trabajo profesional complejo.</p>
+      </div>
+      <div><h4>Soluciones</h4><a class="slx-footer-product" href="../tender.html" target="_top"><span>⚡</span> Tender</a><a class="slx-footer-product" href="../pricing.html" target="_top"><span>⚡</span> Pricing</a><a class="slx-footer-product" href="../file.html" target="_top"><span>⚡</span> File</a><a class="slx-footer-product" href="../lex.html" target="_top"><span>⚡</span> Lex</a></div>
+      <div><h4>Gobierno</h4><a class="slx-footer-gov" href="../tender-gov.html" target="_top"><span>⚡</span> Tender Gov</a><a class="slx-footer-gov" href="../pricing-gov.html" target="_top"><span>⚡</span> Pricing Gov</a><a href="../ipg.html" target="_top">IPG</a></div>
+      <div><h4>Plataforma</h4><a class="slx-footer-efile" href="../efile.html" target="_top"><span>⚡</span> eFile</a><a href="../planes.html" target="_top">Planes</a><a href="../blog.html" target="_top">Blog</a><a href="../mi-cuenta.html" target="_top">Mi Cuenta</a></div>
+      <div><h4>Workspace</h4><a class="slx-footer-drive" href="../gDrive.html" target="_top"><span>▰</span> Google Drive Workspace</a><a href="../mi-cuenta.html#facturacion" target="_top">Facturación</a><a href="../planes.html#tokens" target="_top">Tokens</a><a href="../mi-cuenta.html#integraciones" target="_top">Integraciones</a></div>
+    </div>
+    <div class="slx-footer-bottom"><span>© SmartLicit</span><span>Minimal premium · trazable · accionable.</span></div>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,2153 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Smart File · SmartLicit</title>
+<meta name="description" content="Dashboard operativo navegable de Smart File para SmartLicit" />
+<style>
+:root{
+  --lime:#B5F857;
+  --ink:#041912;
+  --green:#04560C;
+  --action:#1A990F;
+  --green-mid:#81C91C;
+  --success:#62CD4D;
+  --bg:#F9F8F3;
+  --surface:#FFFFFF;
+  --surface-soft:#FBFAF6;
+  --warm:#EBEAE5;
+  --warm-2:#CDCABF;
+  --muted:#66736D;
+  --muted-2:#8A948F;
+  --line:rgba(4,25,18,.10);
+  --line-2:rgba(4,25,18,.16);
+  --blue:#5462E2;
+  --blue-soft:#BBC0F3;
+  --efile:#8189DD;
+  --efile-2:#8B9BF7;
+  --efile-soft:#DDDFF9;
+  --yellow:#F7BA14;
+  --orange:#F77214;
+  --red:#C62118;
+  --coral:#F7645C;
+  --shadow:0 18px 46px rgba(4,25,18,.06);
+  --shadow-soft:0 8px 20px rgba(4,25,18,.045);
+  --header:72px;
+  --side:286px;
+  --radius:20px;
+  --radius-sm:14px;
+  --font:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  color:var(--ink);
+  background:
+    radial-gradient(circle at 84% 8%, rgba(181,248,87,.12), transparent 26rem),
+    radial-gradient(circle at 8% 92%, rgba(129,137,221,.14), transparent 28rem),
+    var(--bg);
+  font-family:var(--font);
+  letter-spacing:-.012em;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:geometricPrecision;
+}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+a{color:inherit;text-decoration:none}
+.hidden{display:none!important}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+
+.ico{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.bolt-svg{width:16px;height:16px;fill:currentColor;flex:none}
+.brand-mark{
+  --mark-bg:var(--ink);
+  --mark-bolt:var(--lime);
+  width:36px;
+  height:36px;
+  display:inline-grid;
+  place-items:center;
+  position:relative;
+  flex:0 0 auto;
+  color:var(--mark-bolt);
+}
+.brand-mark:before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:var(--mark-bg);
+  clip-path:polygon(50% 0%,61% 32%,100% 50%,61% 68%,50% 100%,39% 68%,0% 50%,39% 32%);
+}
+.brand-mark .bolt-shape{
+  width:15px;
+  height:22px;
+  position:relative;
+  z-index:1;
+  background:var(--mark-bolt);
+  clip-path:polygon(62% 0%,20% 52%,48% 52%,37% 100%,84% 38%,56% 38%);
+}
+.brand-mark.green{--mark-bg:var(--green);--mark-bolt:var(--lime)}
+.brand-mark.efile{--mark-bg:#060517;--mark-bolt:var(--efile-2)}
+.brand-mark.gov{--mark-bg:var(--red);--mark-bolt:#FFB4B0}
+.brand-mark.pricing-gov{--mark-bg:var(--coral);--mark-bolt:var(--ink)}
+.brand-mark.small{width:26px;height:26px}
+.brand-mark.small .bolt-shape{width:11px;height:16px}
+
+.topbar{
+  height:var(--header);
+  position:fixed;
+  inset:0 0 auto 0;
+  z-index:80;
+  display:flex;
+  align-items:center;
+  gap:14px;
+  padding:0 22px;
+  background:rgba(255,255,255,.91);
+  backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--line);
+}
+.mobile-toggle{
+  display:none;
+  width:40px;
+  height:40px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:#fff;
+  color:var(--ink);
+}
+.brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-weight:840;
+  font-size:19px;
+  letter-spacing:-.035em;
+  white-space:nowrap;
+}
+.topnav{
+  display:flex;
+  align-items:center;
+  gap:3px;
+  margin-left:10px;
+}
+.topnav a{
+  font-size:13px;
+  font-weight:770;
+  color:var(--muted);
+  padding:8px 10px;
+  border-radius:999px;
+  border:1px solid transparent;
+}
+.topnav a:hover{background:#F6F5F0;color:var(--ink);border-color:var(--line)}
+.topnav a.active{
+  background:rgba(181,248,87,.38);
+  border-color:rgba(4,86,12,.14);
+  color:var(--green);
+}
+.solution-pill{
+  height:38px;
+  border:1px solid rgba(4,86,12,.22);
+  border-radius:999px;
+  background:#fff;
+  color:var(--green);
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:0 12px;
+  font-weight:870;
+  font-size:12.5px;
+  white-space:nowrap;
+}
+.search{
+  position:relative;
+  flex:1;
+  min-width:260px;
+  max-width:680px;
+  margin-left:auto;
+}
+.search .ico{
+  position:absolute;
+  left:14px;
+  top:50%;
+  transform:translateY(-50%);
+  color:var(--muted);
+}
+.search input{
+  width:100%;
+  height:42px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  background:#FBFBF8;
+  outline:0;
+  padding:0 16px 0 42px;
+  font-size:13px;
+  color:var(--ink);
+}
+.search input:focus{
+  border-color:rgba(26,153,15,.32);
+  box-shadow:0 0 0 4px rgba(181,248,87,.20);
+  background:#fff;
+}
+.topstatus{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-left:2px;
+}
+.pill{
+  height:32px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  background:#fff;
+  color:var(--muted);
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  padding:0 10px;
+  font-size:11.5px;
+  font-weight:850;
+  white-space:nowrap;
+}
+.pill.file{
+  background:rgba(181,248,87,.26);
+  border-color:rgba(4,86,12,.18);
+  color:var(--green);
+}
+.pill.efile{
+  background:rgba(221,223,249,.62);
+  border-color:rgba(129,137,221,.22);
+  color:#080353;
+}
+.dot{
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:var(--action);
+  display:inline-block;
+}
+.bell,.acct{
+  height:40px;
+  border:1px solid var(--line);
+  background:#fff;
+  color:var(--muted);
+  display:grid;
+  place-items:center;
+  position:relative;
+}
+.bell{width:40px;border-radius:14px}
+.bell:after{
+  content:"";
+  position:absolute;
+  right:9px;
+  top:9px;
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:var(--orange);
+  border:1px solid #fff;
+}
+.acct{
+  display:flex;
+  gap:8px;
+  align-items:center;
+  border-radius:999px;
+  padding:0 10px 0 6px;
+  color:var(--ink);
+  font-size:13px;
+  font-weight:840;
+}
+.avatar{
+  width:28px;
+  height:28px;
+  border-radius:50%;
+  background:var(--ink);
+  color:#fff;
+  display:grid;
+  place-items:center;
+  font-size:11px;
+  font-weight:950;
+}
+
+.sidebar{
+  position:fixed;
+  top:var(--header);
+  left:0;
+  bottom:0;
+  width:var(--side);
+  z-index:60;
+  background:rgba(255,255,255,.89);
+  backdrop-filter:blur(18px);
+  border-right:1px solid var(--line);
+  padding:18px 13px;
+  overflow:auto;
+}
+.sidehead{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  align-items:flex-start;
+  padding:0 8px 15px;
+}
+.sidehead span{
+  display:block;
+  font-size:11px;
+  color:var(--green);
+  font-weight:950;
+  text-transform:uppercase;
+  letter-spacing:.1em;
+}
+.sidehead strong{
+  display:block;
+  margin-top:4px;
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.3;
+}
+.collapse{
+  width:32px;
+  height:32px;
+  border:1px solid var(--line);
+  border-radius:11px;
+  background:#fff;
+  color:var(--muted);
+}
+.side-nav{display:grid;gap:4px}
+.side-nav button{
+  width:100%;
+  border:0;
+  background:transparent;
+  color:var(--muted);
+  display:flex;
+  align-items:center;
+  gap:10px;
+  text-align:left;
+  border-radius:14px;
+  padding:10px 11px;
+  font-size:13px;
+  font-weight:790;
+  position:relative;
+}
+.side-nav button:hover{background:#F4F3EE;color:var(--ink)}
+.side-nav button.active{
+  background:rgba(181,248,87,.38);
+  color:var(--green);
+}
+.side-nav button.active:before{
+  content:"";
+  position:absolute;
+  left:0;
+  top:10px;
+  bottom:10px;
+  width:3px;
+  border-radius:999px;
+  background:var(--action);
+}
+.nav-count{
+  margin-left:auto;
+  min-width:22px;
+  height:21px;
+  border-radius:999px;
+  background:#F2F2EE;
+  color:var(--muted);
+  display:grid;
+  place-items:center;
+  font-size:10.5px;
+  font-weight:950;
+}
+.side-section-title{
+  margin:20px 8px 8px;
+  color:var(--muted-2);
+  font-size:10.5px;
+  text-transform:uppercase;
+  letter-spacing:.09em;
+  font-weight:950;
+}
+.sidecard{
+  margin:18px 2px 0;
+  padding:14px;
+  background:#FBFBF8;
+  border:1px solid var(--line);
+  border-radius:18px;
+}
+.sidecard h4{margin:0 0 9px;font-size:13px}
+.planrow{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  padding:8px 0;
+  border-top:1px solid var(--line);
+  font-size:12px;
+  color:var(--muted);
+}
+.planrow strong{color:var(--ink)}
+.progress-line{
+  height:8px;
+  background:#F0EFE9;
+  border-radius:999px;
+  overflow:hidden;
+  margin-top:10px;
+}
+.progress-line span{
+  display:block;
+  height:100%;
+  width:72%;
+  background:var(--lime);
+  border-radius:inherit;
+}
+
+.main{
+  margin-left:var(--side);
+  padding:96px 28px 46px;
+  min-height:100vh;
+}
+.content-max{max-width:1440px;margin:0 auto}
+.view{display:none}
+.view.active{display:block}
+.head{
+  display:flex;
+  justify-content:space-between;
+  gap:18px;
+  align-items:flex-start;
+  margin-bottom:16px;
+}
+.crumb{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  color:var(--green);
+  font-size:11px;
+  font-weight:950;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  margin-bottom:8px;
+}
+.spark{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:var(--lime);
+  box-shadow:0 0 0 3px rgba(181,248,87,.28);
+}
+h1,h2,h3,p{margin:0}
+h1{
+  font-size:clamp(28px,2.7vw,38px);
+  line-height:1.08;
+  letter-spacing:-.055em;
+  font-weight:850;
+}
+.lead{
+  margin:9px 0 0;
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.55;
+  max-width:780px;
+}
+.actions-head{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+}
+.btn{
+  min-height:38px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:#fff;
+  color:var(--ink);
+  padding:0 12px;
+  display:inline-flex;
+  gap:8px;
+  align-items:center;
+  justify-content:center;
+  font-size:12.5px;
+  font-weight:870;
+  text-decoration:none;
+  white-space:nowrap;
+}
+.btn:hover{
+  border-color:rgba(4,25,18,.24);
+  box-shadow:var(--shadow-soft);
+  transform:translateY(-1px);
+}
+.btn.primary{background:var(--ink);border-color:var(--ink);color:#fff}
+.btn.primary .bolt-svg{color:var(--lime)}
+.btn.soft{
+  background:rgba(181,248,87,.24);
+  border-color:rgba(4,86,12,.18);
+  color:var(--green);
+}
+.btn.efile{
+  background:rgba(221,223,249,.62);
+  border-color:rgba(129,137,221,.22);
+  color:#080353;
+}
+.btn.ghost{background:transparent}
+.btn.slim{min-height:32px;border-radius:10px;font-size:11.5px;padding:0 9px}
+.btn.good{background:rgba(26,153,15,.08);border-color:rgba(26,153,15,.18);color:var(--green)}
+.btn.warn{background:rgba(247,186,20,.13);border-color:rgba(247,186,20,.22);color:#7A5200}
+.btn.danger{background:rgba(198,33,24,.08);border-color:rgba(198,33,24,.18);color:var(--red)}
+
+.kpis{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:12px;
+  margin-bottom:14px;
+}
+.kpi,.card,.table-card{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow-soft);
+}
+.kpi{
+  padding:15px;
+  min-height:126px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+}
+.ktop{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  align-items:center;
+}
+.kpi h3{
+  color:var(--muted);
+  font-size:11.5px;
+  font-weight:950;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+}
+.kicon{
+  width:32px;
+  height:32px;
+  border-radius:12px;
+  background:rgba(181,248,87,.28);
+  color:var(--green);
+  display:grid;
+  place-items:center;
+}
+.kicon.warn{background:rgba(247,186,20,.13);color:#7A5200}
+.kicon.danger{background:rgba(198,33,24,.08);color:var(--red)}
+.kicon.efile{background:rgba(221,223,249,.62);color:#080353}
+.num{
+  font-size:30px;
+  font-weight:950;
+  letter-spacing:-.06em;
+  margin-top:10px;
+}
+.kpi p{
+  margin-top:4px;
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.35;
+}
+.trend{
+  align-self:flex-start;
+  border:1px solid rgba(26,153,15,.18);
+  background:rgba(26,153,15,.08);
+  color:var(--green);
+  border-radius:999px;
+  padding:4px 8px;
+  font-size:10.5px;
+  font-weight:950;
+  margin-top:10px;
+}
+.trend.warn{border-color:rgba(247,186,20,.24);background:rgba(247,186,20,.12);color:#7A5200}
+.trend.danger{border-color:rgba(198,33,24,.18);background:rgba(198,33,24,.07);color:var(--red)}
+.trend.efile{border-color:rgba(129,137,221,.22);background:rgba(221,223,249,.62);color:#080353}
+
+.grid-2{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(320px,.75fr);gap:14px}
+.dashboard-grid{align-items:start}
+.dashboard-grid>.dashboard-main-col,.dashboard-grid>.dashboard-side-col{min-width:0}
+.dashboard-main-col .grid-2,.dashboard-main-col .table-wrap,.dashboard-main-col .card{min-width:0;max-width:100%}
+.dashboard-side-col{min-width:0;align-self:start;align-content:start;position:relative;z-index:0}
+.dashboard-side-col .card{position:relative;z-index:0}
+.grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.grid-4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.stack{display:grid;gap:12px}
+.card{padding:16px}
+.card-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:14px;
+  margin-bottom:12px;
+}
+.card h2{font-size:18px;letter-spacing:-.035em}
+.card h3{font-size:15px;letter-spacing:-.025em}
+.card p{
+  color:var(--muted);
+  font-size:12.5px;
+  line-height:1.45;
+  margin-top:5px;
+}
+.section-label{
+  color:var(--muted-2);
+  font-size:10.5px;
+  text-transform:uppercase;
+  letter-spacing:.09em;
+  font-weight:950;
+  margin-bottom:8px;
+}
+.microcopy{color:var(--muted);font-size:12px;line-height:1.45}
+.divider{height:1px;background:var(--line);margin:14px 0}
+
+.badge{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  border-radius:999px;
+  padding:5px 8px;
+  font-size:11px;
+  font-weight:950;
+  white-space:nowrap;
+  border:1px solid var(--line);
+  background:#F7F6F1;
+  color:var(--muted);
+}
+.badge.p0,.badge.critical{background:rgba(198,33,24,.08);color:var(--red);border-color:rgba(198,33,24,.18)}
+.badge.p1{background:rgba(247,114,20,.11);color:#8B3E00;border-color:rgba(247,114,20,.20)}
+.badge.p2{background:rgba(84,98,226,.08);color:#2534A8;border-color:rgba(84,98,226,.18)}
+.badge.warn{background:rgba(247,186,20,.13);color:#7A5200;border-color:rgba(247,186,20,.22)}
+.badge.good,.badge.active{background:rgba(26,153,15,.08);color:var(--green);border-color:rgba(26,153,15,.18)}
+.badge.efile{background:rgba(221,223,249,.62);color:#080353;border-color:rgba(129,137,221,.22)}
+.badge.dark{background:var(--ink);color:#fff;border-color:var(--ink)}
+.badge.wa-active{background:rgba(26,153,15,.08);color:var(--green);border-color:rgba(26,153,15,.18)}
+.badge.wa-only{background:rgba(247,186,20,.13);color:#7A5200;border-color:rgba(247,186,20,.22)}
+.badge.wa-pending{background:rgba(84,98,226,.08);color:#2534A8;border-color:rgba(84,98,226,.18)}
+.badge.wa-muted{background:#F1F1ED;color:var(--muted);border-color:var(--line)}
+
+.table-wrap{
+  overflow:auto;
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:22px;
+  box-shadow:var(--shadow-soft);
+}
+table{width:100%;border-collapse:collapse;min-width:980px}
+th,td{
+  padding:13px 14px;
+  border-bottom:1px solid rgba(4,25,18,.07);
+  text-align:left;
+  font-size:12.5px;
+  vertical-align:middle;
+}
+th{
+  color:var(--muted);
+  font-size:10.5px;
+  text-transform:uppercase;
+  letter-spacing:.07em;
+  font-weight:950;
+  background:#FBFBF8;
+}
+tr:last-child td{border-bottom:0}
+tbody tr:hover{background:#FCFCFA}
+.project-name{font-weight:900;font-size:13.5px;line-height:1.25}
+.sub{
+  display:flex;
+  gap:7px;
+  flex-wrap:wrap;
+  margin-top:5px;
+  color:var(--muted);
+  font-size:11.5px;
+  font-weight:680;
+}
+.cell-muted{color:var(--muted)}
+.row-actions{display:flex;gap:6px;justify-content:flex-end}
+
+.filters{
+  display:grid;
+  grid-template-columns:1.4fr repeat(4,minmax(120px,1fr)) auto;
+  gap:8px;
+  align-items:end;
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:12px;
+  box-shadow:var(--shadow-soft);
+  margin-bottom:14px;
+}
+.field label{
+  display:block;
+  font-size:10.5px;
+  color:var(--muted);
+  font-weight:950;
+  text-transform:uppercase;
+  letter-spacing:.07em;
+  margin-bottom:5px;
+}
+.control{
+  width:100%;
+  height:38px;
+  border:1px solid var(--line);
+  background:#FBFBF8;
+  border-radius:12px;
+  padding:0 10px;
+  outline:0;
+  color:var(--ink);
+  font-size:12.5px;
+}
+textarea.control{height:auto;min-height:88px;padding:10px;resize:vertical}
+.control:focus,textarea:focus{
+  border-color:rgba(26,153,15,.32);
+  box-shadow:0 0 0 3px rgba(181,248,87,.22);
+  background:#fff;
+}
+.filter-chips{
+  display:flex;
+  gap:7px;
+  flex-wrap:wrap;
+}
+.chip{
+  height:31px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  background:#fff;
+  color:var(--muted);
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:0 10px;
+  font-size:11.5px;
+  font-weight:870;
+}
+.chip.active,.chip:hover{
+  background:rgba(181,248,87,.24);
+  border-color:rgba(4,86,12,.16);
+  color:var(--green);
+}
+.chip.danger.active,.chip.danger:hover{
+  background:rgba(198,33,24,.08);
+  border-color:rgba(198,33,24,.18);
+  color:var(--red);
+}
+.chip.efile.active,.chip.efile:hover{
+  background:rgba(221,223,249,.62);
+  border-color:rgba(129,137,221,.22);
+  color:#080353;
+}
+
+.activity-list{display:grid;gap:10px}
+.activity{
+  display:grid;
+  grid-template-columns:64px 1fr;
+  gap:10px;
+  padding:11px;
+  border:1px solid var(--line);
+  border-radius:16px;
+  background:#FBFBF8;
+}
+.activity time{font-size:11px;color:var(--green);font-weight:950}
+.activity strong{display:block;font-size:12.6px}
+.activity span{display:block;margin-top:4px;color:var(--muted);font-size:11.7px;line-height:1.35}
+
+.status-bars{display:grid;gap:10px}
+.status-line{
+  display:grid;
+  grid-template-columns:52px 1fr 34px;
+  align-items:center;
+  gap:10px;
+  font-size:12px;
+  color:var(--muted);
+  font-weight:850;
+}
+.bar{
+  height:9px;
+  border-radius:999px;
+  background:#F0EFEA;
+  overflow:hidden;
+}
+.bar span{display:block;height:100%;border-radius:inherit;background:var(--lime)}
+.bar.p0 span{background:var(--red)}
+.bar.p1 span{background:var(--orange)}
+.bar.p2 span{background:var(--blue-soft)}
+.status-cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.status-card{
+  border:1px solid var(--line);
+  border-radius:18px;
+  background:#fff;
+  padding:14px;
+}
+.status-card strong{display:block;font-size:13px}
+.status-card span{display:block;color:var(--muted);font-size:12px;margin-top:6px;line-height:1.35}
+.status-dot{width:10px;height:10px;border-radius:50%;display:inline-block;margin-right:7px}
+.status-dot.green{background:var(--action)}
+.status-dot.yellow{background:var(--yellow)}
+.status-dot.orange{background:var(--orange)}
+.status-dot.red{background:var(--red)}
+
+.route-cards{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.route-card{
+  border:1px solid var(--line);
+  background:#fff;
+  border-radius:24px;
+  padding:18px;
+  min-height:330px;
+  box-shadow:var(--shadow-soft);
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+}
+.dropzone{
+  min-height:142px;
+  border:1.5px dashed rgba(4,86,12,.30);
+  background:rgba(181,248,87,.07);
+  border-radius:22px;
+  display:grid;
+  place-items:center;
+  text-align:center;
+  padding:26px;
+  margin:14px 0;
+}
+.dropzone h3{font-size:17px}
+.dropzone p{max-width:420px;margin:8px auto 0}
+.step-list{display:grid;gap:9px;margin:14px 0}
+.step-line{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  color:var(--muted);
+  font-size:12.5px;
+  font-weight:800;
+}
+.step-no{
+  width:28px;
+  height:28px;
+  border-radius:11px;
+  background:rgba(181,248,87,.26);
+  color:var(--green);
+  display:grid;
+  place-items:center;
+  font-size:11px;
+  font-weight:950;
+}
+.decision{
+  margin-top:14px;
+  border:1px solid var(--line);
+  background:#FBFBF8;
+  border-radius:20px;
+  padding:16px;
+}
+.decision-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px}
+.decision ul{margin:0;padding-left:18px;color:var(--muted);font-size:12.5px;line-height:1.55}
+
+.extract-grid{
+  display:grid;
+  grid-template-columns:1fr 1.1fr;
+  gap:14px;
+}
+.doc-preview{
+  min-height:420px;
+  border:1px solid var(--line);
+  border-radius:24px;
+  background:
+    linear-gradient(180deg,rgba(181,248,87,.10),transparent 30%),
+    #fff;
+  box-shadow:var(--shadow-soft);
+  padding:18px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+}
+.doc-paper{
+  border:1px solid var(--line);
+  border-radius:18px;
+  background:#FBFBF8;
+  padding:16px;
+  min-height:260px;
+}
+.doc-line{height:9px;background:#E9E8E1;border-radius:999px;margin:12px 0}
+.doc-line.short{width:66%}
+.doc-line.mid{width:82%}
+.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.form-card{
+  border:1px solid var(--line);
+  border-radius:16px;
+  background:#FBFBF8;
+  padding:12px;
+}
+.form-card span{
+  display:block;
+  color:var(--muted);
+  font-size:10.5px;
+  text-transform:uppercase;
+  letter-spacing:.07em;
+  font-weight:950;
+}
+.form-card strong{
+  display:block;
+  margin-top:6px;
+  font-size:13px;
+  line-height:1.35;
+}
+
+.stepper{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px;
+  margin-bottom:14px;
+}
+.step-pill{
+  border:1px solid var(--line);
+  border-radius:17px;
+  background:#fff;
+  padding:13px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.step-pill .n{
+  width:28px;
+  height:28px;
+  border-radius:11px;
+  background:#F3F2ED;
+  color:var(--muted);
+  display:grid;
+  place-items:center;
+  font-weight:950;
+  font-size:12px;
+}
+.step-pill.active{
+  border-color:rgba(4,86,12,.20);
+  background:rgba(181,248,87,.18);
+}
+.step-pill.active .n{background:var(--ink);color:#fff}
+.step-pill.done .n{background:rgba(26,153,15,.10);color:var(--green)}
+.step-pill strong{font-size:12.8px}
+.wizard-panel{display:none}
+.wizard-panel.active{display:block}
+.wizard-shell{
+  display:grid;
+  grid-template-columns:minmax(0,1.2fr) minmax(300px,.8fr);
+  gap:14px;
+}
+.validation-list{display:grid;gap:8px}
+.validation-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:#FBFBF8;
+  padding:10px 12px;
+  font-size:12.5px;
+}
+.validation-row strong{font-size:12.5px}
+.check-dot{
+  width:18px;
+  height:18px;
+  border-radius:50%;
+  background:rgba(26,153,15,.10);
+  color:var(--green);
+  display:grid;
+  place-items:center;
+  font-size:12px;
+  font-weight:950;
+}
+
+.confirm-grid{display:grid;grid-template-columns:.95fr 1.05fr;gap:14px}
+.result-box{
+  border:1px solid rgba(26,153,15,.18);
+  background:rgba(26,153,15,.06);
+  border-radius:22px;
+  padding:16px;
+}
+.result-box .ok-mark{
+  width:46px;
+  height:46px;
+  border-radius:16px;
+  background:rgba(26,153,15,.12);
+  color:var(--green);
+  display:grid;
+  place-items:center;
+  font-weight:950;
+  font-size:21px;
+  margin-bottom:12px;
+}
+.result-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}
+.notice{
+  border:1px solid rgba(247,186,20,.24);
+  background:rgba(247,186,20,.12);
+  border-radius:16px;
+  padding:12px;
+  font-size:12.5px;
+  color:#6B4800;
+  line-height:1.45;
+  margin-top:12px;
+}
+
+.project-header{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:24px;
+  padding:16px;
+  box-shadow:var(--shadow-soft);
+  margin-bottom:14px;
+}
+.project-top{
+  display:flex;
+  justify-content:space-between;
+  gap:16px;
+  align-items:flex-start;
+}
+.project-title h1{font-size:30px}
+.project-meta{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
+.project-tabs{
+  display:flex;
+  gap:5px;
+  overflow:auto;
+  padding:12px 0 0;
+  margin-top:12px;
+  border-top:1px solid var(--line);
+}
+.project-tabs button{
+  border:0;
+  background:transparent;
+  color:var(--muted);
+  border-radius:11px;
+  padding:9px 10px;
+  font-size:12px;
+  font-weight:870;
+  white-space:nowrap;
+}
+.project-tabs button.active{background:rgba(181,248,87,.22);color:var(--green)}
+.project-tab{display:none}
+.project-tab.active{display:block}
+.detail-shell{
+  display:grid;
+  grid-template-columns:minmax(0,1.15fr) minmax(300px,.72fr);
+  gap:14px;
+}
+.timeline{
+  position:relative;
+  display:grid;
+  gap:12px;
+}
+.timeline:before{
+  content:"";
+  position:absolute;
+  left:48px;
+  top:8px;
+  bottom:8px;
+  width:1px;
+  background:var(--line);
+}
+.time-item{
+  display:grid;
+  grid-template-columns:70px 1fr;
+  gap:14px;
+  position:relative;
+}
+.time-item time{
+  font-size:11px;
+  font-weight:950;
+  color:var(--green);
+  padding-top:2px;
+}
+.time-dot{
+  position:absolute;
+  left:44px;
+  top:4px;
+  width:9px;
+  height:9px;
+  border-radius:99px;
+  background:var(--lime);
+  border:2px solid #fff;
+  box-shadow:0 0 0 2px rgba(26,153,15,.20);
+}
+.time-dot.danger{background:var(--red);box-shadow:0 0 0 2px rgba(198,33,24,.18)}
+.time-card{
+  border:1px solid var(--line);
+  border-radius:17px;
+  background:#FBFBF8;
+  padding:12px;
+}
+.time-card strong{display:block;font-size:13px}
+.time-card span{display:block;color:var(--muted);font-size:12px;margin-top:4px;line-height:1.35}
+.quick-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.quick{
+  border:1px solid var(--line);
+  border-radius:16px;
+  background:#fff;
+  padding:13px;
+  display:flex;
+  gap:10px;
+  align-items:flex-start;
+  text-align:left;
+}
+.quick:hover{background:#FBFAF6}
+.quick strong{display:block;font-size:12.8px}
+.quick span{display:block;margin-top:4px;font-size:11.5px;color:var(--muted)}
+.evidence-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.evidence{
+  border:1px solid rgba(129,137,221,.20);
+  background:rgba(221,223,249,.36);
+  border-radius:18px;
+  padding:14px;
+}
+.evidence strong{display:block;font-size:13px;color:#080353}
+.evidence span{display:block;margin-top:6px;color:var(--muted);font-size:12px;line-height:1.35}
+
+.alert-hero{
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:16px;
+  align-items:center;
+  border:1px solid rgba(198,33,24,.18);
+  background:
+    radial-gradient(circle at 86% 18%, rgba(198,33,24,.09), transparent 22rem),
+    #fff;
+  border-radius:24px;
+  padding:18px;
+  box-shadow:var(--shadow-soft);
+  margin-bottom:14px;
+}
+.alert-feed{display:grid;gap:10px}
+.alert-row{
+  border:1px solid var(--line);
+  border-radius:18px;
+  background:#fff;
+  padding:14px;
+  display:grid;
+  grid-template-columns:88px 1fr auto;
+  gap:12px;
+  align-items:center;
+}
+.alert-row strong{display:block;font-size:13.5px}
+.alert-row span{display:block;margin-top:4px;color:var(--muted);font-size:12px}
+
+.portal-grid,.contingency-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.portal-card,.contingency-card{
+  border:1px solid var(--line);
+  background:#fff;
+  border-radius:20px;
+  padding:16px;
+  box-shadow:var(--shadow-soft);
+}
+.portal-card h3,.contingency-card h3{font-size:16px}
+.portal-meta{display:grid;gap:9px;margin-top:14px}
+.portal-meta div{
+  border:1px solid var(--line);
+  background:#FBFBF8;
+  border-radius:14px;
+  padding:10px;
+}
+.portal-meta span,.contingency-card span{
+  display:block;
+  color:var(--muted);
+  font-size:10.5px;
+  text-transform:uppercase;
+  letter-spacing:.07em;
+  font-weight:950;
+}
+.portal-meta strong,.contingency-card strong{
+  display:block;
+  margin-top:5px;
+  font-size:12.5px;
+  line-height:1.35;
+}
+.preference-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.pref-list{display:grid;gap:8px;margin-top:12px}
+.pref-item{
+  border:1px solid var(--line);
+  border-radius:15px;
+  background:#FBFBF8;
+  padding:10px;
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  align-items:center;
+  font-size:12.5px;
+}
+.switch{
+  width:42px;
+  height:24px;
+  border-radius:999px;
+  border:1px solid var(--line);
+  background:#EDECE5;
+  position:relative;
+  flex:0 0 auto;
+}
+.switch:before{
+  content:"";
+  position:absolute;
+  top:3px;
+  left:3px;
+  width:16px;
+  height:16px;
+  border-radius:50%;
+  background:#fff;
+  box-shadow:0 1px 3px rgba(4,25,18,.15);
+}
+.switch.on{background:var(--lime);border-color:rgba(4,86,12,.18)}
+.switch.on:before{left:21px}
+
+.wa-shell{
+  display:grid;
+  grid-template-columns:minmax(0,1.15fr) minmax(320px,.75fr);
+  gap:14px;
+}
+.wa-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.wa-option{
+  border:1px solid var(--line);
+  background:#fff;
+  border-radius:20px;
+  padding:16px;
+  text-align:left;
+  min-height:132px;
+}
+.wa-option:hover{box-shadow:var(--shadow-soft)}
+.wa-option.selected{
+  border-color:rgba(4,86,12,.22);
+  background:rgba(181,248,87,.14);
+}
+.wa-option strong{display:block;font-size:15px}
+.wa-option span{display:block;margin-top:8px;color:var(--muted);font-size:12.5px;line-height:1.45}
+.preview-stack{display:grid;gap:10px}
+.preview-row{
+  border:1px solid var(--line);
+  border-radius:16px;
+  background:#FBFBF8;
+  padding:12px;
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  align-items:center;
+}
+.preview-row strong{font-size:12.5px}
+.preview-row span{color:var(--muted);font-size:12px}
+
+.toast{
+  position:fixed;
+  right:20px;
+  bottom:20px;
+  z-index:120;
+  transform:translateY(24px);
+  opacity:0;
+  pointer-events:none;
+  background:var(--ink);
+  color:#fff;
+  border-radius:16px;
+  padding:12px 14px;
+  box-shadow:var(--shadow);
+  font-size:12.5px;
+  font-weight:780;
+  max-width:360px;
+  transition:.2s;
+}
+.toast.show{opacity:1;transform:translateY(0)}
+
+@media(max-width:1420px){
+  .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .grid-2,.extract-grid,.wizard-shell,.confirm-grid,.detail-shell,.wa-shell{grid-template-columns:1fr}
+  .dashboard-grid{grid-template-columns:1fr}
+  .portal-grid,.contingency-grid,.preference-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:1120px){
+  .topnav,.topstatus .pill,.solution-pill{display:none}
+  .sidebar{width:86px}
+  .sidehead div,.sidecard,.side-section-title,.side-nav span:not(.nav-count),.nav-count{display:none}
+  .side-nav button{justify-content:center}
+  .main{margin-left:86px;padding-left:20px;padding-right:20px}
+  .filters{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .route-cards,.status-cards,.grid-3,.grid-4,.form-grid,.evidence-grid,.decision-grid,.wa-options{grid-template-columns:1fr}
+  .portal-grid,.contingency-grid,.preference-grid{grid-template-columns:1fr}
+  .search{max-width:none}
+}
+@media(max-width:760px){
+  .mobile-toggle{display:grid;place-items:center}
+  .brand span:last-child{display:none}
+  .search,.topstatus{display:none}
+  .sidebar{
+    transform:translateX(-105%);
+    transition:.2s;
+    width:286px;
+    box-shadow:var(--shadow);
+  }
+  body.sideopen .sidebar{transform:translateX(0)}
+  .sidebar .sidehead div,.sidebar .sidecard,.sidebar .side-section-title,.sidebar .side-nav span:not(.nav-count),.sidebar .nav-count{display:block}
+  .sidebar .side-nav button{justify-content:flex-start}
+  .main{margin-left:0;padding:92px 14px 32px}
+  .head,.project-top,.alert-hero{display:block}
+  .actions-head{justify-content:flex-start;margin-top:14px}
+  .kpis,.filters,.stepper,.result-grid{grid-template-columns:1fr}
+  .table-wrap{border-radius:18px}
+  .project-header{border-radius:20px}
+  .topbar{padding:0 14px}
+  .toast{left:14px;right:14px;bottom:14px}
+  .alert-row{grid-template-columns:1fr}
+}
+.site-nav .nav-bolt,.topnav .nav-bolt.b2b{color:#81C91C!important}.site-nav .gov-tender .nav-bolt,.site-nav .gov-pricing .nav-bolt,.topnav .nav-bolt.gov{color:#C62118!important}</style>
+
+<style id="slx-global-footer-style">
+.slx-global-footer{margin-top:42px;padding:44px 0 32px;border-top:1px solid var(--line,rgba(4,25,18,.10));background:#fff;color:var(--ink,#041912);clear:both}.slx-global-footer .slx-footer-container{width:min(1180px,calc(100% - 48px));margin-inline:auto}.slx-footer-grid{display:grid;grid-template-columns:1.25fr repeat(4,1fr);gap:24px}.slx-footer-brand{display:inline-flex;align-items:center;gap:10px;font-weight:850;letter-spacing:-.035em;font-size:20px;white-space:nowrap}.slx-footer-mark{--symbol-bg:#04560C;--symbol-bolt:#B5F857;width:34px;height:34px;position:relative;display:inline-grid;place-items:center;flex:none}.slx-footer-mark:before{content:"";position:absolute;inset:0;background:var(--symbol-bg);clip-path:polygon(50% 0%,61% 32%,100% 50%,61% 68%,50% 100%,39% 68%,0% 50%,39% 32%)}.slx-footer-mark span{position:relative;z-index:1;color:var(--symbol-bolt);font-weight:950;font-size:17px}.slx-global-footer h4{margin:0 0 12px;font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted2,var(--muted-2,#8A948F))}.slx-global-footer a,.slx-global-footer p{display:block;margin:0 0 9px;color:var(--muted,#66736D);font-size:14px;line-height:1.45;text-decoration:none}.slx-global-footer a:hover{color:var(--ink,#041912)}.slx-footer-bottom{margin-top:34px;display:flex;justify-content:space-between;gap:16px;color:var(--muted2,var(--muted-2,#8A948F));font-size:13px}.slx-footer-efile,.slx-footer-efile span{color:#063C83!important;font-weight:850}.slx-footer-gov span{color:#C62118}.slx-footer-product span{color:#81C91C}.slx-footer-drive span{color:#063C83;font-weight:900}@media (max-width:1080px){.slx-footer-grid{grid-template-columns:repeat(2,1fr)}}@media (max-width:700px){.slx-global-footer .slx-footer-container{width:min(100% - 24px,1180px)}.slx-footer-grid{grid-template-columns:1fr}.slx-footer-bottom{flex-direction:column}}
+</style>
+</head>
+<body>
+<svg style="display:none" aria-hidden="true">
+  <symbol id="search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+  <symbol id="grid" viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="7" rx="2"/><rect x="13" y="4" width="7" height="7" rx="2"/><rect x="4" y="13" width="7" height="7" rx="2"/><rect x="13" y="13" width="7" height="7" rx="2"/></symbol>
+  <symbol id="file" viewBox="0 0 24 24"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v5h5"/></symbol>
+  <symbol id="bell" viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></symbol>
+  <symbol id="settings" viewBox="0 0 24 24"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/><path d="M19 15a2 2 0 0 0 .4 2.2l.1.1-2.2 2.2-.1-.1A2 2 0 0 0 15 19l-.2.1-.8 2.9h-4l-.8-2.9L9 19a2 2 0 0 0-2.2.4l-.1.1-2.2-2.2.1-.1A2 2 0 0 0 5 15l-.1-.2-2.9-.8v-4l2.9-.8L5 9a2 2 0 0 0-.4-2.2l-.1-.1 2.2-2.2.1.1A2 2 0 0 0 9 5l.2-.1.8-2.9h4l.8 2.9.2.1a2 2 0 0 0 2.2-.4l.1-.1 2.2 2.2-.1.1A2 2 0 0 0 19 9l.1.2 2.9.8v4l-2.9.8-.1.2Z"/></symbol>
+  <symbol id="clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v6l4 2"/></symbol>
+  <symbol id="check" viewBox="0 0 24 24"><path d="m20 6-11 11-5-5"/></symbol>
+  <symbol id="plug" viewBox="0 0 24 24"><path d="M9 7V3"/><path d="M15 7V3"/><path d="M7 7h10v5a5 5 0 0 1-10 0Z"/><path d="M12 17v4"/></symbol>
+</svg>
+
+<header class="topbar" aria-label="Navegación principal">
+  <button class="mobile-toggle" id="mobileToggle" aria-label="Abrir navegación">☰</button>
+  <a class="brand" href="#panel" data-route="panel" aria-label="SmartLicit inicio">
+    <span class="brand-mark green"><span class="bolt-shape"></span></span>
+    <span>SmartLicit</span>
+  </a>
+  <nav class="topnav" aria-label="Productos SmartLicit">
+    <a href="#">Tender</a>
+    <a href="#">Pricing</a>
+    <a href="#panel" class="active" data-route="panel">File</a>
+    <a href="#">Lex</a>
+    <a href="#">Tender Gov</a>
+    <a href="#">Pricing Gov</a>
+    <a href="#">eFile</a>
+    <a href="#">Mi Cuenta</a>
+  </nav>
+  <button class="solution-pill" data-route="panel"><span class="brand-mark small green"><span class="bolt-shape"></span></span>Smart File</button>
+  <label class="search"><svg class="ico"><use href="#search"/></svg><input placeholder="Buscar expediente, alias, parte, órgano o folio…" /></label>
+  <div class="topstatus">
+    <span class="pill file"><span class="dot"></span>Smart File activo</span>
+    <span class="pill">13 abr 2026</span>
+    <button class="bell" aria-label="Notificaciones"><svg class="ico"><use href="#bell"/></svg></button>
+    <button class="acct"><span class="avatar">PM</span>Mi Cuenta</button>
+  </div>
+</header>
+
+<aside class="sidebar" aria-label="Navegación Smart File">
+  <div class="sidehead">
+    <div>
+      <span>Smart File</span>
+      <strong>Monitoreo legal con alta flexible, alertas y WhatsApp por expediente.</strong>
+    </div>
+    <button class="collapse" id="closeMobile" aria-label="Cerrar navegación">‹</button>
+  </div>
+  <nav class="side-nav">
+    <button class="active" data-route="panel" data-nav="panel"><svg class="ico"><use href="#grid"/></svg><span>Panel</span></button>
+    <button data-route="expedientes" data-nav="expedientes"><svg class="ico"><use href="#file"/></svg><span>Expedientes</span><span class="nav-count">32</span></button>
+    <button data-route="new" data-nav="new"><span class="brand-mark small green"><span class="bolt-shape"></span></span><span>Nuevo expediente</span></button>
+    <button data-route="alerts" data-nav="alerts"><svg class="ico"><use href="#bell"/></svg><span>Alertas</span><span class="nav-count">9</span></button>
+    <button data-route="portals" data-nav="portals"><svg class="ico"><use href="#plug"/></svg><span>Portales</span></button>
+    <button data-route="preferences" data-nav="preferences"><svg class="ico"><use href="#settings"/></svg><span>Preferencias</span></button>
+    <button data-route="contingencies" data-nav="contingencies"><svg class="ico"><use href="#clock"/></svg><span>Contingencias</span></button>
+    <button data-route="wa" data-nav="wa"><span class="brand-mark small efile"><span class="bolt-shape"></span></span><span>WhatsApp por expediente</span></button>
+  </nav>
+
+  <div class="side-section-title">Operación</div>
+  <div class="sidecard">
+    <h4>Cobertura de cartera</h4>
+    <div class="planrow"><span>Expedientes activos</span><strong>32</strong></div>
+    <div class="planrow"><span>Con WA activo</span><strong>21</strong></div>
+    <div class="planrow"><span>Conectores estables</span><strong>86%</strong></div>
+    <div class="progress-line"><span></span></div>
+  </div>
+</aside>
+
+<main class="main">
+<div class="content-max">
+
+<section class="view active" id="panelView">
+  <div class="head">
+    <div>
+      <div class="crumb"><span class="spark"></span>Smart File / Panel</div>
+      <h1>Panel</h1>
+      <p class="lead">Resumen de cartera, alertas críticas, WhatsApp y actividad reciente.</p>
+    </div>
+    <div class="actions-head">
+      <button class="btn soft" data-route="new"><span class="brand-mark small green"><span class="bolt-shape"></span></span>Nuevo expediente</button>
+      <button class="btn" data-route="alerts">Ver alertas</button>
+    </div>
+  </div>
+
+  <section class="kpis" aria-label="Indicadores principales">
+    <article class="kpi"><div><div class="ktop"><h3>Activos</h3><span class="kicon"><svg class="ico"><use href="#file"/></svg></span></div><div class="num">32</div><p>expedientes en seguimiento</p></div><span class="trend">Cartera operativa</span></article>
+    <article class="kpi"><div><div class="ktop"><h3>P0 hoy</h3><span class="kicon danger"><svg class="ico"><use href="#bell"/></svg></span></div><div class="num">3</div><p>alertas críticas nuevas</p></div><span class="trend danger">Revisión inmediata</span></article>
+    <article class="kpi"><div><div class="ktop"><h3>WA activo</h3><span class="kicon efile"><svg class="ico"><use href="#check"/></svg></span></div><div class="num">21</div><p>enlazados por expediente</p></div><span class="trend efile">Canal visible</span></article>
+    <article class="kpi"><div><div class="ktop"><h3>Próx. 7 días</h3><span class="kicon warn"><svg class="ico"><use href="#clock"/></svg></span></div><div class="num">9</div><p>plazos / audiencias</p></div><span class="trend warn">Agenda crítica</span></article>
+  </section>
+
+  <div class="grid-2 dashboard-grid">
+    <section class="stack dashboard-main-col">
+      <div class="grid-2">
+        <article class="card">
+          <div class="card-head"><div><h2>Distribución por estatus</h2><p>Lectura operativa por etapa procesal.</p></div></div>
+          <div class="status-bars">
+            <div class="status-line"><span>RAD</span><div class="bar"><span style="width:62%"></span></div><strong>8</strong></div>
+            <div class="status-line"><span>PREV</span><div class="bar p0"><span style="width:30%"></span></div><strong>3</strong></div>
+            <div class="status-line"><span>NOT</span><div class="bar p1"><span style="width:44%"></span></div><strong>6</strong></div>
+            <div class="status-line"><span>PROB</span><div class="bar"><span style="width:72%"></span></div><strong>9</strong></div>
+            <div class="status-line"><span>AUD</span><div class="bar p1"><span style="width:36%"></span></div><strong>4</strong></div>
+            <div class="status-line"><span>FAL</span><div class="bar p2"><span style="width:22%"></span></div><strong>2</strong></div>
+          </div>
+        </article>
+        <article class="card">
+          <div class="card-head"><div><h2>Alertas por prioridad</h2><p>Últimos 7 días.</p></div></div>
+          <div class="status-bars">
+            <div class="status-line"><span>P0</span><div class="bar p0"><span style="width:33%"></span></div><strong>6</strong></div>
+            <div class="status-line"><span>P1</span><div class="bar p1"><span style="width:61%"></span></div><strong>11</strong></div>
+            <div class="status-line"><span>P2</span><div class="bar p2"><span style="width:100%"></span></div><strong>18</strong></div>
+          </div>
+          <div class="notice">Las alertas deben ser accionables, no solo informativas. Cada alerta conserva expediente, prioridad y estado WA.</div>
+        </article>
+      </div>
+
+      <section class="card">
+        <div class="card-head">
+          <div><h2>Cartera operativa</h2><p>Vista resumida con etapa, último movimiento, prioridad y WhatsApp.</p></div>
+          <button class="btn slim" data-route="expedientes">Listado maestro</button>
+        </div>
+        <div class="table-wrap">
+          <table aria-label="Cartera operativa resumida">
+            <thead><tr><th>Alias</th><th>Órgano</th><th>Expediente</th><th>Etapa</th><th>Último cambio</th><th>Prioridad</th><th>WA</th><th>Acción</th></tr></thead>
+            <tbody>
+              <tr><td><div class="project-name">Caso Proveedor X</div></td><td>Juzgado 5º Civil</td><td>1234/2025</td><td>PREVENCIÓN</td><td>Hoy 09:14</td><td><span class="badge p0">P0</span></td><td><span class="badge wa-active">WA activo</span></td><td><button class="btn slim primary" data-route="detail">Ver</button></td></tr>
+              <tr><td><div class="project-name">Amparo A</div></td><td>Juzgado de Distrito</td><td>57/2024</td><td>NOTIFICANDO</td><td>Ayer 18:02</td><td><span class="badge p1">P1</span></td><td><span class="badge wa-only">WA solo P0</span></td><td><button class="btn slim" data-route="detail">Ver</button></td></tr>
+              <tr><td><div class="project-name">Laboral B</div></td><td>Tribunal Laboral</td><td>88/2023</td><td>EN FALLO</td><td>Hoy 07:50</td><td><span class="badge p1">P1</span></td><td><span class="badge wa-active">WA activo</span></td><td><button class="btn slim" data-route="detail">Ver</button></td></tr>
+              <tr><td><div class="project-name">Nulidad TFJA</div></td><td>Sala Regional TFJA</td><td>321/2022</td><td>PROBATORIO</td><td>05 feb</td><td><span class="badge p2">P2</span></td><td><span class="badge wa-pending">WA pendiente</span></td><td><button class="btn slim" data-route="detail">Ver</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-head"><div><h2>Semáforos y estados</h2><p>Semáforo, prioridad y WA conviven sin sobrecargar la pantalla.</p></div></div>
+        <div class="status-cards">
+          <div class="status-card"><strong><span class="status-dot green"></span>Seguimiento estable</strong><span>Sin movimientos críticos.</span></div>
+          <div class="status-card"><strong><span class="status-dot yellow"></span>Revisar pronto</strong><span>Actualización o alerta leve.</span></div>
+          <div class="status-card"><strong><span class="status-dot orange"></span>Atención prioritaria</strong><span>Notificación o audiencia próxima.</span></div>
+          <div class="status-card"><strong><span class="status-dot red"></span>Alerta crítica</strong><span>Prevención o plazo relevante.</span></div>
+        </div>
+        <div class="divider"></div>
+        <div class="preview-row">
+          <div><strong>Combinación de estados por expediente</strong><span>PREVENCIÓN + P0 + WA activo</span></div>
+          <span class="badge p0">Empuja WA transaccional</span>
+        </div>
+      </section>
+    </section>
+
+    <aside class="stack dashboard-side-col">
+      <section class="card">
+        <div class="card-head"><div><h2>Movimientos recientes</h2><p>Actividad detectada por conectores.</p></div></div>
+        <div class="activity-list">
+          <div class="activity"><time>Hoy 09:14</time><div><strong>Prevención · Proveedor X</strong><span>WA activo · revisar plazo y anexos.</span></div></div>
+          <div class="activity"><time>Ayer 18:02</time><div><strong>Notificación · Amparo A</strong><span>WA solo P0 · se registra en timeline.</span></div></div>
+          <div class="activity"><time>05 feb</time><div><strong>Actualización · TFJA</strong><span>Sin acción urgente · seguimiento estable.</span></div></div>
+        </div>
+      </section>
+      <section class="card">
+        <div class="card-head"><div><h2>Accesos rápidos</h2><p>Captura, detalle, alertas y WA por expediente.</p></div></div>
+        <div class="quick-grid">
+          <button class="quick" data-route="new"><span class="brand-mark small green"><span class="bolt-shape"></span></span><div><strong>Nuevo expediente</strong><span>PDF o wizard</span></div></button>
+          <button class="quick" data-route="alerts"><span class="brand-mark small green"><span class="bolt-shape"></span></span><div><strong>Centro de alertas</strong><span>P0, P1 y P2</span></div></button>
+          <button class="quick" data-route="portals"><span class="brand-mark small green"><span class="bolt-shape"></span></span><div><strong>Portales</strong><span>Conectores y restricciones</span></div></button>
+          <button class="quick" data-route="wa"><span class="brand-mark small efile"><span class="bolt-shape"></span></span><div><strong>Configurar WA</strong><span>Por expediente</span></div></button>
+        </div>
+      </section>
+    </aside>
+  </div>
+</section>
+
+<section class="view" id="expedientesView">
+  <div class="head">
+    <div>
+      <div class="crumb"><span class="spark"></span>Smart File / Expedientes</div>
+      <h1>Expedientes</h1>
+      <p class="lead">Cartera unificada con semáforo, prioridad, último movimiento y estado WhatsApp.</p>
+    </div>
+    <div class="actions-head">
+      <button class="btn soft" data-route="new"><span class="brand-mark small green"><span class="bolt-shape"></span></span>Nuevo expediente</button>
+    </div>
+  </div>
+  <section class="filters">
+    <div class="field"><label>Buscar</label><input class="control" placeholder="alias, parte, órgano o folio"></div>
+    <div class="field"><label>Jurisdicción</label><select class="control"><option>Todas</option><option>Federal</option><option>Estatal</option><option>Especializada</option></select></div>
+    <div class="field"><label>Materia</label><select class="control"><option>Todas</option><option>Civil</option><option>Laboral</option><option>Administrativa</option><option>Fiscal</option></select></div>
+    <div class="field"><label>Estado WA</label><select class="control"><option>Todos</option><option>WA activo</option><option>WA solo P0</option><option>WA pendiente</option><option>WA silenciado</option></select></div>
+    <div class="field"><label>Prioridad</label><select class="control"><option>Todas</option><option>P0</option><option>P1</option><option>P2</option></select></div>
+    <button class="btn primary">Actualizar</button>
+  </section>
+  <div class="card" style="margin-bottom:14px">
+    <div class="filter-chips">
+      <button class="chip active" data-exp-filter="all">Todos</button>
+      <button class="chip danger" data-exp-filter="p0">P0</button>
+      <button class="chip" data-exp-filter="p1">P1</button>
+      <button class="chip efile" data-exp-filter="p2">P2</button>
+      <button class="chip" data-exp-filter="wa-active">Con WA</button>
+      <button class="chip efile" data-exp-filter="wa-pending">WA pendiente</button>
+      <button class="chip" data-exp-filter="wa-muted">Silenciados</button>
+    </div>
+    <p class="microcopy" style="margin-top:10px">La fila deja claro qué casos sí están conectados a WhatsApp y bajo qué regla.</p>
+  </div>
+  <div class="table-wrap">
+    <table aria-label="Listado maestro de expedientes">
+      <thead><tr><th>Alias</th><th>Órgano / autoridad</th><th>Expediente</th><th>Etapa</th><th>Último cambio</th><th>Prioridad</th><th>WA</th><th>Acción</th></tr></thead>
+      <tbody id="expedientesRows">
+        <tr data-priority="P0" data-wa="active"><td><div class="project-name">Caso Proveedor X</div><div class="sub">Civil · Jalisco</div></td><td>Juzgado 5º Civil (JAL)</td><td>1234/2025</td><td>PREVENCIÓN</td><td>Hoy 09:14</td><td><span class="badge p0">P0</span></td><td><span class="badge wa-active">WA activo</span></td><td><button class="btn slim primary" data-route="detail">Ver detalle</button></td></tr>
+        <tr data-priority="P1" data-wa="only"><td><div class="project-name">Amparo A</div><div class="sub">Federal · Administrativo</div></td><td>Juzgado de Distrito</td><td>57/2024</td><td>NOTIFICANDO</td><td>Ayer 18:02</td><td><span class="badge p1">P1</span></td><td><span class="badge wa-only">WA solo P0</span></td><td><button class="btn slim" data-route="detail">Ver detalle</button></td></tr>
+        <tr data-priority="P1" data-wa="active"><td><div class="project-name">Laboral B</div><div class="sub">Laboral · Nuevo León</div></td><td>Tribunal Laboral (NL)</td><td>88/2023</td><td>EN FALLO</td><td>Hoy 07:50</td><td><span class="badge p1">P1</span></td><td><span class="badge wa-active">WA activo</span></td><td><button class="btn slim" data-route="detail">Ver detalle</button></td></tr>
+        <tr data-priority="P2" data-wa="pending"><td><div class="project-name">Nulidad TFJA</div><div class="sub">Fiscal · Federal</div></td><td>Sala Regional TFJA</td><td>321/2022</td><td>PROBATORIO</td><td>05 feb</td><td><span class="badge p2">P2</span></td><td><span class="badge wa-pending">WA pendiente</span></td><td><button class="btn slim" data-route="detail">Ver detalle</button></td></tr>
+        <tr data-priority="P2" data-wa="muted"><td><div class="project-name">Amparo SAT</div><div class="sub">Federal · Fiscal</div></td><td>Juzgado de Distrito</td><td>302/2026</td><td>RADICADO</td><td>03 feb</td><td><span class="badge p2">P2</span></td><td><span class="badge wa-muted">WA silenciado</span></td><td><button class="btn slim" data-route="detail">Ver detalle</button></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="view" id="newView">
+  <div class="head">
+    <div>
+      <div class="crumb"><span class="spark"></span>Smart File / Nuevo expediente</div>
+      <h1>Nuevo expediente</h1>
+      <p class="lead">Selecciona el modo de alta que mejor se adapte al caso.</p>
+    </div>
+    <div class="actions-head"><button class="btn" data-toast="Borrador guardado">Guardar borrador</button></div>
+  </div>
+  <div class="route-cards">
+    <article class="route-card">
+      <div>
+        <span class="brand-mark green"><span class="bolt-shape"></span></span>
+        <h2 style="margin-top:16px">Cargar PDF</h2>
+        <p>Sube un acuerdo, demanda, notificación o cualquier documento con datos del expediente. Smart File extrae información y luego pide confirmación humana.</p>
+        <div class="dropzone">
+          <div>
+            <h3>Arrastra el PDF aquí</h3>
+            <p>o selecciónalo desde tu equipo.</p>
+            <div style="margin-top:12px"><span class="badge efile">PDF legible u OCR</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="actions-head" style="justify-content:flex-start">
+        <button class="btn primary" data-route="pdf">Cargar documento</button>
+        <button class="btn">Ver ejemplo</button>
+      </div>
+    </article>
+    <article class="route-card">
+      <div>
+        <span class="brand-mark green"><span class="bolt-shape"></span></span>
+        <h2 style="margin-top:16px">Alta guiada</h2>
+        <p>Usa el wizard cuando prefieras capturar jerarquía, expediente, partes y reglas de alerta paso a paso.</p>
+        <div class="step-list">
+          <div class="step-line"><span class="step-no">1</span>Ubicación y órgano</div>
+          <div class="step-line"><span class="step-no">2</span>Identidad del expediente</div>
+          <div class="step-line"><span class="step-no">3</span>Partes, folio y WA</div>
+          <div class="step-line"><span class="step-no">4</span>Prueba de consulta</div>
+        </div>
+      </div>
+      <div class="actions-head" style="justify-content:flex-start">
+        <button class="btn primary" data-route="wizard">Comenzar wizard</button>
+        <button class="btn">Comparar rutas</button>
+      </div>
+    </article>
+  </div>
+  <div class="decision">
+    <h2>Decisión rápida</h2>
+    <div class="decision-grid">
+      <div><strong>Usa PDF cuando:</strong><ul><li>ya tienes un acuerdo</li><li>quieres capturar más rápido</li></ul></div>
+      <div><strong>Usa wizard cuando:</strong><ul><li>faltan datos</li><li>hay un portal exigente</li><li>quieres configurar WA desde el alta</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<section class="view" id="pdfView">
+  <div class="head">
+    <div>
+      <div class="crumb"><span class="spark"></span>Smart File / Nuevo expediente</div>
+      <h1>Nuevo expediente · vía PDF</h1>
+      <p class="lead">Carga, extracción y corrección humana.</p>
+    </div>
+    <div class="actions-head"><button class="btn" data-route="new">Cambiar ruta</button><button class="btn primary" data-route="confirm">Continuar</button></div>
+  </div>
+  <div class="extract-grid">
+    <article class="doc-preview">
+      <div>
+        <span class="badge efile">Documento cargado</span>
+        <h2 style="margin-top:14px">Prevención_12-04.pdf</h2>
+        <p>OCR procesado · 4 páginas · confianza media · PDF legible.</p>
+        <div class="doc-paper" aria-label="Vista previa del documento">
+          <strong>Acuerdo publicado</strong>
+          <div class="doc-line mid"></div><div class="doc-line"></div><div class="doc-line short"></div>
+          <div class="doc-line"></div><div class="doc-line mid"></div><div class="doc-line"></div>
+          <p class="microcopy" style="margin-top:18px">El sistema detectó expediente, órgano, materia y alias sugerido.</p>
+        </div>
+      </div>
+      <div class="actions-head" style="justify-content:flex-start"><button class="btn">Cambiar archivo</button><span class="badge warn">Confianza media</span></div>
+    </article>
+    <article class="card">
+      <div class="card-head"><div><h2>Extracción detectada</h2><p>Confirma los campos antes de activar el monitoreo.</p></div></div>
+      <div class="form-grid">
+        <div class="form-card"><span>Jurisdicción</span><strong>Estatal · Jalisco</strong></div>
+        <div class="form-card"><span>Órgano</span><strong>Juzgado 5º Civil</strong></div>
+        <div class="form-card"><span>Expediente</span><strong>1234/2025</strong></div>
+        <div class="form-card"><span>Materia</span><strong>Civil</strong></div>
+        <div class="form-card"><span>Alias sugerido</span><strong>Caso Proveedor X</strong></div>
+        <div class="form-card"><span>Parte actora</span><strong>Proveedor X</strong></div>
+        <div class="form-card"><span>Parte demandada</span><strong>Dependencia Y</strong></div>
+        <div class="form-card"><span>WA</span><strong>Pendiente de configuración</strong></div>
+      </div>
+      <div class="divider"></div>
+      <div class="actions-head" style="justify-content:flex-start"><button class="btn">Editar manualmente</button><button class="btn primary" data-route="confirm">Confirmar extracción</button></div>
+    </article>
+  </div>
+</section>
+
+<section class="view" id="wizardView">
+  <div class="head">
+    <div>
+      <div class="crumb"><span class="spark"></span>Smart File / Nuevo expediente</div>
+      <h1>Alta guiada</h1>
+      <p class="lead" id="wizardSubtitle">Paso 1 de 3 · ubicación y órgano.</p>
+    </div>
+    <div class="actions-head"><button class="btn" data-route="new">Cancelar</button><button class="btn primary" id="wizardNextTop">Siguiente</button></div>
+  </div>
+  <div class="stepper">
+    <div class="step-pill active" data-step-indicator="1"><span class="n">1</span><strong>Ubicación y órgano</strong></div>
+    <div class="step-pill" data-step-indicator="2"><span class="n">2</span><strong>Identidad</strong></div>
+    <div class="step-pill" data-step-indicator="3"><span class="n">3</span><strong>Partes, folio y WA</strong></div>
+  </div>
+
+  <section class="wizard-panel active" data-wizard-panel="1">
+    <div class="wizard-shell">
+      <article class="card">
+        <div class="card-head"><div><h2>Ubicación y órgano</h2><p>La jerarquía reduce errores y activa campos dinámicos según el portal seleccionado.</p></div></div>
+        <div class="form-grid">
+          <div class="field"><label>Jurisdicción</label><select class="control"><option>Federal</option><option selected>Estatal</option><option>Especializada</option></select></div>
+          <div class="field"><label>Entidad / circuito</label><select class="control"><option>Jalisco</option><option>Nuevo León</option><option>CDMX</option></select></div>
+          <div class="field"><label>Materia procesal</label><select class="control"><option>Civil</option><option>Penal</option><option>Laboral</option><option>Administrativa</option></select></div>
+          <div class="field"><label>Instancia</label><select class="control"><option>1ª instancia</option><option>2ª instancia</option><option>Sala</option></select></div>
+          <div class="field"><label>Juzgado / Tribunal</label><input class="control" value="Juzgado 5º Civil"></div>
+          <div class="field"><label>Portal origen</label><input class="control" value="Portal judicial Jalisco"></div>
+        </div>
+      </article>
+      <aside class="card">
+        <h2>Asistencia de captura</h2>
+        <div class="divider"></div>
+        <div class="filter-chips">
+          <span class="badge good">Validación automática</span>
+          <span class="badge efile">Campos dinámicos</span>
+          <span class="badge">Menos fallos</span>
+        </div>
+        <p style="margin-top:14px">Smart File ajusta campos según jurisdicción, materia y portal origen para evitar capturas incompletas.</p>
+      </aside>
+    </div>
+  </section>
+
+  <section class="wizard-panel" data-wizard-panel="2">
+    <div class="wizard-shell">
+      <article class="card">
+        <div class="card-head"><div><h2>Identidad del expediente</h2><p>La identidad debe quedar lista para una prueba de consulta confiable.</p></div></div>
+        <div class="form-grid">
+          <div class="field"><label>Número de expediente</label><input class="control" value="1234"></div>
+          <div class="field"><label>Año</label><input class="control" value="2025"></div>
+          <div class="field"><label>Secretaría / Mesa</label><input class="control" value="Mesa 2"></div>
+          <div class="field"><label>Alias interno</label><input class="control" value="Caso Proveedor X"></div>
+          <div class="field"><label>Parte actora / promovente</label><input class="control" value="Proveedor X"></div>
+          <div class="field"><label>Parte demandada / autoridad</label><input class="control" value="Dependencia Y"></div>
+          <div class="field"><label>Folio alterno</label><input class="control" value="IMSS-551924"></div>
+          <div class="field"><label>CURP / RFC</label><input class="control" value="Opcional o requerido"></div>
+        </div>
+      </article>
+      <aside class="card">
+        <h2>Regla dinámica</h2>
+        <p>Campos opcionales pueden volverse obligatorios si el portal seleccionado lo exige.</p>
+        <div class="notice">El sistema debe explicar qué campo revisar si la prueba de consulta no encuentra coincidencia.</div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="wizard-panel" data-wizard-panel="3">
+    <div class="wizard-shell">
+      <article class="card">
+        <div class="card-head"><div><h2>Partes, folio y WA</h2><p>La configuración WhatsApp puede quedar pendiente, pero debe quedar visible desde el alta.</p></div></div>
+        <div class="form-grid">
+          <div class="field"><label>Parte actora / promovente</label><input class="control" value="Proveedor X"></div>
+          <div class="field"><label>Parte demandada / autoridad</label><input class="control" value="Secretaría de Infraestructura"></div>
+          <div class="field"><label>Folio alterno</label><input class="control" value="IMSS-551924"></div>
+          <div class="field"><label>Alias interno</label><input class="control" value="Caso Proveedor X"></div>
+          <div class="field"><label>WhatsApp</label><select class="control"><option>WA pendiente</option><option>WA activo</option><option>WA solo P0</option><option>WA silenciado</option></select></div>
+        </div>
+        <p class="microcopy" style="margin-top:12px">Puedes activarlo al cerrar el alta o desde el detalle del expediente.</p>
+      </article>
+      <aside class="card">
+        <h2>Validaciones antes de continuar</h2>
+        <div class="validation-list" style="margin-top:12px">
+          <div class="validation-row"><strong>Jerarquía portal completa</strong><span class="check-dot">✓</span></div>
+          <div class="validation-row"><strong>Expediente y año capturados</strong><span class="check-dot">✓</span></div>
+          <div class="validation-row"><strong>Alias interno definido</strong><span class="check-dot">✓</span></div>
+          <div class="validation-row"><strong>Canales de alerta listos</strong><span class="check-dot">✓</span></div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <div class="card" style="margin-top:14px">
+    <div class="actions-head" style="justify-content:space-between">
+      <button class="btn" id="wizardPrev">Atrás</button>
+      <button class="btn primary" id="wizardNext">Siguiente</button>
+    </div>
+  </div>
+</section>
+
+<section class="view" id="confirmView">
+  <div class="head">
+    <div>
+      <div class="crumb"><span class="spark"></span>Smart File / Confirmación</div>
+      <h1>Confirmación</h1>
+      <p class="lead">Resumen capturado + prueba de consulta.</p>
+    </div>
+    <div class="actions-head"><button class="btn" data-route="wizard">Revisar datos</button><button class="btn primary" id="addToTracking">Agregar a seguimiento</button></div>
+  </div>
+  <div class="confirm-grid">
+    <article class="card">
+      <div class="card-head"><div><h2>Resumen capturado</h2><p>Campos principales antes de activar seguimiento.</p></div></div>
+      <div class="form-grid">
+        <div class="form-card"><span>Jurisdicción</span><strong>Estatal (Jalisco)</strong></div>
+        <div class="form-card"><span>Órgano</span><strong>Juzgado 5º Civil</strong></div>
+        <div class="form-card"><span>Expediente</span><strong>1234/2025</strong></div>
+        <div class="form-card"><span>Alias</span><strong>Caso Proveedor X</strong></div>
+        <div class="form-card"><span>Canales</span><strong>WA (P0) + Email (P1/P2)</strong></div>
+        <div class="form-card"><span>WA</span><strong>Pendiente hasta confirmar</strong></div>
+      </div>
+    </article>
+    <article class="result-box">
+      <div class="ok-mark">✓</div>
+      <h2>Coincidencia encontrada en portal</h2>
+      <p>Smart File verificó que el expediente existe en el portal origen antes de agregarlo a seguimiento.</p>
+      <div class="result-grid">
+        <div class="form-card"><span>Último movimiento</span><strong>Acuerdo publicado · 05 feb 2026</strong></div>
+        <div class="form-card"><span>Etapa detectada</span><strong>PROBATORIO</strong></div>
+        <div class="form-card"><span>Resultado</span><strong>OK</strong></div>
+        <div class="form-card"><span>Seguimiento</span><strong>Estable</strong></div>
+      </div>
+      <div class="notice">Si NO hay match: revisa órgano / instancia, agrega partes si el portal lo exige y reintenta la validación.</div>
+    </article>
+  </div>
+</section>
+
+<section class="view" id="detailView">
+  <div class="project-header">
+    <div class="project-top">
+      <div class="project-title">
+        <div class="crumb"><span class="spark"></span>Smart File / Detalle</div>
+        <h1>Caso Proveedor X</h1>
+        <p class="lead">Juzgado 5º Civil (Jalisco) · Expediente 1234/2025</p>
+        <div class="project-meta">
+          <span class="badge critical">PREVENCIÓN</span>
+          <span class="badge p0">P0</span>
+          <span class="badge wa-active">WA activo</span>
+          <span class="badge good">Conector estable</span>
+        </div>
+      </div>
+      <div class="actions-head">
+        <button class="btn" data-route="alerts">Configurar alertas</button>
+        <button class="btn primary" data-route="wa">Configurar WA</button>
+      </div>
+    </div>
+    <div class="project-tabs">
+      <button class="active" data-detail-tab="timeline">Timeline</button>
+      <button data-detail-tab="evidence">Evidencia</button>
+      <button data-detail-tab="config">Configuración operativa</button>
+      <button data-detail-tab="history">Historial de consultas</button>
+    </div>
+  </div>
+
+  <section class="project-tab active" id="detailTimeline">
+    <div class="detail-shell">
+      <article class="card">
+        <div class="card-head"><div><h2>Timeline de movimientos</h2><p>El expediente vive en una sola pantalla con timeline, evidencia, prioridad y acciones.</p></div></div>
+        <div class="timeline">
+          <div class="time-item"><time>Hoy 09:14</time><span class="time-dot danger"></span><div class="time-card"><strong>Prevención: subsanar requisitos</strong><span>Acción sugerida: revisar plazo y anexos.</span></div></div>
+          <div class="time-item"><time>Ayer 18:02</time><span class="time-dot"></span><div class="time-card"><strong>Notificación publicada en lista</strong><span>Fuente: portal origen.</span></div></div>
+          <div class="time-item"><time>03 feb</time><span class="time-dot"></span><div class="time-card"><strong>Acuerdo: se abre a prueba</strong><span>Movimiento histórico.</span></div></div>
+          <div class="time-item"><time>28 ene</time><span class="time-dot"></span><div class="time-card"><strong>Radicación y admisión</strong><span>Alta inicial.</span></div></div>
+        </div>
+      </article>
+      <aside class="stack">
+        <section class="card">
+          <h2>Acciones rápidas</h2>
+          <div class="quick-grid" style="margin-top:12px">
+            <button class="quick"><strong>Ver fuente</strong><span>Portal origen</span></button>
+            <button class="quick"><strong>Descargar PDF</strong><span>Acuerdo</span></button>
+            <button class="quick" data-toast="Movimiento marcado como resuelto"><strong>Marcar resuelto</strong><span>Cierra alerta</span></button>
+            <button class="quick" data-route="wa"><strong>Configurar WA</strong><span>Por expediente</span></button>
+          </div>
+        </section>
+        <section class="card">
+          <h2>Estado operativo</h2>
+          <div class="preview-stack" style="margin-top:12px">
+            <div class="preview-row"><strong>WA</strong><span class="badge wa-active">WA activo</span></div>
+            <div class="preview-row"><strong>Conector</strong><span class="badge good">estable</span></div>
+            <div class="preview-row"><strong>Prioridad</strong><span class="badge p0">P0</span></div>
+          </div>
+        </section>
+      </aside>
+    </div>
+  </section>
+
+  <section class="project-tab" id="detailEvidence">
+    <article class="card">
+      <div class="card-head"><div><h2>Evidencia</h2><p>Soporte documental y trazabilidad de consulta.</p></div><span class="badge efile">eFile soporte documental</span></div>
+      <div class="evidence-grid">
+        <div class="evidence"><strong>Captura / HTML</strong><span>Snapshot del portal origen con fecha de consulta.</span></div>
+        <div class="evidence"><strong>PDF acuerdo</strong><span>Documento descargado y asociado al movimiento.</span></div>
+        <div class="evidence"><strong>Hash + fecha consulta</strong><span>Integridad verificable para auditoría interna.</span></div>
+      </div>
+    </article>
+  </section>
+
+  <section class="project-tab" id="detailConfig">
+    <article class="card">
+      <div class="card-head"><div><h2>Configuración operativa</h2><p>Fuente, frecuencia y canales por expediente.</p></div></div>
+      <div class="form-grid">
+        <div class="form-card"><span>Fuente origen</span><strong>Portal judicial Jalisco</strong></div>
+        <div class="form-card"><span>Última consulta</span><strong>Hoy 09:14</strong></div>
+        <div class="form-card"><span>Frecuencia</span><strong>Cada 4 h</strong></div>
+        <div class="form-card"><span>Canales</span><strong>WA (P0) + email digest</strong></div>
+        <div class="form-card"><span>Conector</span><strong>Estable</strong></div>
+      </div>
+    </article>
+  </section>
+
+  <section class="project-tab" id="detailHistory">
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Fecha</th><th>Resultado</th><th>Fuente</th><th>Movimiento</th><th>Evidencia</th></tr></thead>
+        <tbody>
+          <tr><td>Hoy 09:14</td><td><span class="badge p0">Nuevo P0</span></td><td>Portal judicial Jalisco</td><td>Prevención</td><td>PDF + HTML + hash</td></tr>
+          <tr><td>Ayer 18:02</td><td><span class="badge p1">Actualizado</span></td><td>Portal judicial Jalisco</td><td>Notificación</td><td>HTML</td></tr>
+          <tr><td>03 feb</td><td><span class="badge good">Sin error</span></td><td>Portal judicial Jalisco</td><td>Acuerdo</td><td>PDF</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</section>
+
+<section class="view" id="alertsView">
+  <div class="head">
+    <div>
+      <div class="crumb"><span class="spark"></span>Smart File / Alertas</div>
+      <h1>Centro de alertas</h1>
+      <p class="lead">P0, P1 y P2 con filtros y acceso directo al expediente.</p>
+    </div>
+    <div class="actions-head"><button class="btn" data-route="panel">Ver panel</button></div>
+  </div>
+  <section class="filters">
+    <div class="field"><label>Buscar</label><input class="control" placeholder="expediente, alias o movimiento"></div>
+    <div class="field"><label>Prioridad</label><select class="control"><option>Todas</option><option>P0</option><option>P1</option><option>P2</option></select></div>
+    <div class="field"><label>Canal</label><select class="control"><option>Todos</option><option>WhatsApp</option><option>Email</option><option>In-app</option></select></div>
+    <div class="field"><label>Ventana</label><select class="control"><option>Últimos 7 días</option><option>Hoy</option><option>Próximos plazos</option></select></div>
+    <div class="field"><label>Estado</label><select class="control"><option>Todas</option><option>No resueltas</option><option>Resueltas</option></select></div>
+    <button class="btn primary">Filtrar</button>
+  </section>
+  <div class="card" style="margin-bottom:14px">
+    <div class="filter-chips">
+      <button class="chip active" data-alert-filter="all">Todas</button>
+      <button class="chip danger" data-alert-filter="P0">P0</button>
+      <button class="chip" data-alert-filter="P1">P1</button>
+      <button class="chip efile" data-alert-filter="P2">P2</button>
+      <button class="chip" data-alert-filter="WA">WhatsApp</button>
+      <button class="chip" data-alert-filter="plazo">Próximos plazos</button>
+    </div>
+  </div>
+  <article class="alert-hero">
+    <div>
+      <span class="badge p0">P0</span>
+      <h2 style="margin-top:12px">WhatsApp · alerta transaccional</h2>
+      <p><strong>PREVENCIÓN detectada</strong><br>Caso: Proveedor X (1234/2025)<br>Órgano: Juzgado 5º Civil (JAL)<br>Acción: revisar plazo de subsanación</p>
+    </div>
+    <button class="btn primary" data-route="detail">Ver detalle</button>
+  </article>
+  <section class="alert-feed" id="alertRows">
+    <div class="alert-row" data-priority="P0" data-wa="WA"><span class="badge p0">P0</span><div><strong>Prevención · Caso Proveedor X</strong><span>Hoy 09:14 · WA activo</span></div><button class="btn slim" data-route="detail">Ver detalle</button></div>
+    <div class="alert-row" data-priority="P1" data-wa="WA"><span class="badge p1">P1</span><div><strong>Notificación · Amparo A</strong><span>Ayer 18:02 · WA solo P0</span></div><button class="btn slim" data-route="detail">Ver detalle</button></div>
+    <div class="alert-row" data-priority="P2" data-wa="no"><span class="badge p2">P2</span><div><strong>Actualización · Nulidad TFJA</strong><span>05 feb · WA pendiente</span></div><button class="btn slim" data-route="detail">Ver detalle</button></div>
+    <div class="alert-row" data-priority="P1" data-wa="WA" data-kind="plazo"><span class="badge p1">P1</span><div><strong>Audiencia próxima · Laboral B</strong><span>Mañana 08:00 · WA activo</span></div><button class="btn slim" data-route="detail">Ver detalle</button></div>
+  </section>
+</section>
+
+<section class="view" id="portalsView">
+  <div class="head">
+    <div>
+      <div class="crumb"><span class="spark"></span>Smart File / Portales</div>
+      <h1>Portales</h1>
+      <p class="lead">Cobertura de conectores y restricciones por fuente.</p>
+    </div>
+    <div class="actions-head"><button class="btn primary" data-toast="Solicitud de conector registrada">Solicitar nuevo conector</button></div>
+  </div>
+  <div class="portal-grid">
+    <article class="portal-card"><h3>PJF Servicios en Línea</h3><div class="portal-meta"><div><span>Tipo</span><strong>Login institucional</strong></div><div><span>Campos mínimos</span><strong>Expediente + órgano</strong></div><div><span>Salida / restricción</span><strong>Boletín / expediente</strong></div></div></article>
+    <article class="portal-card"><h3>SICOR CDMX</h3><div class="portal-meta"><div><span>Tipo</span><strong>Público + CAPTCHA</strong></div><div><span>Campos mínimos</span><strong>Fecha / expediente</strong></div><div><span>Salida / restricción</span><strong>Consulta informativa</strong></div></div></article>
+    <article class="portal-card"><h3>TEPJF</h3><div class="portal-meta"><div><span>Tipo</span><strong>Público</strong></div><div><span>Campos mínimos</span><strong>Expediente + filtros</strong></div><div><span>Salida / restricción</span><strong>Instrucción / proyectos</strong></div></div></article>
+    <article class="portal-card"><h3>TFJA Boletín</h3><div class="portal-meta"><div><span>Tipo</span><strong>Público</strong></div><div><span>Campos mínimos</span><strong>Expediente / fecha / sala</strong></div><div><span>Salida / restricción</span><strong>Acuerdos / notificaciones</strong></div></div></article>
+    <article class="portal-card"><h3>INAI / PNT</h3><div class="portal-meta"><div><span>Tipo</span><strong>Cuenta o folio</strong></div><div><span>Campos mínimos</span><strong>Folio</strong></div><div><span>Salida / restricción</span><strong>Estatus de solicitud / recurso</strong></div></div></article>
+    <article class="portal-card"><h3>IMSS folio</h3><div class="portal-meta"><div><span>Tipo</span><strong>Público por folio</strong></div><div><span>Campos mínimos</span><strong>Folio</strong></div><div><span>Salida / restricción</span><strong>Estatus trámite</strong></div></div></article>
+  </div>
+</section>
+
+<section class="view" id="preferencesView">
+  <div class="head">
+    <div>
+      <div class="crumb"><span class="spark"></span>Smart File / Preferencias</div>
+      <h1>Preferencias</h1>
+      <p class="lead">Canales, reglas de prioridad y resúmenes.</p>
+    </div>
+    <div class="actions-head"><button class="btn primary" data-toast="Preferencias guardadas">Guardar cambios</button></div>
+  </div>
+  <div class="preference-grid">
+    <article class="card">
+      <h2>Canales</h2>
+      <div class="pref-list">
+        <div class="pref-item"><span>WhatsApp · mensajes transaccionales (P0/P1)</span><span class="switch on"></span></div>
+        <div class="pref-item"><span>Email · resumen + adjuntos</span><span class="switch on"></span></div>
+        <div class="pref-item"><span>In-app · centro de alertas y timeline</span><span class="switch on"></span></div>
+      </div>
+    </article>
+    <article class="card">
+      <h2>Reglas de prioridad</h2>
+      <div class="pref-list">
+        <div class="pref-item"><span>P0 · Prevención, Notificación, En fallo</span><span class="badge p0">Crítica</span></div>
+        <div class="pref-item"><span>P1 · Audiencia, actuación relevante</span><span class="badge p1">Relevante</span></div>
+        <div class="pref-item"><span>P2 · Actualización informativa</span><span class="badge p2">Informativa</span></div>
+      </div>
+    </article>
+    <article class="card">
+      <h2>Resumen digest</h2>
+      <div class="pref-list">
+        <div class="pref-item"><span>Frecuencia</span><strong>Diario / semanal</strong></div>
+        <div class="pref-item"><span>Hora</span><strong>08:00</strong></div>
+        <div class="pref-item"><span>Formato</span><strong>WA corto + link al panel</strong></div>
+      </div>
+    </article>
+  </div>
+  <div class="notice">La configuración global convive con la configuración por expediente; un caso puede tener WA activo, P0-only o estar silenciado.</div>
+</section>
+
+<section class="view" id="waView">
+  <div class="head">
+    <div>
+      <div class="crumb"><span class="spark"></span>Smart File / WhatsApp por expediente</div>
+      <h1>WhatsApp por expediente</h1>
+      <p class="lead">Ajusta si este caso debe recibir todas las alertas, solo urgencias o quedar silenciado.</p>
+    </div>
+    <div class="actions-head"><button class="btn danger" data-wa-set="muted">Silenciar expediente</button><button class="btn soft" data-wa-set="active">Activar WA</button><button class="btn primary" data-toast="Configuración WA guardada">Guardar cambios</button></div>
+  </div>
+  <div class="wa-shell">
+    <article class="card">
+      <div class="card-head"><div><h2>Caso Proveedor X</h2><p>La señal WA aparece siempre junto al expediente para evitar ambigüedad operacional.</p></div><span id="waStateLabel" class="badge wa-active">WA activo</span></div>
+      <div class="wa-options">
+        <button class="wa-option selected" data-wa-option="active"><strong>WA activo</strong><span>Recibe alertas según configuración.</span></button>
+        <button class="wa-option" data-wa-option="only"><strong>WA solo P0</strong><span>Solo urgencias críticas.</span></button>
+        <button class="wa-option" data-wa-option="pending"><strong>WA pendiente</strong><span>Falta configuración o validación.</span></button>
+        <button class="wa-option" data-wa-option="muted"><strong>WA silenciado</strong><span>No envía alertas.</span></button>
+      </div>
+    </article>
+    <aside class="card">
+      <h2>Cómo se refleja</h2>
+      <div class="preview-stack" style="margin-top:12px">
+        <div class="preview-row"><strong>En listado</strong><span id="waPreviewBadge" class="badge wa-active">WA activo</span></div>
+        <div class="preview-row"><strong>En dashboard</strong><span>Junto a prioridad</span></div>
+        <div class="preview-row"><strong>En alertas</strong><span>Canal transaccional</span></div>
+      </div>
+      <div class="notice">WhatsApp debe verse como canal transaccional por expediente, no como simple preferencia global.</div>
+    </aside>
+  </div>
+</section>
+
+<section class="view" id="contingenciesView">
+  <div class="head">
+    <div>
+      <div class="crumb"><span class="spark"></span>Smart File / Contingencias</div>
+      <h1>Contingencias</h1>
+      <p class="lead">Errores recuperables y siguientes pasos.</p>
+    </div>
+    <div class="actions-head"><button class="btn primary" data-route="portals">Ver estado de conectores</button></div>
+  </div>
+  <div class="contingency-grid">
+    <article class="contingency-card"><span>CAPTCHA / anti-bot</span><strong>Portal bloquea automatización simple.</strong><p>Siguiente: cambiar estrategia, horarios, caching o modo asistido.</p></article>
+    <article class="contingency-card"><span>Login requerido</span><strong>Acceso completo solo para partes.</strong><p>Siguiente: modo con credenciales seguras o solo boletín público.</p></article>
+    <article class="contingency-card"><span>Datos incompletos</span><strong>Faltan campos obligatorios para el portal.</strong><p>Siguiente: pedir campos adicionales y reintentar validación.</p></article>
+    <article class="contingency-card"><span>No hay match</span><strong>Expediente no encontrado.</strong><p>Siguiente: revisar instancia, órgano y sugerir búsqueda asistida.</p></article>
+    <article class="contingency-card"><span>Portal caído</span><strong>Error 5xx o timeout.</strong><p>Siguiente: reintentos con backoff + aviso al usuario.</p></article>
+    <article class="contingency-card"><span>Conector cambió</span><strong>HTML o estructura distinta.</strong><p>Siguiente: conector en mantenimiento y fallback a revisión manual.</p></article>
+  </div>
+</section>
+
+</div>
+</main>
+
+<div class="toast" id="toast">Acción confirmada</div>
+
+<script>
+const views=document.querySelectorAll(".view");
+const navButtons=document.querySelectorAll(".side-nav [data-route]");
+const routeToNav={panel:"panel",expedientes:"expedientes",new:"new",pdf:"new",wizard:"new",confirm:"new",detail:"expedientes",alerts:"alerts",portals:"portals",preferences:"preferences",contingencies:"contingencies",wa:"wa"};
+function showRoute(route){
+  const view=document.getElementById(route+"View");
+  if(!view)return;
+  views.forEach(v=>v.classList.remove("active"));
+  view.classList.add("active");
+  const nav=routeToNav[route]||route;
+  navButtons.forEach(btn=>btn.classList.toggle("active",btn.dataset.nav===nav));
+  if(location.hash.replace("#","")!==route) history.replaceState(null,"","#"+route);
+  document.body.classList.remove("sideopen");
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+document.addEventListener("click",e=>{
+  const routeTarget=e.target.closest("[data-route]");
+  if(routeTarget){
+    e.preventDefault();
+    showRoute(routeTarget.dataset.route);
+  }
+  const toastTarget=e.target.closest("[data-toast]");
+  if(toastTarget){
+    showToast(toastTarget.dataset.toast);
+  }
+});
+window.addEventListener("load",()=>{
+  const hash=location.hash.replace("#","");
+  if(hash&&document.getElementById(hash+"View")) showRoute(hash);
+});
+
+const toast=document.getElementById("toast");
+let toastTimer;
+function showToast(message){
+  toast.textContent=message||"Acción confirmada";
+  toast.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>toast.classList.remove("show"),2600);
+}
+
+document.getElementById("mobileToggle").addEventListener("click",()=>document.body.classList.add("sideopen"));
+document.getElementById("closeMobile").addEventListener("click",()=>document.body.classList.remove("sideopen"));
+
+const expFilters=document.querySelectorAll("[data-exp-filter]");
+const expRows=document.querySelectorAll("#expedientesRows tr");
+expFilters.forEach(chip=>{
+  chip.addEventListener("click",()=>{
+    expFilters.forEach(c=>c.classList.remove("active"));
+    chip.classList.add("active");
+    const f=chip.dataset.expFilter;
+    expRows.forEach(row=>{
+      const p=row.dataset.priority;
+      const wa=row.dataset.wa;
+      let show=f==="all"||f.toUpperCase()===p||(f==="wa-active"&&wa==="active")||(f==="wa-pending"&&wa==="pending")||(f==="wa-muted"&&wa==="muted");
+      row.style.display=show?"":"none";
+    });
+  });
+});
+
+const alertFilters=document.querySelectorAll("[data-alert-filter]");
+const alertRows=document.querySelectorAll("#alertRows .alert-row");
+alertFilters.forEach(chip=>{
+  chip.addEventListener("click",()=>{
+    alertFilters.forEach(c=>c.classList.remove("active"));
+    chip.classList.add("active");
+    const f=chip.dataset.alertFilter;
+    alertRows.forEach(row=>{
+      const show=f==="all"||row.dataset.priority===f||(f==="WA"&&row.dataset.wa==="WA")||(f==="plazo"&&row.dataset.kind==="plazo");
+      row.style.display=show?"grid":"none";
+    });
+  });
+});
+
+let wizardStep=1;
+const wizardSubtitles={
+  1:"Paso 1 de 3 · ubicación y órgano.",
+  2:"Paso 2 de 3 · identidad del expediente.",
+  3:"Paso 3 de 3 · partes, folio y WA."
+};
+function setWizardStep(step){
+  wizardStep=Math.max(1,Math.min(3,step));
+  document.querySelectorAll("[data-wizard-panel]").forEach(panel=>panel.classList.toggle("active",Number(panel.dataset.wizardPanel)===wizardStep));
+  document.querySelectorAll("[data-step-indicator]").forEach(ind=>{
+    const n=Number(ind.dataset.stepIndicator);
+    ind.classList.toggle("active",n===wizardStep);
+    ind.classList.toggle("done",n<wizardStep);
+  });
+  document.getElementById("wizardSubtitle").textContent=wizardSubtitles[wizardStep];
+  const nextText=wizardStep===3?"Listo para prueba de consulta":"Siguiente";
+  document.getElementById("wizardNext").textContent=nextText;
+  document.getElementById("wizardNextTop").textContent=nextText;
+}
+function nextWizard(){
+  if(wizardStep<3){setWizardStep(wizardStep+1)}
+  else{showRoute("confirm")}
+}
+document.getElementById("wizardNext").addEventListener("click",nextWizard);
+document.getElementById("wizardNextTop").addEventListener("click",nextWizard);
+document.getElementById("wizardPrev").addEventListener("click",()=>setWizardStep(wizardStep-1));
+
+document.getElementById("addToTracking").addEventListener("click",()=>{
+  showToast("Expediente agregado a seguimiento");
+  showRoute("expedientes");
+});
+
+const detailTabs=document.querySelectorAll("[data-detail-tab]");
+const detailPanels={
+  timeline:document.getElementById("detailTimeline"),
+  evidence:document.getElementById("detailEvidence"),
+  config:document.getElementById("detailConfig"),
+  history:document.getElementById("detailHistory")
+};
+detailTabs.forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    const tab=btn.dataset.detailTab;
+    detailTabs.forEach(b=>b.classList.remove("active"));
+    btn.classList.add("active");
+    Object.values(detailPanels).forEach(panel=>panel.classList.remove("active"));
+    detailPanels[tab].classList.add("active");
+  });
+});
+
+const waMap={
+  active:{text:"WA activo",cls:"wa-active",toast:"WA activo configurado"},
+  only:{text:"WA solo P0",cls:"wa-only",toast:"WA configurado solo para P0"},
+  pending:{text:"WA pendiente",cls:"wa-pending",toast:"WA marcado como pendiente"},
+  muted:{text:"WA silenciado",cls:"wa-muted",toast:"Expediente silenciado en WhatsApp"}
+};
+const waLabel=document.getElementById("waStateLabel");
+const waPreview=document.getElementById("waPreviewBadge");
+function setWA(state){
+  const meta=waMap[state]||waMap.active;
+  document.querySelectorAll("[data-wa-option]").forEach(o=>o.classList.toggle("selected",o.dataset.waOption===state));
+  [waLabel,waPreview].forEach(el=>{
+    el.textContent=meta.text;
+    el.className="badge "+meta.cls;
+  });
+  showToast(meta.toast);
+}
+document.querySelectorAll("[data-wa-option]").forEach(option=>{
+  option.addEventListener("click",()=>setWA(option.dataset.waOption));
+});
+document.querySelectorAll("[data-wa-set]").forEach(btn=>{
+  btn.addEventListener("click",()=>setWA(btn.dataset.waSet));
+});
+</script>
+
+<footer class="slx-global-footer" aria-label="Footer SmartLicit">
+  <div class="slx-footer-container">
+    <div class="slx-footer-grid">
+      <div>
+        <div class="slx-footer-brand"><span class="slx-footer-mark" aria-hidden="true"><span>⚡</span></span><span>SmartLicit</span></div>
+        <p style="margin-top:14px;max-width:320px">Una sola inteligencia, múltiples soluciones para resolver trabajo profesional complejo.</p>
+      </div>
+      <div><h4>Soluciones</h4><a class="slx-footer-product" href="../tender.html" target="_top"><span>⚡</span> Tender</a><a class="slx-footer-product" href="../pricing.html" target="_top"><span>⚡</span> Pricing</a><a class="slx-footer-product" href="../file.html" target="_top"><span>⚡</span> File</a><a class="slx-footer-product" href="../lex.html" target="_top"><span>⚡</span> Lex</a></div>
+      <div><h4>Gobierno</h4><a class="slx-footer-gov" href="../tender-gov.html" target="_top"><span>⚡</span> Tender Gov</a><a class="slx-footer-gov" href="../pricing-gov.html" target="_top"><span>⚡</span> Pricing Gov</a><a href="../ipg.html" target="_top">IPG</a></div>
+      <div><h4>Plataforma</h4><a class="slx-footer-efile" href="../efile.html" target="_top"><span>⚡</span> eFile</a><a href="../planes.html" target="_top">Planes</a><a href="../blog.html" target="_top">Blog</a><a href="../mi-cuenta.html" target="_top">Mi Cuenta</a></div>
+      <div><h4>Workspace</h4><a class="slx-footer-drive" href="../gDrive.html" target="_top"><span>▰</span> Google Drive Workspace</a><a href="../mi-cuenta.html#facturacion" target="_top">Facturación</a><a href="../planes.html#tokens" target="_top">Tokens</a><a href="../mi-cuenta.html#integraciones" target="_top">Integraciones</a></div>
+    </div>
+    <div class="slx-footer-bottom"><span>© SmartLicit</span><span>Minimal premium · trazable · accionable.</span></div>
+  </div>
+</footer>
+
+</body>
+</html>

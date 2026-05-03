@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SmartLicit · Beta 1.9</title>
+  <meta name="description" content="SmartLicit. Una sola inteligencia, múltiples soluciones." />
+  <link rel="stylesheet" href="assets/css/shell.css" />
+</head>
+<body data-page="home">
+  <header class="slx-topbar" aria-label="Navegación principal">
+    <div class="slx-wrap slx-nav">
+      <a href="#page=home" class="slx-brand" aria-label="SmartLicit inicio" data-page="home">
+        <span class="slx-mark" aria-hidden="true"><span class="slx-bolt"></span></span>
+        <span>SmartLicit</span>
+      </a>
+      <button class="slx-mobile-toggle" id="slxMobileToggle" type="button" aria-label="Abrir menú">☰</button>
+      <nav class="slx-site-nav" id="slxSiteNav" aria-label="Menú principal SmartLicit">
+        <div class="slx-nav-dropdown" data-nav-group="tender">
+          <button class="slx-nav-trigger" type="button" aria-haspopup="true" aria-expanded="false" aria-label="Tender"><span class="nav-bolt" aria-hidden="true">⚡</span>Tender<span class="slx-nav-caret" aria-hidden="true">▾</span></button>
+          <div class="slx-nav-menu" role="menu" aria-label="Tender">
+            <a data-page="smart-tender" href="#page=smart-tender" role="menuitem" aria-label="Smart Tender"><span class="nav-bolt" aria-hidden="true">⚡</span>Smart Tender</a>
+            <a data-page="tender-gov" class="gov-tender" href="#page=tender-gov" role="menuitem" aria-label="Tender Gov"><span class="nav-bolt" aria-hidden="true">⚡</span>Tender Gov</a>
+            <a data-page="tender-corp" href="#page=tender-corp" role="menuitem" aria-label="Tender Corp"><span class="nav-bolt" aria-hidden="true">⚡</span>Tender Corp</a>
+          </div>
+        </div>
+        <div class="slx-nav-dropdown" data-nav-group="pricing">
+          <button class="slx-nav-trigger" type="button" aria-haspopup="true" aria-expanded="false" aria-label="Pricing"><span class="nav-bolt" aria-hidden="true">⚡</span>Pricing<span class="slx-nav-caret" aria-hidden="true">▾</span></button>
+          <div class="slx-nav-menu" role="menu" aria-label="Pricing">
+            <a data-page="smart-pricing" href="#page=smart-pricing" role="menuitem" aria-label="Smart Pricing"><span class="nav-bolt" aria-hidden="true">⚡</span>Smart Pricing</a>
+            <a data-page="pricing-gov" class="gov-pricing" href="#page=pricing-gov" role="menuitem" aria-label="Pricing Gov"><span class="nav-bolt" aria-hidden="true">⚡</span>Pricing Gov</a>
+            <a data-page="pricing-corp" href="#page=pricing-corp" role="menuitem" aria-label="Pricing Corp"><span class="nav-bolt" aria-hidden="true">⚡</span>Pricing Corp</a>
+          </div>
+        </div>
+        <div class="slx-nav-dropdown" data-nav-group="file">
+          <button class="slx-nav-trigger" type="button" aria-haspopup="true" aria-expanded="false" aria-label="File"><span class="nav-bolt" aria-hidden="true">⚡</span>File<span class="slx-nav-caret" aria-hidden="true">▾</span></button>
+          <div class="slx-nav-menu" role="menu" aria-label="File">
+            <a data-page="smart-file" href="#page=smart-file" role="menuitem" aria-label="Smart File"><span class="nav-bolt" aria-hidden="true">⚡</span>Smart File</a>
+            <a href="#" data-placeholder="true" role="menuitem" aria-label="File Gov"><span class="nav-bolt" aria-hidden="true">⚡</span>File Gov</a>
+            <a href="#" data-placeholder="true" role="menuitem" aria-label="File Corp"><span class="nav-bolt" aria-hidden="true">⚡</span>File Corp</a>
+          </div>
+        </div>
+
+        <div class="slx-nav-dropdown" data-nav-group="lex">
+          <button class="slx-nav-trigger" type="button" aria-haspopup="true" aria-expanded="false" aria-label="Lex"><span class="nav-bolt" aria-hidden="true">⚡</span>Lex<span class="slx-nav-caret" aria-hidden="true">▾</span></button>
+          <div class="slx-nav-menu" role="menu" aria-label="Lex">
+            <a data-page="smart-lex" href="#page=smart-lex" role="menuitem" aria-label="Smart Lex"><span class="nav-bolt" aria-hidden="true">⚡</span>Smart Lex</a>
+            <a href="#" data-placeholder="true" role="menuitem" aria-label="Lex Gov"><span class="nav-bolt" aria-hidden="true">⚡</span>Lex Gov</a>
+            <a href="#" data-placeholder="true" role="menuitem" aria-label="Lex Corp"><span class="nav-bolt" aria-hidden="true">⚡</span>Lex Corp</a>
+          </div>
+        </div>
+        <a data-page="planes" href="#page=planes" aria-label="Planes">Planes</a>
+        <a data-page="blog" href="#page=blog" aria-label="Blog">Blog</a>
+        <a data-page="ipg" href="#page=ipg" aria-label="IPG">IPG</a>
+        <a data-page="ipp" href="#page=ipp" aria-label="IPP">IPP</a>
+        <a data-page="efile" class="efile-nav" href="#page=efile" aria-label="eFile">eFile</a>
+      </nav>
+      <div class="slx-account" id="slxAccountWrap">
+        <button class="slx-account-trigger" id="slxAccountTrigger" type="button" aria-haspopup="true" aria-expanded="false" aria-label="Mi Cuenta"><span class="slx-user-icon" aria-hidden="true"></span><span class="slx-account-label">Mi Cuenta</span><span class="slx-account-caret" aria-hidden="true">▾</span></button>
+        <div class="slx-account-menu" role="menu" aria-label="Opciones de Mi Cuenta">
+          <a data-page="micuenta" href="#page=micuenta" role="menuitem">Perfil</a>
+          <a data-page="micuenta" href="#page=micuenta&anchor=historial" role="menuitem">Historial</a>
+          <a data-page="micuenta" href="#page=micuenta&anchor=configuracion" role="menuitem">Configuración</a>
+          <div class="slx-account-divider" aria-hidden="true"></div>
+          <a data-page="efile" href="#page=efile" role="menuitem">eFile</a>
+          <a data-page="gdrive" href="#page=gdrive" role="menuitem">G-Drive Workspace</a>
+        </div>
+      </div>
+    </div>
+  </header>
+  <main class="slx-shell" aria-label="SmartLicit Beta 1.9">
+    <section class="slx-frame-stage" aria-live="polite">
+      <div class="slx-frame-shell">
+        <iframe id="slxFrame" class="slx-page-frame" title="SmartLicit" src="about:blank"></iframe>
+      </div>
+      <div class="slx-stage-loader active" id="slxLoader" aria-hidden="true">
+        <span class="slx-mark" aria-hidden="true"><span class="slx-bolt"></span></span>
+        <div class="slx-spinner" aria-hidden="true"></div>
+      </div>
+    </section>
+  </main>
+  <div class="slx-toast" id="slxToast">Vista cargada</div>
+  <script src="assets/js/assets.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>

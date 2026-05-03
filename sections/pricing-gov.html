@@ -1,0 +1,2138 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pricing Gov · SmartLicit</title>
+  <meta name="description" content="Dashboard navegable y autocontenido de Pricing Gov para SmartLicit" />
+  <style>
+    :root{
+      --lime:#B5F857;
+      --ink:#041912;
+      --green:#04560C;
+      --green-2:#1A990F;
+      --bg:#F9F8F3;
+      --surface:#FFFFFF;
+      --surface-soft:#FBFAF6;
+      --warm:#EBEAE5;
+      --warm-2:#CDCABF;
+      --line:rgba(4,25,18,.10);
+      --line-2:rgba(4,25,18,.18);
+      --muted:#66736D;
+      --muted-2:#8A948F;
+      --efile:#5462E2;
+      --efile-soft:#BBC0F3;
+      --efile-soft-2:#DDDFF9;
+      --alert:#F77214;
+      --yellow:#F7BA14;
+      --danger:#C62118;
+      --gov-primary:#F7645C;
+      --gov-alt:#F8596D;
+      --gov-dark:#170406;
+      --gov-deep:#550415;
+      --gov-soft:#F9ACB6;
+      --header:74px;
+      --side:302px;
+      --radius-xl:28px;
+      --radius-lg:22px;
+      --radius-md:16px;
+      --radius-sm:12px;
+      --shadow-xs:0 1px 0 rgba(4,25,18,.04);
+      --shadow-sm:0 8px 22px rgba(4,25,18,.045);
+      --shadow:0 18px 52px rgba(4,25,18,.065);
+      --font:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:var(--font);
+      color:var(--ink);
+      background:
+        radial-gradient(circle at 88% 12%, rgba(247,100,92,.10), transparent 24rem),
+        radial-gradient(circle at 10% 96%, rgba(181,248,87,.10), transparent 26rem),
+        var(--bg);
+      letter-spacing:-.012em;
+      -webkit-font-smoothing:antialiased;
+      text-rendering:geometricPrecision;
+    }
+    a{color:inherit;text-decoration:none}
+    button,input,select,textarea{font:inherit}
+    button{cursor:pointer}
+    .hidden{display:none !important}
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+    :focus-visible{outline:3px solid rgba(247,100,92,.35);outline-offset:2px}
+
+    .ico{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+    .bolt-svg{width:16px;height:16px;fill:currentColor;flex:none}
+    .brand-mark{--mark-bg:var(--ink);--mark-bolt:var(--lime);width:38px;height:38px;display:inline-grid;place-items:center;position:relative;flex:0 0 auto;color:var(--mark-bolt)}
+    .brand-mark:before{content:"";position:absolute;inset:0;background:var(--mark-bg);clip-path:polygon(50% 0%,61% 32%,100% 50%,61% 68%,50% 100%,39% 68%,0% 50%,39% 32%)}
+    .brand-mark .bolt-shape{width:15px;height:22px;position:relative;z-index:1;background:var(--mark-bolt);clip-path:polygon(62% 0%,20% 52%,48% 52%,37% 100%,84% 38%,56% 38%)}
+    .brand-mark.pricing-gov{--mark-bg:var(--gov-primary);--mark-bolt:var(--ink)}
+    .brand-mark.tender-gov{--mark-bg:var(--danger);--mark-bolt:#FFB4B0}
+    .brand-mark.file{--mark-bg:#060517;--mark-bolt:#8B9BF7}
+    .brand-mark.small{width:26px;height:26px}
+    .brand-mark.small .bolt-shape{width:11px;height:16px}
+
+    .topbar{position:fixed;inset:0 0 auto 0;height:var(--header);z-index:90;display:flex;align-items:center;gap:14px;padding:0 18px 0 20px;background:rgba(255,255,255,.92);backdrop-filter:blur(18px);border-bottom:1px solid var(--line)}
+    .mobile-toggle{display:none;width:40px;height:40px;border:1px solid var(--line);border-radius:14px;background:#fff;color:var(--ink)}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:840;font-size:19px;letter-spacing:-.04em;white-space:nowrap}
+    .product-nav{display:flex;align-items:center;gap:3px;margin-left:8px;flex-wrap:nowrap}
+    .product-nav a{min-height:38px;display:inline-flex;align-items:center;gap:7px;padding:0 11px;border-radius:999px;font-size:13px;font-weight:760;color:var(--muted);border:1px solid transparent;white-space:nowrap}
+    .product-nav a:hover{background:#F6F5F0;color:var(--ink);border-color:var(--line)}
+    .product-nav a.active{background:rgba(247,100,92,.10);border-color:rgba(247,100,92,.22);color:var(--gov-deep)}
+    .top-context{min-height:36px;display:flex;align-items:center;gap:8px;padding:0 11px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--muted);font-size:11.5px;font-weight:900;white-space:nowrap}
+    .top-context .dot{width:7px;height:7px;border-radius:50%;background:var(--gov-primary)}
+    .search{position:relative;flex:1;min-width:240px;max-width:560px;margin-left:auto}
+    .search .ico{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--muted)}
+    .search input{width:100%;height:42px;border:1px solid var(--line);border-radius:999px;background:#FBFBF8;outline:0;padding:0 16px 0 42px;font-size:13px;color:var(--ink)}
+    .search input:focus{border-color:rgba(247,100,92,.28);box-shadow:0 0 0 4px rgba(247,100,92,.12);background:#fff}
+    .top-status{display:flex;align-items:center;gap:8px}
+    .pill{min-height:32px;display:inline-flex;align-items:center;gap:7px;padding:0 10px;border-radius:999px;border:1px solid var(--line);background:#fff;color:var(--muted);font-size:11.5px;font-weight:880;white-space:nowrap}
+    .pill.gov{background:rgba(247,100,92,.10);border-color:rgba(247,100,92,.18);color:var(--gov-deep)}
+    .pill.green{background:rgba(181,248,87,.22);border-color:rgba(4,86,12,.14);color:var(--green)}
+    .bell,.acct{height:40px;border:1px solid var(--line);background:#fff;color:var(--muted);display:grid;place-items:center;position:relative}
+    .bell{width:40px;border-radius:14px}
+    .bell:after{content:"";position:absolute;right:9px;top:9px;width:7px;height:7px;border-radius:50%;background:var(--gov-primary);border:1px solid #fff}
+    .acct{display:flex;gap:8px;align-items:center;border-radius:999px;padding:0 10px 0 6px;color:var(--ink);font-size:13px;font-weight:840}
+    .avatar{width:28px;height:28px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;font-size:11px;font-weight:950}
+
+    .sidebar{position:fixed;top:var(--header);left:0;bottom:0;width:var(--side);z-index:80;background:rgba(255,255,255,.90);backdrop-filter:blur(18px);border-right:1px solid var(--line);padding:18px 13px 22px;overflow:auto}
+    .sidehead{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;padding:0 8px 16px}
+    .sidehead span{display:block;font-size:11px;color:var(--gov-deep);font-weight:950;text-transform:uppercase;letter-spacing:.1em}
+    .sidehead strong{display:block;margin-top:5px;color:var(--muted);font-size:13px;line-height:1.35}
+    .collapse{width:32px;height:32px;border:1px solid var(--line);border-radius:11px;background:#fff;color:var(--muted)}
+    .side-nav{display:grid;gap:4px}
+    .side-nav button{width:100%;border:0;background:transparent;color:var(--muted);display:flex;align-items:center;gap:10px;text-align:left;border-radius:14px;padding:10px 11px;font-size:13px;font-weight:790;position:relative}
+    .side-nav button:hover{background:#F6F5F0;color:var(--ink)}
+    .side-nav button.active{background:rgba(247,100,92,.10);color:var(--gov-deep)}
+    .side-nav button.active:before{content:"";position:absolute;left:0;top:10px;bottom:10px;width:3px;border-radius:999px;background:var(--gov-primary)}
+    .nav-count{margin-left:auto;min-width:22px;height:21px;border-radius:999px;background:#F2F2EE;color:var(--muted);display:grid;place-items:center;font-size:10.5px;font-weight:950}
+    .side-section-title{margin:18px 8px 8px;color:var(--muted-2);font-size:10.5px;text-transform:uppercase;letter-spacing:.09em;font-weight:950}
+    .sidecard{margin:18px 2px 0;padding:14px;background:#FBFBF8;border:1px solid var(--line);border-radius:18px}
+    .sidecard h4{margin:0 0 10px;font-size:13px}
+    .planrow{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-top:1px solid var(--line);font-size:12px;color:var(--muted)}
+    .planrow strong{color:var(--ink)}
+    .progress-line{height:8px;background:#F0EFE9;border-radius:999px;overflow:hidden;margin-top:10px}
+    .progress-line span{display:block;height:100%;width:62%;background:var(--gov-primary);border-radius:inherit}
+
+    .main{margin-left:var(--side);padding:calc(var(--header) + 56px) 26px 42px;min-height:100vh}
+    .content-max{max-width:1480px;margin:0 auto}
+    .view{display:none}
+    .view.active{display:block}
+    .head{display:flex;justify-content:space-between;gap:18px;align-items:flex-start;margin-bottom:16px}
+    .crumb{display:inline-flex;align-items:center;gap:8px;color:var(--gov-deep);font-size:11px;font-weight:950;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
+    .spark{width:8px;height:8px;border-radius:50%;background:var(--gov-primary);box-shadow:0 0 0 3px rgba(247,100,92,.16)}
+    h1,h2,h3,p{margin:0}
+    h1{font-size:clamp(28px,2.85vw,40px);line-height:1.06;letter-spacing:-.055em;font-weight:860}
+    h2{font-size:18px;letter-spacing:-.035em}
+    h3{font-size:15px;letter-spacing:-.02em}
+    .lead{margin-top:10px;color:var(--muted);font-size:14px;line-height:1.55;max-width:880px}
+    .actions-head{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+    .btn{min-height:38px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink);padding:0 12px;display:inline-flex;align-items:center;justify-content:center;gap:8px;font-size:12.5px;font-weight:880;text-decoration:none;white-space:nowrap}
+    .btn:hover{border-color:rgba(4,25,18,.22);box-shadow:var(--shadow-sm);transform:translateY(-1px)}
+    .btn.primary{background:var(--ink);border-color:var(--ink);color:#fff}
+    .btn.primary .bolt-svg{color:var(--gov-primary)}
+    .btn.gov{background:rgba(247,100,92,.10);border-color:rgba(247,100,92,.18);color:var(--gov-deep)}
+    .btn.soft{background:rgba(181,248,87,.18);border-color:rgba(4,86,12,.16);color:var(--green)}
+    .btn.file{background:rgba(221,223,249,.62);border-color:rgba(84,98,226,.18);color:#063C83}
+    .btn.ghost{background:transparent}
+    .btn.slim{min-height:32px;border-radius:10px;font-size:11.5px;padding:0 9px}
+    .btn.warn{background:rgba(247,186,20,.13);border-color:rgba(247,186,20,.22);color:#7A5200}
+    .btn.danger{background:rgba(198,33,24,.08);border-color:rgba(198,33,24,.18);color:var(--danger)}
+
+    .hero{position:relative;overflow:hidden;background:#fff;border:1px solid var(--line);border-radius:var(--radius-xl);box-shadow:var(--shadow-sm);padding:24px}
+    .hero:before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 88% 18%, rgba(247,100,92,.12), transparent 18rem),radial-gradient(circle at 8% 84%, rgba(181,248,87,.12), transparent 20rem)}
+    .hero-grid{position:relative;z-index:1;display:grid;grid-template-columns:1.1fr .9fr;gap:16px;align-items:center}
+    .eyebrow{display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border-radius:999px;border:1px solid rgba(247,100,92,.18);background:rgba(247,100,92,.08);color:var(--gov-deep);font-size:12px;font-weight:900}
+    .hero-support{margin-top:16px;color:var(--muted);font-size:13px;line-height:1.5;max-width:760px}
+    .hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+    .hero-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+    .hero-stat{background:#fff;border:1px solid var(--line);border-radius:18px;padding:15px;box-shadow:var(--shadow-xs)}
+    .hero-stat span{display:block;color:var(--muted);font-size:10.5px;text-transform:uppercase;letter-spacing:.08em;font-weight:950}
+    .hero-stat strong{display:block;margin-top:7px;font-size:24px;letter-spacing:-.05em}
+    .hero-stat small{display:block;margin-top:4px;color:var(--muted);font-size:12px}
+
+    .kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:14px 0}
+    .kpi,.card,.table-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm)}
+    .kpi{padding:15px;min-height:126px;display:flex;flex-direction:column;justify-content:space-between}
+    .ktop{display:flex;justify-content:space-between;gap:10px;align-items:center}
+    .kpi h3{color:var(--muted);font-size:11px;font-weight:950;text-transform:uppercase;letter-spacing:.07em}
+    .kicon{width:32px;height:32px;border-radius:12px;background:rgba(247,100,92,.12);color:var(--gov-deep);display:grid;place-items:center}
+    .kicon.green{background:rgba(181,248,87,.24);color:var(--green)}
+    .kicon.file{background:rgba(221,223,249,.62);color:#063C83}
+    .kicon.warn{background:rgba(247,186,20,.13);color:#7A5200}
+    .num{font-size:31px;font-weight:950;letter-spacing:-.065em;margin-top:10px}
+    .kpi p{margin-top:4px;color:var(--muted);font-size:12px;line-height:1.35}
+    .trend{align-self:flex-start;border:1px solid rgba(247,100,92,.18);background:rgba(247,100,92,.08);color:var(--gov-deep);border-radius:999px;padding:4px 8px;font-size:10.5px;font-weight:950;margin-top:10px}
+    .trend.green{border-color:rgba(4,86,12,.14);background:rgba(181,248,87,.18);color:var(--green)}
+    .trend.warn{border-color:rgba(247,186,20,.22);background:rgba(247,186,20,.12);color:#7A5200}
+    .trend.file{border-color:rgba(84,98,226,.18);background:rgba(221,223,249,.62);color:#063C83}
+
+    .grid-2{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(320px,.8fr);gap:14px}
+    .grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+    .grid-4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+    .stack{display:grid;gap:12px}
+    .card{padding:16px}
+    .card-head{display:flex;justify-content:space-between;gap:14px;align-items:flex-start;margin-bottom:12px}
+    .card p{color:var(--muted);font-size:12.5px;line-height:1.45;margin-top:5px}
+    .section-label{display:inline-flex;align-items:center;gap:7px;color:var(--muted-2);font-size:10.5px;text-transform:uppercase;letter-spacing:.09em;font-weight:950;margin-bottom:8px}
+    .divider{height:1px;background:var(--line);margin:14px 0}
+
+    .badge,.sig{display:inline-flex;align-items:center;gap:6px;padding:5px 8px;border-radius:999px;font-size:11px;font-weight:950;white-space:nowrap;border:1px solid var(--line);background:#F7F6F1;color:var(--muted)}
+    .badge.good,.sig.good{background:rgba(181,248,87,.18);color:var(--green);border-color:rgba(4,86,12,.14)}
+    .badge.gov,.sig.gov{background:rgba(247,100,92,.10);color:var(--gov-deep);border-color:rgba(247,100,92,.18)}
+    .badge.warn,.sig.warn{background:rgba(247,186,20,.13);color:#7A5200;border-color:rgba(247,186,20,.22)}
+    .badge.file,.sig.file{background:rgba(221,223,249,.62);color:#063C83;border-color:rgba(84,98,226,.18)}
+    .badge.dark{background:var(--ink);border-color:var(--ink);color:#fff}
+    .badge.muted{background:#F3F2ED;color:var(--muted)}
+
+    .filters{display:grid;grid-template-columns:1.45fr repeat(3,minmax(110px,1fr)) auto;gap:8px;align-items:end;background:#fff;border:1px solid var(--line);border-radius:18px;padding:12px;box-shadow:var(--shadow-xs)}
+    .field label{display:block;font-size:10.5px;color:var(--muted);font-weight:950;text-transform:uppercase;letter-spacing:.07em;margin-bottom:5px}
+    .control{width:100%;height:38px;border:1px solid var(--line);background:#FBFBF8;border-radius:12px;padding:0 10px;outline:0;color:var(--ink);font-size:12.5px}
+    textarea.control{height:auto;min-height:92px;padding:10px;resize:vertical}
+    .control:focus,textarea:focus{border-color:rgba(247,100,92,.28);box-shadow:0 0 0 3px rgba(247,100,92,.12);background:#fff}
+
+    .table-wrap{overflow:auto;background:#fff;border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow-xs)}
+    table{width:100%;border-collapse:collapse;min-width:860px}
+    th,td{padding:13px 14px;border-bottom:1px solid rgba(4,25,18,.07);text-align:left;font-size:12.5px;vertical-align:middle}
+    th{color:var(--muted);font-size:10.5px;text-transform:uppercase;letter-spacing:.07em;font-weight:950;background:#FBFBF8}
+    tr:last-child td{border-bottom:0}
+    tbody tr:hover{background:#FCFCFA}
+    .project-name{font-weight:900;font-size:13.5px;line-height:1.25}
+    .sub{display:flex;gap:7px;flex-wrap:wrap;margin-top:5px;color:var(--muted);font-size:11.5px;font-weight:680}
+    .row-actions{display:flex;gap:6px;justify-content:flex-end}
+
+    .quick-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+    .quick{border:1px solid var(--line);border-radius:16px;background:#fff;padding:13px;display:flex;gap:10px;align-items:flex-start;text-align:left}
+    .quick:hover{background:#FBFAF6}
+    .quick strong{display:block;font-size:12.8px}
+    .quick span{display:block;margin-top:4px;color:var(--muted);font-size:11.5px;line-height:1.35}
+
+    .pipeline{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:8px;margin-top:10px}
+    .stage{border:1px solid var(--line);background:#FBFBF8;border-radius:16px;padding:12px;text-align:center}
+    .stage strong{display:block;font-size:12px}
+    .stage span{display:block;margin-top:6px;color:var(--muted);font-size:11px}
+    .stage.done{background:rgba(181,248,87,.18);border-color:rgba(4,86,12,.14)}
+    .stage.active{background:rgba(247,100,92,.10);border-color:rgba(247,100,92,.18)}
+
+    .toggle-row,.chip-row{display:flex;gap:7px;flex-wrap:wrap}
+    .chip-btn{min-height:32px;border:1px solid var(--line);background:#fff;color:var(--muted);border-radius:999px;padding:0 11px;font-size:11.5px;font-weight:900}
+    .chip-btn:hover,.chip-btn.active{background:rgba(247,100,92,.10);border-color:rgba(247,100,92,.18);color:var(--gov-deep)}
+    .chip-btn.green:hover,.chip-btn.green.active{background:rgba(181,248,87,.18);border-color:rgba(4,86,12,.16);color:var(--green)}
+    .chip-btn.file:hover,.chip-btn.file.active{background:rgba(221,223,249,.62);border-color:rgba(84,98,226,.18);color:#063C83}
+
+    .plan-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+    .plan{border:1px solid var(--line);border-radius:22px;background:#fff;padding:16px;box-shadow:var(--shadow-xs)}
+    .plan.featured{border-color:rgba(247,100,92,.24);background:rgba(247,100,92,.04)}
+    .plan h3{font-size:18px}
+    .plan .big{font-size:34px;font-weight:960;letter-spacing:-.07em;margin-top:12px}
+    .plan .note-list{display:grid;gap:8px;margin-top:12px}
+    .plan .note-list div{border:1px solid var(--line);border-radius:14px;background:#FBFBF8;padding:10px;font-size:12px;color:var(--muted);line-height:1.4}
+
+    .wizard-shell{display:grid;grid-template-columns:minmax(0,1fr) minmax(320px,.78fr);gap:14px}
+    .stepper{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-bottom:14px}
+    .step-pill{border:1px solid var(--line);border-radius:18px;background:#fff;padding:13px;display:flex;align-items:center;gap:10px}
+    .step-pill .n{width:28px;height:28px;border-radius:11px;background:#F3F2ED;color:var(--muted);display:grid;place-items:center;font-size:12px;font-weight:950}
+    .step-pill.active{border-color:rgba(247,100,92,.22);background:rgba(247,100,92,.08)}
+    .step-pill.active .n{background:var(--ink);color:#fff}
+    .step-pill.done .n{background:rgba(181,248,87,.22);color:var(--green)}
+    .step-pill strong{font-size:12.4px}
+    .wizard-panel{display:none}
+    .wizard-panel.active{display:block}
+    .mini-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+    .mini-card{border:1px solid var(--line);border-radius:18px;background:#FBFBF8;padding:13px}
+    .mini-card span{display:block;color:var(--muted);font-size:10.5px;text-transform:uppercase;letter-spacing:.07em;font-weight:950}
+    .mini-card strong{display:block;margin-top:6px;font-size:13px;line-height:1.35}
+    .wizard-actions{display:flex;justify-content:space-between;gap:10px;margin-top:16px}
+
+    .profile-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+    .profile-card{border:1px solid var(--line);border-radius:20px;background:#fff;padding:15px;min-height:160px}
+    .profile-card.selected{border-color:rgba(247,100,92,.24);background:rgba(247,100,92,.06)}
+    .profile-card h3{font-size:16px}
+    .profile-card p{margin-top:7px;font-size:12.5px;color:var(--muted);line-height:1.45}
+    .profile-meta{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}
+
+    .metric-list{display:grid;gap:10px}
+    .metric-row{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid rgba(4,25,18,.07)}
+    .metric-row:last-child{border-bottom:0}
+    .metric-row span{color:var(--muted);font-size:12px}
+    .metric-row strong{font-size:13px;text-align:right}
+
+    .comparison-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+    .comparison-item{border:1px solid var(--line);border-radius:18px;background:#FBFBF8;padding:14px}
+    .comparison-item h3{font-size:14px}
+    .comparison-item p{margin-top:7px;font-size:12px;color:var(--muted);line-height:1.45}
+
+    .checklist{display:grid;gap:8px}
+    .check{border:1px solid var(--line);border-radius:14px;background:#FBFBF8;padding:10px 12px;display:flex;justify-content:space-between;gap:10px;align-items:center;font-size:12.5px}
+    .check strong{font-size:12.5px}
+    .check-dot{width:18px;height:18px;border-radius:50%;background:rgba(181,248,87,.22);color:var(--green);display:grid;place-items:center;font-size:12px;font-weight:950}
+
+    .result-box{border:1px solid rgba(247,100,92,.18);background:rgba(247,100,92,.06);border-radius:24px;padding:18px}
+    .result-box .ok-mark{width:48px;height:48px;border-radius:16px;background:rgba(247,100,92,.12);color:var(--gov-deep);display:grid;place-items:center;font-size:22px;font-weight:960;margin-bottom:12px}
+    .result-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}
+    .notice{border:1px solid rgba(247,186,20,.24);background:rgba(247,186,20,.12);border-radius:16px;padding:12px;font-size:12.5px;color:#6B4800;line-height:1.45}
+    .good-note{border:1px solid rgba(4,86,12,.14);background:rgba(181,248,87,.18);border-radius:16px;padding:12px;font-size:12.5px;color:var(--green);line-height:1.45}
+
+    .timeline{position:relative;display:grid;gap:12px}
+    .timeline:before{content:"";position:absolute;left:42px;top:8px;bottom:8px;width:1px;background:var(--line)}
+    .time-item{display:grid;grid-template-columns:64px 1fr;gap:12px;position:relative}
+    .time-item time{font-size:11px;font-weight:950;color:var(--gov-deep);padding-top:2px}
+    .time-dot{position:absolute;left:38px;top:4px;width:9px;height:9px;border-radius:50%;background:var(--gov-primary);border:2px solid #fff;box-shadow:0 0 0 2px rgba(247,100,92,.16)}
+    .time-card{border:1px solid var(--line);border-radius:17px;background:#FBFBF8;padding:12px}
+    .time-card strong{display:block;font-size:13px}
+    .time-card span{display:block;color:var(--muted);font-size:12px;margin-top:4px;line-height:1.4}
+
+    .assistant-drawer{position:fixed;top:calc(var(--header) + 12px);right:18px;bottom:18px;z-index:120;width:min(380px,calc(100vw - 24px));background:rgba(255,255,255,.97);backdrop-filter:blur(18px);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);padding:16px;transform:translateX(calc(100% + 24px));transition:transform .24s ease;display:grid;grid-template-rows:auto auto 1fr auto;gap:12px}
+    .assistant-drawer.open{transform:translateX(0)}
+    .assistant-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+    .assistant-list{display:grid;gap:10px;overflow:auto;padding-right:4px}
+    .assistant-item{border:1px solid var(--line);border-radius:16px;background:#FBFBF8;padding:12px}
+    .assistant-item strong{display:block;font-size:13px}
+    .assistant-item span{display:block;margin-top:5px;color:var(--muted);font-size:12px;line-height:1.45}
+    .assistant-actions{display:flex;gap:8px;flex-wrap:wrap}
+    .assistant-note{width:100%;min-height:84px;border:1px solid var(--line);border-radius:16px;background:#FBFBF8;padding:10px;resize:vertical;outline:0;color:var(--ink);font-size:12px}
+    .assistant-fab{position:fixed;right:18px;bottom:18px;z-index:110}
+
+    .modal-bg{position:fixed;inset:0;z-index:130;background:rgba(4,25,18,.42);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:24px}
+    .modal-bg.open{display:flex}
+    .modal{width:min(820px,100%);max-height:calc(100vh - 48px);overflow:auto;background:#fff;border-radius:26px;border:1px solid rgba(255,255,255,.36);box-shadow:0 28px 80px rgba(4,25,18,.28)}
+    .modal-head{display:flex;justify-content:space-between;gap:16px;padding:20px 22px;border-bottom:1px solid var(--line)}
+    .modal-head h2{font-size:24px}
+    .modal-body{padding:18px 22px 22px}
+    .close-btn{width:36px;height:36px;border:1px solid var(--line);border-radius:13px;background:#fff;color:var(--muted);font-size:22px}
+
+    .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .contact-grid .full{grid-column:1/-1}
+    .contact-info-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:12px}
+    .contact-card{border:1px solid var(--line);border-radius:16px;background:#FBFBF8;padding:12px}
+    .contact-card strong{display:block;font-size:13px}
+    .contact-card span{display:block;margin-top:4px;color:var(--muted);font-size:12px;line-height:1.4}
+
+    .faq-list{display:grid;gap:8px}
+    .faq-item{border:1px solid var(--line);border-radius:16px;background:#FBFBF8;padding:12px}
+    .faq-item h3{font-size:14px}
+    .faq-item p{margin-top:7px;font-size:12.5px;color:var(--muted);line-height:1.5}
+
+    .perm-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+    .perm-card{border:1px solid var(--line);border-radius:18px;background:#FBFBF8;padding:14px}
+    .perm-card h3{font-size:14px}
+    .perm-card ul{margin:8px 0 0;padding-left:18px;color:var(--muted);font-size:12px;line-height:1.5}
+
+    .security-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+    .security-card{border:1px solid var(--line);border-radius:18px;background:#FBFBF8;padding:14px}
+    .security-card strong{display:block;font-size:14px}
+    .security-card span{display:block;margin-top:6px;color:var(--muted);font-size:12px;line-height:1.45}
+
+    .export-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+    .export-card{border:1px solid var(--line);border-radius:18px;background:#fff;padding:14px}
+    .export-card h3{font-size:14px}
+    .export-card p{margin-top:7px;font-size:12px;color:var(--muted);line-height:1.45}
+    .export-card footer{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-top:12px}
+
+    .footer-note{margin-top:20px;padding:14px 16px;border-radius:18px;background:rgba(4,25,18,.04);color:var(--muted);font-size:12px;line-height:1.5}
+    /* Ajuste Beta 1.9 final: herramientas Pricing Gov */
+    .sidecard.tool-card .tool-title{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:950;letter-spacing:-.02em}.sidecard.tool-card .tool-title:before{content:"⚡";color:var(--gov-primary);font-weight:950}.tool-actions{display:grid;gap:7px;margin-top:12px}.tool-actions button,.tool-actions a{width:100%;min-height:34px;border:1px solid var(--line);border-radius:13px;background:#fff;color:var(--muted);display:flex;align-items:center;justify-content:space-between;gap:8px;padding:0 10px;font-size:11.5px;font-weight:880;text-align:left;text-decoration:none}.tool-actions button:hover,.tool-actions a:hover{background:#F6F5F0;color:var(--ink);border-color:rgba(4,25,18,.18)}.tool-actions .primary{background:var(--ink);border-color:var(--ink);color:#fff}.tool-actions .gov{background:rgba(247,100,92,.10);border-color:rgba(247,100,92,.18);color:var(--gov-deep)}.tool-actions .file{background:rgba(221,223,249,.62);border-color:rgba(84,98,226,.18);color:#063C83}.tool-actions .soft{background:rgba(181,248,87,.20);border-color:rgba(4,86,12,.16);color:var(--green)}
+
+    .toast{position:fixed;right:20px;bottom:20px;z-index:150;transform:translateY(24px);opacity:0;pointer-events:none;background:var(--ink);color:#fff;border-radius:16px;padding:12px 14px;box-shadow:var(--shadow);font-size:12.5px;font-weight:780;max-width:360px;transition:.2s}
+    .toast.show{opacity:1;transform:translateY(0)}
+    .toast.warn{background:#6B4800}
+    .toast.good{background:var(--green)}
+    .toast.gov{background:var(--gov-deep)}
+
+    @media(max-width:1420px){
+      .kpis,.plan-grid,.export-grid,.security-grid,.perm-grid,.comparison-grid,.hero-stats,.contact-info-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .grid-2,.wizard-shell,.hero-grid,.contact-grid{grid-template-columns:1fr}
+      .pipeline{grid-template-columns:repeat(4,minmax(0,1fr))}
+    }
+    @media(max-width:1120px){
+      .product-nav,.top-status .pill,.search{display:none}
+      .top-context{display:none}
+      .sidebar{width:86px}
+      .sidehead div,.sidecard,.side-section-title,.side-nav span:not(.nav-count),.nav-count{display:none}
+      .side-nav button{justify-content:center}
+      .main{margin-left:86px;padding-left:20px;padding-right:20px}
+      .filters{grid-template-columns:repeat(3,minmax(0,1fr))}
+      .quick-grid,.grid-3,.grid-4,.profile-grid,.result-grid,.mini-grid,.contact-info-grid,.export-grid,.security-grid,.perm-grid{grid-template-columns:1fr}
+      .assistant-drawer{top:calc(var(--header) + 10px);right:10px;bottom:10px;width:min(380px,calc(100vw - 20px))}
+    }
+    @media(max-width:760px){
+      .mobile-toggle{display:grid;place-items:center}
+      .brand span:last-child{display:none}
+      .sidebar{transform:translateX(-105%);transition:.2s;width:286px;box-shadow:var(--shadow)}
+      body.sideopen .sidebar{transform:translateX(0)}
+      .sidebar .sidehead div,.sidebar .sidecard,.sidebar .side-section-title,.sidebar .side-nav span:not(.nav-count),.sidebar .nav-count{display:block}
+      .sidebar .side-nav button{justify-content:flex-start}
+      .main{margin-left:0;padding:calc(var(--header) + 48px) 14px 32px}
+      .head,.card-head{display:block}
+      .actions-head{justify-content:flex-start;margin-top:14px}
+      .kpis,.filters,.plan-grid,.hero-stats,.pipeline,.stepper,.comparison-grid,.security-grid,.export-grid,.perm-grid,.contact-grid,.contact-info-grid{grid-template-columns:1fr}
+      .table-wrap{border-radius:18px}
+      .modal-bg{padding:12px}
+      .modal-head,.modal-body{padding-left:16px;padding-right:16px}
+      .assistant-fab{right:14px;bottom:14px}
+      .toast{left:14px;right:14px;bottom:14px}
+      .topbar{padding:0 14px}
+    }
+  
+
+    /* Asistencia IA · revisión institucional en tercios */
+    .assistant-drawer{width:min(1180px,calc(100vw - var(--side) - 42px));max-width:calc(100vw - 36px);grid-template-rows:auto auto 1fr;overflow:hidden}
+    .assistant-drawer .assistant-head{padding-bottom:2px}
+    .review-shell{display:grid;grid-template-columns:.92fr 1.25fr .95fr;gap:12px;min-height:0;overflow:hidden}
+    .review-column{min-width:0;border:1px solid var(--line);border-radius:20px;background:#fff;box-shadow:var(--shadow-soft);padding:14px;display:flex;flex-direction:column;gap:10px;overflow:hidden}
+    .review-column h3{font-size:15px;letter-spacing:-.025em;margin:0}.review-column .microcopy{font-size:11.8px}
+    .review-scroll{display:grid;gap:9px;overflow:auto;min-height:0;padding-right:2px}
+    .doc-review-item{border:1px solid var(--line);background:#FBFBF8;border-radius:15px;padding:10px;display:grid;gap:5px}.doc-review-item strong{font-size:12.7px;line-height:1.25}.doc-review-item span{font-size:11.5px;color:var(--muted);line-height:1.35}.doc-review-item.active{border-color:rgba(247,100,92,.22);background:rgba(247,100,92,.055)}
+    .mode-row{display:flex;gap:7px;flex-wrap:wrap}.mode-row .btn[aria-pressed="true"]{background:rgba(247,100,92,.10);border-color:rgba(247,100,92,.22);color:var(--gov-deep)}
+    .deliverable-frame{border:1px solid var(--line);border-radius:18px;background:#FBFBF8;min-height:360px;overflow:hidden;display:flex;flex-direction:column}.deliverable-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;border-bottom:1px solid var(--line);background:#fff;padding:10px 12px}.deliverable-toolbar strong{font-size:12.5px}.deliverable-toolbar span{font-size:11.5px;color:var(--muted)}.deliverable-paper{padding:16px;overflow:auto;min-height:0;display:grid;gap:10px}.paper-line{height:9px;border-radius:999px;background:#E9E8E1}.paper-line.short{width:54%}.paper-line.mid{width:78%}.paper-card{border:1px solid var(--line);border-radius:14px;background:#fff;padding:12px;font-size:12px;color:var(--muted);line-height:1.45}
+    .assistant-column .assistant-list{overflow:auto;min-height:0;padding-right:2px}.assistant-column .assistant-note{min-height:78px}
+    .review-preview{display:grid;grid-template-columns:.85fr 1.15fr .9fr;gap:10px;margin-top:12px}.review-mini{border:1px solid var(--line);border-radius:18px;background:#fff;padding:13px;min-height:170px;box-shadow:var(--shadow-soft)}.review-mini strong{display:block;font-size:13px}.review-mini span{display:block;margin-top:6px;font-size:12px;color:var(--muted);line-height:1.4}.review-mini.center{background:linear-gradient(180deg,#fff,rgba(249,248,243,.78))}
+    @media(max-width:1120px){.assistant-drawer{width:min(980px,calc(100vw - 24px))}.review-shell,.review-preview{grid-template-columns:1fr}.assistant-drawer{overflow:auto}.review-column{overflow:visible}.deliverable-frame{min-height:300px}}
+    @media(max-width:760px){.assistant-drawer{top:calc(var(--header) + 10px);right:10px;bottom:10px;width:calc(100vw - 20px);padding:12px}.review-shell{gap:10px}.deliverable-frame{min-height:260px}}
+
+
+/* Ajuste puntual Beta 1.1: evitar encimado entre combos de alertas normativas y jerarquía metodológica */
+#view-dashboard .grid-2{gap:22px;align-items:start}
+#view-dashboard .grid-2>.stack{min-width:0;gap:18px}
+#view-dashboard aside.stack>.card{min-height:0;padding:18px;overflow:hidden}
+#view-dashboard aside.stack .metric-list{gap:12px}
+#view-dashboard aside.stack .metric-row{min-height:48px;align-items:center}
+#view-dashboard aside.stack .info-note{margin-top:14px}
+@media(max-width:1280px){#view-dashboard .grid-2{grid-template-columns:1fr}#view-dashboard aside.stack{display:grid;grid-template-columns:1fr 1fr;gap:18px}}
+@media(max-width:860px){#view-dashboard aside.stack{grid-template-columns:1fr}}
+.site-nav .nav-bolt,.topnav .nav-bolt.b2b{color:#81C91C!important}.site-nav .gov-tender .nav-bolt,.site-nav .gov-pricing .nav-bolt,.topnav .nav-bolt.gov{color:#C62118!important}</style>
+
+<style id="slx-global-footer-style">
+.slx-global-footer{margin-top:42px;padding:44px 0 32px;border-top:1px solid var(--line,rgba(4,25,18,.10));background:#fff;color:var(--ink,#041912);clear:both}.slx-global-footer .slx-footer-container{width:min(1180px,calc(100% - 48px));margin-inline:auto}.slx-footer-grid{display:grid;grid-template-columns:1.25fr repeat(4,1fr);gap:24px}.slx-footer-brand{display:inline-flex;align-items:center;gap:10px;font-weight:850;letter-spacing:-.035em;font-size:20px;white-space:nowrap}.slx-footer-mark{--symbol-bg:#04560C;--symbol-bolt:#B5F857;width:34px;height:34px;position:relative;display:inline-grid;place-items:center;flex:none}.slx-footer-mark:before{content:"";position:absolute;inset:0;background:var(--symbol-bg);clip-path:polygon(50% 0%,61% 32%,100% 50%,61% 68%,50% 100%,39% 68%,0% 50%,39% 32%)}.slx-footer-mark span{position:relative;z-index:1;color:var(--symbol-bolt);font-weight:950;font-size:17px}.slx-global-footer h4{margin:0 0 12px;font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted2,var(--muted-2,#8A948F))}.slx-global-footer a,.slx-global-footer p{display:block;margin:0 0 9px;color:var(--muted,#66736D);font-size:14px;line-height:1.45;text-decoration:none}.slx-global-footer a:hover{color:var(--ink,#041912)}.slx-footer-bottom{margin-top:34px;display:flex;justify-content:space-between;gap:16px;color:var(--muted2,var(--muted-2,#8A948F));font-size:13px}.slx-footer-efile,.slx-footer-efile span{color:#063C83!important;font-weight:850}.slx-footer-gov span{color:#C62118}.slx-footer-product span{color:#81C91C}.slx-footer-drive span{color:#063C83;font-weight:900}@media (max-width:1080px){.slx-footer-grid{grid-template-columns:repeat(2,1fr)}}@media (max-width:700px){.slx-global-footer .slx-footer-container{width:min(100% - 24px,1180px)}.slx-footer-grid{grid-template-columns:1fr}.slx-footer-bottom{flex-direction:column}}
+</style>
+
+<style>
+/* Beta 1.8 · Pricing Express */
+.pricing-express-beta18{margin:28px 0 0}.pricing-express-hero{display:grid;grid-template-columns:1.1fr .9fr;gap:18px;align-items:stretch}.pricing-express-card{background:#fff;border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow-soft);padding:18px}.pricing-express-card h2{font-size:28px;letter-spacing:-.055em;margin:0}.pricing-express-card h3{font-size:17px;margin:0}.pricing-express-card p{color:var(--muted);font-size:13px;line-height:1.45;margin:8px 0 0}.pex-flow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px}.pex-step{border:1px solid rgba(4,25,18,.08);background:#FBFAF6;border-radius:16px;padding:11px}.pex-step b{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:10px;background:rgba(247,100,92,.10);color:#7a1d16;font-size:12px}.pex-step strong{display:block;margin-top:8px;font-size:13px}.pex-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:14px}.pex-metric{border:1px solid var(--line);border-radius:18px;background:#fff;padding:12px}.pex-metric span{display:block;color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.07em;font-weight:900}.pex-metric strong{display:block;margin-top:6px;font-size:20px}.pex-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.pex-upload{border:1px dashed rgba(247,100,92,.34);border-radius:20px;padding:18px;background:rgba(247,100,92,.06);display:grid;gap:10px}.pex-upload strong{font-size:18px}.pex-tags{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}.pex-tag{border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 9px;font-size:11px;font-weight:900;color:var(--muted)}.pex-tag.gov{background:rgba(247,100,92,.10);border-color:rgba(247,100,92,.20);color:#7a1d16}.pex-tag.good{background:rgba(181,248,87,.18);border-color:rgba(4,86,12,.16);color:var(--green)}.pex-tag.file{background:rgba(84,98,226,.08);border-color:rgba(84,98,226,.18);color:#063C83}@media(max-width:980px){.pricing-express-hero{grid-template-columns:1fr}.pex-flow,.pex-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:620px){.pex-flow,.pex-metrics{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<svg style="display:none" aria-hidden="true">
+  <symbol id="search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></symbol>
+  <symbol id="grid" viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="7" rx="2"></rect><rect x="13" y="4" width="7" height="7" rx="2"></rect><rect x="4" y="13" width="7" height="7" rx="2"></rect><rect x="13" y="13" width="7" height="7" rx="2"></rect></symbol>
+  <symbol id="file" viewBox="0 0 24 24"><path d="M7 3h7l4 4v14H7z"></path><path d="M14 3v5h5"></path></symbol>
+  <symbol id="bell" viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path><path d="M10 21h4"></path></symbol>
+  <symbol id="settings" viewBox="0 0 24 24"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"></path><path d="M19 15a2 2 0 0 0 .4 2.2l.1.1-2.2 2.2-.1-.1A2 2 0 0 0 15 19l-.2.1-.8 2.9h-4l-.8-2.9L9 19a2 2 0 0 0-2.2.4l-.1.1-2.2-2.2.1-.1A2 2 0 0 0 5 15l-.1-.2-2.9-.8v-4l2.9-.8L5 9a2 2 0 0 0-.4-2.2l-.1-.1 2.2-2.2.1.1A2 2 0 0 0 9 5l.2-.1.8-2.9h4l.8 2.9.2.1a2 2 0 0 0 2.2-.4l.1-.1 2.2 2.2-.1.1A2 2 0 0 0 19 9l.1.2 2.9.8v4l-2.9.8-.1.2Z"></path></symbol>
+  <symbol id="clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v6l4 2"></path></symbol>
+  <symbol id="check" viewBox="0 0 24 24"><path d="m20 6-11 11-5-5"></path></symbol>
+  <symbol id="shield" viewBox="0 0 24 24"><path d="M12 3 5 6v6c0 5 3.4 7.7 7 9 3.6-1.3 7-4 7-9V6l-7-3Z"></path></symbol>
+  <symbol id="sparkle" viewBox="0 0 24 24"><path d="m12 3 1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3Z"></path></symbol>
+  <symbol id="users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></symbol>
+</svg>
+
+<header class="topbar" aria-label="Navegación principal">
+  <button class="mobile-toggle" id="mobileToggle" aria-label="Abrir navegación">☰</button>
+  <a class="brand" href="#dashboard" data-route="dashboard" aria-label="SmartLicit inicio">
+    <span class="brand-mark"><span class="bolt-shape"></span></span>
+    <span>SmartLicit</span>
+  </a>
+  <nav class="product-nav" aria-label="Productos SmartLicit">
+    <a href="#help" data-product-note="Tender es un producto B2B separado para licitaciones desde el lado proveedor.">Tender</a>
+    <a href="#help" data-product-note="Pricing es el producto B2B para estudios de precio e IPG del lado proveedor.">Pricing</a>
+    <a href="#help" data-product-note="File es el producto de monitoreo y expedientes.">File</a>
+    <a href="#help" data-product-note="Lex es el producto jurídico.">Lex</a>
+    <a href="#tender-gov" data-route="tender-gov">Tender Gov</a>
+    <a href="#dashboard" class="active" data-route="dashboard">Pricing Gov</a>
+    <a href="#help" data-help-topic="ipg">IPG</a>
+    <a href="#account" data-route="account">Mi Cuenta</a>
+  </nav>
+  <div class="top-context" id="topContext" aria-live="polite">
+    <span class="dot" aria-hidden="true"></span>
+    <span id="topContextLabel">Dashboard</span>
+  </div>
+  <label class="search" aria-label="Buscar">
+    <svg class="ico"><use href="#search"></use></svg>
+    <input type="search" placeholder="Buscar estudio, unidad compradora, CUCOP o evidencia…" />
+  </label>
+  <div class="top-status">
+    <span class="pill gov"><span>Pricing Gov activo</span></span>
+    <span class="pill green"><span>Demo UI · institucional</span></span>
+    <button class="bell" aria-label="Notificaciones"><svg class="ico"><use href="#bell"></use></svg></button>
+    <button class="acct" data-route="account" aria-label="Mi Cuenta">
+      <span class="avatar">PG</span>
+      <span>Mi Cuenta</span>
+    </button>
+  </div>
+</header>
+
+<aside class="sidebar" aria-label="Navegación Pricing Gov">
+  <div class="sidehead">
+    <div>
+      <span>Pricing Gov</span>
+      <strong>Estudios de mercado defendibles para dependencias, entidades y unidades compradoras.</strong>
+    </div>
+    <button class="collapse" id="closeMobile" aria-label="Cerrar navegación">‹</button>
+  </div>
+  <nav class="side-nav">
+    <button data-route="dashboard"><svg class="ico"><use href="#grid"></use></svg><span>Dashboard</span></button>
+    <button data-route="packages"><svg class="ico"><use href="#sparkle"></use></svg><span>Paquetes / Suscripción</span></button>
+    <button data-route="contact"><svg class="ico"><use href="#users"></use></svg><span>Contactar Ventas</span></button>
+    <button data-route="new-study"><svg class="ico"><use href="#file"></use></svg><span>Nuevo estudio</span><span class="nav-count">10</span></button>
+    <button data-route="efile"><span class="brand-mark small file"><span class="bolt-shape"></span></span><span>eFile Gov</span></button>
+    <button data-route="master"><svg class="ico"><use href="#grid"></use></svg><span>Base Maestra Nacional</span></button>
+    <button data-route="cucop"><svg class="ico"><use href="#search"></use></svg><span>CUCOP</span></button>
+    <button data-route="sources"><svg class="ico"><use href="#file"></use></svg><span>Fuentes y evidencia</span></button>
+    <button data-route="comparability"><svg class="ico"><use href="#check"></use></svg><span>Comparabilidad</span></button>
+    <button data-route="rules"><svg class="ico"><use href="#settings"></use></svg><span>Reglas / POBALINES</span></button>
+    <button data-route="calculation"><svg class="ico"><use href="#sparkle"></use></svg><span>Cálculo metodológico</span></button>
+    <button data-route="result"><svg class="ico"><use href="#check"></use></svg><span>Resultado del estudio</span></button>
+    <button data-route="exports"><svg class="ico"><use href="#file"></use></svg><span>Exportables</span></button>
+    <button data-route="logbook"><svg class="ico"><use href="#clock"></use></svg><span>Bitácora</span></button>
+    <button data-route="security"><svg class="ico"><use href="#shield"></use></svg><span>Seguridad</span></button>
+    <button data-route="assistant"><span class="brand-mark small pricing-gov"><span class="bolt-shape"></span></span><span>Asistencia IA</span></button>
+    <button data-route="tender-gov"><span class="brand-mark small tender-gov"><span class="bolt-shape"></span></span><span>Tender Gov relacionado</span></button>
+    <button data-route="help"><svg class="ico"><use href="#sparkle"></use></svg><span>Ayuda / explicación</span></button>
+    <button data-route="account"><svg class="ico"><use href="#users"></use></svg><span>Mi Cuenta / permisos</span></button>
+  </nav>
+  <div class="side-section-title">Herramientas Pricing Gov</div>
+  <div class="sidecard tool-card" aria-label="Herramientas Pricing Gov">
+    <div class="tool-title">Herramientas Pricing Gov</div>
+    <p>Acciones asistidas para estudios, licitaciones y Express Orders.</p>
+    <div class="tool-actions">
+      <button class="primary" data-route="new-study">Nuevo estudio <span>→</span></button>
+      <a class="gov" href="#pricing-express">Pricing Express <span>→</span></a>
+      <button data-route="new-study">Subir Pre Orden <span>→</span></button>
+      <button data-route="calculation">Normalizar unidades <span>→</span></button>
+      <button data-route="sources">Consultar fuentes <span>→</span></button>
+      <button data-route="comparability">Ver comparables <span>→</span></button>
+      <button data-route="calculation">Detectar outliers <span>→</span></button>
+      <button class="soft" data-route="result">Calcular precio ideal <span>→</span></button>
+      <button data-export="executive">Exportar análisis <span>→</span></button>
+      <a class="gov" href="../tender-gov.html#market-express-gov" target="_top">Publicar Express Order <span>→</span></a>
+      <a class="file" href="../tender-gov.html" target="_top">Enviar a Tender Gov <span>→</span></a>
+      <button class="file" data-save>Guardar en Drive <span>→</span></button>
+    </div>
+    <p>Cada precio debe conservar evidencia, fecha de consulta y nivel de comparabilidad.</p>
+  </div>
+  <div class="side-section-title">Operación actual</div>
+  <div class="sidecard">
+    <h4>Plan institucional activo</h4>
+    <div class="planrow"><span>Bolsa configurada</span><strong>100 estudios</strong></div>
+    <div class="planrow"><span>Disponibles</span><strong id="sideAvailableStudies">62</strong></div>
+    <div class="planrow"><span>POBALINES cargados</span><strong id="sidePobalines">14</strong></div>
+    <div class="progress-line"><span id="sideUsageBar"></span></div>
+  </div>
+</aside>
+
+<main class="main">
+  <div class="content-max">
+<section class="view active" id="view-dashboard">
+  <div class="head">
+    <div>
+      <div class="crumb"><span class="spark"></span>Pricing Gov / Dashboard</div>
+      <h1>Pricing Gov</h1>
+      <p class="lead">Motor institucional para solicitar, construir y exportar estudios de mercado defendibles, con fuentes trazables, CUCOP, Base Maestra Nacional, POBALINES, lineamientos y expediente seguro.</p>
+    </div>
+    <div class="actions-head">
+      <button class="btn primary" data-contact aria-label="Contactar Ventas"><svg class="bolt-svg"><use href="#sparkle"></use></svg>Contactar Ventas</button>
+      <button class="btn gov" data-route="new-study">Ver flujo del estudio</button>
+    </div>
+  </div>
+
+  <section class="hero">
+    <div class="hero-grid">
+      <div>
+        <div class="eyebrow"><span class="brand-mark small pricing-gov"><span class="bolt-shape"></span></span>B2G · Estudios de mercado defendibles</div>
+        <h2 style="font-size:34px;margin-top:18px;line-height:1.06;letter-spacing:-.05em;max-width:780px">De la unidad compradora al expediente exportable, con CUCOP, parametrización institucional y trazabilidad metodológica.</h2>
+        <p class="hero-support">Planes institucionales desde 50 estudios mensuales. Sin precios públicos: la configuración depende de dependencia, entidad, volumen y operación.</p>
+        <div class="hero-actions">
+          <button class="btn primary" data-contact>Contactar Ventas</button>
+          <button class="btn gov" data-route="new-study">Nuevo estudio</button>
+          <button class="btn ghost" data-route="help">Ver explicación del producto</button>
+        </div>
+      </div>
+      <div class="hero-stats">
+        <article class="hero-stat"><span>Estudios disponibles</span><strong id="heroAvailable">62</strong><small>Bolsa activa configurable</small></article>
+        <article class="hero-stat"><span>Perfiles institucionales</span><strong>5</strong><small>eFile Gov reutilizable</small></article>
+        <article class="hero-stat"><span>CUCOP validados</span><strong id="heroCucop">18</strong><small>Clasificación operativa</small></article>
+        <article class="hero-stat"><span>POBALINES cargados</span><strong id="heroPobalines">14</strong><small>Versionados por perfil</small></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="kpis" aria-label="Indicadores principales">
+    <article class="kpi"><div><div class="ktop"><h3>Estudios mensuales disponibles</h3><span class="kicon gov"><svg class="ico"><use href="#file"></use></svg></span></div><div class="num" id="kpiAvailableStudies">62</div><p>Configuración institucional vigente.</p></div><span class="trend gov">Plan institucional</span></article>
+    <article class="kpi"><div><div class="ktop"><h3>Estudios solicitados</h3><span class="kicon"><svg class="ico"><use href="#grid"></use></svg></span></div><div class="num">38</div><p>Con distribución por unidad compradora.</p></div><span class="trend green">Consumo trazable</span></article>
+    <article class="kpi"><div><div class="ktop"><h3>Perfiles institucionales activos</h3><span class="kicon file"><svg class="ico"><use href="#users"></use></svg></span></div><div class="num">5</div><p>eFile Gov precargado.</p></div><span class="trend file">Reusable</span></article>
+    <article class="kpi"><div><div class="ktop"><h3>Estudios en revisión</h3><span class="kicon warn"><svg class="ico"><use href="#clock"></use></svg></span></div><div class="num">7</div><p>Regla o comparabilidad pendiente.</p></div><span class="trend warn">Revisión humana</span></article>
+    <article class="kpi"><div><div class="ktop"><h3>Listos para exportar</h3><span class="kicon green"><svg class="ico"><use href="#check"></use></svg></span></div><div class="num">11</div><p>Expedientes listos para revisión.</p></div><span class="trend green">Salida metodológica</span></article>
+    <article class="kpi"><div><div class="ktop"><h3>Fuentes trazables</h3><span class="kicon"><svg class="ico"><use href="#file"></use></svg></span></div><div class="num">128</div><p>Con fecha, evidencia y comparabilidad.</p></div><span class="trend green">Trazabilidad</span></article>
+    <article class="kpi"><div><div class="ktop"><h3>CUCOP validados</h3><span class="kicon gov"><svg class="ico"><use href="#search"></use></svg></span></div><div class="num" id="kpiCucopAssigned">0</div><p>Asignación demo al estudio actual.</p></div><span class="trend gov">Clasificación</span></article>
+    <article class="kpi"><div><div class="ktop"><h3>POBALINES cargados</h3><span class="kicon file"><svg class="ico"><use href="#settings"></use></svg></span></div><div class="num" id="kpiPobalinesLoaded">14</div><p>Versionados y vigentes.</p></div><span class="trend file">Reglas activas</span></article>
+  </section>
+
+  <div class="grid-2">
+    <section class="stack">
+      <article class="card">
+        <div class="card-head">
+          <div>
+            <div class="section-label">Actividad reciente</div>
+            <h2>Estudios institucionales recientes</h2>
+            <p>Controla perfiles, alertas normativas, comparabilidad y salida exportable desde una sola vista.</p>
+          </div>
+          <button class="btn slim" data-route="result">Abrir resultado demo</button>
+        </div>
+        <div class="table-wrap">
+          <table aria-label="Estudios recientes">
+            <thead>
+              <tr>
+                <th>Estudio</th>
+                <th>Perfil</th>
+                <th>CUCOP</th>
+                <th>Regla</th>
+                <th>Estado</th>
+                <th>Fuente</th>
+                <th>Acción</th>
+              </tr>
+            </thead>
+            <tbody id="recentStudiesTable"></tbody>
+          </table>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-head">
+          <div>
+            <div class="section-label">Pipeline del estudio</div>
+            <h2>Unifica estatus desde borrador hasta expediente listo</h2>
+          </div>
+          <button class="btn slim gov" data-route="logbook">Abrir bitácora</button>
+        </div>
+        <div class="pipeline">
+          <div class="stage done"><strong>Borrador</strong><span>Solicitud registrada</span></div>
+          <div class="stage done"><strong>Perfil</strong><span>eFile Gov</span></div>
+          <div class="stage active"><strong>CUCOP</strong><span>Clasificación</span></div>
+          <div class="stage"><strong>Fuentes</strong><span>Evidencia</span></div>
+          <div class="stage"><strong>Reglas</strong><span>POBALINES</span></div>
+          <div class="stage"><strong>Cálculo</strong><span>Método</span></div>
+          <div class="stage"><strong>Revisión</strong><span>Validación</span></div>
+          <div class="stage"><strong>Listo</strong><span>Exportable</span></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-head">
+          <div>
+            <div class="section-label">Acciones rápidas</div>
+            <h2>Atajos de navegación institucional</h2>
+          </div>
+        </div>
+        <div class="quick-grid">
+          <button class="quick" data-route="new-study"><span class="brand-mark small pricing-gov"><span class="bolt-shape"></span></span><div><strong>Nuevo estudio</strong><span>Abre el wizard institucional.</span></div></button>
+          <button class="quick" data-route="efile"><span class="brand-mark small file"><span class="bolt-shape"></span></span><div><strong>Abrir eFile Gov</strong><span>Perfiles y defaults metodológicos.</span></div></button>
+          <button class="quick" data-route="cucop"><svg class="ico"><use href="#search"></use></svg><div><strong>Validar CUCOP</strong><span>Clasificación del objeto.</span></div></button>
+          <button class="quick" data-load-pobalines><svg class="ico"><use href="#settings"></use></svg><div><strong>Cargar POBALINES</strong><span>Simula vigencia normativa.</span></div></button>
+          <button class="quick" data-route="master"><svg class="ico"><use href="#grid"></use></svg><div><strong>Ver Base Maestra</strong><span>Parametrización nacional.</span></div></button>
+          <button class="quick" data-route="logbook"><svg class="ico"><use href="#clock"></use></svg><div><strong>Abrir bitácora</strong><span>Trazabilidad auditable.</span></div></button>
+        </div>
+      </article>
+    </section>
+
+    <aside class="stack">
+      <article class="card">
+        <div class="card-head">
+          <div>
+            <div class="section-label">Alertas normativas</div>
+            <h2>Requieren intervención</h2>
+          </div>
+          <button class="btn slim" data-assistant-topic="alertas">Abrir Asistencia IA</button>
+        </div>
+        <div class="metric-list">
+          <div class="metric-row"><span>POBALINES faltantes</span><strong class="badge warn" id="alertPobalines">2 perfiles</strong></div>
+          <div class="metric-row"><span>CUCOP pendiente de validación</span><strong class="badge gov" id="alertCucop">1 estudio</strong></div>
+          <div class="metric-row"><span>Fuente vencida</span><strong class="badge warn">3 referencias</strong></div>
+          <div class="metric-row"><span>Comparabilidad insuficiente</span><strong class="badge warn">2 casos</strong></div>
+          <div class="metric-row"><span>Revisión humana sugerida</span><strong class="badge good">4 expedientes</strong></div>
+        </div>
+        <div class="divider"></div>
+        <div class="good-note">La salida metodológica es una recomendación defendible y sujeto a validación institucional.</div>
+      </article>
+
+      <article class="card">
+        <div class="card-head">
+          <div>
+            <div class="section-label">Jerarquía institucional</div>
+            <h2>Base metodológica visible</h2>
+          </div>
+        </div>
+        <div class="metric-list">
+          <div class="metric-row"><span>Base Maestra Nacional</span><strong class="badge file">Parametrización</strong></div>
+          <div class="metric-row"><span>CUCOP</span><strong class="badge gov" id="assignedCucopBadge">Pendiente</strong></div>
+          <div class="metric-row"><span>POBALINES / lineamientos</span><strong class="badge file" id="pobalinesStatusBadge">Pendientes</strong></div>
+          <div class="metric-row"><span>Exportación</span><strong class="badge good" id="exportStatusBadge">Preparada</strong></div>
+        </div>
+        <div class="footer-note">Base Maestra Nacional como parametrización institucional. CUCOP como clasificación operativa del objeto. POBALINES y lineamientos versionados.</div>
+      </article>
+    </aside>
+  </div>
+</section>
+
+<section class="view" id="view-packages">
+  <div class="head">
+    <div>
+      <div class="crumb"><span class="spark"></span>Pricing Gov / Paquetes</div>
+      <h1>Planes institucionales sin precio público</h1>
+      <p class="lead">Un ejecutivo configurará la suscripción según dependencia, entidad, volumen, usuarios, unidades compradoras y necesidades de operación.</p>
+    </div>
+    <div class="actions-head">
+      <button class="btn primary" data-contact>Contactar Ventas</button>
+    </div>
+  </div>
+  <div class="plan-grid">
+    <article class="plan">
+      <span class="badge gov">Plan institucional</span>
+      <h3>Paquete 50</h3>
+      <div class="big">50</div>
+      <p>50 estudios de mercado mensuales · ideal para unidades compradoras con operación recurrente acotada.</p>
+      <div class="note-list">
+        <div>Incluye dashboard, eFile Gov, Base Maestra, CUCOP, fuentes, reglas, exportables y seguridad.</div>
+        <div>Uso recomendado: operación institucional compacta.</div>
+      </div>
+      <div class="divider"></div>
+      <button class="btn gov" data-contact-plan="50 estudios mensuales">Contactar Ventas</button>
+    </article>
+    <article class="plan featured">
+      <span class="badge gov">Plan institucional</span>
+      <h3>Paquete 100</h3>
+      <div class="big">100</div>
+      <p>100 estudios de mercado mensuales · para dependencias con mayor volumen de procedimientos.</p>
+      <div class="note-list">
+        <div>Incluye gestión de perfiles, bitácora y tablero de seguimiento.</div>
+        <div>Uso recomendado: dependencias con varias áreas solicitantes.</div>
+      </div>
+      <div class="divider"></div>
+      <button class="btn gov" data-contact-plan="100 estudios mensuales">Contactar Ventas</button>
+    </article>
+    <article class="plan">
+      <span class="badge gov">Plan institucional</span>
+      <h3>Paquete 200</h3>
+      <div class="big">200</div>
+      <p>200 estudios de mercado mensuales · para entidades con múltiples áreas solicitantes.</p>
+      <div class="note-list">
+        <div>Incluye segmentación por unidad compradora, CUCOP y revisión institucional.</div>
+        <div>Uso recomendado: entidades multiárea.</div>
+      </div>
+      <div class="divider"></div>
+      <button class="btn gov" data-contact-plan="200 estudios mensuales">Contactar Ventas</button>
+    </article>
+    <article class="plan">
+      <span class="badge gov">Plan institucional</span>
+      <h3>Paquete 500</h3>
+      <div class="big">500</div>
+      <p>500 estudios de mercado mensuales · para operación centralizada o multi-dependencia.</p>
+      <div class="note-list">
+        <div>Incluye arquitectura de alto volumen y seguimiento ejecutivo.</div>
+        <div>Uso recomendado: operación centralizada o multi-ente.</div>
+      </div>
+      <div class="divider"></div>
+      <button class="btn gov" data-contact-plan="500 estudios mensuales">Contactar Ventas</button>
+    </article>
+  </div>
+  <div class="footer-note">No se muestran precios. El dimensionamiento final depende de dependencia, entidad, volumen, unidades compradoras y operación.</div>
+</section>
+
+<section class="view" id="view-contact">
+  <div class="head">
+    <div>
+      <div class="crumb"><span class="spark"></span>Pricing Gov / Contacto</div>
+      <h1>Contacto institucional</h1>
+      <p class="lead">Pricing Gov está diseñado para dependencias, entidades y unidades compradoras que requieren un proceso defendible, exportable y seguro.</p>
+    </div>
+    <div class="actions-head">
+      <button class="btn primary" data-contact>Solicitar contacto</button>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-head">
+      <div>
+        <div class="section-label">Qué se configura</div>
+        <h2>Alcance comercial y de operación</h2>
+      </div>
+    </div>
+    <div class="contact-info-grid">
+      <div class="contact-card"><strong>Dependencia o entidad</strong><span>Gobierno federal, estatal, municipal u organismo con reglas y perfiles específicos.</span></div>
+      <div class="contact-card"><strong>Volumen</strong><span>50, 100, 200 o 500 estudios mensuales según necesidad operativa.</span></div>
+      <div class="contact-card"><strong>Usuarios y permisos</strong><span>Administración institucional, analistas, revisores y consulta.</span></div>
+    </div>
+    <div class="divider"></div>
+    <div class="good-note">Toda solicitud registrada es sujeta a configuración institucional. No se publica precio ni se promete automatización de decisiones de autoridad.</div>
+  </div>
+</section>
+<section class="view" id="view-new-study">
+  <div class="head">
+    <div>
+      <div class="crumb"><span class="spark"></span>Pricing Gov / Nuevo estudio</div>
+      <h1>Wizard institucional del estudio</h1>
+      <p class="lead">El estudio nace desde eFile Gov, se precarga con Base Maestra Nacional, se clasifica con CUCOP, aplica POBALINES y produce una salida metodológica exportable.</p>
+    </div>
+    <div class="actions-head">
+      <button class="btn gov" data-save>Guardar borrador</button>
+      <button class="btn file" data-assistant-topic="wizard">Asistencia IA</button>
+    </div>
+  </div>
+
+  <div class="wizard-shell">
+    <div>
+      <div class="stepper" id="wizardStepper">
+        <button class="step-pill" data-step="1"><span class="n">1</span><strong>Perfil institucional</strong></button>
+        <button class="step-pill" data-step="2"><span class="n">2</span><strong>Unidad compradora</strong></button>
+        <button class="step-pill" data-step="3"><span class="n">3</span><strong>CUCOP</strong></button>
+        <button class="step-pill" data-step="4"><span class="n">4</span><strong>Requerimiento</strong></button>
+        <button class="step-pill" data-step="5"><span class="n">5</span><strong>Fuentes</strong></button>
+        <button class="step-pill" data-step="6"><span class="n">6</span><strong>Comparabilidad</strong></button>
+        <button class="step-pill" data-step="7"><span class="n">7</span><strong>Reglas / POBALINES</strong></button>
+        <button class="step-pill" data-step="8"><span class="n">8</span><strong>Cálculo</strong></button>
+        <button class="step-pill" data-step="9"><span class="n">9</span><strong>Resultado</strong></button>
+        <button class="step-pill" data-step="10"><span class="n">10</span><strong>Exportables</strong></button>
+      </div>
+
+      <article class="card wizard-panel" id="wizard-step-1">
+        <div class="card-head"><div><h2>1. Perfil institucional</h2><p>Selecciona el eFile Gov de origen. El contexto base define reglas, responsables y lineamientos.</p></div></div>
+        <div class="profile-grid" id="profileCards"></div>
+        <div class="wizard-actions">
+          <span></span>
+          <button class="btn primary" data-step-next>Siguiente</button>
+        </div>
+      </article>
+
+      <article class="card wizard-panel" id="wizard-step-2">
+        <div class="card-head"><div><h2>2. Unidad compradora</h2><p>La Base Maestra Nacional ayuda a precargar sujeto contratante, unidad compradora, portal y marco aplicable.</p></div></div>
+        <div class="mini-grid">
+          <div class="mini-card"><span>Sujeto contratante</span><strong>Secretaría de Salud · CDMX</strong></div>
+          <div class="mini-card"><span>Unidad compradora</span><strong>Abastecimiento médico · UC demo</strong></div>
+          <div class="mini-card"><span>Portal principal</span><strong>Portal institucional / expediente demo</strong></div>
+          <div class="mini-card"><span>Estatus</span><strong>Confirmado</strong></div>
+        </div>
+        <div class="divider"></div>
+        <div class="notice">La Base Maestra Nacional no es una norma; es una arquitectura de parametrización para precargar perfiles y validaciones.</div>
+        <div class="wizard-actions">
+          <button class="btn" data-step-prev>Anterior</button>
+          <button class="btn primary" data-step-next>Siguiente</button>
+        </div>
+      </article>
+
+      <article class="card wizard-panel" id="wizard-step-3">
+        <div class="card-head"><div><h2>3. CUCOP</h2><p>Clasifica el bien o servicio con una coincidencia sugerida. Si la clasificación no es concluyente, solicita revisión humana.</p></div></div>
+        <div class="mini-grid">
+          <div class="mini-card"><span>Clave CUCOP</span><strong id="wizardCucopKey">Sin asignar</strong></div>
+          <div class="mini-card"><span>Familia CUCOP</span><strong id="wizardCucopFamily">Pendiente</strong></div>
+          <div class="mini-card"><span>Descripción CUCOP</span><strong id="wizardCucopDesc">Sin asignar</strong></div>
+          <div class="mini-card"><span>Validación CUCOP</span><strong id="wizardCucopStatus">Pendiente de validación</strong></div>
+        </div>
+        <div class="divider"></div>
+        <button class="btn gov" data-route="cucop">Abrir módulo CUCOP</button>
+        <div class="wizard-actions">
+          <button class="btn" data-step-prev>Anterior</button>
+          <button class="btn primary" data-step-next>Siguiente</button>
+        </div>
+      </article>
+
+      <article class="card wizard-panel" id="wizard-step-4">
+        <div class="card-head"><div><h2>4. Requerimiento</h2><p>Captura mínima y comparable del objeto del estudio.</p></div></div>
+        <div class="contact-grid">
+          <div class="field"><label>Bien / servicio</label><input class="control" value="Guantes de nitrilo · caja 100" /></div>
+          <div class="field"><label>Unidad</label><input class="control" value="Caja" /></div>
+          <div class="field"><label>Cantidad</label><input class="control" value="240" /></div>
+          <div class="field"><label>Condiciones de entrega</label><input class="control" value="Entrega centralizada · Demo UI" /></div>
+          <div class="field"><label>Condiciones de pago</label><input class="control" value="30 días · Supuesto configurable" /></div>
+          <div class="field"><label>Vigencia</label><input class="control" value="2026 Q2" /></div>
+          <div class="field"><label>Temporalidad</label><input class="control" value="Suministro trimestral" /></div>
+          <div class="field"><label>Área solicitante</label><input class="control" value="Dirección de abastecimiento médico" /></div>
+          <div class="field"><label>Unidad compradora</label><input class="control" value="UC demo · Secretaría de Salud" /></div>
+          <div class="field"><label>Clave / familia CUCOP</label><input class="control" value="CUCOP demo / material médico" /></div>
+          <div class="field full"><label>Observaciones</label><textarea class="control">Objeto claro, unidad comparable y condiciones equivalentes para salida metodológica defendible.</textarea></div>
+        </div>
+        <div class="wizard-actions">
+          <button class="btn" data-step-prev>Anterior</button>
+          <button class="btn primary" data-step-next>Siguiente</button>
+        </div>
+      </article>
+
+      <article class="card wizard-panel" id="wizard-step-5">
+        <div class="card-head"><div><h2>5. Fuentes</h2><p>Jerarquía institucional: histórico público, portales locales, expedientes, solicitudes de cotización cuando aplique, organismos especializados y mercado abierto con evidencia.</p></div></div>
+        <div class="comparison-grid">
+          <div class="comparison-item"><h3>Compras MX / histórico público</h3><p>Prioridad institucional · trazable · fuente primaria oficial.</p></div>
+          <div class="comparison-item"><h3>Portales locales / OCDS</h3><p>Aplicable cuando el objeto se publique en portales subnacionales.</p></div>
+          <div class="comparison-item"><h3>Mercado abierto con evidencia</h3><p>Solo entra al cálculo si conserva condiciones equivalentes y evidencia verificable.</p></div>
+        </div>
+        <div class="wizard-actions">
+          <button class="btn" data-step-prev>Anterior</button>
+          <button class="btn primary" data-step-next>Siguiente</button>
+        </div>
+      </article>
+
+      <article class="card wizard-panel" id="wizard-step-6">
+        <div class="card-head"><div><h2>6. Comparabilidad</h2><p>Valida unidad comparable, entrega, pago, vigencia, especificación técnica y evidencia adjunta.</p></div></div>
+        <div class="checklist">
+          <div class="check"><strong>Objeto claro</strong><span class="check-dot">✓</span></div>
+          <div class="check"><strong>Unidad comparable</strong><span class="check-dot">✓</span></div>
+          <div class="check"><strong>Condiciones equivalentes</strong><span class="check-dot">✓</span></div>
+          <div class="check"><strong>Fuente trazable</strong><span class="check-dot">✓</span></div>
+          <div class="check"><strong>CUCOP validado</strong><span class="check-dot" id="wizardCucopCheck">…</span></div>
+          <div class="check"><strong>POBALINES cargados</strong><span class="check-dot" id="wizardPobalinesCheck">…</span></div>
+        </div>
+        <div class="wizard-actions">
+          <button class="btn" data-step-prev>Anterior</button>
+          <button class="btn primary" data-step-next>Siguiente</button>
+        </div>
+      </article>
+
+      <article class="card wizard-panel" id="wizard-step-7">
+        <div class="card-head"><div><h2>7. Reglas / POBALINES</h2><p>Se versionan reglas por marco federal, local o mixto. La aplicación final debe validarse institucionalmente.</p></div></div>
+        <div class="mini-grid">
+          <div class="mini-card"><span>Marco</span><strong>Federal / local / mixto · configurable</strong></div>
+          <div class="mini-card"><span>Procedimiento</span><strong>Licitación pública · demo</strong></div>
+          <div class="mini-card"><span>POBALINES</span><strong id="wizardPobalinesState">Pendientes</strong></div>
+          <div class="mini-card"><span>Revisión humana</span><strong>Condicional</strong></div>
+        </div>
+        <div class="divider"></div>
+        <button class="btn gov" data-load-pobalines>Cargar POBALINES</button>
+        <div class="wizard-actions">
+          <button class="btn" data-step-prev>Anterior</button>
+          <button class="btn primary" data-step-next>Siguiente</button>
+        </div>
+      </article>
+
+      <article class="card wizard-panel" id="wizard-step-8">
+        <div class="card-head"><div><h2>8. Cálculo</h2><p>El panel no es caja negra: muestra entradas, validaciones, método de referencia y rango defendible.</p></div></div>
+        <div class="mini-grid">
+          <div class="mini-card"><span>Método de referencia</span><strong>Mediana demo · Referencia ilustrativa</strong></div>
+          <div class="mini-card"><span>Monto de referencia defendible</span><strong>Demo UI · Supuesto configurable</strong></div>
+          <div class="mini-card"><span>Validación requerida</span><strong>No / sujeto a regla</strong></div>
+          <div class="mini-card"><span>Estatus metodológico</span><strong>Listo para revisión</strong></div>
+        </div>
+        <div class="wizard-actions">
+          <button class="btn" data-step-prev>Anterior</button>
+          <button class="btn primary" data-step-next>Siguiente</button>
+        </div>
+      </article>
+
+      <article class="card wizard-panel" id="wizard-step-9">
+        <div class="card-head"><div><h2>9. Resultado</h2><p>Precio o monto de referencia defendible, fuentes usadas, CUCOP, POBALINES y revisión requerida.</p></div></div>
+        <div class="result-box">
+          <div class="ok-mark">✓</div>
+          <h3>Monto de referencia defendible</h3>
+          <p>Demo UI · Referencia ilustrativa. La decisión final permanece en manos de la autoridad competente.</p>
+          <div class="result-grid">
+            <div class="mini-card"><span>CUCOP asignado</span><strong id="wizardResultCucop">Pendiente</strong></div>
+            <div class="mini-card"><span>POBALINES</span><strong id="wizardResultPobalines">Pendientes</strong></div>
+            <div class="mini-card"><span>Fuentes usadas</span><strong>4 trazables</strong></div>
+            <div class="mini-card"><span>Estado</span><strong>En revisión</strong></div>
+          </div>
+        </div>
+        <div class="wizard-actions">
+          <button class="btn" data-step-prev>Anterior</button>
+          <button class="btn primary" data-step-next>Siguiente</button>
+        </div>
+      </article>
+
+      <article class="card wizard-panel" id="wizard-step-10">
+        <div class="card-head"><div><h2>10. Exportables</h2><p>Estudio de mercado, cuadro comparativo, bitácora, expediente PDF, anexo CUCOP, anexo POBALINES y resumen para Tender Gov.</p></div></div>
+        <div class="export-grid" id="wizardExportGrid"></div>
+        <div class="wizard-actions">
+          <button class="btn" data-step-prev>Anterior</button>
+          <button class="btn gov" data-route="exports">Ir a exportables</button>
+        </div>
+      </article>
+    </div>
+
+    <aside class="stack">
+      <article class="card">
+        <div class="card-head"><div><h2>Resumen del estudio</h2><p>Datos precargados desde eFile Gov y Base Maestra.</p></div></div>
+        <div class="metric-list">
+          <div class="metric-row"><span>Perfil</span><strong id="summaryProfile">Secretaría de Salud · CDMX</strong></div>
+          <div class="metric-row"><span>Unidad compradora</span><strong>Abastecimiento médico</strong></div>
+          <div class="metric-row"><span>CUCOP</span><strong id="summaryCucop">Sin asignar</strong></div>
+          <div class="metric-row"><span>POBALINES</span><strong id="summaryPobalines">Pendientes</strong></div>
+          <div class="metric-row"><span>Exportación</span><strong>Comité + expediente</strong></div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-head"><div><h2>Contexto precargado</h2><p>El eFile Gov define reglas base del estudio.</p></div></div>
+        <div class="mini-grid">
+          <div class="mini-card"><span>Institución</span><strong>Secretaría de Salud · CDMX</strong></div>
+          <div class="mini-card"><span>Dependencia</span><strong>Abastecimiento médico</strong></div>
+          <div class="mini-card"><span>Regla base</span><strong>Perfil federal / local demo</strong></div>
+          <div class="mini-card"><span>Revisión humana</span><strong>Condicional</strong></div>
+        </div>
+        <div class="divider"></div>
+        <button class="btn file" data-assistant-topic="contexto">Explicar con Asistencia IA</button>
+      </article>
+    </aside>
+  </div>
+</section>
+
+<section class="view" id="view-efile">
+  <div class="head">
+    <div>
+      <div class="crumb"><span class="spark"></span>Pricing Gov / eFile Gov</div>
+      <h1>Perfiles institucionales reutilizables</h1>
+      <p class="lead">Institución, dependencia, unidad compradora, responsables, marco normativo, POBALINES, lineamientos internos, defaults metodológicos, CUCOP frecuentes y plantillas de exportación.</p>
+    </div>
+    <div class="actions-head">
+      <button class="btn gov" data-toast="Nuevo eFile Gov abierto en modo demo">Crear eFile Gov</button>
+    </div>
+  </div>
+  <div class="grid-2">
+    <section class="stack">
+      <div class="profile-grid" id="efileProfiles"></div>
+    </section>
+    <aside class="stack">
+      <article class="card">
+        <div class="card-head">
+          <div>
+            <div class="section-label">Detalle del perfil</div>
+            <h2 id="efileDetailTitle">Secretaría de Salud · CDMX</h2>
+            <p id="efileDetailSubtitle">Perfil federal · unidad compradora activa.</p>
+          </div>
+        </div>
+        <div class="mini-grid">
+          <div class="mini-card"><span>Responsables</span><strong id="efileResponsables">2 perfiles autorizados</strong></div>
+          <div class="mini-card"><span>POBALINES</span><strong id="efilePobalinesDetail">Cargados</strong></div>
+          <div class="mini-card"><span>Regla base</span><strong id="efileRuleBase">Federal demo</strong></div>
+          <div class="mini-card"><span>Estado de validación</span><strong id="efileValidation">Confirmado</strong></div>
+          <div class="mini-card"><span>CUCOP frecuentes</span><strong id="efileFrequentCucop">Material médico</strong></div>
+          <div class="mini-card"><span>Plantillas de exportación</span><strong id="efileTemplates">Comité + expediente</strong></div>
+        </div>
+        <div class="divider"></div>
+        <div class="good-note">Toda la configuración institucional vive dentro de un expediente reusable y versionado.</div>
+      </article>
+    </aside>
+  </div>
+</section>
+
+<section class="view" id="view-master">
+  <div class="head">
+    <div>
+      <div class="crumb"><span class="spark"></span>Pricing Gov / Base Maestra Nacional</div>
+      <h1>Parametrización nacional de sujetos contratantes y unidades compradoras</h1>
+      <p class="lead">La Base Maestra Nacional no es una norma; es una arquitectura de parametrización que consolida sujetos contratantes, dependencias, entidades, unidades compradoras, portales, reglas, evidencia y estado de validación para precargar estudios de mercado.</p>
+    </div>
+    <div class="actions-head">
+      <button class="btn gov" data-route="new-study">Usar en nuevo estudio</button>
+    </div>
+  </div>
+
+  <section class="filters">
+    <div class="field"><label>Buscar registro</label><input class="control" id="masterSearch" placeholder="IMSS, ISSSTE, Tianguis Digital, DIF…" /></div>
+    <div class="field"><label>Nivel</label><div class="toggle-row">
+      <button class="chip-btn green active" data-master-level="all">Todos</button>
+      <button class="chip-btn green" data-master-level="Federal">Federal</button>
+      <button class="chip-btn green" data-master-level="Local">Local</button>
+      <button class="chip-btn green" data-master-level="Mixto">Mixto</button>
+    </div></div>
+    <div class="field"><label>Estatus</label><div class="toggle-row">
+      <button class="chip-btn active" data-master-status="all">Todos</button>
+      <button class="chip-btn" data-master-status="Confirmado">Confirmado</button>
+      <button class="chip-btn" data-master-status="Pendiente de validación">Pendiente</button>
+      <button class="chip-btn" data-master-status="No localizado">No localizado</button>
+    </div></div>
+    <div class="field"><label>Filtros extra</label><div class="toggle-row">
+      <button class="chip-btn file" id="filterCucop">Con CUCOP</button>
+      <button class="chip-btn file" id="filterPobalines">Con POBALINES</button>
+    </div></div>
+    <button class="btn soft" id="masterReset">Limpiar</button>
+  </section>
+
+  <div class="table-wrap">
+    <table aria-label="Base Maestra Nacional">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nivel de gobierno</th>
+          <th>Entidad federativa</th>
+          <th>Sujeto contratante</th>
+          <th>Unidad compradora seleccionable</th>
+          <th>Clave UC</th>
+          <th>Portal principal</th>
+          <th>Marco aplicable</th>
+          <th>CUCOP</th>
+          <th>POBALINES / lineamientos</th>
+          <th>Estatus</th>
+          <th>Fuente primaria</th>
+          <th>Fecha de consulta</th>
+          <th>Acción</th>
+        </tr>
+      </thead>
+      <tbody id="masterTable"></tbody>
+    </table>
+  </div>
+</section>
+<section class="view" id="view-cucop">
+  <div class="head">
+    <div>
+      <div class="crumb"><span class="spark"></span>Pricing Gov / CUCOP</div>
+      <h1>Clasificación operativa del objeto del estudio</h1>
+      <p class="lead">CUCOP ayuda a estandarizar la clasificación del bien o servicio dentro del estudio. La clasificación puede requerir validación humana cuando la coincidencia no es concluyente.</p>
+    </div>
+    <div class="actions-head">
+      <button class="btn file" data-assistant-topic="cucop">Asistencia IA</button>
+    </div>
+  </div>
+  <section class="filters">
+    <div class="field"><label>Buscar CUCOP</label><input class="control" id="cucopSearch" placeholder="Guantes, limpieza hospitalaria, reactivos…" /></div>
+    <div class="field"><label>Selección actual</label><div class="mini-card" style="padding:9px 10px;height:38px;display:flex;align-items:center"><strong id="currentCucopText">Sin asignar</strong></div></div>
+    <div class="field"><label>Estado</label><div class="toggle-row">
+      <button class="chip-btn active" data-cucop-status="all">Todos</button>
+      <button class="chip-btn" data-cucop-status="Pendiente de validación">Pendiente</button>
+      <button class="chip-btn" data-cucop-status="Validación sugerida">Sugerida</button>
+    </div></div>
+    <div class="field"><label>Notas</label><div class="mini-card" style="padding:9px 10px;height:38px;display:flex;align-items:center"><strong>Demo UI / Supuesto configurable</strong></div></div>
+    <button class="btn soft" id="cucopReset">Limpiar</button>
+  </section>
+  <div class="table-wrap">
+    <table aria-label="Coincidencias CUCOP">
+      <thead>
+        <tr>
+          <th>Coincidencia</th>
+          <th>Score demo</th>
+          <th>Clave CUCOP demo</th>
+          <th>Familia</th>
+          <th>Descripción</th>
+          <th>Estatus</th>
+          <th>Acción</th>
+        </tr>
+      </thead>
+      <tbody id="cucopTable"></tbody>
+    </table>
+  </div>
+</section>
+
+<section class="view" id="view-sources">
+  <div class="head">
+    <div>
+      <div class="crumb"><span class="spark"></span>Pricing Gov / Fuentes y evidencia</div>
+      <h1>Jerarquía de fuentes con trazabilidad</h1>
+      <p class="lead">Compras MX / histórico público, portales locales / OCDS, convocatorias y expedientes, solicitudes de cotización cuando aplique, organismos especializados e investigación de mercado abierto con evidencia.</p>
+    </div>
+    <div class="actions-head">
+      <button class="btn gov" data-save>Guardar evidencia</button>
+    </div>
+  </div>
+  <div class="chip-row" style="margin-bottom:12px">
+    <button class="chip-btn active" data-source-filter="all">Todas</button>
+    <button class="chip-btn" data-source-filter="Trazable">Trazable</button>
+    <button class="chip-btn" data-source-filter="Requiere evidencia">Requiere evidencia</button>
+    <button class="chip-btn" data-source-filter="Vencida">Vencida</button>
+    <button class="chip-btn" data-source-filter="No comparable">No comparable</button>
+    <button class="chip-btn" data-source-filter="Pendiente de validación">Pendiente</button>
+  </div>
+  <div class="grid-3" id="sourceCards"></div>
+</section>
+
+<section class="view" id="view-comparability">
+  <div class="head">
+    <div>
+      <div class="crumb"><span class="spark"></span>Pricing Gov / Comparabilidad</div>
+      <h1>Validación técnica y económica de las referencias</h1>
+      <p class="lead">La fuente entra al cálculo solo si conserva equivalencia técnica y económica: unidad comparable, moneda base, cantidad, entrega, pago, vigencia, especificación, CUCOP compatible y evidencia adjunta.</p>
+    </div>
+    <div class="actions-head">
+      <button class="btn primary" data-toast="Comparabilidad validada en modo demo">Validar comparabilidad</button>
+    </div>
+  </div>
+  <div class="comparison-grid">
+    <div class="comparison-item"><h3>Unidad comparable</h3><p>Caja de 100 guantes · Demo UI. Moneda base MXN. Cantidad normalizada.</p></div>
+    <div class="comparison-item"><h3>Condiciones equivalentes</h3><p>Entrega centralizada, pago a 30 días y vigencia alineada al corte del estudio.</p></div>
+    <div class="comparison-item"><h3>CUCOP compatible</h3><p id="comparabilityCucopText">Sin asignar · se requiere selección CUCOP demo.</p></div>
+  </div>
+  <div class="divider"></div>
+  <div class="checklist">
+    <div class="check"><strong>Objeto claro</strong><span class="check-dot">✓</span></div>
+    <div class="check"><strong>Unidad comparable</strong><span class="check-dot">✓</span></div>
+    <div class="check"><strong>Condiciones equivalentes</strong><span class="check-dot">✓</span></div>
+    <div class="check"><strong>Fuente trazable</strong><span class="check-dot">✓</span></div>
+    <div class="check"><strong>CUCOP validado</strong><span class="check-dot" id="comparabilityCucopCheck">…</span></div>
+    <div class="check"><strong>POBALINES cargados</strong><span class="check-dot" id="comparabilityPobalinesCheck">…</span></div>
+    <div class="check"><strong>Revisión humana si aplica</strong><span class="check-dot">✓</span></div>
+  </div>
+</section>
+
+<section class="view" id="view-rules">
+  <div class="head">
+    <div>
+      <div class="crumb"><span class="spark"></span>Pricing Gov / Reglas / POBALINES</div>
+      <h1>Motor normativo configurable</h1>
+      <p class="lead">Marco federal, local o mixto; procedimiento; CUCOP; POBALINES; lineamientos internos; regla vigente; versión; vigencia; revisión humana requerida; validación por evidencia; fuentes mínimas y reglas específicas cuando apliquen.</p>
+    </div>
+    <div class="actions-head">
+      <button class="btn gov" data-load-pobalines>Cargar POBALINES</button>
+      <button class="btn file" data-assistant-topic="reglas">Explicar regla</button>
+    </div>
+  </div>
+  <div class="grid-3">
+    <article class="card">
+      <div class="card-head"><div><h2>Marco y procedimiento</h2></div></div>
+      <div class="metric-list">
+        <div class="metric-row"><span>Marco</span><strong>Federal / local / mixto</strong></div>
+        <div class="metric-row"><span>Procedimiento</span><strong>Licitación pública · Demo UI</strong></div>
+        <div class="metric-row"><span>CUCOP</span><strong id="rulesCucop">Pendiente</strong></div>
+      </div>
+    </article>
+    <article class="card">
+      <div class="card-head"><div><h2>POBALINES y lineamientos</h2></div></div>
+      <div class="metric-list">
+        <div class="metric-row"><span>POBALINES cargados</span><strong id="rulesPobalinesCount">14</strong></div>
+        <div class="metric-row"><span>Versión</span><strong>v2026.04 demo</strong></div>
+        <div class="metric-row"><span>Vigencia</span><strong>Vigente</strong></div>
+        <div class="metric-row"><span>Revisión humana</span><strong>Si aplica</strong></div>
+      </div>
+    </article>
+    <article class="card">
+      <div class="card-head"><div><h2>Reglas activas</h2></div></div>
+      <div class="checklist">
+        <div class="check"><strong>Fuentes mínimas</strong><span class="badge file">≥ 2 fuentes demo</span></div>
+        <div class="check"><strong>Cotizaciones cuando aplique</strong><span class="badge muted">Condicionado</span></div>
+        <div class="check"><strong>Precio no aceptable</strong><span class="badge muted">Parametrizable</span></div>
+        <div class="check"><strong>Precio no conveniente</strong><span class="badge muted">Parametrizable</span></div>
+      </div>
+    </article>
+  </div>
+  <div class="divider"></div>
+  <div class="notice">El sistema versiona reglas y no asume uniformidad entre federación, estados, municipios y entes. La aplicación final debe validarse institucionalmente.</div>
+</section>
+
+<section class="view" id="view-calculation">
+  <div class="head">
+    <div>
+      <div class="crumb"><span class="spark"></span>Pricing Gov / Cálculo metodológico</div>
+      <h1>Panel de cálculo legible</h1>
+      <p class="lead">Entradas, fuentes, CUCOP, POBALINES, reglas, validaciones, comparabilidad, método de referencia, rango defendible, salida recomendada y estatus metodológico.</p>
+    </div>
+    <div class="actions-head">
+      <button class="btn file" data-assistant-topic="calculo">Explicar hallazgo</button>
+    </div>
+  </div>
+  <div class="grid-2">
+    <article class="card">
+      <div class="card-head">
+        <div><div class="section-label">Panel de cálculo</div><h2>Lectura editorial del proceso</h2><p>No es caja negra. Todo dato económico mostrado es Demo UI / Supuesto configurable / Referencia ilustrativa.</p></div>
+      </div>
+      <div class="mini-grid">
+        <div class="mini-card"><span>Precio público de referencia</span><strong>Demo UI · Referencia ilustrativa</strong></div>
+        <div class="mini-card"><span>Mediana demo</span><strong>Supuesto configurable</strong></div>
+        <div class="mini-card"><span>Promedio demo</span><strong>Supuesto configurable</strong></div>
+        <div class="mini-card"><span>Rango mínimo / máximo demo</span><strong>Referencia ilustrativa</strong></div>
+        <div class="mini-card"><span>Monto de referencia defendible</span><strong>Demo UI</strong></div>
+        <div class="mini-card"><span>Validación requerida</span><strong>No / según regla</strong></div>
+      </div>
+      <div class="divider"></div>
+      <div class="metric-list">
+        <div class="metric-row"><span>Entradas</span><strong>4 fuentes · 1 CUCOP · 1 perfil</strong></div>
+        <div class="metric-row"><span>Comparabilidad</span><strong>Validada</strong></div>
+        <div class="metric-row"><span>POBALINES</span><strong id="calcPobalinesStatus">Pendientes</strong></div>
+        <div class="metric-row"><span>Estatus metodológico</span><strong>Listo para revisión</strong></div>
+      </div>
+    </article>
+    <aside class="stack">
+      <article class="card">
+        <div class="card-head"><div><h2>Entradas consideradas</h2></div></div>
+        <div class="checklist">
+          <div class="check"><strong>Fuentes trazables</strong><span class="badge good">4</span></div>
+          <div class="check"><strong>CUCOP asignado</strong><span class="badge gov" id="calcCucopStatus">Pendiente</span></div>
+          <div class="check"><strong>POBALINES activos</strong><span class="badge file" id="calcPobalinesCount">0</span></div>
+          <div class="check"><strong>Revisión humana</strong><span class="badge warn">Condicional</span></div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-head"><div><h2>Método sugerido</h2></div></div>
+        <div class="good-note">La salida metodológica se comunica como monto de referencia o rango defendible, nunca como sustitución de la autoridad competente.</div>
+      </article>
+    </aside>
+  </div>
+</section>
+
+<section class="view" id="view-result">
+  <div class="head">
+    <div>
+      <div class="crumb"><span class="spark"></span>Pricing Gov / Resultado</div>
+      <h1>Estudio listo para revisión institucional</h1>
+      <p class="lead">Precio o monto de referencia defendible, rango sugerido, CUCOP asignado, fuentes usadas, comparabilidad, POBALINES, regla aplicada y acciones de salida.</p>
+    </div>
+    <div class="actions-head">
+      <button class="btn gov" data-export="Expediente PDF">Exportar expediente</button>
+      <button class="btn soft" data-send-tender>Enviar a Tender Gov</button>
+    </div>
+  </div>
+  <div class="grid-2">
+    <article class="card">
+      <div class="result-box">
+        <div class="ok-mark">✓</div>
+        <h2>Monto de referencia defendible</h2>
+        <p>Demo UI · Referencia ilustrativa · Sujeto a validación institucional.</p>
+        <div class="result-grid">
+          <div class="mini-card"><span>Rango sugerido</span><strong>Demo UI · min–max defendible</strong></div>
+          <div class="mini-card"><span>CUCOP asignado</span><strong id="resultCucopLabel">Pendiente</strong></div>
+          <div class="mini-card"><span>Fuentes usadas</span><strong>4 trazables</strong></div>
+          <div class="mini-card"><span>Comparabilidad</span><strong>Validada</strong></div>
+          <div class="mini-card"><span>POBALINES aplicados</span><strong id="resultPobalinesLabel">Pendientes</strong></div>
+          <div class="mini-card"><span>Regla aplicada</span><strong>Perfil federal / local demo</strong></div>
+          <div class="mini-card"><span>Revisión requerida</span><strong>No</strong></div>
+          <div class="mini-card"><span>Estado</span><strong>Listo para exportar</strong></div>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div class="notice">La decisión final permanece en manos de la autoridad competente; Pricing Gov organiza evidencia, parametrización y cálculo metodológico para revisión institucional.</div>
+    </article>
+    <aside class="stack">
+      <article class="card">
+        <div class="card-head"><div><h2>Acciones disponibles</h2></div></div>
+        <div class="quick-grid">
+          <button class="quick" data-export="Cuadro comparativo"><svg class="ico"><use href="#file"></use></svg><div><strong>Ver cuadro comparativo</strong><span>Exportable demo.</span></div></button>
+          <button class="quick" data-route="logbook"><svg class="ico"><use href="#clock"></use></svg><div><strong>Abrir bitácora</strong><span>Trazabilidad auditable.</span></div></button>
+          <button class="quick" data-save><svg class="ico"><use href="#check"></use></svg><div><strong>Guardar en historial</strong><span>Persistencia institucional.</span></div></button>
+          <button class="quick" data-send-tender><span class="brand-mark small tender-gov"><span class="bolt-shape"></span></span><div><strong>Enviar a Tender Gov</strong><span>Integración relacionada.</span></div></button>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-head"><div><h2>Asistencia IA</h2></div></div>
+        <p>Asistencia IA detectó que la fuente 2 no conserva condiciones de entrega equivalentes y recomienda revisión humana antes del fallo.</p>
+        <div class="divider"></div>
+        <button class="btn gov" data-assistant-topic="resultado">Abrir explicación</button>
+      </article>
+    </aside>
+  </div>
+</section>
+    <section class="view" id="view-exports">
+      <div class="head">
+        <div>
+          <div class="crumb"><span class="spark"></span>Pricing Gov / Exportables</div>
+          <h1>Salida documental del estudio</h1>
+          <p class="lead">Estudio de mercado, cuadro comparativo, bitácora metodológica, expediente PDF, anexo de fuentes, resumen para comité, anexo CUCOP, anexo POBALINES y resumen para Tender Gov.</p>
+        </div>
+        <div class="actions-head">
+          <button class="btn primary" data-export="Todos los exportables">Generar todo</button>
+        </div>
+      </div>
+      <div class="export-grid" id="exportGrid"></div>
+    </section>
+
+    <section class="view" id="view-logbook">
+      <div class="head">
+        <div>
+          <div class="crumb"><span class="spark"></span>Pricing Gov / Bitácora</div>
+          <h1>Bitácora auditable</h1>
+          <p class="lead">Perfil seleccionado, unidad compradora validada, CUCOP, fuentes, comparabilidad, POBALINES, cálculo, revisión humana, exportación y usuario responsable.</p>
+        </div>
+        <div class="actions-head">
+          <button class="btn gov" data-save>Registrar nota</button>
+        </div>
+      </div>
+      <div class="timeline" id="logbookTimeline"></div>
+    </section>
+
+    <section class="view" id="view-security">
+      <div class="head">
+        <div>
+          <div class="crumb"><span class="spark"></span>Pricing Gov / Seguridad</div>
+          <h1>Clasificación de información y acceso por rol</h1>
+          <p class="lead">La información se mantiene clasificada por dependencia, entidad, unidad compradora y funcionario autorizado. Solo perfiles autorizados de la dependencia o entidad solicitante pueden consultarla dentro de la plataforma.</p>
+        </div>
+      </div>
+      <div class="security-grid">
+        <article class="security-card"><strong>Cifrado de datos</strong><span>Uso de cifrado y prácticas modernas de ciberseguridad para resguardar información institucional.</span></article>
+        <article class="security-card"><strong>Control de acceso por rol</strong><span>Administrador institucional, responsable de unidad compradora, analista, revisor y consulta.</span></article>
+        <article class="security-card"><strong>Aislamiento lógico</strong><span>Segregación por dependencia, entidad y unidad compradora.</span></article>
+        <article class="security-card"><strong>Bitácora de consulta</strong><span>Auditoría de accesos, cambios, exportaciones y revisiones.</span></article>
+        <article class="security-card"><strong>Clasificación de información</strong><span>Segmentación por sensibilidad institucional y tipo de expediente.</span></article>
+        <article class="security-card"><strong>Trazabilidad de exportaciones</strong><span>Cada exportable queda identificado con usuario, fecha y finalidad operativa.</span></article>
+      </div>
+      <div class="footer-note">Se comunica seguridad con prudencia: cifrado, controles de acceso, segregación de información y auditoría de accesos; no se afirman certificaciones específicas no confirmadas.</div>
+    </section>
+
+    <section class="view" id="view-assistant">
+      <div class="head">
+        <div>
+          <div class="crumb"><span class="spark"></span>Pricing Gov / Asistencia IA</div>
+          <h1>Asistencia IA</h1>
+          <p class="lead">Asistencia IA abre una revisión institucional en tercios: documentos fuente, entregable integrado en Docs o Sheets y asistente SmartLicit con alertas, sugerencias y observaciones trazables.</p>
+        </div>
+        <div class="actions-head">
+          <button class="btn primary" data-assistant-open>Abrir revisión en tercios</button>
+        </div>
+      </div>
+      <article class="card">
+        <div class="card-head">
+          <div>
+            <h2>Interfaz de revisión</h2>
+            <p>El panel lateral simula la cabina de trabajo: a la izquierda documentos revisados, al centro el entregable editable y a la derecha el asistente SmartLicit.</p>
+          </div>
+          <div class="badge gov">Demo UI</div>
+        </div>
+        <div class="review-preview" aria-label="Vista previa de interfaz de tercios">
+          <div class="review-mini"><strong>1. Documentos a revisar</strong><span>Requerimiento institucional, anexo de fuentes, cuadro comparativo, POBALINES y evidencia de consulta.</span><div class="divider"></div><span class="badge file">PDF / XLSX / captura demo</span></div>
+          <div class="review-mini center"><strong>2. Entregable integrado</strong><span>Estudio de mercado en Docs o cuadro comparativo en Sheets, con cambios listos para revisión institucional.</span><div class="divider"></div><div class="mode-row"><button class="btn slim gov" data-review-mode="docs" aria-pressed="true">Docs</button><button class="btn slim" data-review-mode="sheets" aria-pressed="false">Sheets</button></div></div>
+          <div class="review-mini"><strong>3. Asistente SmartLicit</strong><span>Alertas de CUCOP, POBALINES, fuente vencida, comparabilidad y revisión humana sugerida.</span><div class="divider"></div><button class="btn slim primary" data-assistant-topic="revision-tercios">Iniciar revisión</button></div>
+        </div>
+      </article>
+      <div class="grid-2" style="margin-top:14px">
+        <article class="card">
+          <div class="card-head"><div><h2>Capacidades disponibles</h2></div></div>
+          <div class="checklist">
+            <div class="check"><strong>Sugerir CUCOP probable</strong><span class="badge gov">Activo</span></div>
+            <div class="check"><strong>Alertar POBALINES faltantes</strong><span class="badge file">Activo</span></div>
+            <div class="check"><strong>Detectar fuente vencida</strong><span class="badge warn">Activo</span></div>
+            <div class="check"><strong>Explicar por qué una fuente no es comparable</strong><span class="badge good">Activo</span></div>
+            <div class="check"><strong>Sugerir revisión humana</strong><span class="badge good">Activo</span></div>
+            <div class="check"><strong>Preparar observaciones para comité</strong><span class="badge gov">Activo</span></div>
+          </div>
+        </article>
+        <aside class="stack">
+          <article class="card"><div class="card-head"><div><h2>Hallazgo demo</h2></div></div><p>Asistencia IA detectó que la fuente 2 no conserva condiciones de entrega equivalentes y propone dejarla fuera del rango defendible hasta que exista evidencia adicional.</p><div class="divider"></div><button class="btn gov" data-assistant-topic="hallazgo-demo">Ver explicación institucional</button></article>
+          <article class="card"><div class="card-head"><div><h2>Uso transversal</h2></div></div><p>El asistente está disponible en Dashboard, CUCOP, Reglas / POBALINES, Cálculo y Resultado del estudio.</p></article>
+        </aside>
+      </div>
+    </section>
+
+    <section class="view" id="view-tender-gov">
+      <div class="head">
+        <div>
+          <div class="crumb"><span class="spark"></span>Pricing Gov / Tender Gov relacionado</div>
+          <h1>Integración relacionada con Tender Gov</h1>
+          <p class="lead">Tender Gov permite a funcionarios conformar licitaciones. Pricing Gov puede enviar el estudio de mercado, cuadro comparativo, CUCOP, bitácora y monto de referencia a Tender Gov cuando el expediente esté listo.</p>
+        </div>
+        <div class="actions-head">
+          <button class="btn primary" data-send-tender>Enviar a Tender Gov</button>
+        </div>
+      </div>
+      <div class="grid-2">
+        <article class="card">
+          <div class="card-head"><div><h2>Estado de integración</h2></div></div>
+          <div class="result-box">
+            <div class="ok-mark">↗</div>
+            <h3 id="tenderGovStatusTitle">Listo para integrar</h3>
+            <p id="tenderGovStatusText">El expediente todavía no se ha enviado. Al integrarlo, Tender Gov recibe el resumen institucional necesario para conformar la licitación.</p>
+            <div class="divider"></div>
+            <button class="btn gov" data-send-tender>Enviar a Tender Gov</button>
+          </div>
+        </article>
+        <aside class="stack">
+          <article class="card">
+            <div class="card-head"><div><h2>Checklist previo</h2></div></div>
+            <div class="checklist">
+              <div class="check"><strong>Estudio listo</strong><span class="check-dot">✓</span></div>
+              <div class="check"><strong>CUCOP validado</strong><span class="check-dot" id="tenderCucopCheck">…</span></div>
+              <div class="check"><strong>POBALINES aplicados</strong><span class="check-dot" id="tenderPobalinesCheck">…</span></div>
+              <div class="check"><strong>Bitácora cerrada</strong><span class="check-dot">✓</span></div>
+              <div class="check"><strong>Exportables generados</strong><span class="check-dot" id="tenderExportsCheck">…</span></div>
+            </div>
+          </article>
+        </aside>
+      </div>
+    </section>
+
+    <section class="view" id="view-help">
+      <div class="head">
+        <div>
+          <div class="crumb"><span class="spark"></span>Pricing Gov / Ayuda</div>
+          <h1>Ayuda y explicación del producto</h1>
+          <p class="lead">Pricing Gov organiza evidencia, reglas institucionales, CUCOP, parametrización y cálculo metodológico para apoyar estudios de mercado revisables y exportables.</p>
+        </div>
+      </div>
+      <div class="faq-list">
+        <article class="faq-item"><h3>¿Qué es un estudio de mercado?</h3><p>Es el proceso institucional para identificar condiciones comerciales, fuentes comparables, reglas aplicables y un monto o rango de referencia defendible antes de una contratación pública.</p></article>
+        <article class="faq-item"><h3>¿Qué genera Pricing Gov?</h3><p>Estudios de mercado, cuadros comparativos, bitácoras metodológicas, anexos de fuentes, anexos CUCOP, anexos POBALINES y expedientes listos para revisión.</p></article>
+        <article class="faq-item"><h3>¿Qué papel juega CUCOP?</h3><p>CUCOP funciona como clasificación operativa del bien o servicio. Ayuda a ordenar el objeto del estudio y a homologar referencias cuando aplica.</p></article>
+        <article class="faq-item"><h3>¿Qué papel juega la Base Maestra Nacional?</h3><p>Sirve como parametrización institucional: sujeto contratante, dependencia, entidad, unidad compradora, portales, marco normativo, estado de validación y reglas reutilizables.</p></article>
+        <article class="faq-item"><h3>¿Qué papel juegan los POBALINES?</h3><p>Versionan lineamientos y criterios institucionales sobre fuentes, comparabilidad, evidencias, revisiones y reglas específicas aplicables.</p></article>
+        <article class="faq-item"><h3>¿Qué diferencia hay entre fuente pública, fuente institucional y mercado abierto?</h3><p>La fuente pública proviene de portales oficiales e históricos. La institucional proviene de documentos o expedientes del ente. El mercado abierto solo entra con evidencia verificable y condiciones equivalentes.</p></article>
+        <article class="faq-item"><h3>¿Por qué se requiere trazabilidad?</h3><p>Porque la recomendación defendible debe poder revisarse, auditarse y exportarse como constancia metodológica o anexo del expediente.</p></article>
+        <article class="faq-item"><h3>¿Cuándo se requiere revisión humana?</h3><p>Cuando faltan POBALINES, la coincidencia CUCOP no es concluyente, la comparabilidad es insuficiente o existe evidencia vencida o incompleta.</p></article>
+        <article class="faq-item"><h3>¿Cómo se integra con Tender Gov?</h3><p>Pricing Gov prepara el estudio, el rango de referencia, el CUCOP, la bitácora y los exportables que pueden remitirse a Tender Gov para conformar la licitación.</p></article>
+        <article class="faq-item"><h3 id="faq-ipg">¿Qué papel juega IPG?</h3><p>IPG puede aparecer como referencia, histórico o capa de consulta. No sustituye el estudio institucional ni es el producto principal de esta vista.</p></article>
+      </div>
+    </section>
+
+    <section class="view" id="view-account">
+      <div class="head">
+        <div>
+          <div class="crumb"><span class="spark"></span>Pricing Gov / Mi Cuenta</div>
+          <h1>Usuarios, roles y permisos</h1>
+          <p class="lead">Dependencia, entidad, unidad compradora activa, plan contratado, estudios disponibles, estudios consumidos, usuarios, permisos por rol y registro de accesos.</p>
+        </div>
+        <div class="actions-head">
+          <button class="btn gov" data-toast="Usuario agregado en modo demo">Agregar usuario</button>
+        </div>
+      </div>
+      <div class="grid-2">
+        <section class="stack">
+          <article class="card">
+            <div class="card-head"><div><h2>Cuenta institucional</h2></div></div>
+            <div class="mini-grid">
+              <div class="mini-card"><span>Dependencia / entidad</span><strong>Secretaría de Salud · CDMX</strong></div>
+              <div class="mini-card"><span>Unidad compradora activa</span><strong>Abastecimiento médico</strong></div>
+              <div class="mini-card"><span>Plan contratado</span><strong>100 estudios mensuales</strong></div>
+              <div class="mini-card"><span>Estudios consumidos</span><strong>38</strong></div>
+              <div class="mini-card"><span>Estudios disponibles</span><strong id="accountAvailableStudies">62</strong></div>
+              <div class="mini-card"><span>Usuarios</span><strong>12</strong></div>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-head"><div><h2>Roles y permisos</h2></div></div>
+            <div class="perm-grid">
+              <article class="perm-card"><h3>Administrador institucional</h3><ul><li>Configura usuarios y planes.</li><li>Gestiona perfiles eFile Gov.</li><li>Autoriza exportaciones.</li></ul></article>
+              <article class="perm-card"><h3>Responsable de unidad compradora</h3><ul><li>Solicita estudios.</li><li>Valida unidad y reglas.</li><li>Remite a comité o Tender Gov.</li></ul></article>
+              <article class="perm-card"><h3>Analista</h3><ul><li>Integra fuentes y comparabilidad.</li><li>Asigna CUCOP.</li><li>Prepara cálculo.</li></ul></article>
+              <article class="perm-card"><h3>Revisor</h3><ul><li>Confirma reglas y evidencia.</li><li>Solicita revisión humana.</li><li>Aprueba salida metodológica.</li></ul></article>
+              <article class="perm-card"><h3>Consulta</h3><ul><li>Acceso de lectura.</li><li>Revisa expedientes.</li><li>No modifica datos.</li></ul></article>
+            </div>
+          </article>
+        </section>
+
+        <aside class="stack">
+          <article class="card">
+            <div class="card-head"><div><h2>Registro de accesos</h2></div></div>
+            <div class="timeline">
+              <div class="time-item"><time>Hoy</time><span class="time-dot"></span><div class="time-card"><strong>Administrador institucional</strong><span>Actualizó configuración de usuarios.</span></div></div>
+              <div class="time-item"><time>Hoy</time><span class="time-dot"></span><div class="time-card"><strong>Analista</strong><span>Integró fuente pública en estudio de material médico.</span></div></div>
+              <div class="time-item"><time>Ayer</time><span class="time-dot"></span><div class="time-card"><strong>Revisor</strong><span>Confirmó comparabilidad y salida metodológica.</span></div></div>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card-head"><div><h2>Seguridad</h2></div></div>
+            <p>Solo perfiles autorizados pueden consultar, editar o exportar información de la dependencia o entidad solicitante.</p>
+          </article>
+        </aside>
+      </div>
+    </section>
+  </div>
+
+
+<section class="section pricing-express-beta18" id="pricing-express">
+  <div class="head">
+    <div><div class="section-label">Pricing Gov / Pricing Express</div><h1>Pricing Express</h1><p class="lead">Estudios de mercado rápidos para Express Orders y licitaciones.</p></div>
+    <div class="actions-head"><button class="btn gov">Subir Pre Orden</button><button class="btn primary">Ejecutar Pricing Express</button></div>
+  </div>
+  <div class="pricing-express-hero">
+    <article class="pricing-express-card"><h2>Precio ideal con evidencia en el menor tiempo posible</h2><p>Sube una Pre Orden de Compra de productos o servicios. SmartLicit consulta fuentes habilitadas, normaliza precios, detecta comparables y entrega un precio ideal para publicar con rapidez, trazabilidad y transparencia.</p><div class="pex-flow"><div class="pex-step"><b>1</b><strong>Subir Pre Orden</strong><p>Productos o servicios.</p></div><div class="pex-step"><b>2</b><strong>Extraer SKUs</strong><p>Partidas o servicios.</p></div><div class="pex-step"><b>3</b><strong>Normalizar unidades</strong><p>Unidad, moneda y volumen.</p></div><div class="pex-step"><b>4</b><strong>Consultar fuentes</strong><p>Sitios habilitados.</p></div><div class="pex-step"><b>5</b><strong>Detectar outliers</strong><p>Precios no comparables.</p></div><div class="pex-step"><b>6</b><strong>Precio ideal</strong><p>Cálculo rápido.</p></div><div class="pex-step"><b>7</b><strong>Análisis</strong><p>Riesgos y rangos.</p></div><div class="pex-step"><b>8</b><strong>Exportar reporte</strong><p>Drive y evidencia.</p></div><div class="pex-step"><b>9</b><strong>Publicar</strong><p>Express Order o licitación.</p></div></div><div class="pex-actions"><button class="btn gov">Ver comparables</button><button class="btn">Exportar análisis</button><button class="btn">Publicar Express Order</button><button class="btn efile">Guardar en Drive</button></div></article>
+    <aside class="pricing-express-card"><div class="pex-upload"><strong>Pre Orden cargada</strong><p>Servicio menor de fumigación · 4 sedes · entrega requerida: 5 días.</p><div class="pex-tags"><span class="pex-tag gov">Productos / servicios</span><span class="pex-tag good">Procesamiento rápido</span><span class="pex-tag file">Evidencia trazable</span></div></div><div class="pex-metrics"><div class="pex-metric"><span>Fuentes consultadas</span><strong>96</strong></div><div class="pex-metric"><span>Comparables</span><strong>71</strong></div><div class="pex-metric"><span>Outliers</span><strong>8</strong></div><div class="pex-metric"><span>Comparabilidad</span><strong>87%</strong></div><div class="pex-metric"><span>Precio público</span><strong>$—</strong></div><div class="pex-metric"><span>Rango competitivo</span><strong>Listo</strong></div><div class="pex-metric"><span>Precio ideal</span><strong>Calculado</strong></div><div class="pex-metric"><span>Estado</span><strong>Demo UI</strong></div></div><p style="margin-top:12px">Pricing Express prioriza rapidez sin perder trazabilidad. Cada precio debe estar soportado por evidencia, fecha de consulta y nivel de comparabilidad.</p></aside>
+  </div>
+</section>
+
+</main>
+
+<button class="btn gov assistant-fab" data-assistant-open aria-label="Abrir Asistencia IA"><span class="brand-mark small pricing-gov"><span class="bolt-shape"></span></span>Asistencia IA</button>
+
+<aside class="assistant-drawer" id="assistantDrawer" aria-label="Panel lateral Asistencia IA" aria-hidden="true">
+  <div class="assistant-head"><div><div class="section-label">Asistencia IA</div><h2 style="font-size:20px">Revisión institucional en tercios</h2><p id="assistantContextText" style="margin-top:6px;color:var(--muted);font-size:12.5px;line-height:1.45">Documentos fuente, entregable integrado y asistente SmartLicit.</p></div><button class="close-btn" id="assistantClose" aria-label="Cerrar Asistencia IA">×</button></div>
+  <div class="good-note" id="assistantSummary">Asistencia IA ayuda a detectar inconsistencias, explicar comparabilidad y preparar observaciones institucionales.</div>
+  <div class="review-shell">
+    <section class="review-column" aria-label="Documentos que se revisarán"><div><div class="section-label">Lado izquierdo</div><h3>Documentos a revisar</h3><p class="microcopy">Fuentes y soportes del estudio. Todo dato económico se conserva como Demo UI o supuesto configurable.</p></div><div class="review-scroll"><article class="doc-review-item active"><strong>Requerimiento institucional.pdf</strong><span>Bien / servicio, cantidad, condiciones de entrega, pago y vigencia.</span><span class="badge gov">Activo</span></article><article class="doc-review-item"><strong>Anexo de fuentes.xlsx</strong><span>Compras MX, portal local / OCDS, solicitudes y mercado abierto con evidencia.</span><span class="badge file">Sheets demo</span></article><article class="doc-review-item"><strong>POBALINES vigente.pdf</strong><span>Versión, vigencia, criterio de fuente y criterio de comparabilidad.</span><span class="badge warn">Revisión</span></article><article class="doc-review-item"><strong>Cuadro comparativo.xlsx</strong><span>Normalización de unidad, moneda base, cantidad y condiciones equivalentes.</span><span class="badge good">Trazable</span></article><article class="doc-review-item"><strong>Anexo CUCOP.pdf</strong><span>Clave CUCOP demo, familia, descripción y validación pendiente cuando aplique.</span><span class="badge gov">Demo UI</span></article></div></section>
+    <section class="review-column" aria-label="Entregable integrado"><div><div class="section-label">Centro</div><h3>Entregable integrado</h3><p class="microcopy">Simulación de integración Docs / Sheets. No conecta con backend real.</p></div><div class="mode-row"><button class="btn slim gov" data-review-mode="docs" aria-pressed="true">Docs</button><button class="btn slim" data-review-mode="sheets" aria-pressed="false">Sheets</button><button class="btn slim" data-toast="Cambios sincronizados en modo demo.">Guardar revisión</button></div><div class="deliverable-frame"><div class="deliverable-toolbar"><strong id="reviewModeLabel">Google Docs demo</strong><span>Integración simulada</span></div><div class="deliverable-paper"><div class="paper-card"><strong id="reviewMockTitle">Estudio de mercado · Guantes de nitrilo</strong><br><span id="reviewMockContent">Salida metodológica con fuentes trazables, CUCOP demo, POBALINES cargados y monto de referencia sujeto a validación institucional.</span></div><div class="paper-line"></div><div class="paper-line mid"></div><div class="paper-line short"></div><div class="paper-card">Observación insertada: la fuente 2 queda fuera del rango defendible hasta acreditar condiciones de entrega equivalentes.</div><div class="paper-card">Estado: expediente listo para revisión, no sustituye validación jurídica, administrativa ni de comité.</div></div></div></section>
+    <section class="review-column assistant-column" aria-label="Asistente SmartLicit"><div><div class="section-label">Lado derecho</div><h3>Asistente SmartLicit</h3><p class="microcopy">Alertas, explicación institucional y preparación de observaciones.</p></div><div class="assistant-list" id="assistantList"></div><div><textarea class="assistant-note" id="assistantNote" placeholder="Escribe una observación para comité o una pregunta de revisión institucional…"></textarea><div class="assistant-actions" style="margin-top:10px"><button class="btn primary" id="assistantExplainButton">Explicar hallazgo</button><button class="btn gov" id="assistantCommitteeButton">Preparar observaciones</button><button class="btn" id="assistantSaveButton">Guardar nota</button></div></div></section>
+  </div>
+</aside>
+
+<div class="modal-bg" id="contactModalBg" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="contactModalTitle">
+    <div class="modal-head">
+      <div>
+        <div class="section-label">Ventas institucionales</div>
+        <h2 id="contactModalTitle">Contactar Ventas</h2>
+        <p style="margin-top:7px;color:var(--muted);font-size:13px;line-height:1.45">Planes institucionales sin precio público. Configuración sujeta a dependencia, entidad, volumen, usuarios, unidades compradoras y operación.</p>
+      </div>
+      <button class="close-btn" id="closeContactModal" aria-label="Cerrar modal">×</button>
+    </div>
+    <div class="modal-body">
+      <form id="contactForm" novalidate>
+        <div class="contact-grid">
+          <div class="field"><label for="contactName">Nombre *</label><input id="contactName" class="control" required /></div>
+          <div class="field"><label for="contactRole">Puesto *</label><input id="contactRole" class="control" required /></div>
+          <div class="field"><label for="contactEntity">Dependencia o entidad *</label><input id="contactEntity" class="control" required /></div>
+          <div class="field"><label for="contactUnit">Unidad compradora *</label><input id="contactUnit" class="control" required /></div>
+          <div class="field"><label for="contactPlan">Estudios de mercado de interés *</label>
+            <select id="contactPlan" class="control" required>
+              <option value="">Selecciona una opción</option>
+              <option>50 estudios mensuales</option>
+              <option>100 estudios mensuales</option>
+              <option>200 estudios mensuales</option>
+              <option>500 estudios mensuales</option>
+            </select>
+          </div>
+          <div class="field"><label for="contactEmail">Correo institucional</label><input id="contactEmail" class="control" type="email" /></div>
+          <div class="field"><label for="contactPhone">Teléfono</label><input id="contactPhone" class="control" /></div>
+          <div class="field full"><label for="contactMessage">Mensaje breve</label><textarea id="contactMessage" class="control"></textarea></div>
+        </div>
+        <div class="divider"></div>
+        <div class="actions-head" style="justify-content:flex-end">
+          <button type="button" class="btn" id="cancelContactModal">Cancelar</button>
+          <button type="submit" class="btn primary">Solicitar contacto</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script>
+    const appState = {
+      currentRoute: 'dashboard',
+      currentWizardStep: 1,
+      selectedProfile: 'Secretaría de Salud · CDMX',
+      selectedProfileKey: 'salud',
+      assignedCucop: null,
+      pobalinesLoaded: false,
+      availableStudies: 62,
+      generatedExports: new Set(),
+      sentToTenderGov: false,
+      masterLevel: 'all',
+      masterStatus: 'all',
+      masterSearch: '',
+      masterRequireCucop: false,
+      masterRequirePobalines: false,
+      cucopSearch: '',
+      cucopStatus: 'all',
+      sourceFilter: 'all'
+    };
+
+    const routeLabels = {
+      'dashboard':'Dashboard',
+      'packages':'Paquetes / Suscripción',
+      'contact':'Contactar Ventas',
+      'new-study':'Nuevo estudio',
+      'efile':'eFile Gov',
+      'master':'Base Maestra Nacional',
+      'cucop':'CUCOP',
+      'sources':'Fuentes y evidencia',
+      'comparability':'Comparabilidad',
+      'rules':'Reglas / POBALINES',
+      'calculation':'Cálculo metodológico',
+      'result':'Resultado del estudio',
+      'exports':'Exportables',
+      'logbook':'Bitácora',
+      'security':'Seguridad',
+      'assistant':'Asistencia IA',
+      'tender-gov':'Tender Gov relacionado',
+      'help':'Ayuda / explicación',
+      'account':'Mi Cuenta'
+    };
+
+    const profiles = [
+      {key:'salud',title:'Secretaría de Salud · CDMX',subtitle:'Perfil federal · unidad compradora activa',description:'POBALINES cargados, abastecimiento médico y plantillas de comité.',tags:['POBALINES cargados','CUCOP frecuente: material médico','Regla base: federal demo','Estado: Confirmado'],detail:{responsables:'2 perfiles autorizados',pobalines:'Cargados',ruleBase:'Federal demo',validation:'Confirmado',frequentCucop:'Material médico',templates:'Comité + expediente'}},
+      {key:'imss',title:'IMSS Región',subtitle:'Operación hospitalaria regional',description:'Perfil con foco en insumos clínicos y abastecimiento recurrente.',tags:['POBALINES cargados','CUCOP frecuente: guantes y reactivos','Regla base: hospitalaria demo','Estado: Confirmado'],detail:{responsables:'3 perfiles autorizados',pobalines:'Cargados',ruleBase:'Hospitalaria demo',validation:'Confirmado',frequentCucop:'Guantes / reactivos',templates:'Expediente + cuadro'}},
+      {key:'dif',title:'DIF Estatal',subtitle:'Abastecimiento y servicios generales',description:'Lineamientos internos activos y validación institucional condicionada.',tags:['POBALINES pendientes','CUCOP frecuente: mobiliario escolar','Regla base: estatal demo','Estado: Pendiente de validación'],detail:{responsables:'1 perfil autorizado',pobalines:'Pendientes',ruleBase:'Estatal demo',validation:'Pendiente de validación',frequentCucop:'Mobiliario escolar',templates:'Resumen + expediente'}},
+      {key:'infra',title:'Infraestructura Estatal',subtitle:'Obra y adquisiciones · reglas mixtas',description:'Parámetros para adquisición y obra con necesidad de revisión humana.',tags:['POBALINES pendientes','CUCOP frecuente: mantenimiento','Regla base: mixta demo','Estado: Pendiente de validación'],detail:{responsables:'2 perfiles autorizados',pobalines:'Pendientes',ruleBase:'Mixta demo',validation:'Pendiente de validación',frequentCucop:'Mantenimiento',templates:'Comité + bitácora'}},
+      {key:'uca',title:'Unidad Central Administrativa',subtitle:'Compras menores y recurrentes',description:'Perfil reusable para operación centralizada y partidas de bajo riesgo.',tags:['POBALINES cargados','CUCOP frecuente: equipo de oficina','Regla base: central demo','Estado: Confirmado'],detail:{responsables:'4 perfiles autorizados',pobalines:'Cargados',ruleBase:'Central demo',validation:'Confirmado',frequentCucop:'Equipo de oficina',templates:'Expediente + anexo'}}
+    ];
+
+    const recentStudies = [
+      {study:'Guantes de nitrilo · caja 100',profile:'Secretaría de Salud · CDMX',cucop:'CUCOP demo-001',rule:'Federal demo',status:'Listo',source:'Trazable',action:'Abrir',route:'result'},
+      {study:'Limpieza hospitalaria',profile:'IMSS Región',cucop:'Pendiente',rule:'Revisión',status:'En revisión',source:'Comparabilidad',action:'Continuar',route:'comparability'},
+      {study:'Reactivos médicos',profile:'DIF Estatal',cucop:'CUCOP demo-003',rule:'Federal demo',status:'Borrador',source:'Fuente pública',action:'Abrir',route:'sources'},
+      {study:'Mobiliario escolar',profile:'Unidad Central Administrativa',cucop:'CUCOP demo-004',rule:'Lineamiento',status:'Listo',source:'Anexo PDF',action:'Exportar',route:'exports'}
+    ];
+
+    const baseMasterData = [
+      {id:'MX-UC-DEMO-001',level:'Federal',state:'Ciudad de México',subject:'IMSS',unit:'Dirección de Administración / Unidad de Adquisiciones (Demo UI)',uc:'050GYR975 demo',portal:'Compras MX',marco:'LAASSP + reglamento demo',cucop:true,pobalines:true,status:'Confirmado',source:'Convocatoria + portal oficial',date:'2026-04-22'},
+      {id:'MX-UC-DEMO-002',level:'Federal',state:'Ciudad de México',subject:'ISSSTE',unit:'Dirección General de Recursos Materiales (Demo UI)',uc:'014000999 demo',portal:'Compras MX',marco:'LAASSP + reglamento demo',cucop:true,pobalines:false,status:'Pendiente de validación',source:'Convocatoria + expediente',date:'2026-04-22'},
+      {id:'MX-UC-DEMO-003',level:'Local',state:'Ciudad de México',subject:'Gobierno CDMX / Tianguis Digital',unit:'Unidad Responsable de Gasto / Denominación Área (OCDS)',uc:'No localizado',portal:'Tianguis Digital',marco:'Ley local de adquisiciones',cucop:false,pobalines:false,status:'Confirmado',source:'Portal OCDS',date:'2026-04-20'},
+      {id:'MX-UC-DEMO-004',level:'Local',state:'Estado demo',subject:'DIF Estatal',unit:'Unidad de abastecimiento y servicios generales',uc:'UC demo estatal',portal:'Portal institucional local',marco:'Lineamiento estatal demo',cucop:true,pobalines:true,status:'Pendiente de validación',source:'Portal + manual interno',date:'2026-04-18'},
+      {id:'MX-UC-DEMO-005',level:'Mixto',state:'Estado demo',subject:'Infraestructura Estatal',unit:'Unidad de obra y adquisiciones',uc:'UC demo mixta',portal:'Portal mixto / expediente',marco:'Obra + adquisiciones demo',cucop:false,pobalines:true,status:'Pendiente de validación',source:'Expediente + portal',date:'2026-04-17'},
+      {id:'MX-UC-DEMO-006',level:'Local',state:'Municipio demo',subject:'Unidad Responsable de Gasto',unit:'URG / PAAAPS',uc:'No localizado',portal:'Portal local sin UC visible',marco:'Reglas locales demo',cucop:false,pobalines:false,status:'No localizado',source:'Búsqueda oficial sin hallazgo',date:'2026-04-16'}
+    ];
+
+    const cucopData = [
+      {label:'Guantes de nitrilo · caja 100',score:92,key:'CUCOP demo-001',family:'Material médico',description:'Guantes de nitrilo para uso institucional · Demo UI',status:'Pendiente de validación'},
+      {label:'Servicio de limpieza mensual',score:88,key:'CUCOP demo-002',family:'Servicios generales',description:'Limpieza institucional recurrente · Supuesto configurable',status:'Validación sugerida'},
+      {label:'Reactivos médicos',score:81,key:'CUCOP demo-003',family:'Laboratorio clínico',description:'Reactivos para operación hospitalaria · Demo UI',status:'Pendiente de validación'},
+      {label:'Mobiliario escolar',score:77,key:'CUCOP demo-004',family:'Mobiliario',description:'Suministro de mobiliario educativo · Supuesto configurable',status:'Validación sugerida'}
+    ];
+
+    const sourceData = [
+      {title:'Compras MX / histórico público',recency:'3 años + corte reciente',evidence:'Captura + expediente demo',comparability:'Alta',status:'Trazable',date:'2026-04-22',conditions:'Entrega equivalente · pago comparable',primary:'Portal oficial',file:'URL demo / expediente demo',family:'Material médico'},
+      {title:'Portal local / OCDS',recency:'Corte local reciente',evidence:'Captura OCDS demo',comparability:'Media',status:'Pendiente de validación',date:'2026-04-20',conditions:'Condición de pago parcial',primary:'Portal subnacional',file:'URL demo / OCDS',family:'Servicios generales'},
+      {title:'Solicitud de cotización',recency:'Semana actual',evidence:'PDF demo + correo institucional',comparability:'Alta',status:'Requiere evidencia',date:'2026-04-22',conditions:'Mismas condiciones · pendiente anexar acuse',primary:'Documento interno',file:'Archivo demo',family:'Material médico'},
+      {title:'Organismo especializado / índice',recency:'Trimestre actual',evidence:'Captura y nota metodológica',comparability:'Media',status:'Trazable',date:'2026-04-15',conditions:'Condiciones equivalentes por normalización',primary:'Índice sectorial demo',file:'Captura demo',family:'Laboratorio'},
+      {title:'Mercado abierto con evidencia',recency:'Corte vigente',evidence:'URL demo + captura',comparability:'Baja',status:'No comparable',date:'2026-04-21',conditions:'Entrega no equivalente',primary:'Sitio abierto',file:'URL demo',family:'Servicios generales'},
+      {title:'Expediente con fecha vencida',recency:'Más de 3 años',evidence:'Captura vieja',comparability:'Media',status:'Vencida',date:'2022-01-11',conditions:'Requiere actualización',primary:'Expediente histórico',file:'PDF demo',family:'Mobiliario'}
+    ];
+
+    const exportables = ['Estudio de mercado','Cuadro comparativo','Bitácora metodológica','Expediente PDF','Anexo de fuentes','Resumen para comité','Anexo CUCOP','Anexo POBALINES','Resumen para Tender Gov'];
+
+    const assistantContexts = {
+      dashboard:{summary:'Asistencia IA prioriza alertas normativas, fuentes vencidas, CUCOP pendiente y revisión humana sugerida.',items:[['Inconsistencia detectada','El estudio “Limpieza hospitalaria” conserva evidencia suficiente, pero la comparabilidad de condiciones de pago sigue abierta.'],['POBALINES faltantes','Hay 2 perfiles con lineamientos pendientes de carga o confirmación institucional.'],['Sugerencia','Conviene abrir CUCOP antes de cerrar el estudio de material médico.']]},
+      'new-study':{summary:'Asistencia IA acompaña el wizard: perfil, unidad compradora, CUCOP, fuentes, reglas, cálculo y exportables.',items:[['Perfil sugerido','El requerimiento actual coincide con perfiles de abastecimiento médico y perfil federal demo.'],['CUCOP probable','“Guantes de nitrilo · caja 100” coincide con CUCOP demo-001 con score alto.'],['Revisión humana','Si la clasificación no es concluyente, mantén el estudio en revisión antes de exportar.']]},
+      master:{summary:'Asistencia IA explica la diferencia entre parametrización y norma, y ayuda a depurar registros.',items:[['Registro no localizado','La fila URG / PAAAPS conserva estado “No localizado” porque no existe unidad administrativa específica documentada en la fuente visible.'],['Uso recomendado','Precarga sujetos contratantes, portales y estado de validación desde la Base Maestra.'],['Precaución','No infieras áreas administrativas no documentadas.']]},
+      cucop:{summary:'Asistencia IA ayuda a justificar la coincidencia CUCOP y a dejar nota de revisión humana.',items:[['Coincidencia alta','CUCOP demo-001 presenta alta similitud con el objeto actual.'],['Revisión humana','Si la familia es correcta pero la descripción es ambigua, solicita validación manual.'],['Impacto','La clasificación CUCOP ayuda a estandarizar referencias y filtros.']]},
+      rules:{summary:'Asistencia IA explica por qué una regla aplica, qué versión está activa y qué revisar antes del cálculo.',items:[['Regla activa','El estudio hereda perfil federal / local demo y lineamientos institucionales versionados.'],['Bloqueo potencial','Si falta evidencia mínima, la regla activa validación requerida antes de exportar.'],['Observación para comité','Conviene dejar visible la vigencia de POBALINES y lineamientos.']]},
+      calculation:{summary:'Asistencia IA traduce el cálculo a lenguaje institucional y detecta si una fuente no debe entrar al rango.',items:[['Fuente excluida','La fuente 2 no conserva condiciones de entrega equivalentes.'],['Método de referencia','La mediana demo ofrece una salida defendible menos sensible a extremos.'],['Lenguaje sugerido','Presenta la salida como monto de referencia sujeto a validación institucional.']]},
+      result:{summary:'Asistencia IA resume el estudio y propone observaciones para comité o control interno.',items:[['Resumen ejecutivo','Comparabilidad validada, 4 fuentes trazables, CUCOP asignado y POBALINES aplicados.'],['Riesgo residual','Revisión humana sugerida solo si cambia la evidencia primaria o la vigencia.'],['Integración','El estudio está listo para exportarse o remitirse a Tender Gov.']]},
+      default:{summary:'Asistencia IA apoya con revisión institucional, CUCOP, POBALINES y explicaciones metodológicas.',items:[['Apoyo general','Explica por qué una fuente es comparable o no comparable.'],['Sugerencia','Resalta campos pendientes antes de exportar.'],['Salida','Prepara observaciones institucionales en tono sobrio y revisable.']]}
+    };
+
+    const logbookEntries = [
+      {time:'Hoy · 09:10',title:'Perfil seleccionado',text:'Se eligió Secretaría de Salud · CDMX como perfil institucional de origen.'},
+      {time:'Hoy · 09:18',title:'Unidad compradora validada',text:'Abastecimiento médico precargado desde Base Maestra Nacional.'},
+      {time:'Hoy · 09:24',title:'CUCOP asignado',text:'Pendiente hasta selección en módulo CUCOP demo.'},
+      {time:'Hoy · 09:31',title:'Fuentes agregadas',text:'4 referencias con evidencia y fecha de consulta.'},
+      {time:'Hoy · 09:40',title:'Comparabilidad validada',text:'Se confirmaron condiciones equivalentes para el rango defendible.'},
+      {time:'Hoy · 09:52',title:'POBALINES aplicados',text:'Pendiente hasta carga de reglas institucionales.'},
+      {time:'Hoy · 10:05',title:'Cálculo ejecutado',text:'Salida metodológica preparada en modo demo.'},
+      {time:'Hoy · 10:12',title:'Revisión humana',text:'Sugerida por condición de evidencia secundaria.'},
+      {time:'Hoy · 10:18',title:'Exportación',text:'Lista para generar expediente, cuadro comparativo y anexos.'}
+    ];
+
+    function showToast(message, tone=''){
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.className = 'toast show' + (tone ? ' ' + tone : '');
+      clearTimeout(showToast._timer);
+      showToast._timer = setTimeout(() => toast.className = 'toast', 2400);
+    }
+    function updateTopContext(route){ document.getElementById('topContextLabel').textContent = routeLabels[route] || 'Dashboard'; }
+    function setActiveNav(route){ document.querySelectorAll('.side-nav button[data-route]').forEach(btn => btn.classList.toggle('active', btn.dataset.route === route)); }
+    function showRoute(route){
+      const valid = routeLabels[route] ? route : 'dashboard';
+      appState.currentRoute = valid;
+      document.querySelectorAll('.view').forEach(view => view.classList.toggle('active', view.id === `view-${valid}`));
+      updateTopContext(valid); setActiveNav(valid); updateAssistantContext(valid);
+      if(window.innerWidth <= 760){ document.body.classList.remove('sideopen'); }
+      window.scrollTo({top:0, behavior:'smooth'});
+    }
+    function getHashRoute(){ return location.hash.replace('#','') || 'dashboard'; }
+
+    function openContactModal(plan=''){
+      if(plan){ document.getElementById('contactPlan').value = plan; }
+      const bg = document.getElementById('contactModalBg');
+      bg.classList.add('open'); bg.setAttribute('aria-hidden','false');
+    }
+    function closeContactModal(){
+      const bg = document.getElementById('contactModalBg');
+      bg.classList.remove('open'); bg.setAttribute('aria-hidden','true');
+    }
+
+    function openAssistant(topic=''){
+      const drawer = document.getElementById('assistantDrawer');
+      drawer.classList.add('open'); drawer.setAttribute('aria-hidden','false');
+      if(topic){ updateAssistantContext(appState.currentRoute, topic); }
+    }
+    function closeAssistant(){
+      const drawer = document.getElementById('assistantDrawer');
+      drawer.classList.remove('open'); drawer.setAttribute('aria-hidden','true');
+    }
+    function updateAssistantContext(route, topic=''){
+      const context = assistantContexts[route] || assistantContexts.default;
+      document.getElementById('assistantContextText').textContent = topic ? `Contexto: ${topic}` : `Contexto actual: ${routeLabels[route] || 'Pricing Gov'}`;
+      document.getElementById('assistantSummary').textContent = context.summary;
+      const list = document.getElementById('assistantList');
+      list.innerHTML = '';
+      context.items.forEach(([title,text]) => {
+        const item = document.createElement('article');
+        item.className = 'assistant-item';
+        item.innerHTML = `<strong>${title}</strong><span>${text}</span>`;
+        list.appendChild(item);
+      });
+    }
+
+    function renderRecentStudies(){
+      const tbody = document.getElementById('recentStudiesTable');
+      tbody.innerHTML = '';
+      recentStudies.forEach(row => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td><div class="project-name">${row.study}</div><div class="sub"><span>${row.profile}</span></div></td><td>${row.profile}</td><td><span class="badge ${row.cucop.includes('demo') ? 'gov' : 'warn'}">${row.cucop}</span></td><td>${row.rule}</td><td><span class="badge ${row.status === 'Listo' ? 'good' : row.status === 'Borrador' ? 'muted' : 'warn'}">${row.status}</span></td><td>${row.source}</td><td><div class="row-actions"><button class="btn slim" data-route="${row.route}">${row.action}</button></div></td>`;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function renderProfiles(){
+      const container = document.getElementById('profileCards');
+      container.innerHTML = '';
+      profiles.forEach(profile => {
+        const card = document.createElement('article');
+        card.className = 'profile-card' + (profile.key === appState.selectedProfileKey ? ' selected' : '');
+        card.innerHTML = `<h3>${profile.title}</h3><p>${profile.subtitle}</p><p>${profile.description}</p><div class="profile-meta">${profile.tags.map(tag => `<span class="badge ${tag.includes('pendientes') ? 'warn' : tag.includes('Confirmado') ? 'good' : 'file'}">${tag}</span>`).join('')}</div><div class="divider"></div><button class="btn ${profile.key === appState.selectedProfileKey ? 'primary' : 'gov'}" data-select-profile="${profile.key}">${profile.key === appState.selectedProfileKey ? 'Seleccionado' : 'Seleccionar'}</button>`;
+        container.appendChild(card);
+      });
+    }
+
+    function renderEfileProfiles(){
+      const container = document.getElementById('efileProfiles');
+      container.innerHTML = '';
+      profiles.forEach(profile => {
+        const selected = profile.key === appState.selectedProfileKey;
+        const card = document.createElement('article');
+        card.className = 'profile-card' + (selected ? ' selected' : '');
+        card.innerHTML = `<h3>${profile.title}</h3><p>${profile.subtitle}</p><p>${profile.description}</p><div class="profile-meta">${profile.tags.map(tag => `<span class="badge ${tag.includes('pendientes') ? 'warn' : tag.includes('Confirmado') ? 'good' : 'file'}">${tag}</span>`).join('')}</div><div class="divider"></div><button class="btn ${selected ? 'primary' : 'gov'}" data-show-profile="${profile.key}">${selected ? 'Activo' : 'Ver detalle'}</button>`;
+        container.appendChild(card);
+      });
+      renderEfileDetail();
+    }
+
+    function renderEfileDetail(){
+      const profile = profiles.find(p => p.key === appState.selectedProfileKey) || profiles[0];
+      document.getElementById('efileDetailTitle').textContent = profile.title;
+      document.getElementById('efileDetailSubtitle').textContent = profile.subtitle;
+      document.getElementById('efileResponsables').textContent = profile.detail.responsables;
+      document.getElementById('efilePobalinesDetail').textContent = profile.detail.pobalines;
+      document.getElementById('efileRuleBase').textContent = profile.detail.ruleBase;
+      document.getElementById('efileValidation').textContent = profile.detail.validation;
+      document.getElementById('efileFrequentCucop').textContent = profile.detail.frequentCucop;
+      document.getElementById('efileTemplates').textContent = profile.detail.templates;
+    }
+
+    function renderMasterTable(){
+      const tbody = document.getElementById('masterTable');
+      tbody.innerHTML = '';
+      let rows = baseMasterData.filter(row => {
+        const matchesLevel = appState.masterLevel === 'all' || row.level === appState.masterLevel;
+        const matchesStatus = appState.masterStatus === 'all' || row.status === appState.masterStatus;
+        const matchesSearch = !appState.masterSearch || Object.values(row).join(' ').toLowerCase().includes(appState.masterSearch.toLowerCase());
+        const matchesCucop = !appState.masterRequireCucop || row.cucop;
+        const matchesPobalines = !appState.masterRequirePobalines || row.pobalines;
+        return matchesLevel && matchesStatus && matchesSearch && matchesCucop && matchesPobalines;
+      });
+      rows.forEach(row => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${row.id}</td><td>${row.level}</td><td>${row.state}</td><td>${row.subject}</td><td>${row.unit}</td><td>${row.uc}</td><td>${row.portal}</td><td>${row.marco}</td><td><span class="badge ${row.cucop ? 'good' : 'muted'}">${row.cucop ? 'Habilitado' : 'No cargado'}</span></td><td><span class="badge ${row.pobalines ? 'file' : 'muted'}">${row.pobalines ? 'Cargados' : 'Pendientes'}</span></td><td><span class="badge ${row.status === 'Confirmado' ? 'good' : row.status === 'No localizado' ? 'warn' : 'gov'}">${row.status}</span></td><td>${row.source}</td><td>${row.date}</td><td><button class="btn slim gov" data-toast="Perfil precargado desde Base Maestra Nacional">Precargar</button></td>`;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function renderCucopTable(){
+      const tbody = document.getElementById('cucopTable');
+      tbody.innerHTML = '';
+      const rows = cucopData.filter(item => {
+        const matchesSearch = !appState.cucopSearch || Object.values(item).join(' ').toLowerCase().includes(appState.cucopSearch.toLowerCase());
+        const matchesStatus = appState.cucopStatus === 'all' || item.status === appState.cucopStatus;
+        return matchesSearch && matchesStatus;
+      });
+      rows.forEach(item => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td><div class="project-name">${item.label}</div><div class="sub"><span>Demo UI</span><span>Supuesto configurable</span></div></td><td>${item.score}</td><td>${item.key}</td><td>${item.family}</td><td>${item.description}</td><td><span class="badge ${item.status === 'Pendiente de validación' ? 'gov' : 'warn'}">${item.status}</span></td><td><div class="row-actions"><button class="btn slim primary" data-assign-cucop="${item.key}" data-cucop-family="${item.family}" data-cucop-description="${item.description}">Asignar al estudio</button><button class="btn slim" data-toast="Revisión CUCOP solicitada en modo demo">Solicitar revisión</button></div></td>`;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function renderSourceCards(){
+      const container = document.getElementById('sourceCards');
+      container.innerHTML = '';
+      const rows = sourceData.filter(item => appState.sourceFilter === 'all' || item.status === appState.sourceFilter);
+      rows.forEach(item => {
+        const article = document.createElement('article');
+        article.className = 'card';
+        article.innerHTML = `<div class="card-head"><div><h3>${item.title}</h3><p>${item.family}</p></div><span class="badge ${item.status === 'Trazable' ? 'good' : item.status === 'Vencida' || item.status === 'No comparable' ? 'warn' : item.status === 'Pendiente de validación' ? 'gov' : 'file'}">${item.status}</span></div><div class="metric-list"><div class="metric-row"><span>Recencia</span><strong>${item.recency}</strong></div><div class="metric-row"><span>Evidencia</span><strong>${item.evidence}</strong></div><div class="metric-row"><span>Comparabilidad</span><strong>${item.comparability}</strong></div><div class="metric-row"><span>Fecha de consulta</span><strong>${item.date}</strong></div><div class="metric-row"><span>Condiciones equivalentes</span><strong>${item.conditions}</strong></div><div class="metric-row"><span>Fuente primaria</span><strong>${item.primary}</strong></div><div class="metric-row"><span>Archivo / captura / URL demo</span><strong>${item.file}</strong></div></div><div class="divider"></div><button class="btn slim gov" data-toast="Fuente agregada al estudio en modo demo">Agregar al estudio</button>`;
+        container.appendChild(article);
+      });
+    }
+
+    function renderExports(){
+      const container = document.getElementById('exportGrid');
+      const wizardContainer = document.getElementById('wizardExportGrid');
+      const markup = exportables.map(name => {
+        const generated = appState.generatedExports.has(name);
+        return `<article class="export-card"><h3>${name}</h3><p>Salida institucional sujeta a revisión. Exportable generado en modo demo cuando se acciona.</p><footer><span class="badge ${generated ? 'good' : 'muted'}">${generated ? 'Generado' : 'Pendiente'}</span><button class="btn slim ${generated ? 'file' : 'gov'}" data-export="${name}">${generated ? 'Regenerar' : 'Generar'}</button></footer></article>`;
+      }).join('');
+      if(container) container.innerHTML = markup;
+      if(wizardContainer) wizardContainer.innerHTML = markup;
+    }
+
+    function renderLogbook(){
+      const container = document.getElementById('logbookTimeline');
+      container.innerHTML = '';
+      logbookEntries.forEach(entry => {
+        const node = document.createElement('div');
+        node.className = 'time-item';
+        node.innerHTML = `<time>${entry.time}</time><span class="time-dot"></span><div class="time-card"><strong>${entry.title}</strong><span>${entry.text}</span></div>`;
+        container.appendChild(node);
+      });
+    }
+
+    function updateAssignedCucopViews(){
+      const label = appState.assignedCucop ? appState.assignedCucop.key : 'Sin asignar';
+      const family = appState.assignedCucop ? appState.assignedCucop.family : 'Pendiente';
+      const description = appState.assignedCucop ? appState.assignedCucop.description : 'Sin asignar';
+      const statusText = appState.assignedCucop ? 'Pendiente de validación' : 'Pendiente';
+      document.getElementById('currentCucopText').textContent = label;
+      document.getElementById('wizardCucopKey').textContent = label;
+      document.getElementById('wizardCucopFamily').textContent = family;
+      document.getElementById('wizardCucopDesc').textContent = description;
+      document.getElementById('wizardCucopStatus').textContent = statusText;
+      document.getElementById('summaryCucop').textContent = label;
+      document.getElementById('rulesCucop').textContent = label;
+      document.getElementById('resultCucopLabel').textContent = label;
+      document.getElementById('wizardResultCucop').textContent = label;
+      document.getElementById('assignedCucopBadge').textContent = appState.assignedCucop ? label : 'Pendiente';
+      document.getElementById('comparabilityCucopText').textContent = appState.assignedCucop ? `${label} · ${family}` : 'Sin asignar · se requiere selección CUCOP demo.';
+      document.getElementById('calcCucopStatus').textContent = appState.assignedCucop ? label : 'Pendiente';
+      document.getElementById('kpiCucopAssigned').textContent = appState.assignedCucop ? '1' : '0';
+      document.getElementById('heroCucop').textContent = appState.assignedCucop ? '19' : '18';
+      document.getElementById('alertCucop').textContent = appState.assignedCucop ? '0 estudios' : '1 estudio';
+      document.getElementById('wizardCucopCheck').textContent = appState.assignedCucop ? '✓' : '…';
+      document.getElementById('comparabilityCucopCheck').textContent = appState.assignedCucop ? '✓' : '…';
+      document.getElementById('tenderCucopCheck').textContent = appState.assignedCucop ? '✓' : '…';
+    }
+
+    function updatePobalinesViews(){
+      const count = appState.pobalinesLoaded ? 16 : 14;
+      const label = appState.pobalinesLoaded ? 'Cargados' : 'Pendientes';
+      document.getElementById('sidePobalines').textContent = count;
+      document.getElementById('heroPobalines').textContent = count;
+      document.getElementById('kpiPobalinesLoaded').textContent = count;
+      document.getElementById('pobalinesStatusBadge').textContent = label;
+      document.getElementById('alertPobalines').textContent = appState.pobalinesLoaded ? '0 perfiles' : '2 perfiles';
+      document.getElementById('wizardPobalinesState').textContent = label;
+      document.getElementById('wizardPobalinesCheck').textContent = appState.pobalinesLoaded ? '✓' : '…';
+      document.getElementById('wizardResultPobalines').textContent = label;
+      document.getElementById('resultPobalinesLabel').textContent = label;
+      document.getElementById('calcPobalinesStatus').textContent = label;
+      document.getElementById('calcPobalinesCount').textContent = appState.pobalinesLoaded ? '16' : '0';
+      document.getElementById('rulesPobalinesCount').textContent = count;
+      document.getElementById('summaryPobalines').textContent = label;
+      document.getElementById('comparabilityPobalinesCheck').textContent = appState.pobalinesLoaded ? '✓' : '…';
+      document.getElementById('tenderPobalinesCheck').textContent = appState.pobalinesLoaded ? '✓' : '…';
+    }
+
+    function updateExportViews(){
+      const hasCore = appState.generatedExports.has('Expediente PDF');
+      document.getElementById('exportStatusBadge').textContent = hasCore ? 'Generada' : 'Preparada';
+      document.getElementById('tenderExportsCheck').textContent = hasCore ? '✓' : '…';
+      renderExports();
+    }
+
+    function updateTenderGovViews(){
+      const title = document.getElementById('tenderGovStatusTitle');
+      const text = document.getElementById('tenderGovStatusText');
+      if(appState.sentToTenderGov){
+        title.textContent = 'Integración enviada';
+        text.textContent = 'Tender Gov recibió el estudio de mercado, el cuadro comparativo, el CUCOP, la bitácora y el monto de referencia en modo demo.';
+      } else {
+        title.textContent = 'Listo para integrar';
+        text.textContent = 'El expediente todavía no se ha enviado. Al integrarlo, Tender Gov recibe el resumen institucional necesario para conformar la licitación.';
+      }
+    }
+
+    function updateUsageViews(){
+      document.getElementById('sideAvailableStudies').textContent = appState.availableStudies;
+      document.getElementById('heroAvailable').textContent = appState.availableStudies;
+      document.getElementById('kpiAvailableStudies').textContent = appState.availableStudies;
+      document.getElementById('accountAvailableStudies').textContent = appState.availableStudies;
+      const used = 100 - appState.availableStudies;
+      const pct = Math.max(10, Math.min(100, used));
+      document.getElementById('sideUsageBar').style.width = pct + '%';
+    }
+
+    function selectProfile(key){
+      appState.selectedProfileKey = key;
+      const profile = profiles.find(p => p.key === key);
+      appState.selectedProfile = profile ? profile.title : appState.selectedProfile;
+      document.getElementById('summaryProfile').textContent = appState.selectedProfile;
+      renderProfiles(); renderEfileProfiles();
+      showToast(`Perfil institucional seleccionado: ${appState.selectedProfile}`, 'gov');
+    }
+
+    function assignCucop(key, family, description){
+      appState.assignedCucop = {key, family, description};
+      updateAssignedCucopViews();
+      showToast(`CUCOP asignado al estudio: ${key}`, 'gov');
+    }
+
+    function loadPobalines(){
+      appState.pobalinesLoaded = true;
+      updatePobalinesViews();
+      showToast('POBALINES cargados. Reglas institucionales actualizadas.', 'good');
+    }
+
+    function saveAction(){ showToast('Cambios guardados en modo demo.', 'good'); }
+
+    function exportAction(name){
+      appState.generatedExports.add(name);
+      if(name === 'Todos los exportables'){ exportables.forEach(item => appState.generatedExports.add(item)); }
+      updateExportViews();
+      showToast(`Exportable generado en modo demo: ${name}.`, 'good');
+    }
+
+    function sendToTenderGov(){
+      appState.sentToTenderGov = true;
+      updateTenderGovViews();
+      showToast('Expediente remitido a Tender Gov en modo demo.', 'gov');
+    }
+
+    function setWizardStep(step){
+      appState.currentWizardStep = Math.max(1, Math.min(10, step));
+      document.querySelectorAll('#wizardStepper .step-pill').forEach(btn => {
+        const n = Number(btn.dataset.step);
+        btn.classList.toggle('active', n === appState.currentWizardStep);
+        btn.classList.toggle('done', n < appState.currentWizardStep);
+      });
+      document.querySelectorAll('.wizard-panel').forEach(panel => panel.classList.toggle('active', panel.id === `wizard-step-${appState.currentWizardStep}`));
+    }
+
+    function bindFilters(){
+      document.getElementById('masterSearch').addEventListener('input', e => { appState.masterSearch = e.target.value; renderMasterTable(); });
+      document.querySelectorAll('[data-master-level]').forEach(btn => btn.addEventListener('click', () => {
+        appState.masterLevel = btn.dataset.masterLevel;
+        document.querySelectorAll('[data-master-level]').forEach(x => x.classList.toggle('active', x === btn));
+        renderMasterTable();
+      }));
+      document.querySelectorAll('[data-master-status]').forEach(btn => btn.addEventListener('click', () => {
+        appState.masterStatus = btn.dataset.masterStatus;
+        document.querySelectorAll('[data-master-status]').forEach(x => x.classList.toggle('active', x === btn));
+        renderMasterTable();
+      }));
+      document.getElementById('filterCucop').addEventListener('click', e => {
+        appState.masterRequireCucop = !appState.masterRequireCucop;
+        e.currentTarget.classList.toggle('active', appState.masterRequireCucop);
+        renderMasterTable();
+      });
+      document.getElementById('filterPobalines').addEventListener('click', e => {
+        appState.masterRequirePobalines = !appState.masterRequirePobalines;
+        e.currentTarget.classList.toggle('active', appState.masterRequirePobalines);
+        renderMasterTable();
+      });
+      document.getElementById('masterReset').addEventListener('click', () => {
+        appState.masterLevel = 'all'; appState.masterStatus = 'all'; appState.masterSearch = '';
+        appState.masterRequireCucop = false; appState.masterRequirePobalines = false;
+        document.getElementById('masterSearch').value = '';
+        document.querySelectorAll('[data-master-level]').forEach(btn => btn.classList.toggle('active', btn.dataset.masterLevel === 'all'));
+        document.querySelectorAll('[data-master-status]').forEach(btn => btn.classList.toggle('active', btn.dataset.masterStatus === 'all'));
+        document.getElementById('filterCucop').classList.remove('active');
+        document.getElementById('filterPobalines').classList.remove('active');
+        renderMasterTable();
+      });
+
+      document.getElementById('cucopSearch').addEventListener('input', e => { appState.cucopSearch = e.target.value; renderCucopTable(); });
+      document.querySelectorAll('[data-cucop-status]').forEach(btn => btn.addEventListener('click', () => {
+        appState.cucopStatus = btn.dataset.cucopStatus;
+        document.querySelectorAll('[data-cucop-status]').forEach(x => x.classList.toggle('active', x === btn));
+        renderCucopTable();
+      }));
+      document.getElementById('cucopReset').addEventListener('click', () => {
+        appState.cucopSearch = ''; appState.cucopStatus = 'all'; document.getElementById('cucopSearch').value = '';
+        document.querySelectorAll('[data-cucop-status]').forEach(btn => btn.classList.toggle('active', btn.dataset.cucopStatus === 'all'));
+        renderCucopTable();
+      });
+
+      document.querySelectorAll('[data-source-filter]').forEach(btn => btn.addEventListener('click', () => {
+        appState.sourceFilter = btn.dataset.sourceFilter;
+        document.querySelectorAll('[data-source-filter]').forEach(x => x.classList.toggle('active', x === btn));
+        renderSourceCards();
+      }));
+    }
+
+
+    function setReviewMode(mode){
+      const isSheets = mode === 'sheets';
+      document.querySelectorAll('[data-review-mode]').forEach(btn => {
+        const active = btn.dataset.reviewMode === mode;
+        btn.setAttribute('aria-pressed', active ? 'true' : 'false');
+        btn.classList.toggle('gov', active);
+      });
+      const label = document.getElementById('reviewModeLabel');
+      const title = document.getElementById('reviewMockTitle');
+      const content = document.getElementById('reviewMockContent');
+      if(label) label.textContent = isSheets ? 'Google Sheets demo' : 'Google Docs demo';
+      if(title) title.textContent = isSheets ? 'Cuadro comparativo · Referencia ilustrativa' : 'Estudio de mercado · Guantes de nitrilo';
+      if(content) content.textContent = isSheets ? 'Tabla demo con fuentes, recencia, comparabilidad, normalización, CUCOP demo y estatus de validación.' : 'Salida metodológica con fuentes trazables, CUCOP demo, POBALINES cargados y monto de referencia sujeto a validación institucional.';
+      showToast(isSheets ? 'Vista Sheets activada en modo demo.' : 'Vista Docs activada en modo demo.', 'gov');
+    }
+
+    function bindEvents(){
+      document.addEventListener('click', event => {
+        const routeEl = event.target.closest('[data-route]');
+        const productNoteEl = event.target.closest('[data-product-note]');
+        const helpTopicEl = event.target.closest('[data-help-topic]');
+        const contactEl = event.target.closest('[data-contact]');
+        const contactPlanEl = event.target.closest('[data-contact-plan]');
+        const assistantTopicEl = event.target.closest('[data-assistant-topic]');
+        const assistantOpenEl = event.target.closest('[data-assistant-open]');
+        const exportEl = event.target.closest('[data-export]');
+        const saveEl = event.target.closest('[data-save]');
+        const sendTenderEl = event.target.closest('[data-send-tender]');
+        const loadPobalinesEl = event.target.closest('[data-load-pobalines]');
+        const profileEl = event.target.closest('[data-select-profile]');
+        const showProfileEl = event.target.closest('[data-show-profile]');
+        const assignCucopEl = event.target.closest('[data-assign-cucop]');
+        const stepBtn = event.target.closest('[data-step]');
+        const stepNext = event.target.closest('[data-step-next]');
+        const stepPrev = event.target.closest('[data-step-prev]');
+        const toastEl = event.target.closest('[data-toast]');
+        const reviewModeEl = event.target.closest('[data-review-mode]');
+
+        if(routeEl){ event.preventDefault(); location.hash = routeEl.dataset.route; return; }
+        if(productNoteEl){ event.preventDefault(); showToast(productNoteEl.dataset.productNote, 'gov'); }
+        if(helpTopicEl){
+          event.preventDefault();
+          location.hash = 'help';
+          setTimeout(() => {
+            const faq = document.getElementById('faq-' + helpTopicEl.dataset.helpTopic);
+            if(faq){ faq.scrollIntoView({behavior:'smooth', block:'start'}); }
+          }, 80);
+        }
+        if(contactEl){ event.preventDefault(); openContactModal(); }
+        if(contactPlanEl){ event.preventDefault(); openContactModal(contactPlanEl.dataset.contactPlan); }
+        if(assistantTopicEl){ event.preventDefault(); openAssistant(assistantTopicEl.dataset.assistantTopic); }
+        if(assistantOpenEl){ event.preventDefault(); openAssistant(); }
+        if(exportEl){ event.preventDefault(); exportAction(exportEl.dataset.export); }
+        if(saveEl){ event.preventDefault(); saveAction(); }
+        if(sendTenderEl){ event.preventDefault(); sendToTenderGov(); }
+        if(loadPobalinesEl){ event.preventDefault(); loadPobalines(); }
+        if(profileEl){ event.preventDefault(); selectProfile(profileEl.dataset.selectProfile); }
+        if(showProfileEl){ event.preventDefault(); selectProfile(showProfileEl.dataset.showProfile); }
+        if(assignCucopEl){ event.preventDefault(); assignCucop(assignCucopEl.dataset.assignCucop, assignCucopEl.dataset.cucopFamily, assignCucopEl.dataset.cucopDescription); }
+        if(stepBtn){ event.preventDefault(); setWizardStep(Number(stepBtn.dataset.step)); }
+        if(stepNext){ event.preventDefault(); setWizardStep(appState.currentWizardStep + 1); }
+        if(stepPrev){ event.preventDefault(); setWizardStep(appState.currentWizardStep - 1); }
+        if(reviewModeEl){ event.preventDefault(); setReviewMode(reviewModeEl.dataset.reviewMode); }
+        if(toastEl){ event.preventDefault(); showToast(toastEl.dataset.toast, 'gov'); }
+      });
+
+      document.getElementById('mobileToggle').addEventListener('click', () => document.body.classList.add('sideopen'));
+      document.getElementById('closeMobile').addEventListener('click', () => document.body.classList.remove('sideopen'));
+
+      document.getElementById('assistantClose').addEventListener('click', closeAssistant);
+      document.getElementById('assistantExplainButton').addEventListener('click', () => showToast('Asistencia IA explicó el hallazgo en lenguaje institucional.', 'gov'));
+      document.getElementById('assistantCommitteeButton').addEventListener('click', () => showToast('Observaciones para comité preparadas en modo demo.', 'good'));
+      document.getElementById('assistantSaveButton').addEventListener('click', () => showToast('Nota guardada para revisión institucional.', 'good'));
+
+      document.getElementById('closeContactModal').addEventListener('click', closeContactModal);
+      document.getElementById('cancelContactModal').addEventListener('click', closeContactModal);
+      document.getElementById('contactModalBg').addEventListener('click', e => { if(e.target.id === 'contactModalBg') closeContactModal(); });
+
+      document.getElementById('contactForm').addEventListener('submit', e => {
+        e.preventDefault();
+        const requiredIds = ['contactName','contactRole','contactEntity','contactUnit','contactPlan'];
+        const missing = requiredIds.filter(id => !document.getElementById(id).value.trim());
+        if(missing.length){ showToast('Completa nombre, puesto, dependencia o entidad, unidad compradora y estudios de interés.', 'warn'); return; }
+        closeContactModal();
+        showToast('Solicitud registrada. Ventas institucionales dará seguimiento.', 'good');
+      });
+
+      window.addEventListener('hashchange', () => showRoute(getHashRoute()));
+    }
+
+    function initialize(){
+      renderRecentStudies(); renderProfiles(); renderEfileProfiles(); renderMasterTable(); renderCucopTable();
+      renderSourceCards(); renderExports(); renderLogbook();
+      updateAssignedCucopViews(); updatePobalinesViews(); updateExportViews(); updateTenderGovViews(); updateUsageViews();
+      setWizardStep(1); bindFilters(); bindEvents(); showRoute(getHashRoute());
+    }
+
+    initialize();
+  </script>
+
+<footer class="slx-global-footer" aria-label="Footer SmartLicit">
+  <div class="slx-footer-container">
+    <div class="slx-footer-grid">
+      <div>
+        <div class="slx-footer-brand"><span class="slx-footer-mark" aria-hidden="true"><span>⚡</span></span><span>SmartLicit</span></div>
+        <p style="margin-top:14px;max-width:320px">Una sola inteligencia, múltiples soluciones para resolver trabajo profesional complejo.</p>
+      </div>
+      <div><h4>Soluciones</h4><a class="slx-footer-product" href="../tender.html" target="_top"><span>⚡</span> Tender</a><a class="slx-footer-product" href="../pricing.html" target="_top"><span>⚡</span> Pricing</a><a class="slx-footer-product" href="../file.html" target="_top"><span>⚡</span> File</a><a class="slx-footer-product" href="../lex.html" target="_top"><span>⚡</span> Lex</a></div>
+      <div><h4>Gobierno</h4><a class="slx-footer-gov" href="../tender-gov.html" target="_top"><span>⚡</span> Tender Gov</a><a class="slx-footer-gov" href="../pricing-gov.html" target="_top"><span>⚡</span> Pricing Gov</a><a href="../ipg.html" target="_top">IPG</a></div>
+      <div><h4>Plataforma</h4><a class="slx-footer-efile" href="../efile.html" target="_top"><span>⚡</span> eFile</a><a href="../planes.html" target="_top">Planes</a><a href="../blog.html" target="_top">Blog</a><a href="../mi-cuenta.html" target="_top">Mi Cuenta</a></div>
+      <div><h4>Workspace</h4><a class="slx-footer-drive" href="../gDrive.html" target="_top"><span>▰</span> Google Drive Workspace</a><a href="../mi-cuenta.html#facturacion" target="_top">Facturación</a><a href="../planes.html#tokens" target="_top">Tokens</a><a href="../mi-cuenta.html#integraciones" target="_top">Integraciones</a></div>
+    </div>
+    <div class="slx-footer-bottom"><span>© SmartLicit</span><span>Minimal premium · trazable · accionable.</span></div>
+  </div>
+</footer>
+
+</body>
+</html>

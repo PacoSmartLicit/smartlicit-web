@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SmartLicit · Solución offline</title>
+  <meta name="description" content="Pantalla pública offline de soluciones SmartLicit con planes y activación online." />
+  <style>
+:root{
+  --lime:#B5F857;
+  --ink:#041912;
+  --green:#04560C;
+  --action:#1A990F;
+  --bg:#F9F8F3;
+  --surface:#FFFFFF;
+  --warm:#EBEAE5;
+  --warm2:#CDCABF;
+  --muted:#66736D;
+  --muted2:#8A948F;
+  --line:rgba(4,25,18,.10);
+  --line2:rgba(4,25,18,.16);
+  --efile:#5462E2;
+  --efile-soft:#BBC0F3;
+  --efile-bright:#8B9BF7;
+  --efile-night:#060517;
+  --efile-deep:#080353;
+  --gov-red:#F7645C;
+  --gov-coral:#F7645C;
+  --gov-soft:#FFB4B0;
+  --yellow:#F7BA14;
+  --orange:#F77214;
+  --lex:#F8596D;
+  --lex-deep:#550415;
+  --shadow:0 20px 60px rgba(4,25,18,.07);
+  --shadow-soft:0 8px 24px rgba(4,25,18,.045);
+  --radius-xl:34px;
+  --radius-lg:24px;
+  --radius-md:18px;
+  --radius-sm:14px;
+  --font:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  color:var(--ink);
+  font-family:var(--font);
+  background:
+    radial-gradient(circle at 86% 4%, rgba(181,248,87,.20), transparent 28rem),
+    radial-gradient(circle at 12% 86%, rgba(84,98,226,.12), transparent 30rem),
+    linear-gradient(180deg,#FFFFFF 0%, var(--bg) 68%, #FFFFFF 100%);
+  -webkit-font-smoothing:antialiased;
+  text-rendering:geometricPrecision;
+  letter-spacing:-.014em;
+}
+a{color:inherit;text-decoration:none}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.frame-offset{height:74px}
+.wrap{width:min(1220px,calc(100% - 40px));margin-inline:auto}
+.wide-wrap{width:min(1540px,calc(100% - 34px));margin-inline:auto}
+.section{padding:36px 0 74px}
+.hero{padding:48px 0 24px}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.02fr) minmax(360px,.98fr);gap:28px;align-items:stretch}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;width:max-content;border:1px solid var(--line);background:rgba(255,255,255,.74);border-radius:999px;padding:8px 12px;color:var(--muted);font-size:13px;font-weight:760;box-shadow:0 1px 0 rgba(4,25,18,.03)}
+.eyebrow .spark{width:8px;height:8px;border-radius:99px;background:var(--lime);box-shadow:0 0 0 4px rgba(181,248,87,.22)}
+.eyebrow.gov .spark{background:var(--gov-soft);box-shadow:0 0 0 4px rgba(247,100,92,.18)}
+.eyebrow.lex .spark{background:var(--lex);box-shadow:0 0 0 4px rgba(248,89,109,.14)}
+h1,h2,h3,p{margin:0}
+h1{margin-top:22px;font-size:clamp(42px,5.8vw,76px);line-height:.94;letter-spacing:-.075em;font-weight:860;max-width:820px}
+.lead{margin-top:22px;color:rgba(4,25,18,.68);font-size:clamp(17px,1.85vw,21px);line-height:1.43;max-width:760px}
+.hero-actions,.actions{display:flex;gap:11px;flex-wrap:wrap;margin-top:28px}
+.btn{min-height:44px;border:1px solid var(--line2);border-radius:999px;background:#fff;color:var(--ink);display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:0 16px;font-size:14px;font-weight:820;transition:.18s ease;white-space:nowrap}
+.btn:hover{transform:translateY(-1px);box-shadow:var(--shadow-soft);border-color:rgba(4,25,18,.26)}
+.btn.primary{background:var(--ink);color:#fff;border-color:var(--ink)}
+.btn.accent{background:var(--lime);border-color:var(--lime);color:var(--ink)}
+.btn.efile{background:rgba(84,98,226,.09);border-color:rgba(84,98,226,.22);color:var(--efile-deep)}
+.btn.gov{background:rgba(247,100,92,.10);border-color:rgba(247,100,92,.20);color:#550415}
+.btn.lex{background:rgba(248,89,109,.10);border-color:rgba(248,89,109,.22);color:var(--lex-deep)}
+.btn.slim{min-height:34px;font-size:12px;padding:0 11px}
+.btn[disabled],.btn.disabled{opacity:.56;cursor:not-allowed;transform:none;box-shadow:none}
+.card{background:rgba(255,255,255,.86);border:1px solid var(--line);border-radius:var(--radius-lg);box-shadow:var(--shadow-soft);padding:18px}
+.card.dark{background:var(--ink);color:#fff;border-color:rgba(255,255,255,.12);box-shadow:var(--shadow)}
+.card.dark p,.card.dark .muted{color:rgba(255,255,255,.70)}
+.card h2{font-size:28px;line-height:1.04;letter-spacing:-.055em}
+.card h3{font-size:18px;line-height:1.1;letter-spacing:-.04em}
+.card p{margin-top:8px;color:var(--muted);line-height:1.48;font-size:14px}
+.badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
+.badge{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 10px;color:var(--muted);font-size:12px;font-weight:860;white-space:nowrap}
+.badge:before{content:"";width:7px;height:7px;border-radius:99px;background:var(--warm2)}
+.badge.green{color:var(--green);border-color:rgba(4,86,12,.16);background:rgba(181,248,87,.18)}.badge.green:before{background:var(--action)}
+.badge.efile{color:var(--efile-deep);border-color:rgba(84,98,226,.18);background:rgba(84,98,226,.08)}.badge.efile:before{background:var(--efile)}
+.badge.gov{color:#550415;border-color:rgba(247,100,92,.20);background:rgba(247,100,92,.08)}.badge.gov:before{background:var(--gov-coral)}
+.badge.warn{color:#745000;border-color:rgba(247,186,20,.28);background:rgba(247,186,20,.12)}.badge.warn:before{background:var(--yellow)}
+.badge.lex{color:var(--lex-deep);border-color:rgba(248,89,109,.24);background:rgba(248,89,109,.10)}.badge.lex:before{background:var(--lex)}
+.micro{font-size:12.5px;color:var(--muted);line-height:1.45}
+.divider{height:1px;background:var(--line);margin:16px 0}
+.hero-panel{position:relative;overflow:hidden;border:1px solid var(--line);border-radius:var(--radius-xl);background:rgba(255,255,255,.84);box-shadow:var(--shadow);padding:18px;min-height:100%}
+.hero-panel:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 8% 4%, rgba(181,248,87,.25), transparent 13rem),radial-gradient(circle at 100% 100%, rgba(187,192,243,.36), transparent 16rem);pointer-events:none}
+.hero-panel.gov:before{background:radial-gradient(circle at 8% 4%, rgba(247,100,92,.18), transparent 13rem),radial-gradient(circle at 100% 100%, rgba(255,180,176,.28), transparent 16rem)}
+.hero-panel.lex:before{background:radial-gradient(circle at 8% 4%, rgba(248,89,109,.20), transparent 13rem),radial-gradient(circle at 100% 100%, rgba(187,192,243,.34), transparent 16rem)}
+.panel-content{position:relative;z-index:1;display:grid;gap:12px}
+.status-board{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.status-tile{border:1px solid var(--line);border-radius:18px;background:#fff;padding:14px}
+.status-tile span{display:block;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-weight:900}.status-tile strong{display:block;margin-top:7px;font-size:24px;letter-spacing:-.045em}.status-tile small{display:block;margin-top:5px;color:var(--muted);line-height:1.35;font-size:12px}
+.flow-row{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center;margin-top:12px}.flow-node{border:1px solid var(--line);background:#fff;border-radius:18px;padding:13px}.flow-node strong{display:block;font-size:14px}.flow-node span{display:block;margin-top:4px;font-size:12px;color:var(--muted);line-height:1.36}.flow-arrow{color:var(--green);font-weight:950}
+.section-title{display:flex;justify-content:space-between;gap:18px;align-items:end;margin:28px 0 14px}.section-title h2{font-size:clamp(30px,3.4vw,44px);line-height:1;letter-spacing:-.065em}.section-title p{margin-top:8px;color:var(--muted);font-size:15px;line-height:1.45;max-width:800px}
+.plan-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.plan{position:relative;overflow:hidden;background:#fff;border:1px solid var(--line);border-radius:24px;padding:18px;display:flex;flex-direction:column;min-height:500px;box-shadow:var(--shadow-soft)}.plan.featured{border-color:rgba(4,86,12,.25);box-shadow:0 16px 42px rgba(4,86,12,.08)}.plan.gov-plan.featured{border-color:rgba(247,100,92,.28);box-shadow:0 16px 42px rgba(247,100,92,.08)}.plan h3{font-size:22px;letter-spacing:-.05em}.unit{margin-top:7px;color:var(--muted);font-size:13px;font-weight:760;line-height:1.35}.ribbon{position:absolute;right:14px;top:14px}.pricebox{margin-top:16px;border:1px solid var(--line);border-radius:18px;background:#FBFAF6;padding:14px}.price-label{font-size:11px;color:var(--muted);font-weight:900;text-transform:uppercase;letter-spacing:.07em}.price{margin-top:8px;font-size:30px;font-weight:950;letter-spacing:-.06em}.price small{font-size:12px;color:var(--muted);font-weight:800;letter-spacing:0}.normal{margin-top:6px;color:var(--muted);font-size:12px;line-height:1.35}.saving{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.saving div{border:1px solid var(--line);border-radius:14px;padding:10px;background:#fff}.saving span{display:block;color:var(--muted);font-size:10.5px;font-weight:900;text-transform:uppercase;letter-spacing:.06em}.saving strong{display:block;margin-top:5px;font-size:14px}.features{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:8px}.features li{font-size:13px;line-height:1.38;color:rgba(4,25,18,.78);display:flex;gap:8px}.features li:before{content:"";width:7px;height:7px;border-radius:99px;background:var(--lime);margin-top:6px;flex:none}.wa-box{margin-top:12px;border:1px solid rgba(4,86,12,.16);border-radius:16px;padding:12px;background:rgba(181,248,87,.12)}.wa-box label{display:block;font-size:11px;color:var(--green);font-weight:920;text-transform:uppercase;letter-spacing:.06em;margin-bottom:7px}.wa-box select{width:100%;height:38px;border:1px solid rgba(4,86,12,.18);border-radius:12px;background:#fff;color:var(--ink);padding:0 10px;outline:none;font-size:12.5px;font-weight:780}.wa-box.disabled{background:#FBFAF6;border-color:var(--line)}.wa-box.disabled label{color:var(--muted)}.efile-box{margin-top:auto;border:1px solid rgba(84,98,226,.16);background:rgba(84,98,226,.07);border-radius:16px;padding:12px}.efile-box strong{display:block;color:var(--efile-deep);font-size:13px}.efile-box p{margin-top:5px;font-size:12px;color:var(--muted);line-height:1.4}.card-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}
+.info-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.info-card{background:#fff;border:1px solid var(--line);border-radius:22px;padding:18px;box-shadow:var(--shadow-soft)}.info-card h3{font-size:17px}.info-card p{font-size:13.5px;color:var(--muted);line-height:1.45;margin-top:8px}
+.gate-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:16px;align-items:stretch}.filter-mock{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.field label{display:block;font-size:11px;color:var(--muted);font-weight:900;text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px}.control{width:100%;height:42px;border:1px solid var(--line);border-radius:13px;background:#FBFAF6;color:var(--muted);padding:0 10px;outline:none}.control[disabled]{opacity:.72}.lock-card{border:1px solid rgba(4,86,12,.18);background:linear-gradient(180deg,rgba(181,248,87,.20),rgba(255,255,255,.86));border-radius:24px;padding:20px;box-shadow:var(--shadow-soft)}.lock-icon{width:44px;height:44px;border-radius:16px;background:var(--ink);color:#fff;display:grid;place-items:center;font-weight:950}.chart-mock{height:270px;border:1px solid var(--line);border-radius:22px;background:#fff;position:relative;overflow:hidden}.chart-mock svg{position:absolute;inset:0;width:100%;height:100%}.chart-label{position:absolute;left:16px;top:14px;display:grid;gap:2px}.chart-label strong{font-size:14px}.chart-label span{font-size:12px;color:var(--muted)}
+.workspace-body{background:#F6F6F1}.workspace{padding:20px 0 38px}.workspace-top{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;margin-bottom:14px}.workspace-title h1{font-size:clamp(28px,3.6vw,48px);line-height:.98;letter-spacing:-.065em;margin-top:8px}.workspace-title p{margin-top:8px;color:var(--muted);font-size:14px;line-height:1.45;max-width:720px}.workspace-shell{display:grid;grid-template-columns:300px minmax(0,1fr) 360px;gap:14px;align-items:stretch;min-height:calc(100vh - 170px)}.rail,.editor,.assistant{background:#fff;border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow-soft);overflow:hidden;min-height:100%}.rail-head,.assistant-head,.editor-head{padding:16px;border-bottom:1px solid var(--line);display:flex;align-items:flex-start;justify-content:space-between;gap:12px}.rail-head strong,.assistant-head strong,.editor-head strong{display:block;font-size:15px}.rail-head span,.assistant-head span,.editor-head span{display:block;margin-top:4px;color:var(--muted);font-size:12px}.progress{height:8px;background:#F0EFEA;border-radius:999px;overflow:hidden;margin:14px 16px}.progress span{display:block;height:100%;width:68%;background:var(--lime);border-radius:inherit}.deliverables{display:grid;gap:7px;padding:0 12px 16px}.deliverable{border:1px solid var(--line);border-radius:15px;background:#FBFAF6;padding:12px;display:grid;grid-template-columns:1fr auto;gap:8px;align-items:start}.deliverable.active{background:rgba(181,248,87,.17);border-color:rgba(4,86,12,.20)}.deliverable.file{background:rgba(84,98,226,.07);border-color:rgba(84,98,226,.16)}.deliverable.lex{background:rgba(248,89,109,.08);border-color:rgba(248,89,109,.18)}.deliverable strong{font-size:13px;line-height:1.25}.deliverable small{display:block;margin-top:4px;color:var(--muted);font-size:11.5px;line-height:1.32}.state{border:1px solid var(--line);border-radius:999px;padding:5px 7px;background:#fff;color:var(--muted);font-size:10px;font-weight:900;white-space:nowrap}.state.ok{color:var(--green);background:rgba(181,248,87,.18);border-color:rgba(4,86,12,.16)}.state.warn{color:#745000;background:rgba(247,186,20,.12);border-color:rgba(247,186,20,.24)}.state.bad{color:#8A130C;background:rgba(247,100,92,.08);border-color:rgba(247,100,92,.20)}.state.lex{color:var(--lex-deep);background:rgba(248,89,109,.10);border-color:rgba(248,89,109,.20)}.drive-card{margin:0 12px 14px;border:1px solid rgba(84,98,226,.16);background:rgba(84,98,226,.07);border-radius:18px;padding:13px}.drive-card strong{display:block;color:var(--efile-deep);font-size:13px}.drive-card span{display:block;margin-top:5px;color:var(--muted);font-size:12px;line-height:1.35}.gbar{height:48px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:10px;padding:0 16px;background:#FBFAF6}.gbar-left{display:flex;align-items:center;gap:9px}.gdoc-icon,.gsheet-icon{width:29px;height:29px;border-radius:10px;display:grid;place-items:center;color:#fff;font-size:11px;font-weight:950}.gdoc-icon{background:#4285F4}.gsheet-icon{background:#0F9D58}.doc-content{padding:24px;background:#fff;min-height:calc(100vh - 254px)}.doc-page{max-width:840px;margin-inline:auto;border:1px solid var(--line);border-radius:18px;background:#fff;box-shadow:0 14px 38px rgba(4,25,18,.06);padding:38px 44px;min-height:640px}.doc-page h2{font-size:25px;letter-spacing:-.045em}.doc-page p{margin-top:10px;color:var(--ink);font-size:14px;line-height:1.6}.doc-section-title{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:950;margin:24px 0 10px}.line{height:11px;background:#F1F0EA;border-radius:999px;margin:9px 0}.line.w92{width:92%}.line.w78{width:78%}.line.w64{width:64%}.line.w44{width:44%}.sheet-table{border:1px solid var(--line);border-radius:16px;overflow:hidden;margin-top:16px}.sheet-row{display:grid;grid-template-columns:1.3fr .7fr .7fr .7fr;min-height:38px}.sheet-row>div{border-right:1px solid var(--line);border-bottom:1px solid var(--line);padding:9px 10px;font-size:12px}.sheet-row.head>div{font-weight:900;background:#FBFAF6;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}.sheet-row>div:last-child{border-right:0}.assistant-body{padding:14px;display:grid;gap:12px}.ai-card{border:1px solid var(--line);border-radius:18px;background:#FBFAF6;padding:14px}.ai-card h3{font-size:15px}.ai-card p,.ai-card li{font-size:12.5px;color:var(--muted);line-height:1.45}.ai-card ul{margin:10px 0 0;padding-left:18px}.chat{display:grid;gap:8px}.msg{padding:11px 12px;border-radius:16px;font-size:12.5px;line-height:1.45}.msg.ai{background:rgba(181,248,87,.18);border:1px solid rgba(4,86,12,.14)}.msg.user{background:#fff;border:1px solid var(--line);justify-self:end;max-width:86%}.assistant-input{display:flex;gap:8px}.assistant-input input{flex:1;height:40px;border:1px solid var(--line);border-radius:13px;background:#fff;padding:0 11px;outline:none;font-size:12.5px}.assistant-input button{height:40px;border:0;border-radius:13px;background:var(--ink);color:#fff;font-weight:900;padding:0 12px}.mobile-note{display:none}
+@media (max-width:1180px){
+  .hero-grid,.gate-grid{grid-template-columns:1fr}.plan-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.workspace-shell{grid-template-columns:1fr}.rail,.assistant{min-height:auto}.mobile-note{display:block}.doc-content{min-height:auto}.doc-page{min-height:520px}.info-grid{grid-template-columns:1fr}
+}
+@media (max-width:760px){
+  .wrap,.wide-wrap{width:min(100% - 24px,1540px)}.hero{padding-top:34px}h1{font-size:42px}.plan-grid,.status-board,.filter-mock{grid-template-columns:1fr}.section-title{display:block}.saving{grid-template-columns:1fr}.workspace-top{display:block}.workspace-actions{margin-top:12px}.doc-page{padding:24px 20px}.flow-row{grid-template-columns:1fr}.flow-arrow{display:none}
+}
+
+/* Ajustes puntuales Beta 1.1: planes, WhatsApp minimal y footer global */
+.capacity{margin-top:8px;color:#F7645C;font-size:13px;font-weight:950;letter-spacing:-.01em;display:inline-flex;align-items:center;gap:6px}
+.capacity .capacity-bolt{color:#041912;font-weight:950}
+.price-label{color:#62CD4D!important}
+.price{color:#62CD4D!important}
+.features li{font-weight:800;color:rgba(4,25,18,.86)!important}
+.wa-card{margin-top:12px;border:1px solid rgba(37,211,102,.22);background:linear-gradient(180deg,rgba(37,211,102,.08),rgba(255,255,255,.92));border-radius:16px;padding:12px;display:grid;gap:10px}
+.wa-card.disabled{opacity:.56;filter:grayscale(.2);background:#FBFAF6;border-color:var(--line)}
+.wa-card-top{display:flex;align-items:center;justify-content:space-between;gap:10px}.wa-card-logo{display:flex;align-items:center;gap:9px;font-size:12.5px;font-weight:900;color:var(--ink);line-height:1.25}.wa-card-logo img{width:24px;height:24px;flex:none}.wa-check{width:20px;height:20px;display:grid;place-items:center;border-radius:999px;background:rgba(29,78,216,.10);color:#1D4ED8;font-weight:950}.wa-benefit{font-size:12.5px;color:var(--muted);line-height:1.42;margin:0}.wa-checkbox{display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:850;color:var(--ink)}.wa-checkbox input{width:16px;height:16px;accent-color:#25D366}
+.mirror-card{margin-top:12px;border:1px solid rgba(4,86,12,.18);background:linear-gradient(180deg,rgba(181,248,87,.16),rgba(255,255,255,.94));border-radius:16px;padding:12px;display:grid;gap:10px}.mirror-card.lex-mirror{border-color:rgba(84,98,226,.18);background:linear-gradient(180deg,rgba(187,192,243,.16),rgba(255,255,255,.94))}.mirror-card-top{display:flex;align-items:center;justify-content:space-between;gap:10px}.mirror-card-title{display:flex;align-items:center;gap:9px;font-size:12.5px;font-weight:900;color:var(--ink);line-height:1.25}.mirror-icon{width:24px;height:24px;display:grid;place-items:center;border-radius:10px;background:var(--green);color:var(--lime);font-weight:950}.mirror-card.lex-mirror .mirror-icon{background:var(--efile-night);color:var(--efile-bright)}.mirror-check{width:20px;height:20px;display:grid;place-items:center;border-radius:999px;background:rgba(4,86,12,.08);color:var(--green);font-weight:950}.mirror-copy,.addon-price,.addon-micro,.addon-note{font-size:12px;color:var(--muted);line-height:1.38;margin:0}.addon-price{font-weight:900;color:var(--ink)}.addon-micro{font-weight:760}.mirror-checkbox{display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:850;color:var(--ink)}.mirror-checkbox input{width:16px;height:16px;accent-color:var(--green)}.addon-note{margin-top:9px;border:1px dashed rgba(4,25,18,.12);background:#FBFAF6;border-radius:12px;padding:8px 9px;font-weight:780}
+.slx-global-footer{margin-top:42px;padding:44px 0 32px;border-top:1px solid var(--line,rgba(4,25,18,.10));background:#fff}.slx-global-footer .slx-footer-container{width:min(1180px,calc(100% - 48px));margin-inline:auto}.slx-footer-grid{display:grid;grid-template-columns:1.25fr repeat(4,1fr);gap:24px}.slx-footer-brand{display:inline-flex;align-items:center;gap:10px;font-weight:850;letter-spacing:-.035em;font-size:20px;white-space:nowrap}.slx-footer-mark{--symbol-bg:#04560C;--symbol-bolt:#B5F857;width:34px;height:34px;position:relative;display:inline-grid;place-items:center;flex:none}.slx-footer-mark:before{content:"";position:absolute;inset:0;background:var(--symbol-bg);clip-path:polygon(50% 0%,61% 32%,100% 50%,61% 68%,50% 100%,39% 68%,0% 50%,39% 32%)}.slx-footer-mark span{position:relative;z-index:1;color:var(--symbol-bolt);font-weight:950;font-size:17px}.slx-global-footer h4{margin:0 0 12px;font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted2,#8A948F)}.slx-global-footer a,.slx-global-footer p{display:block;margin:0 0 9px;color:var(--muted,#66736D);font-size:14px;line-height:1.45}.slx-global-footer a:hover{color:var(--ink,#041912)}.slx-footer-bottom{margin-top:34px;display:flex;justify-content:space-between;gap:16px;color:var(--muted2,#8A948F);font-size:13px}.slx-footer-efile,.slx-footer-efile span{color:#063C83!important;font-weight:850}.slx-footer-gov span{color:#F7645C}.slx-footer-product span{color:#B5F857}
+@media (max-width:1080px){.slx-footer-grid{grid-template-columns:repeat(2,1fr)}}@media (max-width:700px){.slx-global-footer .slx-footer-container{width:min(100% - 24px,1180px)}.slx-footer-grid{grid-template-columns:1fr}.slx-footer-bottom{flex-direction:column}}
+
+</style>
+
+<style id="slx-global-footer-style">
+.slx-global-footer{margin-top:42px;padding:44px 0 32px;border-top:1px solid var(--line,rgba(4,25,18,.10));background:#fff;color:var(--ink,#041912);clear:both}.slx-global-footer .slx-footer-container{width:min(1180px,calc(100% - 48px));margin-inline:auto}.slx-footer-grid{display:grid;grid-template-columns:1.25fr repeat(4,1fr);gap:24px}.slx-footer-brand{display:inline-flex;align-items:center;gap:10px;font-weight:850;letter-spacing:-.035em;font-size:20px;white-space:nowrap}.slx-footer-mark{--symbol-bg:#04560C;--symbol-bolt:#B5F857;width:34px;height:34px;position:relative;display:inline-grid;place-items:center;flex:none}.slx-footer-mark:before{content:"";position:absolute;inset:0;background:var(--symbol-bg);clip-path:polygon(50% 0%,61% 32%,100% 50%,61% 68%,50% 100%,39% 68%,0% 50%,39% 32%)}.slx-footer-mark span{position:relative;z-index:1;color:var(--symbol-bolt);font-weight:950;font-size:17px}.slx-global-footer h4{margin:0 0 12px;font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted2,var(--muted-2,#8A948F))}.slx-global-footer a,.slx-global-footer p{display:block;margin:0 0 9px;color:var(--muted,#66736D);font-size:14px;line-height:1.45;text-decoration:none}.slx-global-footer a:hover{color:var(--ink,#041912)}.slx-footer-bottom{margin-top:34px;display:flex;justify-content:space-between;gap:16px;color:var(--muted2,var(--muted-2,#8A948F));font-size:13px}.slx-footer-efile,.slx-footer-efile span{color:#063C83!important;font-weight:850}.slx-footer-gov span{color:#C62118}.slx-footer-product span{color:#81C91C}.slx-footer-drive span{color:#063C83;font-weight:900}@media (max-width:1080px){.slx-footer-grid{grid-template-columns:repeat(2,1fr)}}@media (max-width:700px){.slx-global-footer .slx-footer-container{width:min(100% - 24px,1180px)}.slx-footer-grid{grid-template-columns:1fr}.slx-footer-bottom{flex-direction:column}}
+.site-nav .nav-bolt,.topnav .nav-bolt.b2b{color:#B5F857!important}.site-nav .gov-tender .nav-bolt,.site-nav .gov-pricing .nav-bolt,.topnav .nav-bolt.gov{color:#F7645C!important}</style>
+</head>
+<body>
+  <div class="frame-offset" aria-hidden="true"></div>
+  <main id="app" aria-live="polite"></main>
+  <script>
+(function(){
+  function sendMode(mode, redirect){
+    try{
+      window.top.postMessage({type:'slx-auth-mode', mode:mode || 'online', redirect:redirect || null}, '*');
+    }catch(e){
+      try{ localStorage.setItem('slxAuthMode', mode || 'online'); }catch(err){}
+      if(redirect) window.top.location.href = redirect;
+    }
+  }
+  document.addEventListener('click', function(e){
+    const login = e.target.closest('[data-slx-login]');
+    if(login){
+      e.preventDefault();
+      const redirect = login.getAttribute('data-redirect') || null;
+      sendMode('online', redirect);
+      return;
+    }
+    const offline = e.target.closest('[data-slx-offline]');
+    if(offline){
+      e.preventDefault();
+      const redirect = offline.getAttribute('data-redirect') || null;
+      sendMode('offline', redirect);
+    }
+  });
+})();
+
+</script>
+  <script>
+    const money = n => typeof n === 'number' ? new Intl.NumberFormat('es-MX',{style:'currency',currency:'MXN',maximumFractionDigits:0}).format(n) : n;
+    const query = new URLSearchParams(window.location.search);
+    const key = query.get('solution') || 'tender';
+    const canonical = {
+      tender:'tender.html',
+      pricing:'pricing.html',
+      file:'file.html',
+      lex:'lex.html',
+      tenderGov:'tender-gov.html',
+      pricingGov:'pricing-gov.html'
+    };
+    const data = {
+      tender:{
+        mode:'green',
+        kicker:'Modo offline · Vista pública',
+        title:'Smart Tender',
+        subtitle:'Encuentra, analiza, sigue y compite licitaciones existentes del lado proveedor.',
+        lead:'En modo offline el usuario entiende el producto, compara planes y decide si se registra. Al iniciar sesión, esta misma sección cambia al dashboard operativo actual de Smart Tender.',
+        note:'Smart Tender no crea licitaciones: analiza oportunidades existentes, abre Smart Pricing cuando aplica y prepara Propuesta IA con trazabilidad.',
+        badges:['Smart Pricing conectado','Propuesta IA','Experta + IA con eFile activo','WA add-on'],
+        stats:[['Offline','Producto + plan','Primera visita sin sesión'],['Online','Dashboard actual','Licitaciones, pricing y propuesta'],['Drive','Carpeta por proyecto','Documentos sincronizados'],['eFile','Readiness documental','Anexos y razones sociales']],
+        flow:['Pantalla pública','Registro / login','Dashboard Smart Tender'],
+        what:['Centraliza oportunidades relevantes por giro u objeto social.','Permite analizar viabilidad, requisitos, fechas y pricing.','Activa Propuesta IA y, cuando se cumplen requisitos, Experta + IA.'],
+        activation:['Propuesta IA visible; activa con plan y créditos.','Experta + IA requiere Smart Tender + Smart Pricing + eFile activo.','Cada proyecto crea carpeta Drive y guarda entregables.'],
+        plans:[
+          {name:'Free',unit:'1 licitación',promo:0,normal:0,annual:0,saving:0,wa:49,tokens:'1 licitación adicional = 5 tokens',efile:'Expediente base disponible',features:['Búsqueda y lectura inicial de oportunidades','Análisis básico con IA','Expansión vía tokens cuando aplique'],mirror:{kind:'pricing',title:'Mirror Smart Pricing',label:'Agregar 1 Smart Pricing Free',price:0,copy:'Agrega 1 estudio Smart Pricing al paquete Free.'}},
+          {name:'Básico',unit:'5 licitaciones',promo:790,normal:990,annual:9480,saving:2400,wa:99,tokens:'1 crédito Smart Tender = 5 tokens',efile:'eFile activo incluido',features:['Búsqueda, lectura y análisis con IA','Alertas y seguimiento','Acciones: Smart Pricing, Propuesta IA y Experta + IA según requisitos'],mirror:{kind:'pricing',title:'Mirror Smart Pricing',label:'Agregar 5 Smart Pricing',price:390,copy:'Precio paquete con Tender. Costo adicional al plan elegido.'},featured:true},
+          {name:'PyME',unit:'10 licitaciones',promo:1290,normal:1590,annual:15480,saving:3600,wa:190,tokens:'1 crédito Smart Tender = 5 tokens',efile:'eFile activo incluido',features:['Mayor capacidad de oportunidades','Alertas y seguimiento por volumen','Preparación de propuesta con IA'],mirror:{kind:'pricing',title:'Mirror Smart Pricing',label:'Agregar 10 Smart Pricing',price:790,copy:'Precio paquete con Tender. Costo adicional al plan elegido.'}},
+          {name:'Corporativo',unit:'25 licitaciones',promo:2990,normal:3490,annual:35880,saving:6000,wa:290,tokens:'1 crédito Smart Tender = 5 tokens',efile:'eFile activo incluido',features:['Capacidad alta de licitaciones','Gestión operativa para equipos','Mejor trazabilidad de oportunidades y propuestas'],mirror:{kind:'pricing',title:'Mirror Smart Pricing',label:'Agregar 25 Smart Pricing',price:1290,copy:'Precio paquete con Tender. Costo adicional al plan elegido.'}}
+        ]
+      },
+      pricing:{
+        mode:'green',
+        kicker:'Modo offline · Vista pública',
+        title:'Smart Pricing',
+        subtitle:'Inteligencia de precios para decisiones comerciales y licitaciones.',
+        lead:'En modo offline el usuario conoce la lógica de precio inteligente, precio público y precio por dependencia. Al iniciar sesión, entra al dashboard actual de estudios y explorador IPG conectado.',
+        note:'Smart Pricing puede operar como estudio independiente o ligado a una licitación desde Smart Tender. Cifra económica no confirmada = Supuesto configurable.',
+        badges:['Precio inteligente','Precio público','Precio por dependencia','WA add-on'],
+        stats:[['Offline','Producto + plan','Primera visita sin sesión'],['Online','Dashboard actual','Estudios, IPG y señales'],['Drive','Reportes guardados','Exportables sincronizados'],['Tender','Ligable a licitación','Estrategia económica']],
+        flow:['Pantalla pública','Registro / login','Dashboard Smart Pricing'],
+        what:['Evalúa precios históricos, públicos y por dependencia.','Separa datos confirmados de supuestos configurables.','Genera reportes y escenarios guardables en Drive.'],
+        activation:['Estudio independiente o ligado a Smart Tender.','Tokens aplican para capacidad adicional cuando el plan se agota.','Envía Smart Pricing finales, PDF final, Excel de evidencia y documentos entregables por WhatsApp a hasta 3 números registrados.'],
+        plans:[
+          {name:'Free',unit:'1 estudio',promo:0,normal:0,annual:0,saving:0,wa:99,waBenefit:'Envía Smart Pricing finales y documentos entregables por WhatsApp a hasta 3 números registrados.',tokens:'1 crédito Smart Pricing = 10 tokens',efile:'Expediente base disponible',features:['Estudio inicial','Consulta básica de señales de precio','Expansión vía tokens cuando aplique']},
+          {name:'Básico',unit:'10 estudios',promo:790,normal:990,annual:9480,saving:2400,wa:149,waBenefit:'Envía Smart Pricing finales y documentos entregables por WhatsApp a hasta 3 números registrados.',tokens:'1 crédito Smart Pricing = 10 tokens',efile:'eFile activo incluido',features:['Estudios de mercado','Comparativas de precios','Insumos para decisión comercial'],featured:true},
+          {name:'Intermedio',unit:'20 estudios',promo:1290,normal:1590,annual:15480,saving:3600,wa:190,waBenefit:'Envía Smart Pricing finales y documentos entregables por WhatsApp a hasta 3 números registrados.',tokens:'1 crédito Smart Pricing = 10 tokens',efile:'eFile activo incluido',features:['Mayor volumen de estudios','Comparativas y señales de rentabilidad','Precio Fundador confirmado hasta 30 de junio de 2026']},
+          {name:'Avanzado',unit:'50 estudios',promo:2990,normal:3490,annual:35880,saving:6000,wa:290,waBenefit:'Envía Smart Pricing finales y documentos entregables por WhatsApp a hasta 3 números registrados.',tokens:'1 crédito Smart Pricing = 10 tokens',efile:'eFile activo incluido',features:['Alta capacidad analítica','Estrategia económica por volumen','Precio Fundador confirmado hasta 30 de junio de 2026']}
+        ]
+      },
+      file:{
+        mode:'green',
+        kicker:'Modo offline · Vista pública',
+        title:'Smart File',
+        subtitle:'Monitoreo de expedientes legales, alertas, bitácoras y trazabilidad documental.',
+        lead:'En modo offline el usuario entiende el alcance de monitoreo legal. Al iniciar sesión, esta misma sección cambia al dashboard actual de expedientes, alertas y portales.',
+        note:'Smart File no se mezcla con licitaciones salvo caso específico. Opera como expediente legal con seguimiento y evidencia.',
+        badges:['Expedientes legales','Alertas','Bitácora','WA add-on'],
+        stats:[['Offline','Producto + plan','Primera visita sin sesión'],['Online','Dashboard actual','Cartera, alertas y portales'],['WA','Alertas opcionales','Combo de contratación'],['eFile','Trazabilidad documental','Evidencia y vigencias']],
+        flow:['Pantalla pública','Registro / login','Dashboard Smart File'],
+        what:['Monitorea expedientes y movimientos relevantes.','Organiza alertas, bitácoras y documentos.','Permite seguimiento operativo sin mezclarlo con contratación pública.'],
+        activation:['Alta por expediente, PDF o captura guiada.','WhatsApp add-on seleccionable cuando aplica.','Documentos y bitácoras se guardan en Drive.'],
+        plans:[
+          {name:'Free',unit:'1 expediente',promo:0,normal:0,annual:0,saving:0,wa:49,tokens:'No aplica',efile:'Expediente base disponible',features:['Monitoreo inicial','Visibilidad centralizada','WA opcional']},
+          {name:'Profesional',unit:'5 expedientes',promo:790,normal:990,annual:9480,saving:2400,wa:99,tokens:'No aplica',efile:'eFile activo incluido',features:['Monitoreo de expedientes','Alertas de seguimiento','Trazabilidad legal operativa'],featured:true},
+          {name:'Despacho',unit:'10 expedientes',promo:1990,normal:2590,annual:23880,saving:7200,wa:190,tokens:'No aplica',efile:'eFile activo incluido',features:['Mayor capacidad de expedientes','Alertas para operación de despacho','Visibilidad centralizada']},
+          {name:'Gran Despacho',unit:'20 expedientes',promo:3990,normal:4590,annual:47880,saving:7200,wa:290,tokens:'No aplica',efile:'eFile activo incluido',features:['Capacidad alta de monitoreo','Control documental','Trazabilidad para equipos']}
+        ]
+      },
+      lex:{
+        mode:'lex',
+        kicker:'Modo offline · Vista pública',
+        title:'Smart Lex',
+        subtitle:'Abogado de IA para abogados: análisis, escritos, documentos, estrategia y trabajo legal asistido.',
+        lead:'En modo offline el usuario conoce el producto y los planes. Al iniciar sesión, entra al dashboard actual de Smart Lex y puede abrir la interfaz de tercios para trabajar documentos vivos con asistente contextual.',
+        note:'Smart Lex opera por proyecto legal. Puede enviar documentos finales por WhatsApp a hasta 3 números registrados para revisión o autorización cuando el Add-On está activo. La asistencia en tercios se activa al trabajar con asistente dentro del proyecto.',
+        badges:['Legal AI','Escritos','Documentos vivos','WA add-on'],
+        stats:[['Offline','Producto + plan','Primera visita sin sesión'],['Online','Dashboard actual','Proyectos, documentos y alertas'],['Tercios','Docs + asistente','Interfaz contextual'],['eFile','Documentación legal','Trazabilidad']],
+        flow:['Pantalla pública','Registro / login','Dashboard Smart Lex'],
+        what:['Estructura asuntos legales y documentos.','Genera análisis, estrategias y escritos asistidos.','Trabaja con documento vivo, entregables y asistente contextual.'],
+        activation:['Proyecto legal creado desde documento o asunto.','Interfaz de tercios al trabajar con asistente o generar escrito.','Enviar documentos finales creados en Smart Lex por WhatsApp a hasta 3 números registrados para revisión o autorización.'],
+        plans:[
+          {name:'Free',unit:'1 proyecto legal',promo:0,normal:0,annual:0,saving:0,wa:99,waBenefit:'Enviar documentos finales creados en Smart Lex por WhatsApp a hasta 3 números registrados para revisión o autorización.',tokens:'No aplica',efile:'Expediente base disponible',features:['Proyecto legal inicial','Asistencia de IA básica','Organización documental'],mirror:{kind:'file',title:'Mirror Smart File',label:'Agregar 1 Smart File Free',price:0,copy:'Agrega monitoreo documental/legal básico al proyecto Free.'}},
+          {name:'Profesional',unit:'5 proyectos legales',promo:790,normal:990,annual:9480,saving:2400,wa:149,waBenefit:'Enviar documentos finales creados en Smart Lex por WhatsApp a hasta 3 números registrados para revisión o autorización.',tokens:'No aplica',efile:'eFile activo incluido',features:['Análisis jurídico','Generación de escritos','Estructuración del trabajo legal'],mirror:{kind:'file',title:'Mirror Smart File',label:'Agregar 5 Smart File',price:790,copy:'Precio paquete con Lex. Costo adicional al plan elegido.'},featured:true},
+          {name:'Despacho',unit:'10 proyectos legales',promo:1290,normal:1590,annual:15480,saving:3600,wa:190,waBenefit:'Enviar documentos finales creados en Smart Lex por WhatsApp a hasta 3 números registrados para revisión o autorización.',tokens:'No aplica',efile:'eFile activo incluido',features:['Mayor volumen de proyectos','Trabajo jurídico asistido por IA','Trazabilidad de entregables'],mirror:{kind:'file',title:'Mirror Smart File',label:'Agregar 10 Smart File',price:1990,copy:'Precio paquete con Lex. Costo adicional al plan elegido.'}},
+          {name:'Gran Despacho',unit:'20 proyectos legales',promo:1990,normal:2590,annual:23880,saving:7200,wa:290,waBenefit:'Enviar documentos finales creados en Smart Lex por WhatsApp a hasta 3 números registrados para revisión o autorización.',tokens:'No aplica',efile:'eFile activo incluido',features:['Capacidad alta de proyectos','Operación para equipos jurídicos','Control de documentos y entregables'],mirror:{kind:'file',title:'Mirror Smart File',label:'Agregar 20 Smart File',price:3990,copy:'Precio paquete con Lex. Costo adicional al plan elegido.'}}
+        ]
+      },
+      tenderGov:{
+        mode:'gov',
+        kicker:'Modo offline · Vista pública institucional',
+        title:'Tender Gov',
+        subtitle:'Solución B2G para que dependencias y entidades creen, revisen y publiquen licitaciones sin errores.',
+        lead:'En modo offline la institución entiende el flujo, permisos y repositorio seguro. El costo para Gobierno es cero si usa nuestra plataforma. Las instituciones pueden crear y publicar procedimientos sin costo dentro del esquema Gov. Al iniciar sesión institucional, entra al dashboard actual de Tender Gov.',
+        note:'Tender Gov es B2G. Publicación sin costo para Gobierno. El costo para Gobierno es cero si usa nuestra plataforma; mantiene reglas, evidencia, eFile y expediente auditable. Los paquetes avanzados se cotizan por alcance, seguridad, repositorio y permisos.',
+        badges:['B2G','Publicación sin costo','Repositorio seguro','Permisos'],
+        stats:[['Offline','Producto + pilares','Primera visita institucional'],['Online','Dashboard actual','Creación y revisión'],['Pricing Gov','Estudios ligados','Evidencia y reglas'],['Auditoría','Trazabilidad','Permisos y bitácora']],
+        flow:['Pantalla pública','Contacto / login institucional','Dashboard Tender Gov'],
+        what:['Crea licitaciones desde cero del lado institución.','Revisa reglas, POBALINES, estudios y documentos.','Reduce errores antes de publicación y genera evidencia.'],
+        activation:['Requiere perfil institucional y permisos.','Publicación sin costo para instituciones públicas.','Pricing Gov puede integrarse al procedimiento sin costo de estudio básico Gov.'],
+        plans:[
+          {name:'Inicial',unit:'1 unidad compradora',promo:'Cotización',normal:'Institucional',annual:'Según alcance',saving:'Supuesto',wa:null,tokens:'Supuesto configurable',efile:'Repositorio institucional',features:['Flujo base de creación','Roles mínimos','Drive institucional seguro']},
+          {name:'Equipo',unit:'Hasta 3 unidades',promo:'Cotización',normal:'Institucional',annual:'Según alcance',saving:'Supuesto',wa:null,tokens:'Supuesto configurable',efile:'Repositorio institucional',features:['Revisión jurídica y técnica','Permisos por rol','Bitácora de cambios'],featured:true},
+          {name:'Dependencia',unit:'Multiunidad',promo:'Cotización',normal:'Institucional',annual:'Según alcance',saving:'Supuesto',wa:null,tokens:'Supuesto configurable',efile:'Repositorio institucional',features:['Plantillas reutilizables','POBALINES y reglas','Auditoría operativa']},
+          {name:'Entidad',unit:'Enterprise Gov',promo:'Cotización',normal:'Institucional',annual:'Según alcance',saving:'Supuesto',wa:null,tokens:'Supuesto configurable',efile:'Repositorio institucional',features:['Gobernanza avanzada','Integraciones y seguridad','Acompañamiento institucional']}
+        ]
+      },
+      pricingGov:{
+        mode:'gov',
+        kicker:'Modo offline · Vista pública institucional',
+        title:'Pricing Gov',
+        subtitle:'B2G para estudios de mercado gubernamentales, fuentes, comparabilidad, POBALINES, evidencia, cálculo, dictamen y exportables.',
+        lead:'En modo offline la institución entiende el alcance metodológico. El costo para Gobierno es cero si usa nuestra plataforma. Pricing Gov permite a instituciones generar estudios de mercado con evidencia, comparabilidad y trazabilidad sin costo de publicación o ejecución básica. Al iniciar sesión institucional, entra al dashboard actual de Pricing Gov.',
+        note:'Pricing Gov opera con reglas institucionales y repositorios seguros. Estudios de mercado sin costo para Gobierno. Los estudios de mercado son sin costo para instituciones públicas dentro del esquema Gov básico; capacidades avanzadas se configuran por alcance institucional.',
+        badges:['B2G','Estudios sin costo','POBALINES','Evidencia'],
+        stats:[['Offline','Producto + pilares','Primera visita institucional'],['Online','Dashboard actual','Estudios y perfiles'],['Exportables','Dictamen + evidencia','Drive institucional'],['Cumplimiento','Comparabilidad','Reglas y cálculo']],
+        flow:['Pantalla pública','Contacto / login institucional','Dashboard Pricing Gov'],
+        what:['Construye estudios de mercado con fuentes trazables.','Compara precios, proveedores, dependencias y reglas.','Genera dictamen, evidencia y exportables para expediente.'],
+        activation:['Requiere perfil institucional y parametrización.','Estudios de mercado sin costo para instituciones públicas.','Se guarda en repositorio institucional seguro con evidencia y comparabilidad.'],
+        plans:[
+          {name:'Paquete 50',unit:'50 estudios',promo:'Cotización',normal:'Institucional',annual:'Según alcance',saving:'Supuesto',wa:null,tokens:'Supuesto configurable',efile:'Repositorio institucional',features:['Estudios institucionales','Fuentes trazables','Exportables base']},
+          {name:'Paquete 100',unit:'100 estudios',promo:'Cotización',normal:'Institucional',annual:'Según alcance',saving:'Supuesto',wa:null,tokens:'Supuesto configurable',efile:'Repositorio institucional',features:['Mayor capacidad','Comparabilidad avanzada','Roles por unidad'],featured:true},
+          {name:'Paquete 200',unit:'200 estudios',promo:'Cotización',normal:'Institucional',annual:'Según alcance',saving:'Supuesto',wa:null,tokens:'Supuesto configurable',efile:'Repositorio institucional',features:['Uso multiunidad','POBALINES y reglas','Auditoría ampliada']},
+          {name:'Paquete 500',unit:'500 estudios',promo:'Cotización',normal:'Institucional',annual:'Según alcance',saving:'Supuesto',wa:null,tokens:'Supuesto configurable',efile:'Repositorio institucional',features:['Alta capacidad','Integraciones','Gobernanza institucional']}
+        ]
+      }
+    };
+    const cfg = data[key] || data.tender;
+    document.title = cfg.title + ' · Offline · SmartLicit';
+    const cssMode = cfg.mode === 'gov' ? 'gov' : cfg.mode === 'lex' ? 'lex' : 'green';
+    function badgeClass(label){
+      if(label.includes('eFile') || label.includes('Drive')) return 'efile';
+      if(label.includes('B2G') || label.includes('Gov') || label.includes('Supuesto')) return 'gov';
+      if(label.includes('WA') && label.includes('Sin')) return '';
+      if(label.includes('Legal') || label.includes('Escritos')) return 'lex';
+      return 'green';
+    }
+    function planCard(plan){
+      const isGov = cfg.mode === 'gov';
+      const price = typeof plan.promo === 'number' ? money(plan.promo) + ' <small>MXN / mes</small>' : '<span style="font-size:21px;letter-spacing:-.04em">' + plan.promo + '</span>';
+      const normal = typeof plan.normal === 'number' ? (plan.normal === 0 ? 'Precio mensual: $0 MXN / mes' : 'Después del 30 de junio: ' + money(plan.normal) + ' MXN / mes') : plan.normal;
+      const annual = typeof plan.annual === 'number' ? money(plan.annual) : plan.annual;
+      const saving = typeof plan.saving === 'number' ? money(plan.saving) : plan.saving;
+      const features = plan.features.map(f=>'<li>'+f+'</li>').join('');
+      const waBenefit = plan.waBenefit || 'Enviar alertas y entregables por WhatsApp a hasta 3 números registrados.';
+      const mirror = (!isGov && plan.mirror) ? `<div class="mirror-card ${plan.mirror.kind==='file'?'lex-mirror':''}"><div class="mirror-card-top"><div class="mirror-card-title"><span class="mirror-icon">↯</span><span>${plan.mirror.title}</span></div><span class="mirror-check">✓</span></div><p class="mirror-copy">${plan.mirror.copy}</p><p class="addon-price">Precio adicional: +${money(plan.mirror.price)} MXN / mes</p><label class="mirror-checkbox"><input type="checkbox" aria-label="${plan.mirror.label} ${plan.name}"> ${plan.mirror.label}</label></div>` : '';
+      const addonNote = (!isGov && (plan.wa !== null || plan.mirror)) ? '<p class="addon-note">Los paquetes seleccionados se suman al precio mensual del plan.</p>' : '';
+      const wa = plan.wa !== null
+        ? `<div class="wa-card"><div class="wa-card-top"><div class="wa-card-logo"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0OCA0OCIgYXJpYS1sYWJlbD0iV2hhdHNBcHAiPgogIDxjaXJjbGUgY3g9IjI0IiBjeT0iMjQiIHI9IjIyIiBmaWxsPSIjMjVEMzY2Ii8+CiAgPHBhdGggZmlsbD0iI2ZmZiIgZD0iTTM0LjcgMjkuMWMtLjQgMS4yLTIuMiAyLjItMy4xIDIuMy0uOC4xLTEuOS4yLTMuMS0uMi0uNy0uMi0xLjYtLjUtMi44LTEtNC45LTIuMS04LjEtNy04LjMtNy4zLS4yLS4zLTItMi43LTItNS4xIDAtMi40IDEuMi0zLjYgMS43LTQgLjQtLjUuOS0uNiAxLjMtLjZoLjljLjMgMCAuNy0uMSAxIC44LjQgMSAuMS4yIDEuMSAyLjcuMS4yLjIuNSAwIC44LS4xLjMtLjIuNS0uNS44LS4yLjMtLjUuNi0uNy44LS4yLjItLjQuNS0uMi45LjIuNCAxIDEuNyAyLjEgMi43IDEuNSAxLjMgMi43IDEuOCAzLjEgMiAuNC4yLjcuMiAxLS4xLjMtLjQgMS4xLTEuMyAxLjQtMS43LjMtLjQuNi0uMyAxLS4yLjQuMSAyLjYgMS4yIDMgMS40LjQuMi43LjMuOC41LjEuMi4xIDEuMy0uMyAyLjVaIi8+CiAgPHBhdGggZmlsbD0iI2ZmZiIgZD0ibTEzIDM3IDIuMi03LjhhMTYuNCAxNi40IDAgMSAxIDYuNCA0LjdMMTMgMzdabTkuOS03LjFoLjFhMTEuOSAxMS45IDAgMSAwLTUtNC41bC40LjctMS4zIDQuNSA0LjctMS4yLjguNFoiIG9wYWNpdHk9Ii45NSIvPgo8L3N2Zz4K" alt="WhatsApp"><span>WhatsApp Add-On</span></div><span class="wa-check">✓</span></div><p class="wa-benefit">${waBenefit}</p><p class="addon-price">Precio adicional: +${money(plan.wa)} MXN / mes</p><p class="addon-micro">Costo adicional al plan elegido.</p><label class="wa-checkbox"><input type="checkbox" aria-label="Agregar Notificaciones WhatsApp ${plan.name}"> Agregar Notificaciones WhatsApp</label></div>`
+        : '';
+      return `<article class="plan ${plan.featured?'featured':''} ${isGov?'gov-plan':''}">
+        ${plan.featured?'<span class="ribbon badge '+(isGov?'gov':'green')+'">Recomendado</span>':''}
+        <h3>${plan.name}</h3>
+        <div class="capacity"><span class="capacity-bolt">⚡</span>${plan.unit} incluidas</div>
+        <div class="pricebox"><div class="price-label">${isGov?'Modalidad institucional':'Precio Fundador hasta 30 junio 2026'}</div><div class="price">${price}</div><div class="normal">${normal}</div></div>
+        <div class="saving"><div><span>${isGov?'Vigencia':'Total anual'}</span><strong>${annual}</strong></div><div><span>${isGov?'Nota':'Ahorro anual'}</span><strong>${saving}</strong></div></div>
+        <ul class="features"><li>${plan.tokens}</li>${features}</ul>
+        ${mirror}
+        ${wa}
+        ${addonNote}
+        <div class="efile-box"><strong>${plan.efile}</strong><p>Documentos, reportes o evidencia se guardan en la carpeta Drive correspondiente y quedan trazados en el ecosistema SmartLicit.</p></div>
+        <div class="card-actions"><button class="btn ${isGov?'gov':(plan.normal===0?'':'primary')} slim" data-slx-login data-redirect="${canonical[key] || 'index.html'}">${isGov?'Contactar / activar':'Contratar'}</button><a class="btn slim" href="../planes.html" target="_top">Ver detalle</a></div>
+      </article>`;
+    }
+    const stats = cfg.stats.map(([a,b,c])=>`<div class="status-tile"><span>${a}</span><strong>${b}</strong><small>${c}</small></div>`).join('');
+    const badges = cfg.badges.map(b=>`<span class="badge ${badgeClass(b)}">${b}</span>`).join('');
+    const what = cfg.what.map((t,i)=>`<article class="info-card"><h3>${i+1}. ${['Qué resuelve','Cómo opera','Resultado'][i] || 'Punto'}</h3><p>${t}</p></article>`).join('');
+    const activation = cfg.activation.map((t,i)=>`<article class="info-card"><h3>${['Regla de activación','Regla de consumo','Trazabilidad'][i] || 'Regla'}</h3><p>${t}</p></article>`).join('');
+    document.getElementById('app').innerHTML = `
+      <section class="hero"><div class="wrap hero-grid">
+        <div>
+          <div class="eyebrow ${cssMode}"><span class="spark"></span>${cfg.kicker}</div>
+          <h1>${cfg.title}</h1>
+          <p class="lead">${cfg.subtitle}</p>
+          <p class="lead" style="font-size:17px;max-width:760px">${cfg.lead}</p>
+          <div class="badges">${badges}</div>
+          <div class="hero-actions">
+            <button class="btn primary" data-slx-login data-redirect="${canonical[key] || 'index.html'}">Registrarme / iniciar sesión</button>
+            <a class="btn accent" href="../planes.html" target="_top">Ver planes</a>
+            <a class="btn efile" href="../gDrive.html" target="_top">Conectar Google Drive</a>
+          </div>
+          <p class="micro" style="margin-top:14px">${cfg.note}</p>
+        </div>
+        <aside class="hero-panel ${cssMode}"><div class="panel-content">
+          <div class="card dark"><h2>Offline vs online</h2><p>La primera visita muestra valor, plan y registro. El modo online mantiene el dashboard operativo actual sin duplicarlo.</p></div>
+          <div class="status-board">${stats}</div>
+          <div class="flow-row"><div class="flow-node"><strong>${cfg.flow[0]}</strong><span>Vista pública sin sesión.</span></div><div class="flow-arrow">→</div><div class="flow-node"><strong>${cfg.flow[2]}</strong><span>Se activa después de registro o login.</span></div></div>
+        </div></aside>
+      </div></section>
+      <section class="section"><div class="wrap">
+        <div class="section-title"><div><h2>Planes</h2><p>Esta pantalla complementa la navegación offline. Al entrar online, el usuario vuelve al dashboard existente de ${cfg.title}.</p></div></div>
+        <div class="plan-grid">${cfg.plans.map(planCard).join('')}</div>
+      </div></section>
+      <section class="section" style="padding-top:0"><div class="wrap">
+        <div class="section-title"><div><h2>Reglas visibles antes de registrarse.</h2><p>El usuario entiende qué resuelve la solución, cómo se activa y qué debe evitar confundirse antes de contratar.</p></div></div>
+        <div class="info-grid">${what}</div>
+        <div class="info-grid" style="margin-top:12px">${activation}</div>
+      </div></section>`;
+  </script>
+
+<footer class="slx-global-footer" aria-label="Footer SmartLicit">
+  <div class="slx-footer-container">
+    <div class="slx-footer-grid">
+      <div>
+        <div class="slx-footer-brand"><span class="slx-footer-mark" aria-hidden="true"><span>⚡</span></span><span>SmartLicit</span></div>
+        <p style="margin-top:14px;max-width:320px">Una sola inteligencia, múltiples soluciones para resolver trabajo profesional complejo.</p>
+      </div>
+      <div><h4>Soluciones</h4><a class="slx-footer-product" href="../tender.html" target="_top"><span>⚡</span> Tender</a><a class="slx-footer-product" href="../pricing.html" target="_top"><span>⚡</span> Pricing</a><a class="slx-footer-product" href="../file.html" target="_top"><span>⚡</span> File</a><a class="slx-footer-product" href="../lex.html" target="_top"><span>⚡</span> Lex</a></div>
+      <div><h4>Gobierno</h4><a class="slx-footer-gov" href="../tender-gov.html" target="_top"><span>⚡</span> Tender Gov</a><a class="slx-footer-gov" href="../pricing-gov.html" target="_top"><span>⚡</span> Pricing Gov</a><a href="../ipg.html" target="_top">IPG</a></div>
+      <div><h4>Plataforma</h4><a class="slx-footer-efile" href="../efile.html" target="_top"><span>⚡</span> eFile</a><a href="../planes.html" target="_top">Planes</a><a href="../blog.html" target="_top">Blog</a><a href="../mi-cuenta.html" target="_top">Mi Cuenta</a></div>
+      <div><h4>Workspace</h4><a class="slx-footer-drive" href="../gDrive.html" target="_top"><span>▰</span> Google Drive Workspace</a><a href="../mi-cuenta.html#facturacion" target="_top">Facturación</a><a href="../planes.html#tokens" target="_top">Tokens</a><a href="../mi-cuenta.html#integraciones" target="_top">Integraciones</a></div>
+    </div>
+    <div class="slx-footer-bottom"><span>© SmartLicit</span><span>Minimal premium · trazable · accionable.</span></div>
+  </div>
+</footer>
+
+</body>
+</html>

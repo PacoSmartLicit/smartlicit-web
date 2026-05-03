@@ -1,0 +1,434 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Blog · SmartLicit · Google Drive Workspace</title>
+<meta name="description" content="Entrada del blog de SmartLicit sobre la integración de Google Drive, Docs y Sheets en Smart Tender y Smart Lex." />
+<meta name="smartlicit:content-type" content="blog-entry" />
+<meta name="smartlicit:blog-path" content="blog/SmartLicit · Google Drive Workspace" />
+<style>
+:root{
+  --lime:#B5F857;
+  --ink:#041912;
+  --green:#04560C;
+  --action:#1A990F;
+  --bg:#F9F8F3;
+  --surface:#FFFFFF;
+  --surface-soft:#FBFAF6;
+  --warm:#EBEAE5;
+  --warm2:#CDCABF;
+  --muted:#66736D;
+  --muted2:#8A948F;
+  --line:rgba(4,25,18,.10);
+  --line2:rgba(4,25,18,.16);
+  --efile:#5462E2;
+  --efile-soft:#BBC0F3;
+  --efile-soft2:#DDDFF9;
+  --efile-bright:#8B9BF7;
+  --efile-night:#060517;
+  --efile-deep:#080353;
+  --yellow:#F7BA14;
+  --orange:#F77214;
+  --red:#C62118;
+  --coral:#F7645C;
+  --shadow:0 20px 60px rgba(4,25,18,.07);
+  --shadow-soft:0 8px 24px rgba(4,25,18,.045);
+  --radius-xl:34px;
+  --radius-lg:24px;
+  --radius-md:18px;
+  --radius-sm:14px;
+  --font:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;color:var(--ink);font-family:var(--font);
+  background:
+    radial-gradient(circle at 86% 4%, rgba(181,248,87,.18), transparent 28rem),
+    radial-gradient(circle at 12% 86%, rgba(84,98,226,.12), transparent 30rem),
+    linear-gradient(180deg,#FFFFFF 0%, var(--bg) 62%, #FFFFFF 100%);
+  -webkit-font-smoothing:antialiased;text-rendering:geometricPrecision;letter-spacing:-.014em;
+}
+a{color:inherit;text-decoration:none}button,input{font:inherit}button{cursor:pointer}
+h1,h2,h3,h4,p{margin:0}.wrap{width:min(1240px,calc(100% - 42px));margin-inline:auto}.section{padding:46px 0}.muted{color:var(--muted)}
+.topbar{position:sticky;top:0;z-index:80;height:74px;background:rgba(255,255,255,.90);backdrop-filter:blur(18px);border-bottom:1px solid var(--line);display:flex;align-items:center}
+.nav{display:flex;align-items:center;justify-content:space-between;gap:18px}.brand{display:flex;align-items:center;gap:10px;font-size:20px;font-weight:850;letter-spacing:-.045em;white-space:nowrap}.mark{--mark-bg:var(--green);--mark-bolt:var(--lime);width:38px;height:38px;display:inline-grid;place-items:center;position:relative;flex:0 0 auto}.mark:before{content:"";position:absolute;inset:0;background:var(--mark-bg);clip-path:polygon(50% 0%,61% 32%,100% 50%,61% 68%,50% 100%,39% 68%,0% 50%,39% 32%)}.bolt{width:16px;height:23px;position:relative;z-index:1;background:var(--mark-bolt);clip-path:polygon(62% 0%,20% 52%,48% 52%,37% 100%,84% 38%,56% 38%)}.mark.gov{--mark-bg:var(--red);--mark-bolt:#FFB4B0}.mark.pricing-gov{--mark-bg:var(--coral);--mark-bolt:var(--ink)}
+.site-nav{display:flex;align-items:center;justify-content:center;gap:2px;flex:1;overflow:auto;padding-bottom:2px;scrollbar-width:none}.site-nav::-webkit-scrollbar{display:none}.site-nav a{display:inline-flex;align-items:center;gap:6px;min-height:38px;padding:0 10px;border-radius:999px;color:rgba(4,25,18,.68);font-size:13.2px;font-weight:720;white-space:nowrap;border:1px solid transparent}.site-nav a:hover,.site-nav a.active{color:var(--ink);background:var(--bg);border-color:var(--line)}.site-nav a.active{background:rgba(181,248,87,.30);color:var(--green);border-color:rgba(4,86,12,.14)}.nav-bolt{font-weight:950;line-height:1;font-size:14px;color:#81C91C}.gov-tender .nav-bolt{color:var(--red)}.gov-pricing .nav-bolt{color:#C62118}
+.search{position:relative;flex:0 1 360px;min-width:220px}.search:before{content:"⌕";position:absolute;left:14px;top:50%;transform:translateY(-52%);color:var(--muted);font-weight:900}.search input{width:100%;height:40px;border:1px solid var(--line);border-radius:999px;background:#FBFAF6;outline:0;padding:0 14px 0 40px;font-size:13px;color:var(--ink)}.search input:focus{border-color:rgba(84,98,226,.35);box-shadow:0 0 0 4px rgba(84,98,226,.12);background:#fff}.account{position:relative;flex:0 0 auto}.account-trigger{display:inline-flex;align-items:center;gap:6px;min-height:38px;padding:0 12px;border-radius:999px;font-size:13px;font-weight:830;color:var(--muted);border:1px solid var(--line);background:#fff;white-space:nowrap}.account-trigger:hover{color:var(--ink);background:var(--bg);border-color:var(--line2)}
+.hero{padding:70px 0 28px}.hero-grid{display:grid;grid-template-columns:minmax(0,1.03fr) minmax(420px,.97fr);gap:30px;align-items:stretch}.eyebrow{display:inline-flex;align-items:center;gap:8px;width:max-content;border:1px solid var(--line);background:rgba(255,255,255,.72);border-radius:999px;padding:8px 12px;color:var(--muted);font-size:13px;font-weight:760;box-shadow:0 1px 0 rgba(4,25,18,.03)}.eyebrow .spark{width:8px;height:8px;border-radius:99px;background:var(--lime);box-shadow:0 0 0 4px rgba(181,248,87,.22)}h1{margin-top:22px;font-size:clamp(44px,6.1vw,76px);line-height:.92;letter-spacing:-.075em;font-weight:850;max-width:800px}.lead{margin-top:22px;color:rgba(4,25,18,.68);font-size:clamp(18px,2vw,22px);line-height:1.42;max-width:760px}.hero-actions{display:flex;gap:11px;flex-wrap:wrap;margin-top:28px}.btn{min-height:42px;border:1px solid var(--line2);border-radius:999px;background:#fff;color:var(--ink);display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:0 15px;font-size:13.5px;font-weight:830;transition:.18s ease;white-space:nowrap}.btn:hover{transform:translateY(-1px);box-shadow:var(--shadow-soft);border-color:rgba(4,25,18,.26)}.btn.primary{background:var(--ink);color:#fff;border-color:var(--ink)}.btn.accent{background:var(--lime);border-color:var(--lime);color:var(--ink)}.btn.efile{background:rgba(84,98,226,.09);border-color:rgba(84,98,226,.22);color:var(--efile-deep)}.btn.slim{min-height:32px;font-size:11.5px;padding:0 10px;border-radius:11px}.btn.warn{background:rgba(247,186,20,.12);border-color:rgba(247,186,20,.22);color:#7A5200}.btn.danger{background:rgba(198,33,24,.08);border-color:rgba(198,33,24,.18);color:var(--red)}
+.panel{position:relative;overflow:hidden;border:1px solid var(--line);border-radius:var(--radius-xl);background:rgba(255,255,255,.86);box-shadow:var(--shadow);padding:18px}.panel:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 8% 4%, rgba(181,248,87,.25), transparent 14rem),radial-gradient(circle at 100% 100%, rgba(187,192,243,.33), transparent 16rem);pointer-events:none}.panel>*{position:relative;z-index:1}.workspace-card{display:grid;gap:12px}.window-head{display:flex;align-items:center;justify-content:space-between;gap:10px}.dots{display:flex;gap:6px}.dots span{width:8px;height:8px;border-radius:99px;background:var(--warm2)}.preview-shell{border:1px solid var(--line);background:#fff;border-radius:22px;padding:14px;box-shadow:var(--shadow-soft)}.mini-search{height:40px;border:1px solid var(--line);border-radius:14px;background:#FBFAF6;color:var(--muted);display:flex;align-items:center;padding:0 12px;font-size:12.5px;font-weight:650}.workspace-preview{margin-top:12px;display:grid;grid-template-columns:.82fr 1.42fr .86fr;gap:10px;min-height:360px}.mock-col{border:1px solid var(--line);border-radius:18px;background:#fff;padding:12px;overflow:hidden}.mock-col.center{background:#FBFAF6}.mock-label{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-weight:950;margin-bottom:10px}.doc-row{border:1px solid rgba(4,25,18,.08);border-radius:13px;padding:9px;margin-bottom:8px;background:#fff}.doc-row.active{border-color:rgba(26,153,15,.22);background:rgba(181,248,87,.16)}.doc-row strong{display:block;font-size:12px}.doc-row small{display:block;margin-top:4px;color:var(--muted);font-size:10.5px;line-height:1.25}.doc-page{background:#fff;border:1px solid var(--line);border-radius:15px;padding:16px;min-height:270px;box-shadow:0 1px 0 rgba(4,25,18,.03)}.doc-page h3{font-size:18px;letter-spacing:-.04em}.line{height:9px;background:#EEEDE7;border-radius:999px;margin-top:12px}.line.short{width:55%}.line.med{width:78%}.grid-lines{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-top:14px}.cell{height:24px;background:#fff;border:1px solid rgba(4,25,18,.08);border-radius:7px}.ai-note{border:1px solid rgba(84,98,226,.18);background:rgba(84,98,226,.08);border-radius:14px;padding:10px;margin-top:8px}.ai-note strong{display:block;font-size:12px;color:var(--efile-deep)}.ai-note span{display:block;margin-top:4px;font-size:11px;color:var(--muted);line-height:1.35}
+.kpi-row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:18px}.kpi{border:1px solid var(--line);background:#fff;border-radius:18px;padding:14px;box-shadow:var(--shadow-soft)}.kpi span{display:block;color:var(--muted);font-size:10.5px;text-transform:uppercase;letter-spacing:.08em;font-weight:950}.kpi strong{display:block;margin-top:7px;font-size:25px;letter-spacing:-.055em}.kpi small{display:block;color:var(--muted);font-size:11.5px;line-height:1.35;margin-top:4px}
+.toc{position:sticky;top:86px;z-index:40;margin:20px 0 8px}.toc-inner{display:flex;gap:7px;overflow:auto;padding:8px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.84);backdrop-filter:blur(16px);box-shadow:var(--shadow-soft);scrollbar-width:none}.toc-inner::-webkit-scrollbar{display:none}.toc a{display:inline-flex;min-height:32px;align-items:center;border:1px solid transparent;border-radius:999px;padding:0 11px;color:var(--muted);font-size:12px;font-weight:850;white-space:nowrap}.toc a:hover{background:var(--bg);color:var(--ink);border-color:var(--line)}
+.section-title{display:flex;justify-content:space-between;gap:18px;align-items:flex-end;margin-bottom:18px}.section-title h2{font-size:clamp(30px,4vw,48px);line-height:.98;letter-spacing:-.065em;font-weight:850}.section-title p{margin-top:10px;color:var(--muted);font-size:15px;line-height:1.5;max-width:720px}.tag{display:inline-flex;align-items:center;gap:7px;border:1px solid rgba(4,86,12,.16);background:#fff;border-radius:999px;padding:8px 10px;color:var(--green);font-size:12px;font-weight:920;white-space:nowrap}.tag:before{content:"";width:7px;height:7px;border-radius:99px;background:var(--action)}.tag.efile{color:var(--efile-deep);border-color:rgba(84,98,226,.18);background:rgba(84,98,226,.06)}.tag.efile:before{background:var(--efile)}.tag.warn{color:#7A5200;border-color:rgba(247,186,20,.22);background:rgba(247,186,20,.11)}.tag.warn:before{background:var(--yellow)}.tag.red{color:var(--red);border-color:rgba(198,33,24,.18);background:rgba(198,33,24,.06)}.tag.red:before{background:var(--red)}
+.grid-2{display:grid;grid-template-columns:minmax(0,1fr) minmax(320px,.86fr);gap:16px}.grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.grid-4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.card{border:1px solid var(--line);background:#fff;border-radius:var(--radius-lg);padding:18px;box-shadow:var(--shadow-soft)}.card h3{font-size:18px;letter-spacing:-.04em}.card p{color:var(--muted);font-size:13px;line-height:1.48;margin-top:7px}.card-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:12px}.mini-icon{width:38px;height:38px;border-radius:14px;background:rgba(181,248,87,.28);color:var(--green);display:grid;place-items:center;font-weight:950}.mini-icon.efile{background:rgba(84,98,226,.10);color:var(--efile-deep)}.mini-icon.warn{background:rgba(247,186,20,.13);color:#7A5200}.mini-icon.red{background:rgba(198,33,24,.08);color:var(--red)}
+.flow{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}.flow-step{position:relative;border:1px solid var(--line);background:#fff;border-radius:18px;padding:14px;min-height:128px}.flow-step strong{display:block;font-size:13px}.flow-step span{display:block;margin-top:8px;color:var(--muted);font-size:12px;line-height:1.38}.flow-step:after{content:"→";position:absolute;right:-13px;top:50%;transform:translateY(-50%);color:var(--muted2);font-weight:900}.flow-step:last-child:after{display:none}.folder-tree{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace;font-size:12.5px;line-height:1.65;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:22px;padding:18px;box-shadow:var(--shadow-soft);overflow:auto}.folder-tree .blue{color:var(--efile-deep);font-weight:850}.folder-tree .green{color:var(--green);font-weight:850}.folder-tree .muted{color:var(--muted)}
+.shell{border:1px solid var(--line);border-radius:28px;background:#fff;box-shadow:var(--shadow);overflow:hidden}.shell-top{height:70px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 16px;border-bottom:1px solid var(--line);background:rgba(255,255,255,.92)}.shell-title strong{display:block;font-size:15px}.shell-title span{display:block;margin-top:4px;color:var(--muted);font-size:12px}.shell-actions{display:flex;gap:7px;align-items:center;flex-wrap:wrap;justify-content:flex-end}.shell-body{display:grid;grid-template-columns:300px minmax(520px,1fr) 370px;min-height:660px}.left-rail{border-right:1px solid var(--line);background:rgba(255,255,255,.92);padding:16px}.editor{background:#FBFAF6;padding:16px}.right-rail{border-left:1px solid var(--line);background:rgba(255,255,255,.94);padding:16px}.rail-title{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}.rail-title strong{font-size:14px}.progress{height:8px;background:#EEEDE8;border-radius:999px;overflow:hidden;margin:10px 0 16px}.progress span{display:block;height:100%;border-radius:inherit;background:var(--lime);width:62%}.doc-list{display:grid;gap:8px}.doc-item{border:1px solid var(--line);border-radius:14px;background:#fff;padding:10px}.doc-item.active{background:rgba(181,248,87,.18);border-color:rgba(4,86,12,.16)}.doc-item.blocked{background:#F8F8F5;color:var(--muted)}.doc-item strong{font-size:12.5px;display:block}.doc-item span{font-size:11.5px;color:var(--muted);display:block;margin-top:4px}.editor-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}.chip-row{display:flex;gap:7px;flex-wrap:wrap}.chip{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:5px 8px;font-size:11px;font-weight:950;white-space:nowrap;border:1px solid var(--line);background:#F7F6F1;color:var(--muted)}.chip.green{background:rgba(26,153,15,.08);color:var(--green);border-color:rgba(26,153,15,.18)}.chip.efile{background:rgba(84,98,226,.09);color:var(--efile-deep);border-color:rgba(84,98,226,.18)}.chip.warn{background:rgba(247,186,20,.13);color:#7A5200;border-color:rgba(247,186,20,.22)}.chip.red{background:rgba(198,33,24,.08);color:var(--red);border-color:rgba(198,33,24,.18)}.chip.dark{background:var(--ink);border-color:var(--ink);color:#fff}.google-frame{border:1px solid var(--line);border-radius:20px;background:#fff;min-height:520px;box-shadow:var(--shadow-soft);overflow:hidden}.gbar{height:48px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:10px;padding:0 14px;background:#fff}.gbar-left{display:flex;align-items:center;gap:9px}.gdoc-icon,.gsheet-icon{width:30px;height:30px;border-radius:11px;display:grid;place-items:center;font-size:12px;font-weight:950}.gdoc-icon{background:rgba(84,98,226,.10);color:var(--efile-deep)}.gsheet-icon{background:rgba(26,153,15,.10);color:var(--green)}.gbar strong{font-size:13px}.doc-content{padding:24px;max-width:700px;margin:0 auto}.doc-content h3{font-size:24px;letter-spacing:-.05em}.doc-content p{color:var(--muted);font-size:13px;line-height:1.5;margin-top:10px}.doc-paragraph{height:11px;background:#EEEDE8;border-radius:999px;margin-top:13px}.doc-paragraph.w92{width:92%}.doc-paragraph.w78{width:78%}.doc-paragraph.w60{width:60%}.doc-section-title{margin-top:20px;color:var(--ink);font-size:13px;font-weight:900}.sheet-grid{padding:16px;overflow:auto}.sheet-table{min-width:760px;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#fff}.sheet-row{display:grid;grid-template-columns:80px 1.4fr 90px 92px 128px 128px 120px 90px 95px}.sheet-row>div{min-height:38px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);padding:9px;font-size:11.5px}.sheet-row.head>div{background:#F5F4EF;color:var(--muted);font-weight:950;text-transform:uppercase;letter-spacing:.06em;font-size:10px}.sheet-row>div:last-child{border-right:0}.sheet-row:last-child>div{border-bottom:0}.assistant-card{border:1px solid var(--line);border-radius:18px;background:#fff;padding:14px;margin-bottom:10px}.assistant-card.critical{border-color:rgba(198,33,24,.18);background:rgba(198,33,24,.04)}.assistant-card.file{border-color:rgba(84,98,226,.20);background:rgba(84,98,226,.05)}.assistant-card.good{border-color:rgba(26,153,15,.18);background:rgba(26,153,15,.04)}.assistant-card h4{font-size:13px}.assistant-card p{color:var(--muted);font-size:12px;line-height:1.42;margin-top:6px}.assistant-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}.shell-bottom{height:56px;border-top:1px solid var(--line);background:#fff;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 16px}.bottom-status{display:flex;gap:9px;align-items:center;flex-wrap:wrap;color:var(--muted);font-size:12px;font-weight:700}.dot{width:7px;height:7px;border-radius:99px;background:var(--action);display:inline-block}.dot.blue{background:var(--efile)}.dot.warn{background:var(--yellow)}.dot.red{background:var(--red)}
+.table-wrap{max-width:100%;overflow:auto;background:#fff;border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow-soft)}table{width:100%;border-collapse:collapse;min-width:1020px}th,td{padding:13px 14px;border-bottom:1px solid rgba(4,25,18,.07);text-align:left;font-size:12.3px;vertical-align:middle}th{color:var(--muted);font-size:10.5px;text-transform:uppercase;letter-spacing:.07em;font-weight:950;background:#FBFBF8}tr:last-child td{border-bottom:0}tbody tr:hover{background:#FCFCFA}.doc-name{font-weight:900;font-size:13.2px}.path{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace;color:var(--muted);font-size:11.5px}.status-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.state{border:1px solid var(--line);border-radius:18px;background:#fff;padding:14px}.state strong{display:flex;align-items:center;gap:8px;font-size:13px}.state p{font-size:12px;color:var(--muted);line-height:1.42;margin-top:7px}.timeline{border:1px solid var(--line);border-radius:22px;background:#fff;padding:16px;box-shadow:var(--shadow-soft)}.time-item{display:grid;grid-template-columns:24px 1fr;gap:10px;padding:10px 0;border-bottom:1px solid rgba(4,25,18,.07)}.time-item:last-child{border-bottom:0}.time-node{width:22px;height:22px;border-radius:50%;background:rgba(181,248,87,.28);display:grid;place-items:center;color:var(--green);font-weight:950;font-size:11px}.time-item strong{font-size:13px}.time-item span{display:block;margin-top:4px;color:var(--muted);font-size:12px;line-height:1.35}.permission-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.permission{border:1px solid var(--line);border-radius:16px;background:#fff;padding:13px}.permission strong{font-size:13px}.permission span{display:block;margin-top:6px;color:var(--muted);font-size:11.5px;line-height:1.35}.efile-flow{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;align-items:center}.efile-node{border:1px solid rgba(84,98,226,.18);border-radius:16px;background:rgba(84,98,226,.06);padding:13px;text-align:center;color:var(--efile-deep);font-weight:900;font-size:12.5px}.efile-node.green{border-color:rgba(4,86,12,.16);background:rgba(181,248,87,.18);color:var(--green)}.efile-arrow{text-align:center;color:var(--muted2);font-weight:950}.mobile-mock{max-width:360px;margin:0 auto;border:8px solid var(--ink);border-radius:38px;background:#fff;box-shadow:var(--shadow);overflow:hidden}.mobile-top{height:58px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 14px;background:#fff}.mobile-doc{padding:14px;background:#FBFAF6}.mobile-page{border:1px solid var(--line);border-radius:18px;background:#fff;padding:16px;min-height:360px}.drawer{margin-top:12px;border:1px solid rgba(84,98,226,.18);border-radius:18px;background:rgba(84,98,226,.07);padding:12px}.drawer strong{display:block;font-size:13px;color:var(--efile-deep)}.footer{padding:44px 0 32px;border-top:1px solid var(--line);background:#fff}.footer-grid{display:grid;grid-template-columns:1.25fr repeat(4,1fr);gap:24px}.footer h4{margin:0 0 12px;font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:rgba(4,25,18,.46)}.footer a,.footer p{display:block;margin:0 0 9px;color:rgba(4,25,18,.68);font-size:14px}.footer a:hover{color:var(--ink)}.footer-bottom{margin-top:34px;display:flex;justify-content:space-between;gap:16px;color:rgba(4,25,18,.46);font-size:13px}
+@media (max-width:1120px){.hero-grid,.grid-2{grid-template-columns:1fr}.search{display:none}.workspace-preview{grid-template-columns:1fr}.shell-body{grid-template-columns:1fr}.left-rail,.right-rail{border:0;border-bottom:1px solid var(--line)}.editor{order:1}.left-rail{order:0}.right-rail{order:2}.flow,.efile-flow{grid-template-columns:1fr}.flow-step:after,.efile-arrow{display:none}.grid-3,.grid-4,.kpi-row,.status-grid,.permission-grid,.footer-grid{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:680px){.wrap{width:min(100% - 26px,1240px)}.topbar{height:auto;padding:10px 0}.nav{flex-wrap:wrap}.site-nav{order:3;justify-content:flex-start;width:100%}.hero{padding-top:42px}.hero-grid{gap:18px}h1{font-size:44px}.section-title{display:block}.grid-3,.grid-4,.kpi-row,.status-grid,.permission-grid,.footer-grid{grid-template-columns:1fr}.shell-top,.shell-bottom{height:auto;padding:12px;align-items:flex-start;flex-direction:column}.google-frame{min-height:420px}.footer-bottom{flex-direction:column}}
+
+/* Ajustes puntuales: entrada de blog, header sin corte y cinturón centrado. */
+.topbar .wrap.nav{width:min(1480px,calc(100% - 42px));}
+.nav{min-width:0;}
+.brand{flex:0 0 auto;}
+.site-nav{min-width:0;justify-content:flex-start;overflow-x:auto;overflow-y:hidden;}
+.site-nav a{flex:0 0 auto;}
+.toc{width:min(1240px,calc(100% - 42px));margin:20px auto 8px;}
+.toc-inner{justify-content:center;}
+@media (max-width:1180px){
+  .topbar .wrap.nav{width:min(100% - 28px,1480px);gap:10px;}
+  .site-nav{gap:0;}
+  .site-nav a{font-size:12px;padding:0 7px;}
+  .search{min-width:150px;flex:0 1 210px;}
+  .account-trigger{padding:0 10px;font-size:12px;}
+}
+@media (max-width:940px){
+  .search{display:none;}
+  .site-nav{justify-content:flex-start;width:100%;}
+}
+@media (max-width:680px){
+  .toc-inner{justify-content:flex-start;}
+}
+
+.site-nav .nav-bolt,.topnav .nav-bolt.b2b{color:#81C91C!important}.site-nav .gov-tender .nav-bolt,.site-nav .gov-pricing .nav-bolt,.topnav .nav-bolt.gov{color:#C62118!important}</style>
+
+<style id="slx-global-footer-style">
+.slx-global-footer{margin-top:42px;padding:44px 0 32px;border-top:1px solid var(--line,rgba(4,25,18,.10));background:#fff;color:var(--ink,#041912);clear:both}.slx-global-footer .slx-footer-container{width:min(1180px,calc(100% - 48px));margin-inline:auto}.slx-footer-grid{display:grid;grid-template-columns:1.25fr repeat(4,1fr);gap:24px}.slx-footer-brand{display:inline-flex;align-items:center;gap:10px;font-weight:850;letter-spacing:-.035em;font-size:20px;white-space:nowrap}.slx-footer-mark{--symbol-bg:#04560C;--symbol-bolt:#B5F857;width:34px;height:34px;position:relative;display:inline-grid;place-items:center;flex:none}.slx-footer-mark:before{content:"";position:absolute;inset:0;background:var(--symbol-bg);clip-path:polygon(50% 0%,61% 32%,100% 50%,61% 68%,50% 100%,39% 68%,0% 50%,39% 32%)}.slx-footer-mark span{position:relative;z-index:1;color:var(--symbol-bolt);font-weight:950;font-size:17px}.slx-global-footer h4{margin:0 0 12px;font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted2,var(--muted-2,#8A948F))}.slx-global-footer a,.slx-global-footer p{display:block;margin:0 0 9px;color:var(--muted,#66736D);font-size:14px;line-height:1.45;text-decoration:none}.slx-global-footer a:hover{color:var(--ink,#041912)}.slx-footer-bottom{margin-top:34px;display:flex;justify-content:space-between;gap:16px;color:var(--muted2,var(--muted-2,#8A948F));font-size:13px}.slx-footer-efile,.slx-footer-efile span{color:#063C83!important;font-weight:850}.slx-footer-gov span{color:#C62118}.slx-footer-product span{color:#81C91C}.slx-footer-drive span{color:#063C83;font-weight:900}@media (max-width:1080px){.slx-footer-grid{grid-template-columns:repeat(2,1fr)}}@media (max-width:700px){.slx-global-footer .slx-footer-container{width:min(100% - 24px,1180px)}.slx-footer-grid{grid-template-columns:1fr}.slx-footer-bottom{flex-direction:column}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="wrap nav">
+    <a class="brand" href="#top" aria-label="SmartLicit"><span class="mark" aria-hidden="true"><span class="bolt"></span></span><span>SmartLicit</span></a>
+    <nav class="site-nav" aria-label="Navegación principal">
+      <a href="#tender"><span class="nav-bolt">↯</span>Tender</a>
+      <a href="#pricing"><span class="nav-bolt">↯</span>Pricing</a>
+      <a href="#file"><span class="nav-bolt">↯</span>File</a>
+      <a href="#lex"><span class="nav-bolt">↯</span>Lex</a>
+      <a href="#tender-gov" class="gov-tender"><span class="nav-bolt">↯</span>Tender Gov</a>
+      <a href="#pricing-gov" class="gov-pricing"><span class="nav-bolt">↯</span>Pricing Gov</a>
+      <a href="#planes">Planes</a>
+      <a href="#blog" class="active">Blog</a>
+      <a href="#ipg">IPG</a>
+    </nav>
+    <label class="search" aria-label="Buscar"><input type="search" placeholder="Buscar procedimiento, asunto, documento o carpeta…"></label>
+    <div class="account"><button class="account-trigger">Mi Cuenta ▾</button></div>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero wrap">
+    <div class="hero-grid">
+      <div>
+        <div class="eyebrow"><span class="spark"></span>Guía gráfica · Google Drive integrado</div>
+        <h1>SmartLicit · Google Drive Workspace</h1>
+        <p class="lead">Dónde cobra vida cada Doc y Sheet dentro de Smart Tender y Smart Lex.</p>
+        <div class="hero-actions">
+          <a class="btn primary" href="#shell">Ver cabina documental</a>
+          <a class="btn accent" href="#tender">Smart Tender</a>
+          <a class="btn efile" href="#lex">Smart Lex</a>
+          <a class="btn" href="#drive">Mapa Drive</a>
+        </div>
+        <div class="kpi-row">
+          <article class="kpi"><span>Arquitectura</span><strong>1 shell</strong><small>Cabina universal para Docs y Sheets.</small></article>
+          <article class="kpi"><span>Productos</span><strong>2</strong><small>Smart Tender y Smart Lex.</small></article>
+          <article class="kpi"><span>Centro</span><strong>Doc</strong><small>El documento manda; la IA acompaña.</small></article>
+          <article class="kpi"><span>Base</span><strong>eFile</strong><small>Documentos reutilizables y evidencia.</small></article>
+        </div>
+      </div>
+      <aside class="panel workspace-card" aria-label="Vista previa de cabina documental">
+        <div class="window-head"><div class="dots"><span></span><span></span><span></span></div><span class="tag efile">Archivo real en Drive</span></div>
+        <div class="preview-shell">
+          <div class="mini-search">⌕ LA-012345-2026 · Propuesta Técnica · Autosave activo</div>
+          <div class="workspace-preview">
+            <div class="mock-col">
+              <div class="mock-label">Izquierda <span>orienta</span></div>
+              <div class="doc-row active"><strong>04_Propuesta Técnica</strong><small>Google Doc · En revisión</small></div>
+              <div class="doc-row"><strong>05_Propuesta Económica</strong><small>Google Sheet · Requiere Pricing</small></div>
+              <div class="doc-row"><strong>06_Anexos</strong><small>Requiere eFile</small></div>
+            </div>
+            <div class="mock-col center">
+              <div class="mock-label">Centro <span>documento vivo</span></div>
+              <div class="doc-page"><h3>04_Propuesta Técnica</h3><div class="line med"></div><div class="line"></div><div class="line short"></div><div class="line med"></div><div class="doc-section-title">Cumplimiento técnico</div><div class="line"></div><div class="line med"></div><div class="line short"></div></div>
+            </div>
+            <div class="mock-col">
+              <div class="mock-label">Derecha <span>asiste</span></div>
+              <div class="ai-note"><strong>Riesgo detectado</strong><span>Falta acreditar experiencia mínima.</span></div>
+              <div class="ai-note"><strong>Acción sugerida</strong><span>Traer evidencia desde eFile.</span></div>
+              <div class="ai-note"><strong>Estado</strong><span>Aprobar siempre requiere acción humana.</span></div>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <div class="wrap toc" aria-label="Índice de guía">
+    <div class="toc-inner">
+      <a href="#overview">Overview</a><a href="#drive">Drive</a><a href="#shell">Shell</a><a href="#tender">Smart Tender</a><a href="#tender-docs">Tender Docs</a><a href="#tender-sheets">Tender Sheets</a><a href="#experta">Experta + IA</a><a href="#lex">Smart Lex</a><a href="#lex-docs">Lex Docs</a><a href="#lex-sheets">Lex Sheets</a><a href="#states">Estados</a><a href="#trace">Trazabilidad</a><a href="#efile">eFile</a><a href="#mobile">Mobile</a>
+    </div>
+  </div>
+
+  <section id="overview" class="section wrap">
+    <div class="section-title">
+      <div><span class="tag">Overview</span><h2>El documento vive en Drive y se trabaja dentro de SmartLicit.</h2><p>La interfaz no debe sentirse como chat ni como editor genérico. Debe funcionar como una cabina documental guiada: izquierda para orientación, centro para edición y derecha para asistencia contextual.</p></div>
+    </div>
+    <div class="grid-4">
+      <article class="card"><div class="card-head"><h3>Smart Tender</h3><span class="mini-icon">↯</span></div><p>Prepara propuestas sobre licitaciones existentes con Docs y Sheets vivos, sin decir que el proveedor crea la licitación.</p></article>
+      <article class="card"><div class="card-head"><h3>Smart Lex</h3><span class="mini-icon">§</span></div><p>Estructura trabajo jurídico con escritos, matrices, plazos, pruebas y anexos vivos.</p></article>
+      <article class="card"><div class="card-head"><h3>eFile</h3><span class="mini-icon efile">eF</span></div><p>Aporta constancias, documentos base, anexos, evidencia y datos reutilizables del expediente administrativo/documental.</p></article>
+      <article class="card"><div class="card-head"><h3>Google Drive</h3><span class="mini-icon efile">G</span></div><p>Conserva carpetas, permisos, IDs de archivo, historial, última modificación y entregables finales.</p></article>
+    </div>
+    <div class="card" style="margin-top:14px;background:var(--efile-night);color:#fff;border-color:rgba(255,255,255,.12)"><h3 style="font-size:28px;letter-spacing:-.055em">“El centro siempre es el documento. La izquierda orienta. La derecha asiste.”</h3><p style="color:rgba(255,255,255,.72)">Cada entregable nace como archivo real en Google Drive, pero cobra vida operativa dentro de SmartLicit.</p></div>
+  </section>
+
+  <section id="drive" class="section wrap">
+    <div class="section-title"><div><span class="tag efile">Arquitectura Google Drive</span><h2>Estructura documental viva.</h2><p>La carpeta del usuario es el espacio de trabajo. SmartLicit crea, reutiliza, sincroniza y muestra archivos sin obligar a descargar, editar y volver a subir.</p></div></div>
+    <div class="grid-2">
+      <pre class="folder-tree">/Smart Licit
+  /<span class="green">Smart Tender</span>
+    /Propuesta IA
+      /[Procedimiento]
+        /00_Bases y Documentos Fuente
+        /01_Análisis del Procedimiento
+        /02_Entregables en Edición
+        /03_Revisión del Cliente
+        /04_Finales para Presentación
+        /05_Bitácora y QA
+        /06_Exportaciones
+    /Experta + IA
+      /[Procedimiento]
+        /00_Bases y Documentos Fuente
+        /01_Análisis del Procedimiento
+        /02_Entregables en Edición
+        /03_Revisión del Cliente
+        /04_Finales para Presentación
+        /05_Bitácora y QA
+        /06_Exportaciones
+
+  /<span class="green">Smart Lex</span>
+    /[Cliente o asunto]
+      /00_Documentos Fuente
+      /01_Análisis del Caso
+      /02_Escritos en Edición
+      /03_Revisión del Cliente
+      /04_Listos para Firma o Presentación
+      /05_Bitácora y QA
+      /06_Exportaciones
+
+  /<span class="blue">eFile</span>
+    /Empresa
+    /Representantes
+    /Constancias
+    /Opiniones de cumplimiento
+    /Anexos reutilizables
+    /Evidencia documental</pre>
+      <div class="stack">
+        <article class="card"><div class="card-head"><h3>Regla principal</h3><span class="tag efile">Drive real</span></div><p>SmartLicit no copia archivos finales desde una carpeta oculta. Los Docs y Sheets nacen y se editan directamente en la carpeta del usuario.</p></article>
+        <article class="card"><div class="card-head"><h3>IDs preservados</h3><span class="mini-icon efile">ID</span></div><p>Cada archivo conserva <b>google_file_id</b>, <b>google_folder_id</b>, última modificación, versión operativa y estado en SmartLicit.</p></article>
+        <article class="card"><div class="card-head"><h3>Permisos acotados</h3><span class="mini-icon">🔒</span></div><p>Cuando participa el staff de SmartLicit, el acceso debe limitarse a la carpeta del procedimiento o a los archivos específicos asignados.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section id="shell" class="section wrap">
+    <div class="section-title"><div><span class="tag">Shell universal</span><h2>Cabina documental en 3 columnas.</h2><p>El mismo patrón visual y funcional opera para Smart Tender y Smart Lex. Cambian los entregables, los riesgos y la semántica; no cambia la cabina.</p></div></div>
+    <div class="shell">
+      <div class="shell-top"><div class="shell-title"><strong>LA-012345-2026 · Servicio de Limpieza</strong><span>Dependencia: Secretaría de Servicios · Fecha límite: 30 jun 2026</span></div><div class="shell-actions"><span class="chip green"><span class="dot"></span>Autosave activo</span><a class="btn slim efile">Abrir carpeta Drive</a><a class="btn slim primary">Revisión final</a></div></div>
+      <div class="shell-body">
+        <aside class="left-rail"><div class="rail-title"><strong>Navegador de entregables</strong><span class="chip">13 docs</span></div><div class="progress"><span></span></div><div class="doc-list"><div class="doc-item active"><strong>04_Propuesta Técnica</strong><span>Google Doc · En revisión</span></div><div class="doc-item"><strong>05_Propuesta Económica</strong><span>Google Sheet · Smart Pricing</span></div><div class="doc-item"><strong>06_Anexos Administrativos</strong><span>Requiere eFile</span></div><div class="doc-item blocked"><strong>12_Validación Final</strong><span>Bloqueado hasta aprobar documentos previos</span></div></div></aside>
+        <section class="editor"><div class="editor-head"><div class="chip-row"><span class="chip efile">Archivo real en Drive</span><span class="chip efile">Google Doc</span><span class="chip">ID: gdoc_04A...</span><span class="chip green">Última modificación sincronizada</span></div></div><div class="google-frame"><div class="gbar"><div class="gbar-left"><span class="gdoc-icon">Doc</span><strong>04_Propuesta Técnica</strong></div><span class="chip green">Guardado</span></div><div class="doc-content"><h3>Propuesta Técnica</h3><p>Documento vivo generado y trabajado dentro de SmartLicit, almacenado directamente en Google Drive.</p><div class="doc-section-title">Datos del procedimiento</div><div class="doc-paragraph w92"></div><div class="doc-paragraph w78"></div><div class="doc-section-title">Cumplimiento técnico</div><div class="doc-paragraph w92"></div><div class="doc-paragraph w92"></div><div class="doc-paragraph w60"></div><div class="doc-section-title">Anexos requeridos</div><div class="doc-paragraph w78"></div><div class="doc-paragraph w60"></div></div></div></section>
+        <aside class="right-rail"><div class="rail-title"><strong>Asistente contextual</strong><span class="chip efile">anclado al Doc</span></div><article class="assistant-card critical"><h4>Riesgo detectado</h4><p>Falta acreditar experiencia mínima vinculada al numeral 4.2 de las bases.</p><div class="assistant-actions"><a class="btn slim danger">Ver numeral</a><a class="btn slim efile">Traer evidencia eFile</a></div></article><article class="assistant-card"><h4>Checklist</h4><p>9 de 13 entregables creados. 3 requieren revisión humana y 1 está bloqueado.</p><div class="assistant-actions"><a class="btn slim">Aplicar sugerencia</a><a class="btn slim">Marcar como resuelto</a></div></article><article class="assistant-card file"><h4>Faltante eFile</h4><p>Se requiere constancia actualizada y contrato de referencia.</p><div class="assistant-actions"><a class="btn slim efile">Solicitar documento</a></div></article></aside>
+      </div>
+      <div class="shell-bottom"><div class="bottom-status"><span><span class="dot"></span> Guardado en Drive</span><span>Versión 1.3</span><span>La IA recomienda; el usuario aprueba</span></div><a class="btn primary">Aprobar y abrir siguiente</a></div>
+    </div>
+  </section>
+
+  <section id="tender" class="section wrap">
+    <div class="section-title"><div><span class="tag">Smart Tender · Propuesta IA</span><h2>Confirmar, generar y abrir cabina documental.</h2><p>Smart Tender analiza una licitación existente, genera entregables reales en Drive y prepara la propuesta con asistencia contextual.</p></div></div>
+    <div class="grid-2">
+      <article class="card"><div class="card-head"><h3>Generar Propuesta IA</h3><span class="tag">Confirmación</span></div><p>Smart Tender creará los entregables base del procedimiento y abrirá la cabina documental con archivos reales en Google Drive.</p><div class="divider" style="height:1px;background:var(--line);margin:14px 0"></div><div class="grid-2" style="grid-template-columns:1fr 1fr"><div class="card" style="padding:13px"><h3>Procedimiento</h3><p>LA-012345-2026 · Servicio de Limpieza</p></div><div class="card" style="padding:13px"><h3>Documentos</h3><p>13 entregables · Docs y Sheets</p></div><div class="card" style="padding:13px"><h3>Carpeta destino</h3><p class="path">/Smart Licit/Smart Tender/Propuesta IA/LA-012345...</p></div><div class="card" style="padding:13px"><h3>eFile</h3><p>Disponible para anexos y constancias.</p></div></div><div class="hero-actions"><a class="btn primary">Confirmar y generar</a><a class="btn">Cancelar</a></div><p class="muted" style="font-size:12px;margin-top:12px">Si el sistema falla, el usuario retoma desde el mismo procedimiento sin duplicar carpeta ni archivos.</p></article>
+      <div class="stack"><article class="card"><div class="card-head"><h3>Secuencia operativa</h3><span class="mini-icon">1</span></div><div class="flow" style="grid-template-columns:1fr;gap:8px"><div class="flow-step"><strong>1. Confirmación</strong><span>Se informa qué se generará y dónde vivirá.</span></div><div class="flow-step"><strong>2. Drive</strong><span>Se crea o reutiliza la carpeta del procedimiento.</span></div><div class="flow-step"><strong>3. Generación</strong><span>Se crean Docs/Sheets por entregable.</span></div><div class="flow-step"><strong>4. Cabina</strong><span>Se abre el primer documento listo para revisión.</span></div></div></article></div>
+    </div>
+  </section>
+
+  <section id="tender-map" class="section wrap">
+    <div class="section-title"><div><span class="tag">Mapa de documentos</span><h2>Dónde cobra vida cada entregable de Smart Tender.</h2><p>Tabla funcional para producto, diseño y desarrollo. La propuesta económica queda vinculada a Smart Pricing y nunca debe inventar valores si faltan datos defendibles.</p></div></div>
+    <div class="table-wrap"><table><thead><tr><th>Entregable</th><th>Tipo</th><th>Carpeta Drive</th><th>Cobra vida en SmartLicit</th><th>Estado</th><th>Acción principal</th></tr></thead><tbody id="tenderRows"></tbody></table></div>
+  </section>
+
+  <section id="tender-docs" class="section wrap">
+    <div class="section-title"><div><span class="tag">Smart Tender · Google Docs</span><h2>Documento textual al centro.</h2><p>El usuario revisa, corrige y aprueba la propuesta técnica sin abandonar la cabina documental.</p></div></div>
+    <div class="shell">
+      <div class="shell-top"><div class="shell-title"><strong>Smart Tender · 04_Propuesta Técnica</strong><span>Archivo real en Drive · ID: gdoc_tender_04</span></div><div class="shell-actions"><span class="chip green">Autosave activo</span><a class="btn slim efile">Abrir en Drive</a></div></div>
+      <div class="shell-body">
+        <aside class="left-rail"><div class="rail-title"><strong>Entregables</strong><span class="chip green">Tender</span></div><div class="doc-list"><div class="doc-item"><strong>01_Checklist</strong><span>Google Sheet · En revisión</span></div><div class="doc-item active"><strong>04_Propuesta Técnica</strong><span>Google Doc · Documento activo</span></div><div class="doc-item"><strong>07_Cartas y Manifiestos</strong><span>Google Doc · Pendiente</span></div></div></aside>
+        <section class="editor"><div class="google-frame"><div class="gbar"><div class="gbar-left"><span class="gdoc-icon">Doc</span><strong>04_Propuesta Técnica</strong></div><span class="chip green">Última modificación sincronizada</span></div><div class="doc-content"><h3>04_Propuesta Técnica</h3><p>Datos del procedimiento · Objeto · Cumplimiento técnico · Experiencia · Metodología · Anexos requeridos.</p><div class="doc-section-title">Objeto</div><div class="doc-paragraph w92"></div><div class="doc-paragraph w78"></div><div class="doc-section-title">Cumplimiento técnico</div><div class="doc-paragraph w92"></div><div class="doc-paragraph w92"></div><div class="doc-paragraph w60"></div><div class="doc-section-title">Experiencia</div><div class="doc-paragraph w78"></div><div class="doc-paragraph w60"></div></div></div></section>
+        <aside class="right-rail"><div class="rail-title"><strong>Asistente de propuesta</strong><span class="chip efile">contextual</span></div><article class="assistant-card critical"><h4>Riesgo detectado</h4><p>Falta acreditar experiencia mínima.</p></article><article class="assistant-card"><h4>Requisito asociado</h4><p>Numeral 4.2 de bases.</p></article><article class="assistant-card file"><h4>Sugerencia IA</h4><p>Insertar referencia del contrato anterior desde eFile.</p><div class="assistant-actions"><a class="btn slim efile">Traer evidencia desde eFile</a><a class="btn slim">Marcar como resuelto</a></div></article></aside>
+      </div><div class="shell-bottom"><div class="bottom-status"><span><span class="dot"></span> Guardado en Drive</span><span>Aprobación humana requerida</span></div><a class="btn primary">Aprobar y abrir siguiente</a></div>
+    </div>
+  </section>
+
+  <section id="tender-sheets" class="section wrap">
+    <div class="section-title"><div><span class="tag">Smart Tender · Google Sheets</span><h2>Hoja económica con Smart Pricing contextual.</h2><p>El shell no cambia al pasar de Docs a Sheets: solo cambia el tipo de archivo y el contexto del asistente.</p></div></div>
+    <div class="shell">
+      <div class="shell-top"><div class="shell-title"><strong>Smart Tender · 05_Propuesta Económica</strong><span>Google Sheet · Precios trazables · No inventar valores sin data suficiente</span></div><div class="shell-actions"><span class="chip efile">Google Sheet</span><a class="btn slim efile">Abrir en Drive</a><a class="btn slim accent">Recalcular</a></div></div>
+      <div class="shell-body">
+        <aside class="left-rail"><div class="rail-title"><strong>Entregables</strong><span class="chip green">Tender</span></div><div class="doc-list"><div class="doc-item"><strong>02_Matriz de Cumplimiento</strong><span>Sheet · Con observaciones</span></div><div class="doc-item active"><strong>05_Propuesta Económica</strong><span>Sheet · Documento activo</span></div><div class="doc-item"><strong>08_Cronograma</strong><span>Sheet · Generado</span></div></div></aside>
+        <section class="editor"><div class="google-frame"><div class="gbar"><div class="gbar-left"><span class="gsheet-icon">Sheet</span><strong>05_Propuesta Económica</strong></div><span class="chip warn">Pricing contextual</span></div><div class="sheet-grid"><div class="sheet-table" id="tenderSheet"></div></div></div></section>
+        <aside class="right-rail"><div class="rail-title"><strong>Pricing contextual</strong><span class="chip warn">validación</span></div><article class="assistant-card"><h4>Precio público</h4><p>Referencia observable y trazable por partida.</p></article><article class="assistant-card"><h4>Precio por dependencia</h4><p>Comportamiento histórico específico cuando exista información suficiente.</p></article><article class="assistant-card good"><h4>Precio inteligente</h4><p>Evalúa rentabilidad, viabilidad y estrategia económica.</p></article><article class="assistant-card critical"><h4>Alerta</h4><p>No inventar valores si Smart Pricing no tiene data suficiente.</p><div class="assistant-actions"><a class="btn slim warn">Recalcular con Smart Pricing</a><a class="btn slim danger">Bloquear partida</a><a class="btn slim">Aprobar escenario</a></div></article></aside>
+      </div><div class="shell-bottom"><div class="bottom-status"><span><span class="dot warn"></span> Revisión económica activa</span><span>Versión 0.9</span></div><a class="btn primary">Aprobar escenario</a></div>
+    </div>
+  </section>
+
+  <section id="experta" class="section wrap">
+    <div class="section-title"><div><span class="tag warn">Smart Tender · Experta + IA</span><h2>Misma cabina, revisión humana experta.</h2><p>El staff experto de SmartLicit puede preparar la propuesta usando la misma Propuesta IA con revisión humana asistida por IA.</p></div></div>
+    <div class="grid-2">
+      <article class="card"><div class="card-head"><h3>Panel de operación experta</h3><span class="tag warn">Staff autorizado</span></div><div class="grid-2" style="grid-template-columns:1fr 1fr"><div class="card" style="padding:13px"><h3>Staff asignado</h3><p>Ana R. · Revisor experto</p></div><div class="card" style="padding:13px"><h3>Responsable cliente</h3><p>Cliente: Equipo Comercial</p></div><div class="card" style="padding:13px"><h3>Carpeta Drive</h3><p class="path">/Smart Licit/Smart Tender/Experta + IA/LA-012345...</p></div><div class="card" style="padding:13px"><h3>Estado</h3><p>En revisión interna SmartLicit</p></div></div><div class="assistant-card critical" style="margin-top:12px"><h4>Microcopy obligatorio</h4><p>Experta + IA requiere Smart Tender, Smart Pricing y eFile activo. Al ejecutarse por el staff experto, consume créditos de Smart Tender y Smart Pricing.</p></div></article>
+      <article class="card"><div class="card-head"><h3>Permisos visuales</h3><span class="mini-icon">🔒</span></div><div class="permission-grid"><div class="permission"><strong>Cliente</strong><span>Propietario/editor</span></div><div class="permission"><strong>Staff operativo</strong><span>Editor de carpeta asignada</span></div><div class="permission"><strong>Revisor experto</strong><span>Comentarista/editor</span></div><div class="permission"><strong>Auditor interno</strong><span>Lector</span></div></div><p style="margin-top:14px">No mostrar al staff con acceso general al Drive del usuario. El acceso debe limitarse únicamente a la carpeta del procedimiento o a archivos específicos.</p></article>
+    </div>
+  </section>
+
+  <section id="lex" class="section wrap">
+    <div class="section-title"><div><span class="tag">Smart Lex · Cabina jurídica documental</span><h2>El mismo shell para trabajo jurídico.</h2><p>Cambia la semántica: en Smart Tender hay entregables de licitación; en Smart Lex hay escritos, etapas, pruebas, anexos, promociones y plazos.</p></div></div>
+    <div class="grid-3">
+      <article class="card"><h3>En Smart Tender</h3><p>Entregables de licitación, riesgo técnico/económico y estado listo para presentación.</p></article>
+      <article class="card"><h3>En Smart Lex</h3><p>Criterio jurídico, estrategia procesal, plazos, pruebas, anexos y estado listo para firma o presentación.</p></article>
+      <article class="card"><h3>Se mantiene</h3><p>3 columnas, documento vivo, Google Drive real, autosave, observaciones, aprobación humana, historial y trazabilidad.</p></article>
+    </div>
+  </section>
+
+  <section id="lex-map" class="section wrap">
+    <div class="section-title"><div><span class="tag efile">Mapa de documentos</span><h2>Dónde cobra vida cada entregable de Smart Lex.</h2><p><b>Supuesto de arquitectura UI para Smart Lex.</b> Esta tabla sirve como guía visual para desarrollo y diseño.</p></div></div>
+    <div class="table-wrap"><table><thead><tr><th>Entregable</th><th>Tipo</th><th>Carpeta Drive</th><th>Cobra vida en SmartLicit</th><th>Estado</th><th>Acción principal</th></tr></thead><tbody id="lexRows"></tbody></table></div>
+  </section>
+
+  <section id="lex-docs" class="section wrap">
+    <div class="section-title"><div><span class="tag">Smart Lex · Google Docs</span><h2>Escrito principal editable dentro de la cabina.</h2><p>El asistente jurídico contextual analiza el documento visible, no una conversación desanclada.</p></div></div>
+    <div class="shell">
+      <div class="shell-top"><div class="shell-title"><strong>Smart Lex · 04_Escrito Principal</strong><span>Asunto: Juicio administrativo · Archivo real en Drive</span></div><div class="shell-actions"><span class="chip green">Autosave activo</span><a class="btn slim efile">Abrir en Drive</a></div></div>
+      <div class="shell-body"><aside class="left-rail"><div class="rail-title"><strong>Etapas del asunto</strong><span class="chip">Lex</span></div><div class="doc-list"><div class="doc-item"><strong>01_Línea de Tiempo</strong><span>Sheet · En revisión</span></div><div class="doc-item active"><strong>04_Escrito Principal</strong><span>Doc · Activo</span></div><div class="doc-item"><strong>08_Control de Plazos</strong><span>Sheet · Activo</span></div></div></aside><section class="editor"><div class="google-frame"><div class="gbar"><div class="gbar-left"><span class="gdoc-icon">Doc</span><strong>04_Escrito Principal</strong></div><span class="chip green">Listo para revisión</span></div><div class="doc-content"><h3>04_Escrito Principal</h3><p>Autoridad / destinatario · Datos del promovente · Antecedentes · Hechos · Fundamentos · Pruebas · Peticiones.</p><div class="doc-section-title">Antecedentes</div><div class="doc-paragraph w92"></div><div class="doc-paragraph w78"></div><div class="doc-section-title">Hechos</div><div class="doc-paragraph w92"></div><div class="doc-paragraph w92"></div><div class="doc-paragraph w60"></div><div class="doc-section-title">Fundamentos</div><div class="doc-paragraph w78"></div><div class="doc-paragraph w60"></div></div></div></section><aside class="right-rail"><div class="rail-title"><strong>Asistente jurídico contextual</strong><span class="chip efile">Lex</span></div><article class="assistant-card"><h4>Criterio sugerido</h4><p>Revisar la conexión entre hecho 3 y pretensión principal.</p></article><article class="assistant-card critical"><h4>Riesgo procesal</h4><p>Prueba faltante para acreditar notificación.</p></article><article class="assistant-card file"><h4>Acciones</h4><p>Traer anexo desde eFile o solicitar documento al cliente.</p><div class="assistant-actions"><a class="btn slim efile">Traer anexo desde eFile</a><a class="btn slim">Reescribir fundamento</a><a class="btn slim">Marcar listo</a></div></article></aside></div><div class="shell-bottom"><div class="bottom-status"><span><span class="dot"></span> Guardado en Drive</span><span>Listo para firma: pendiente</span></div><a class="btn primary">Marcar listo para revisión</a></div>
+    </div>
+  </section>
+
+  <section id="lex-sheets" class="section wrap">
+    <div class="section-title"><div><span class="tag">Smart Lex · Google Sheets</span><h2>Matriz de hechos, pruebas y pretensiones.</h2><p>La hoja vive en Google Drive y se trabaja dentro de SmartLicit con estrategia procesal contextual.</p></div></div>
+    <div class="shell">
+      <div class="shell-top"><div class="shell-title"><strong>Smart Lex · 02_Matriz de Hechos, Pruebas y Pretensiones</strong><span>Google Sheet · Asistente jurídico contextual</span></div><div class="shell-actions"><span class="chip efile">Google Sheet</span><a class="btn slim efile">Abrir en Drive</a></div></div>
+      <div class="shell-body"><aside class="left-rail"><div class="rail-title"><strong>Etapas del asunto</strong><span class="chip">Lex</span></div><div class="doc-list"><div class="doc-item active"><strong>02_Matriz de Hechos</strong><span>Sheet · Con observaciones</span></div><div class="doc-item"><strong>05_Anexos y Pruebas</strong><span>Sheet + eFile</span></div><div class="doc-item"><strong>08_Control de Plazos</strong><span>Sheet · Activo</span></div></div></aside><section class="editor"><div class="google-frame"><div class="gbar"><div class="gbar-left"><span class="gsheet-icon">Sheet</span><strong>02_Matriz de Hechos, Pruebas y Pretensiones</strong></div><span class="chip warn">Con observaciones</span></div><div class="sheet-grid"><div class="sheet-table" id="lexSheet"></div></div></div></section><aside class="right-rail"><div class="rail-title"><strong>Estrategia procesal</strong><span class="chip warn">alertas</span></div><article class="assistant-card critical"><h4>Hechos sin prueba</h4><p>Hecho 2 y hecho 4 no tienen prueba asociada.</p></article><article class="assistant-card file"><h4>Anexos faltantes</h4><p>Solicitar constancia documental desde eFile.</p></article><article class="assistant-card"><h4>Sugerencia IA</h4><p>Vincular hecho 3 con pretensión secundaria y ajustar fundamento.</p><div class="assistant-actions"><a class="btn slim efile">Solicitar documento</a><a class="btn slim">Completar matriz</a><a class="btn slim">Enviar a revisión</a></div></article></aside></div><div class="shell-bottom"><div class="bottom-status"><span><span class="dot warn"></span> Plazo próximo</span><span>Versión 1.1</span></div><a class="btn primary">Enviar a revisión</a></div>
+    </div>
+  </section>
+
+  <section id="states" class="section wrap">
+    <div class="section-title"><div><span class="tag warn">Estados y comportamiento</span><h2>Dos máquinas: documento y procedimiento/asunto.</h2><p>Aprobar siempre debe ser una acción humana explícita. Si un documento aprobado se modifica, vuelve a revisión.</p></div></div>
+    <div class="grid-2"><div><h3 style="margin-bottom:10px">Estados por documento</h3><div class="status-grid" id="documentStates"></div></div><div><h3 style="margin-bottom:10px">Estados por procedimiento o asunto</h3><div class="status-grid" id="procedureStates"></div></div></div>
+    <div class="grid-4" style="margin-top:14px"><article class="card"><h3>Aprobación humana</h3><p>La IA recomienda; el usuario aprueba.</p></article><article class="card"><h3>Reapertura</h3><p>Modificar un documento aprobado lo mueve a revisión.</p></article><article class="card"><h3>Bloqueo</h3><p>Los documentos bloqueados no pueden presentarse como listos.</p></article><article class="card"><h3>Falla de sistema</h3><p>Reintentar sin doble cargo cuando la falla sea operativa del sistema.</p></article></div>
+  </section>
+
+  <section id="trace" class="section wrap">
+    <div class="section-title"><div><span class="tag efile">Trazabilidad</span><h2>Auditoría separada del historial de Drive.</h2><p>Drive conserva historial de edición. SmartLicit conserva trazabilidad de negocio: estados, decisiones, permisos, responsable y aprobación.</p></div></div>
+    <div class="grid-2"><div class="table-wrap"><table><thead><tr><th>Usuario</th><th>Rol</th><th>Archivo</th><th>Acción</th><th>Estado anterior</th><th>Estado nuevo</th><th>Fecha/hora</th><th>Comentario</th></tr></thead><tbody><tr><td>cliente_user_id</td><td>Cliente</td><td>gdoc_04</td><td>Aprobó</td><td>En revisión</td><td>Aprobado</td><td>2026-06-12 10:32</td><td>Validado para siguiente entregable</td></tr><tr><td>staff_user_id</td><td>Revisor experto</td><td>gsheet_05</td><td>Comentó</td><td>Generado por IA</td><td>Con observaciones</td><td>2026-06-12 11:08</td><td>Falta soporte de precio</td></tr><tr><td>system</td><td>Automatización</td><td>folder_01</td><td>Sincronizó</td><td>Corregido</td><td>Completado</td><td>2026-06-12 11:44</td><td>Última modificación sincronizada</td></tr></tbody></table></div><aside class="timeline"><div class="time-item"><div class="time-node">1</div><div><strong>Carpeta creada</strong><span>Se generó la ruta base en Google Drive.</span></div></div><div class="time-item"><div class="time-node">2</div><div><strong>Documento generado</strong><span>Google Doc / Sheet creado con ID conservado.</span></div></div><div class="time-item"><div class="time-node">3</div><div><strong>Observación detectada</strong><span>El asistente contextual marcó un faltante.</span></div></div><div class="time-item"><div class="time-node">4</div><div><strong>eFile solicitado</strong><span>Se pidió documento reutilizable al cliente.</span></div></div><div class="time-item"><div class="time-node">5</div><div><strong>Cliente aprobó</strong><span>Acción humana explícita.</span></div></div><div class="time-item"><div class="time-node">6</div><div><strong>Exportado</strong><span>Archivo final listo para presentación o firma.</span></div></div></aside></div>
+  </section>
+
+  <section id="efile" class="section wrap">
+    <div class="section-title"><div><span class="tag efile">eFile</span><h2>La capa documental base.</h2><p>eFile alimenta constancias, documentos administrativos, anexos, evidencias y datos reutilizables sin convertir la cabina en una carpeta suelta.</p></div></div>
+    <div class="card" style="margin-bottom:14px"><div class="efile-flow"><div class="efile-node">eFile</div><div class="efile-arrow">→</div><div class="efile-node">Google Drive</div><div class="efile-arrow">→</div><div class="efile-node green">Smart Tender / Smart Lex</div><div class="efile-node">Docs/Sheets vivos</div></div></div>
+    <div class="grid-4"><article class="card"><h3>Documentos base</h3><p>RFC, CSF, poderes, representantes.</p></article><article class="card"><h3>Constancias</h3><p>Opinión de cumplimiento y documentos administrativos.</p></article><article class="card"><h3>Anexos</h3><p>Anexos reutilizables vinculados a procedimientos o asuntos.</p></article><article class="card"><h3>Evidencia</h3><p>Soporte documental trazable para revisión.</p></article></div>
+    <div class="grid-4" style="margin-top:12px"><span class="chip efile">Disponible</span><span class="chip warn">Requiere actualización</span><span class="chip red">Faltante</span><span class="chip green">Validado</span></div>
+  </section>
+
+  <section id="mobile" class="section wrap">
+    <div class="section-title"><div><span class="tag">Responsive</span><h2>Mobile: documento al centro, navegación y asistente colapsados.</h2><p>En móvil, el documento sigue siendo el centro; el navegador se abre como panel y el asistente contextual como drawer inferior.</p></div></div>
+    <div class="grid-2"><div class="mobile-mock"><div class="mobile-top"><strong>04_Propuesta Técnica</strong><span class="chip green">Autosave</span></div><div class="mobile-doc"><a class="btn slim" style="width:100%;margin-bottom:10px">Abrir entregables</a><div class="mobile-page"><h3>Documento vivo</h3><div class="doc-paragraph w92"></div><div class="doc-paragraph w78"></div><div class="doc-paragraph w92"></div><div class="doc-paragraph w60"></div><div class="drawer"><strong>Asistente contextual</strong><p class="muted" style="font-size:12px;margin-top:6px">Riesgo detectado · traer evidencia desde eFile.</p></div></div><a class="btn primary" style="width:100%;margin-top:12px">Aprobar y siguiente</a><a class="btn efile" style="width:100%;margin-top:8px">Abrir en Drive</a></div></div><article class="card"><h3>Regla mobile</h3><p>El usuario debe poder abrir el documento, revisar alertas y aprobar sin perder contexto. La navegación y el asistente se colapsan, pero no desaparecen.</p><div class="assistant-card file"><h4>Componentes obligatorios</h4><p>Top bar compacto, botón para abrir entregables, documento al centro, drawer contextual inferior, botón fijo de aprobación y acceso a Drive.</p></div></article></div>
+  </section>
+</main>
+<script>
+const tenderRows = [
+ ['00_Archivo Maestro del Procedimiento','Google Doc','/01_Análisis del Procedimiento','Editor central · vista Docs','Generado por IA','Revisar'],
+ ['01_Checklist de Requisitos','Google Sheet','/01_Análisis del Procedimiento','Editor central · vista Sheets','En revisión','Completar checklist'],
+ ['02_Matriz de Cumplimiento','Google Sheet','/02_Entregables en Edición','Editor central · vista Sheets','Con observaciones','Resolver faltantes'],
+ ['03_Análisis de Riesgos','Google Doc','/01_Análisis del Procedimiento','Docs + asistente contextual','En revisión','Validar riesgos'],
+ ['04_Propuesta Técnica','Google Doc','/02_Entregables en Edición','Editor central · vista Docs','Generado por IA','Editar propuesta'],
+ ['05_Propuesta Económica','Google Sheet','/02_Entregables en Edición','Sheets + Smart Pricing','Bloqueado si falta Smart Pricing','Abrir Smart Pricing'],
+ ['06_Anexos Administrativos','Google Doc','/02_Entregables en Edición','Docs + eFile','Requiere eFile','Traer documentos'],
+ ['07_Cartas y Manifiestos','Google Doc','/02_Entregables en Edición','Editor central · vista Docs','En revisión','Completar'],
+ ['08_Cronograma','Google Sheet','/02_Entregables en Edición','Editor central · vista Sheets','Generado por IA','Ajustar fechas'],
+ ['09_Resumen Ejecutivo','Google Doc','/03_Revisión del Cliente','Docs + asistente contextual','En revisión del cliente','Aprobar'],
+ ['10_Bitácora de Cambios','Google Sheet','/05_Bitácora y QA','Panel de trazabilidad','Sincronizado','Ver historial'],
+ ['11_Control de Versiones','Google Sheet','/05_Bitácora y QA','Panel de versiones','Sincronizado','Comparar'],
+ ['12_Validación Final','Google Doc','/04_Finales para Presentación','Revisión final','Pendiente','Validar entrega']
+];
+const lexRows = [
+ ['00_Archivo Maestro del Asunto','Google Doc','/01_Análisis del Caso','Editor central · vista Docs','Generado por IA','Revisar'],
+ ['01_Línea de Tiempo del Caso','Google Sheet','/01_Análisis del Caso','Editor central · vista Sheets','En revisión','Completar hechos'],
+ ['02_Matriz de Hechos, Pruebas y Pretensiones','Google Sheet','/01_Análisis del Caso','Sheets + asistente jurídico','Con observaciones','Resolver inconsistencias'],
+ ['03_Estrategia Jurídica','Google Doc','/01_Análisis del Caso','Docs + asistente contextual','En revisión','Validar criterio'],
+ ['04_Escrito Principal','Google Doc','/02_Escritos en Edición','Editor central · vista Docs','Generado por IA','Editar escrito'],
+ ['05_Anexos y Pruebas','Google Sheet','/02_Escritos en Edición','Sheets + eFile','Requiere anexos','Traer desde eFile'],
+ ['06_Promociones o Actuaciones','Google Doc','/02_Escritos en Edición','Editor central · vista Docs','En revisión','Preparar promoción'],
+ ['07_Checklist de Requisitos Procesales','Google Sheet','/03_Revisión del Cliente','Sheets + checklist lateral','En revisión del cliente','Validar requisitos'],
+ ['08_Control de Plazos','Google Sheet','/03_Revisión del Cliente','Sheets + alertas','Activo','Confirmar vencimientos'],
+ ['09_Resumen Ejecutivo Jurídico','Google Doc','/03_Revisión del Cliente','Docs + resumen lateral','En revisión','Aprobar'],
+ ['10_Bitácora de Cambios','Google Sheet','/05_Bitácora y QA','Panel de trazabilidad','Sincronizado','Ver historial'],
+ ['11_Control de Versiones','Google Sheet','/05_Bitácora y QA','Panel de versiones','Sincronizado','Comparar'],
+ ['12_Validación Final para Firma','Google Doc','/04_Listos para Firma o Presentación','Revisión final','Pendiente','Listo para firma']
+];
+function badgeClass(text){ if(/Bloqueado|Faltante|Riesgo/.test(text)) return 'red'; if(/Requiere|Pendiente|observaciones|revisión|Activo/.test(text)) return 'warn'; if(/Sincronizado|Aprobado|Completado|Generado/.test(text)) return 'green'; return ''; }
+function fillRows(id, rows){ const tbody=document.getElementById(id); if(!tbody) return; tbody.innerHTML=rows.map(r=>`<tr>${r.map((c,i)=> i===0?`<td><span class="doc-name">${c}</span></td>`: i===1?`<td><span class="chip ${c.includes('Sheet')?'green':'efile'}">${c}</span></td>`: i===2?`<td class="path">${c}</td>`: i===4?`<td><span class="chip ${badgeClass(c)}">${c}</span></td>`:`<td>${c}</td>`).join('')}</tr>`).join(''); }
+fillRows('tenderRows', tenderRows); fillRows('lexRows', lexRows);
+function makeSheet(id, headers, rows){ const el=document.getElementById(id); if(!el) return; const all=[headers,...rows]; el.innerHTML=all.map((r,idx)=>`<div class="sheet-row ${idx===0?'head':''}">${r.map(c=>`<div>${c}</div>`).join('')}</div>`).join(''); }
+makeSheet('tenderSheet',['Partida','Descripción','Unidad','Cantidad','Precio público','Precio dependencia','Precio inteligente','Margen','Estado'],[
+ ['001','Limpieza integral mensual','Servicio','12','$128,000','$121,400','$119,800','18%','Validar'],
+ ['002','Insumos sanitarios','Lote','1','$42,500','$39,900','$40,100','14%','OK'],
+ ['003','Supervisión operativa','Servicio','12','$18,000','$17,200','$17,800','11%','Riesgo'],
+ ['004','Equipo de seguridad','Lote','1','$9,900','$9,300','$9,450','10%','OK']
+]);
+makeSheet('lexSheet',['Hecho','Fuente','Prueba','Anexo','Pretensión relacionada','Riesgo','Estado','Acción'],[
+ ['H-01','Contrato','Documento','A-01','Nulidad','Bajo','Validado','—'],
+ ['H-02','Correo','Pendiente','—','Daños','Alto','Falta prueba','Solicitar'],
+ ['H-03','Acta','Documento','A-03','Medida cautelar','Medio','Revisar','Vincular'],
+ ['H-04','Testigo','Pendiente','—','Cumplimiento','Alto','Incompleto','Completar']
+]);
+const docStates=['No iniciado','Generado por IA','En revisión','Con observaciones','Corregido','Aprobado','Completado','Requiere firma / carga externa','Bloqueado'];
+const procStates=['Preparando','Generando','En preparación documental','Revisión final','Listo para entrega','Cerrado','Con incidencias'];
+function fillStates(id, arr){ const el=document.getElementById(id); if(!el) return; el.innerHTML=arr.map(s=>`<article class="state"><strong><span class="dot ${s.includes('Bloqueado')||s.includes('incidencias')?'red':s.includes('revisión')||s.includes('Requiere')?'warn':''}"></span>${s}</strong><p>${stateText(s)}</p></article>`).join(''); }
+function stateText(s){ const map={
+ 'No iniciado':'Existe en el plan, pero todavía no se genera o no se abre.',
+ 'Generado por IA':'Archivo creado y listo para revisión humana.',
+ 'En revisión':'El usuario está trabajando sobre el documento visible.',
+ 'Con observaciones':'IA o usuario detectan huecos, riesgos o faltantes.',
+ 'Corregido':'Las observaciones fueron atendidas y vuelve a revisión.',
+ 'Aprobado':'El usuario lo cierra funcionalmente y se abre el siguiente.',
+ 'Completado':'Aprobado + sincronizado + sin incidencias abiertas.',
+ 'Requiere firma / carga externa':'Sale del flujo de edición pero sigue dentro del expediente.',
+ 'Bloqueado':'Depende de otro documento, de eFile o de Smart Pricing.',
+ 'Preparando':'Datos de entrada y carpeta por confirmar.',
+ 'Generando':'SmartLicit crea/reutiliza carpetas y archivos.',
+ 'En preparación documental':'Documentos vivos en trabajo dentro de la cabina.',
+ 'Revisión final':'QA, faltantes y aprobación final.',
+ 'Listo para entrega':'Documentos aprobados y sincronizados.',
+ 'Cerrado':'Procedimiento o asunto terminado.',
+ 'Con incidencias':'Falla operativa o inconsistencia crítica exige revisión.'
+}; return map[s]||''; }
+fillStates('documentStates', docStates); fillStates('procedureStates', procStates);
+</script>
+
+<footer class="slx-global-footer" aria-label="Footer SmartLicit">
+  <div class="slx-footer-container">
+    <div class="slx-footer-grid">
+      <div>
+        <div class="slx-footer-brand"><span class="slx-footer-mark" aria-hidden="true"><span>⚡</span></span><span>SmartLicit</span></div>
+        <p style="margin-top:14px;max-width:320px">Una sola inteligencia, múltiples soluciones para resolver trabajo profesional complejo.</p>
+      </div>
+      <div><h4>Soluciones</h4><a class="slx-footer-product" href="../tender.html" target="_top"><span>⚡</span> Tender</a><a class="slx-footer-product" href="../pricing.html" target="_top"><span>⚡</span> Pricing</a><a class="slx-footer-product" href="../file.html" target="_top"><span>⚡</span> File</a><a class="slx-footer-product" href="../lex.html" target="_top"><span>⚡</span> Lex</a></div>
+      <div><h4>Gobierno</h4><a class="slx-footer-gov" href="../tender-gov.html" target="_top"><span>⚡</span> Tender Gov</a><a class="slx-footer-gov" href="../pricing-gov.html" target="_top"><span>⚡</span> Pricing Gov</a><a href="../ipg.html" target="_top">IPG</a></div>
+      <div><h4>Plataforma</h4><a class="slx-footer-efile" href="../efile.html" target="_top"><span>⚡</span> eFile</a><a href="../planes.html" target="_top">Planes</a><a href="../blog.html" target="_top">Blog</a><a href="../mi-cuenta.html" target="_top">Mi Cuenta</a></div>
+      <div><h4>Workspace</h4><a class="slx-footer-drive" href="../gDrive.html" target="_top"><span>▰</span> Google Drive Workspace</a><a href="../mi-cuenta.html#facturacion" target="_top">Facturación</a><a href="../planes.html#tokens" target="_top">Tokens</a><a href="../mi-cuenta.html#integraciones" target="_top">Integraciones</a></div>
+    </div>
+    <div class="slx-footer-bottom"><span>© SmartLicit</span><span>Minimal premium · trazable · accionable.</span></div>
+  </div>
+</footer>
+
+</body>
+</html>

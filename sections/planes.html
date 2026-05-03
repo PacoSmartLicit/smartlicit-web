@@ -1,0 +1,686 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Planes SmartLicit 2026</title>
+  <meta name="description" content="Sección web premium actualizada para Planes SmartLicit 2026" />
+  <style>
+    :root{
+      --lime:#B5F857;
+      --ink:#041912;
+      --green:#04560C;
+      --action:#1A990F;
+      --bg:#F9F8F3;
+      --surface:#FFFFFF;
+      --warm:#EBEAE5;
+      --warm2:#CDCABF;
+      --muted:#66736D;
+      --muted2:#8A948F;
+      --line:rgba(4,25,18,.10);
+      --line2:rgba(4,25,18,.16);
+      --efile:#5462E2;
+      --efile-soft:#BBC0F3;
+      --efile-bright:#8B9BF7;
+      --efile-night:#060517;
+      --efile-deep:#080353;
+      --gov-red:#C62118;
+      --gov-coral:#F7645C;
+      --gov-soft:#FFB4B0;
+      --yellow:#F7BA14;
+      --orange:#F77214;
+      --shadow:0 20px 60px rgba(4,25,18,.07);
+      --shadow-soft:0 8px 24px rgba(4,25,18,.045);
+      --radius-xl:34px;
+      --radius-lg:24px;
+      --radius-md:18px;
+      --radius-sm:14px;
+      --font:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      color:var(--ink);
+      font-family:var(--font);
+      background:
+        radial-gradient(circle at 86% 4%, rgba(181,248,87,.20), transparent 28rem),
+        radial-gradient(circle at 12% 86%, rgba(84,98,226,.12), transparent 30rem),
+        linear-gradient(180deg,#FFFFFF 0%, var(--bg) 68%, #FFFFFF 100%);
+      -webkit-font-smoothing:antialiased;
+      text-rendering:geometricPrecision;
+      letter-spacing:-.014em;
+    }
+    a{color:inherit;text-decoration:none}
+    button{font:inherit;cursor:pointer}
+    .wrap{width:min(1220px,calc(100% - 40px));margin-inline:auto}
+    .section{padding:32px 0 76px}
+    .topbar{
+      position:sticky;top:0;z-index:50;
+      height:74px;background:rgba(255,255,255,.88);backdrop-filter:blur(18px);
+      border-bottom:1px solid var(--line);display:flex;align-items:center;
+    }
+    .nav{display:flex;align-items:center;justify-content:space-between;gap:18px}
+    .brand{display:flex;align-items:center;gap:10px;font-size:20px;font-weight:850;letter-spacing:-.045em;white-space:nowrap}
+    .mark{--mark-bg:var(--green);--mark-bolt:var(--lime);width:38px;height:38px;display:inline-grid;place-items:center;position:relative;flex:0 0 auto}
+    .mark:before{content:"";position:absolute;inset:0;background:var(--mark-bg);clip-path:polygon(50% 0%,61% 32%,100% 50%,61% 68%,50% 100%,39% 68%,0% 50%,39% 32%)}
+    .bolt{width:16px;height:23px;position:relative;z-index:1;background:var(--mark-bolt);clip-path:polygon(62% 0%,20% 52%,48% 52%,37% 100%,84% 38%,56% 38%)}
+    .mark.efile{--mark-bg:var(--efile-night);--mark-bolt:var(--efile-bright)}
+    .mark.token-green{--mark-bg:var(--green);--mark-bolt:var(--lime)}
+    .mark.gov{--mark-bg:var(--gov-red);--mark-bolt:var(--gov-soft)}
+    .mark.pricing-gov{--mark-bg:var(--gov-coral);--mark-bolt:var(--ink)}
+    .site-nav{display:flex;align-items:center;justify-content:center;gap:2px;flex:1;overflow:auto;padding-bottom:2px;scrollbar-width:none}
+    .site-nav::-webkit-scrollbar{display:none}
+    .site-nav a{display:inline-flex;align-items:center;gap:6px;min-height:38px;padding:0 10px;border-radius:999px;color:rgba(4,25,18,.68);font-size:13.2px;font-weight:720;white-space:nowrap;border:1px solid transparent;background:transparent;letter-spacing:-.01em}
+    .site-nav a:hover{color:var(--ink);background:var(--bg);border-color:var(--line)}
+    .site-nav a.active{background:rgba(181,248,87,.30);color:var(--green);border-color:rgba(4,86,12,.14)}
+    .site-nav .nav-bolt{font-weight:950;line-height:1;font-size:14px;color:#81C91C}
+    .site-nav .gov-tender .nav-bolt{color:var(--gov-red)}
+    .site-nav .gov-pricing .nav-bolt{color:#C62118}
+    .pay-pill{display:inline-flex;align-items:center;gap:8px;min-height:38px;border:1px solid var(--line);border-radius:999px;padding:0 12px;background:#fff;color:var(--muted);font-size:12px;font-weight:830;white-space:nowrap}
+    .pay-pill i{width:7px;height:7px;border-radius:99px;background:var(--action);box-shadow:0 0 0 4px rgba(181,248,87,.25)}
+
+    .account{position:relative;flex:0 0 auto}
+    .account-trigger{display:inline-flex;align-items:center;gap:6px;min-height:38px;padding:0 12px;border-radius:999px;font-size:13px;font-weight:830;color:var(--muted);border:1px solid var(--line);background:#fff;white-space:nowrap;cursor:pointer}
+    .account-trigger:hover{color:var(--ink);background:var(--bg);border-color:var(--line2)}
+    .account-menu{position:absolute;top:calc(100% + 10px);right:0;min-width:230px;padding:10px;display:none;background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow-soft);z-index:80}
+    .account:hover .account-menu,.account:focus-within .account-menu{display:grid}
+    .account-menu a{padding:10px 12px;border-radius:12px;color:var(--muted);font-size:14px;font-weight:700}
+    .account-menu a:hover{background:var(--bg);color:var(--ink)}
+
+
+    .hero{padding:70px 0 24px}
+    .hero-grid{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(360px,.92fr);gap:28px;align-items:stretch}
+    .eyebrow{display:inline-flex;align-items:center;gap:8px;width:max-content;border:1px solid var(--line);background:rgba(255,255,255,.72);border-radius:999px;padding:8px 12px;color:var(--muted);font-size:13px;font-weight:760;box-shadow:0 1px 0 rgba(4,25,18,.03)}
+    .eyebrow .spark{width:8px;height:8px;border-radius:99px;background:var(--lime);box-shadow:0 0 0 4px rgba(181,248,87,.22)}
+    h1,h2,h3,p{margin:0}
+    h1{margin-top:22px;font-size:clamp(44px,6.2vw,78px);line-height:.92;letter-spacing:-.075em;font-weight:840;max-width:780px}
+    .lead{margin-top:22px;color:rgba(4,25,18,.68);font-size:clamp(18px,2vw,22px);line-height:1.42;max-width:760px}
+    .hero-actions{display:flex;gap:11px;flex-wrap:wrap;margin-top:28px}
+    .btn{min-height:44px;border:1px solid var(--line2);border-radius:999px;background:#fff;color:var(--ink);display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:0 16px;font-size:14px;font-weight:820;transition:.18s ease;white-space:nowrap}
+    .btn:hover{transform:translateY(-1px);box-shadow:var(--shadow-soft);border-color:rgba(4,25,18,.26)}
+    .btn.primary{background:var(--ink);color:#fff;border-color:var(--ink)}
+    .btn.accent{background:var(--lime);border-color:var(--lime);color:var(--ink)}
+    .btn.efile{background:rgba(84,98,226,.09);border-color:rgba(84,98,226,.22);color:var(--efile-deep)}
+    .btn.gov{background:rgba(247,100,92,.10);border-color:rgba(247,100,92,.20);color:#550415}
+    .btn.slim{min-height:34px;font-size:12px;padding:0 11px}
+    .hero-panel{position:relative;overflow:hidden;border:1px solid var(--line);border-radius:var(--radius-xl);background:rgba(255,255,255,.84);box-shadow:var(--shadow);padding:18px}
+    .hero-panel:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 8% 4%, rgba(181,248,87,.25), transparent 13rem),radial-gradient(circle at 100% 100%, rgba(187,192,243,.36), transparent 16rem);pointer-events:none}
+    .hero-panel.token-hero{background:var(--efile-night);border-color:rgba(255,255,255,.12);padding:18px;color:#fff;box-shadow:0 22px 70px rgba(6,5,23,.18)}
+    .hero-panel.token-hero:before{background:radial-gradient(circle at 10% 0%, rgba(139,155,247,.42), transparent 15rem),radial-gradient(circle at 104% 98%, rgba(84,98,226,.34), transparent 14rem)}
+    .hero-token-head{position:relative;z-index:1;display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px}
+    .hero-token-head h2{font-size:28px;line-height:1.02;letter-spacing:-.055em;margin-top:8px;color:#fff}
+    .hero-token-head p{margin-top:8px;color:rgba(255,255,255,.70);font-size:13px;line-height:1.45;max-width:420px}
+    .token-hero .token-promo,.token-hero .table-mini,.token-hero .hero-token-actions{position:relative;z-index:1}
+    .hero-token-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+    .hero-token-actions .btn{min-height:38px}
+    .panel-content{position:relative;z-index:1;display:grid;gap:12px}
+    .mini-window{border:1px solid var(--line);background:#fff;border-radius:22px;padding:14px;box-shadow:var(--shadow-soft)}
+    .window-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}
+    .dots{display:flex;gap:6px}.dots span{width:8px;height:8px;border-radius:99px;background:var(--warm2)}
+    .searchbar{height:44px;border:1px solid var(--line);border-radius:15px;background:#FBFAF6;color:var(--muted);display:flex;align-items:center;padding:0 12px;font-size:13px;font-weight:650}
+    .preview-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+    .preview-card{border:1px solid var(--line);border-radius:16px;padding:13px;background:#fff}
+    .preview-card span{display:block;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-weight:900}.preview-card strong{display:block;margin-top:6px;font-size:22px;letter-spacing:-.04em}.preview-card small{display:block;margin-top:4px;color:var(--muted);font-size:12px;line-height:1.35}
+
+    .promo{margin:14px 0 22px;border:1px solid rgba(4,86,12,.18);background:linear-gradient(180deg,rgba(181,248,87,.24),rgba(181,248,87,.10));border-radius:var(--radius-xl);padding:18px;display:grid;grid-template-columns:1fr auto;gap:18px;align-items:center;box-shadow:var(--shadow-soft)}
+    .promo h2{font-size:23px;letter-spacing:-.045em}.promo p{margin-top:7px;color:var(--muted);font-size:14px;line-height:1.46;max-width:920px}.tag{display:inline-flex;align-items:center;gap:7px;border:1px solid rgba(4,86,12,.16);background:#fff;border-radius:999px;padding:8px 10px;color:var(--green);font-size:12px;font-weight:920;white-space:nowrap}.tag:before{content:"";width:7px;height:7px;border-radius:99px;background:var(--action)}
+
+    .solution-strip{margin:18px 0 20px;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px}
+    .solution-card{border:1px solid var(--line);background:#fff;border-radius:20px;padding:14px;min-height:118px;display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 1px 0 rgba(4,25,18,.03);text-align:left;color:var(--ink);transition:.18s ease}
+    .solution-card:hover,.solution-card.active{transform:translateY(-2px);box-shadow:var(--shadow-soft);border-color:rgba(4,86,12,.18)}
+    .solution-card.active{background:rgba(181,248,87,.16)}
+    .solution-card .top{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}.solution-card h3{font-size:15px;letter-spacing:-.025em}.solution-card p{font-size:12px;line-height:1.35;color:var(--muted);margin-top:7px}.mini-mark{width:24px;height:24px;border-radius:8px;display:grid;place-items:center;background:rgba(181,248,87,.24);color:var(--green);font-weight:950}.mini-mark.efile{background:rgba(84,98,226,.12);color:var(--efile)}.mini-mark.gov{background:rgba(247,100,92,.11);color:var(--gov-red)}
+
+    .layout{display:grid;grid-template-columns:1fr;gap:18px;align-items:start}
+    .main-card{border:1px solid var(--line);border-radius:var(--radius-xl);background:#fff;box-shadow:var(--shadow-soft);padding:18px;overflow:hidden}
+    .section-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:14px}.kicker{font-size:12px;color:var(--muted2);font-weight:920;letter-spacing:.09em;text-transform:uppercase}.section-head h2{font-size:31px;line-height:1.05;letter-spacing:-.06em;margin-top:4px}.section-head p{color:var(--muted);font-size:14px;line-height:1.44;margin-top:7px;max-width:780px}.badges{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}.badge{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;background:#F7F6F1;padding:6px 9px;color:var(--muted);font-size:11.5px;font-weight:850;white-space:nowrap}.badge.green{background:rgba(181,248,87,.22);border-color:rgba(4,86,12,.14);color:var(--green)}.badge.efile{background:rgba(187,192,243,.35);border-color:rgba(84,98,226,.18);color:var(--efile-deep)}.badge.gov{background:rgba(247,100,92,.10);border-color:rgba(247,100,92,.20);color:#550415}.badge.warn{background:rgba(247,186,20,.13);border-color:rgba(247,186,20,.24);color:#7A5200}.badge.dark{background:var(--ink);border-color:var(--ink);color:#fff}
+
+    .plan-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.plan{position:relative;display:flex;flex-direction:column;min-height:560px;border:1px solid var(--line);border-radius:24px;background:#fff;padding:15px;box-shadow:0 1px 0 rgba(4,25,18,.03);overflow:hidden}.plan.featured{border-color:rgba(4,86,12,.24);box-shadow:0 0 0 4px rgba(181,248,87,.18)}.plan .ribbon{position:absolute;top:13px;right:13px}.plan h3{font-size:20px;letter-spacing:-.04em}.unit{margin-top:4px;color:var(--muted);font-size:12.5px;font-weight:760}.pricebox{margin-top:14px;border:1px solid var(--line);background:#FBFAF6;border-radius:18px;padding:12px}.price-label{font-size:10.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--green);font-weight:950}.price{margin-top:5px;font-size:31px;line-height:1;letter-spacing:-.065em;font-weight:960}.price small{font-size:12px;color:var(--muted);font-weight:780}.normal{margin-top:8px;color:var(--muted);font-size:12px;line-height:1.35}.normal s{color:#8A948F}.saving{margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:8px}.saving div{border:1px solid var(--line);border-radius:14px;background:#fff;padding:9px}.saving span{display:block;color:var(--muted2);font-size:10px;text-transform:uppercase;letter-spacing:.07em;font-weight:930}.saving strong{display:block;margin-top:4px;font-size:13px;letter-spacing:-.02em}.features{margin:14px 0 0;padding:0;list-style:none;display:grid;gap:8px}.features li{display:flex;gap:8px;font-size:12.5px;line-height:1.38;color:var(--muted)}.features li:before{content:"";width:7px;height:7px;border-radius:99px;background:var(--lime);margin-top:5px;flex:0 0 auto}.efile-box{margin-top:auto;border:1px solid rgba(84,98,226,.20);background:rgba(187,192,243,.20);border-radius:18px;padding:11px}.efile-box strong{display:flex;align-items:center;gap:7px;color:var(--efile-deep);font-size:12.5px}.efile-box strong:before{content:"";width:8px;height:8px;border-radius:99px;background:var(--efile)}.efile-box p{margin-top:6px;color:rgba(8,3,83,.72);font-size:11.8px;line-height:1.36}.wa-combo{margin-top:11px;border:1px solid rgba(4,86,12,.16);background:rgba(181,248,87,.16);border-radius:16px;padding:10px}.wa-combo label{display:block;color:var(--green);font-size:10.5px;text-transform:uppercase;letter-spacing:.08em;font-weight:950;margin-bottom:6px}.wa-combo select{width:100%;height:38px;border:1px solid rgba(4,86,12,.16);border-radius:12px;background:#fff;color:var(--ink);font-size:12.5px;font-weight:750;padding:0 10px}.card-actions{display:grid;gap:8px;margin-top:11px}
+
+    .tokens-rail{position:sticky;top:92px;display:grid;gap:12px}.rail-card{border:1px solid var(--line);background:#fff;border-radius:26px;padding:16px;box-shadow:var(--shadow-soft);overflow:hidden}.rail-card.dark{background:var(--efile-night);color:#fff;border-color:rgba(255,255,255,.12);position:relative}.rail-card.dark:before{content:"";position:absolute;inset:-1px;background:radial-gradient(circle at 18% 0%, rgba(139,155,247,.36), transparent 13rem);pointer-events:none}.rail-card>*{position:relative;z-index:1}.rail-card h3{font-size:20px;letter-spacing:-.04em}.rail-card p{margin-top:8px;color:rgba(255,255,255,.70);font-size:13px;line-height:1.45}.token-promo{border:1px solid rgba(139,155,247,.32);background:rgba(139,155,247,.12);border-radius:18px;padding:12px;margin-top:13px}.token-promo strong{display:block;font-size:14px}.token-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.token-actions .btn{min-height:36px;font-size:11.5px;padding:0 8px}.table-mini{display:grid;gap:7px;margin-top:12px}.table-mini div{display:flex;justify-content:space-between;gap:10px;border:1px solid rgba(255,255,255,.12);border-radius:13px;padding:9px;font-size:12px;color:rgba(255,255,255,.70)}.table-mini strong{color:#fff}.payment{display:grid;gap:9px}.payment div{display:flex;align-items:center;gap:9px;border:1px solid var(--line);border-radius:14px;background:#FBFAF6;padding:10px;color:var(--muted);font-size:12.5px;font-weight:760}.payment i{width:26px;height:26px;border-radius:10px;background:var(--ink);color:#fff;display:grid;place-items:center;font-size:12px;font-style:normal;font-weight:950}
+
+    .gov-selector{grid-column:1/-1;border:1px solid rgba(247,100,92,.20);background:linear-gradient(180deg,rgba(255,180,176,.15),rgba(255,255,255,.88));border-radius:22px;padding:14px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}.gov-selector h3{font-size:20px;letter-spacing:-.04em}.gov-selector p{margin-top:5px;color:var(--muted);font-size:13px;line-height:1.4}.gov-tabs{display:inline-flex;gap:8px;flex-wrap:wrap}.gov-tab{min-height:36px;border:1px solid rgba(247,100,92,.22);background:#fff;color:#550415;border-radius:999px;padding:0 14px;font-size:13px;font-weight:850}.gov-tab.active{background:rgba(247,100,92,.14);border-color:rgba(247,100,92,.36);color:#550415}.plan.gov-plan{border-color:rgba(247,100,92,.18)}.plan.gov-plan.featured{border-color:rgba(247,100,92,.32);box-shadow:0 0 0 4px rgba(247,100,92,.10)}.plan.gov-plan .price-label{color:#550415}.plan.gov-plan .capacity{color:#C62118}.plan.gov-plan .capacity-bolt{color:#F7645C}.plan.gov-plan .features li:before{background:#F7645C}.plan.gov-plan .efile-box{border-color:rgba(247,100,92,.18);background:rgba(255,180,176,.12)}.plan.gov-plan .efile-box strong{color:#550415}.plan.gov-plan .efile-box strong:before{background:#F7645C}
+    .token-detail,.conversion,.gov-block{margin-top:18px;border:1px solid var(--line);border-radius:var(--radius-xl);background:#fff;padding:18px;box-shadow:var(--shadow-soft)}.token-detail h2,.conversion h2,.gov-block h2{font-size:28px;letter-spacing:-.055em}.token-detail p,.conversion p,.gov-block p{color:var(--muted);font-size:14px;line-height:1.46;margin-top:7px}.token-packages{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:14px}.package{border:1px solid var(--line);border-radius:20px;padding:14px;background:#FBFAF6}.package h3{font-size:17px}.package .tokens{margin-top:8px;font-size:27px;font-weight:960;letter-spacing:-.055em}.package .cost{margin-top:4px;color:var(--muted);font-size:13px}.conversion-table{width:100%;border-collapse:collapse;margin-top:14px;border:1px solid var(--line);border-radius:22px;overflow:hidden;display:table}.conversion-table th,.conversion-table td{padding:13px 14px;border-bottom:1px solid rgba(4,25,18,.08);text-align:left;font-size:13px;vertical-align:top}.conversion-table th{background:#FBFAF6;color:var(--muted2);font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-weight:950}.conversion-table tr:last-child td{border-bottom:0}.conversion-table strong{display:block;margin-bottom:4px}.gov-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:14px}.gov-card{position:relative;overflow:hidden;border:1px solid rgba(247,100,92,.22);background:#fff;border-radius:24px;padding:18px;min-height:230px}.gov-card:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 100% 0%, rgba(247,100,92,.18), transparent 14rem);pointer-events:none}.gov-card>*{position:relative}.gov-card h3{font-size:25px;letter-spacing:-.05em}.gov-card p{margin-top:8px}.gov-card .btn{margin-top:18px}
+
+    .microcopy{margin-top:12px;color:var(--muted);font-size:12px;line-height:1.45}.notice{margin-top:14px;border:1px solid rgba(247,186,20,.28);background:rgba(247,186,20,.12);color:#6B4800;border-radius:18px;padding:12px;font-size:12.5px;line-height:1.45}.final-strip{margin-top:18px;border:1px solid var(--line);border-radius:26px;background:var(--ink);color:#fff;padding:16px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}.final-strip strong{font-size:18px;letter-spacing:-.03em}.final-strip span{color:rgba(255,255,255,.72);font-size:13px}.final-strip .cards{display:flex;gap:8px;flex-wrap:wrap}.final-strip .cards i{font-style:normal;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.08);border-radius:999px;padding:8px 10px;font-size:12px;font-weight:850;color:#fff}
+
+    .modal-bg{position:fixed;inset:0;background:rgba(4,25,18,.46);backdrop-filter:blur(8px);z-index:100;display:none;align-items:center;justify-content:center;padding:22px}.modal-bg.open{display:flex}.modal{width:min(880px,100%);max-height:calc(100vh - 44px);overflow:auto;border-radius:30px;background:#fff;border:1px solid rgba(255,255,255,.5);box-shadow:0 30px 90px rgba(4,25,18,.28)}.modal-head{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;border-bottom:1px solid var(--line);padding:20px}.modal-head h2{font-size:28px;letter-spacing:-.055em}.modal-head p{margin-top:8px;color:var(--muted);font-size:14px}.close{width:40px;height:40px;border:1px solid var(--line);border-radius:14px;background:#fff;color:var(--muted);font-size:22px}.modal-body{padding:18px 20px 22px}
+
+
+    /* Ajuste solicitado: combo Tokens siempre disponibles en blanco, manteniendo estructura y look premium */
+    .hero-panel.token-hero{background:rgba(255,255,255,.92);border-color:var(--line);color:var(--ink);box-shadow:var(--shadow)}
+    .hero-panel.token-hero:before{background:radial-gradient(circle at 10% 0%, rgba(139,155,247,.22), transparent 15rem),radial-gradient(circle at 104% 98%, rgba(181,248,87,.16), transparent 14rem)}
+    .hero-token-head h2{color:var(--ink)}
+    .hero-token-head p{color:var(--muted)}
+    .token-hero .token-promo{background:rgba(84,98,226,.07);border-color:rgba(84,98,226,.18);color:var(--ink)}
+    .token-hero .token-promo p{color:var(--muted)}
+    .token-hero .table-mini div{background:#fff;border-color:var(--line);color:var(--muted)}
+    .token-hero .table-mini strong{color:var(--ink)}
+    .token-hero .microcopy{color:var(--muted)!important}
+    .token-plan .pricebox{background:linear-gradient(180deg,rgba(187,192,243,.30),rgba(255,255,255,.92));border-color:rgba(84,98,226,.18)}
+    .token-plan .price{color:var(--efile-deep)}
+    .token-plan .efile-box{background:rgba(187,192,243,.24);border-color:rgba(84,98,226,.16)}
+    .token-plan.featured{border-color:rgba(84,98,226,.25);box-shadow:0 0 0 4px rgba(84,98,226,.10)}
+
+    /* Footer tomado de Home.html y adaptado al sistema visual de Planes */
+    .footer{margin-top:0;padding:44px 0 32px;border-top:1px solid var(--line);background:#fff}
+    .footer .container{width:min(1180px,calc(100% - 48px));margin-inline:auto}
+    .footer-grid{display:grid;grid-template-columns:1.25fr repeat(4,1fr);gap:24px}
+    .footer h4{margin:0 0 12px;font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted2)}
+    .footer a,.footer p{display:block;margin:0 0 9px;color:var(--muted);font-size:14px;line-height:1.45}
+    .footer a:hover{color:var(--ink)}
+    .footer-bottom{margin-top:34px;display:flex;justify-content:space-between;gap:16px;color:var(--muted2);font-size:13px}
+    .footer .brand{display:inline-flex;align-items:center;gap:10px;font-weight:850;letter-spacing:-.035em;font-size:20px;white-space:nowrap}
+    .footer .symbol-shell{--symbol-bg:var(--green);--symbol-bolt:var(--lime);width:34px;height:34px;position:relative;display:inline-grid;place-items:center;color:var(--symbol-bolt);flex:0 0 auto}
+    .footer .symbol-shell::before{content:"";position:absolute;inset:0;background:var(--symbol-bg);clip-path:polygon(50% 0%,61% 32%,100% 50%,61% 68%,50% 100%,39% 68%,0% 50%,39% 32%)}
+    .footer .symbol-shell .bolt{position:relative;z-index:1;width:auto;height:auto;background:transparent;clip-path:none;color:var(--symbol-bolt);font-weight:900;font-size:18px;line-height:1;transform:translateY(-1px)}
+    @media (max-width:1080px){.footer-grid{grid-template-columns:repeat(2,1fr)}}
+    @media (max-width:700px){.footer .container{width:min(100% - 24px,1180px)}.footer-grid{grid-template-columns:1fr}.footer-bottom{flex-direction:column}}
+
+
+    /* Ajustes puntuales Beta 1.1: planes y WhatsApp Add-On */
+    .unit{color:#C62118!important;font-weight:950!important}
+    .capacity{margin-top:8px;color:#C62118;font-size:13px;font-weight:950;display:inline-flex;align-items:center;gap:6px}.capacity .capacity-bolt{color:#041912;font-weight:950}
+    .price-label{color:#62CD4D!important}.price{color:#62CD4D!important}.features li{font-weight:800!important;color:rgba(4,25,18,.86)!important}.features li:before{background:var(--lime)!important}
+    .wa-card{margin-top:11px;border:1px solid rgba(37,211,102,.22);background:linear-gradient(180deg,rgba(37,211,102,.08),rgba(255,255,255,.92));border-radius:16px;padding:11px;display:grid;gap:9px}.wa-card.disabled{opacity:.56;filter:grayscale(.2);background:#FBFAF6;border-color:var(--line)}.wa-card-top{display:flex;align-items:center;justify-content:space-between;gap:10px}.wa-card-logo{display:flex;align-items:center;gap:9px;font-size:12.5px;font-weight:900;color:var(--ink);line-height:1.25}.wa-card-logo img{width:24px;height:24px;flex:none}.wa-check{width:20px;height:20px;display:grid;place-items:center;border-radius:999px;background:rgba(29,78,216,.10);color:#1D4ED8;font-weight:950}.wa-benefit{font-size:12.5px;color:var(--muted);line-height:1.42;margin:0}.wa-checkbox{display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:850;color:var(--ink)}.wa-checkbox input{width:16px;height:16px;accent-color:#25D366}.mirror-card{margin-top:11px;border:1px solid rgba(4,86,12,.18);background:linear-gradient(180deg,rgba(181,248,87,.16),rgba(255,255,255,.94));border-radius:16px;padding:11px;display:grid;gap:9px}.mirror-card.lex-mirror{border-color:rgba(84,98,226,.18);background:linear-gradient(180deg,rgba(187,192,243,.16),rgba(255,255,255,.94))}.mirror-card-top{display:flex;align-items:center;justify-content:space-between;gap:10px}.mirror-card-title{display:flex;align-items:center;gap:9px;font-size:12.5px;font-weight:900;color:var(--ink);line-height:1.25}.mirror-icon{width:24px;height:24px;display:grid;place-items:center;border-radius:10px;background:var(--green);color:var(--lime);font-weight:950}.mirror-card.lex-mirror .mirror-icon{background:var(--efile-night);color:var(--efile-bright)}.mirror-check{width:20px;height:20px;display:grid;place-items:center;border-radius:999px;background:rgba(4,86,12,.08);color:var(--green);font-weight:950}.mirror-copy,.addon-price,.addon-micro,.addon-note{font-size:12px;color:var(--muted);line-height:1.38;margin:0}.addon-price{font-weight:900;color:var(--ink)}.addon-micro{font-weight:760}.mirror-checkbox{display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:850;color:var(--ink)}.mirror-checkbox input{width:16px;height:16px;accent-color:var(--green)}.addon-note{margin-top:9px;border:1px dashed rgba(4,25,18,.12);background:#FBFAF6;border-radius:12px;padding:8px 9px;font-weight:780}
+
+    .hidden{display:none!important}
+    @media (max-width:1100px){
+      .hero-grid,.layout{grid-template-columns:1fr}.tokens-rail{position:static}.solution-strip{grid-template-columns:repeat(3,minmax(0,1fr))}.plan-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.promo{grid-template-columns:1fr}.pay-pill{display:none}.site-nav{justify-content:flex-start}
+    }
+    @media (max-width:700px){
+      .wrap{width:min(100% - 24px,1220px)}.section{padding-bottom:44px}.hero{padding-top:46px}.hero-grid{gap:16px}h1{font-size:48px}.promo{border-radius:24px;padding:15px}.solution-strip{display:flex;overflow:auto;scroll-snap-type:x mandatory;padding-bottom:4px}.solution-card{min-width:210px;scroll-snap-align:start}.plan-grid,.token-packages,.gov-grid{grid-template-columns:1fr}.plan{min-height:0}.section-head{display:grid}.badges{justify-content:flex-start}.preview-grid{grid-template-columns:1fr}.token-actions{grid-template-columns:1fr}.conversion-table{display:block;overflow:auto}.final-strip{display:grid}.topbar{height:66px}.brand{font-size:18px}.mark{width:34px;height:34px}.btn{width:100%}.hero-actions{display:grid}.token-detail,.conversion,.gov-block,.main-card{padding:14px;border-radius:24px}
+    }
+  .site-nav .nav-bolt,.topnav .nav-bolt.b2b{color:#81C91C!important}.site-nav .gov-tender .nav-bolt,.site-nav .gov-pricing .nav-bolt,.topnav .nav-bolt.gov{color:#C62118!important}
+    .experta-plan-promo{border-color:rgba(247,100,92,.34);background:linear-gradient(135deg,rgba(255,180,176,.28),#fff)}.experta-plan-promo .tag{background:#fff;color:var(--gov-coral);border-color:rgba(247,100,92,.28)}.experta-plan-promo .promo-metrics{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}.experta-plan-promo .promo-metrics div{border:1px solid var(--line);border-radius:18px;background:#fff;padding:12px}.experta-plan-promo .promo-metrics span{display:block;color:var(--muted2);font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.06em}.experta-plan-promo .promo-metrics strong{display:block;margin-top:5px;color:var(--gov-coral);font-size:27px;letter-spacing:-.05em}.experta-plan-promo .promo-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}@media(max-width:700px){.experta-plan-promo .promo-metrics{grid-template-columns:1fr}}
+
+</style>
+
+<style id="slx-global-footer-style">
+.slx-global-footer{margin-top:42px;padding:44px 0 32px;border-top:1px solid var(--line,rgba(4,25,18,.10));background:#fff;color:var(--ink,#041912);clear:both}.slx-global-footer .slx-footer-container{width:min(1180px,calc(100% - 48px));margin-inline:auto}.slx-footer-grid{display:grid;grid-template-columns:1.25fr repeat(4,1fr);gap:24px}.slx-footer-brand{display:inline-flex;align-items:center;gap:10px;font-weight:850;letter-spacing:-.035em;font-size:20px;white-space:nowrap}.slx-footer-mark{--symbol-bg:#04560C;--symbol-bolt:#B5F857;width:34px;height:34px;position:relative;display:inline-grid;place-items:center;flex:none}.slx-footer-mark:before{content:"";position:absolute;inset:0;background:var(--symbol-bg);clip-path:polygon(50% 0%,61% 32%,100% 50%,61% 68%,50% 100%,39% 68%,0% 50%,39% 32%)}.slx-footer-mark span{position:relative;z-index:1;color:var(--symbol-bolt);font-weight:950;font-size:17px}.slx-global-footer h4{margin:0 0 12px;font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted2,var(--muted-2,#8A948F))}.slx-global-footer a,.slx-global-footer p{display:block;margin:0 0 9px;color:var(--muted,#66736D);font-size:14px;line-height:1.45;text-decoration:none}.slx-global-footer a:hover{color:var(--ink,#041912)}.slx-footer-bottom{margin-top:34px;display:flex;justify-content:space-between;gap:16px;color:var(--muted2,var(--muted-2,#8A948F));font-size:13px}.slx-footer-efile,.slx-footer-efile span{color:#063C83!important;font-weight:850}.slx-footer-gov span{color:#C62118}.slx-footer-product span{color:#81C91C}.slx-footer-drive span{color:#063C83;font-weight:900}@media (max-width:1080px){.slx-footer-grid{grid-template-columns:repeat(2,1fr)}}@media (max-width:700px){.slx-global-footer .slx-footer-container{width:min(100% - 24px,1180px)}.slx-footer-grid{grid-template-columns:1fr}.slx-footer-bottom{flex-direction:column}}
+</style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap nav">
+      <a href="#planes" class="brand" aria-label="SmartLicit">
+        <span class="mark"><span class="bolt"></span></span>
+        SmartLicit
+      </a>
+      <nav class="site-nav" aria-label="Menú principal SmartLicit">
+        <a class="product-link" href="#planes" data-nav-solution="tender" aria-label="Smart Tender"><span class="nav-bolt" aria-hidden="true">⚡</span>Tender</a>
+        <a class="product-link" href="#planes" data-nav-solution="pricing" aria-label="Smart Pricing"><span class="nav-bolt" aria-hidden="true">⚡</span>Pricing</a>
+        <a class="product-link" href="#planes" data-nav-solution="file" aria-label="Smart File"><span class="nav-bolt" aria-hidden="true">⚡</span>File</a>
+        <a class="product-link" href="#planes" data-nav-solution="lex" aria-label="Smart Lex"><span class="nav-bolt" aria-hidden="true">⚡</span>Lex</a>
+        <a class="gov-tender" href="#gobierno" aria-label="Tender Gov"><span class="nav-bolt" aria-hidden="true">⚡</span>Tender Gov</a>
+        <a class="gov-pricing" href="#gobierno" aria-label="Pricing Gov"><span class="nav-bolt" aria-hidden="true">⚡</span>Pricing Gov</a>
+        <a class="active" href="#planes" aria-label="Planes">Planes</a>
+        <a href="../index.html#blog" aria-label="Blog">Blog</a>
+        <a href="../index.html#ipg" aria-label="Índice de Precios Gubernamentales">IPG</a>
+      </nav>
+      <div class="account">
+        <button class="account-trigger" type="button" aria-haspopup="true" aria-expanded="false" aria-label="Mi Cuenta">Mi Cuenta ▾</button>
+        <div class="account-menu" role="menu" aria-label="Opciones de Mi Cuenta">
+          <a href="#" role="menuitem">Perfil</a>
+          <a href="#" role="menuitem">Planes</a>
+          <a href="#" role="menuitem">Créditos</a>
+          <a href="#tokens" role="menuitem">Tokens</a>
+          <a href="#" role="menuitem">Historial</a>
+          <a href="#" role="menuitem">Configuración</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="section" id="planes">
+    <div class="wrap">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-grid">
+          <div>
+            <div class="eyebrow"><span class="spark"></span> Planes SmartLicit 2026</div>
+            <h1 id="hero-title">Una sola inteligencia, múltiples soluciones.</h1>
+            <p class="lead">Elige la capacidad que necesitas y conserva precio anual pagando mes a mes durante la promoción de salida.</p>
+            <div class="hero-actions">
+              <a class="btn accent" href="#planes">Contratar con precio fundador</a>
+              <a class="btn" href="#tokens">Ver tokens</a>
+              <a class="btn efile" href="#conversiones">Tabla de conversiones</a>
+            </div>
+          </div>
+          <aside class="hero-panel token-hero" id="tokens" aria-label="Tokens siempre disponibles">
+            <div class="hero-token-head">
+              <div>
+                <span class="badge efile">Tokens</span>
+                <h2>Tokens siempre disponibles</h2>
+                <p>Usa tokens para ampliar capacidad en Smart Tender, Smart Pricing o para generar, actualizar, validar y descargar documentos desde eFile.</p>
+              </div>
+              <span class="mark token-green" aria-hidden="true"><span class="bolt"></span></span>
+            </div>
+            <div class="token-promo">
+              <strong>10 tokens gratis en mayo + 10 en junio</strong>
+              <p>Canje disponible hasta el 30 de junio de 2026.</p>
+              <div class="token-actions">
+                <button class="btn efile slim" data-toast="Canje de mayo iniciado: 10 tokens gratis.">Canjear mayo</button>
+                <button class="btn efile slim" data-toast="Canje de junio iniciado: 10 tokens gratis.">Canjear junio</button>
+              </div>
+            </div>
+            <div class="table-mini">
+              <div><span>eFile</span><strong>Instant Doc = 1 Token</strong></div>
+              <div><span>Smart Tender</span><strong>1 crédito = 5 tokens</strong></div>
+              <div><span>Smart Pricing</span><strong>1 crédito = 10 tokens</strong></div>
+            </div>
+            <div class="hero-token-actions">
+              <button class="btn accent" id="open-token-modal">Ver paquetes de tokens</button>
+              <a class="btn efile" href="#conversiones">Ver conversiones</a>
+            </div>
+            <p class="microcopy" style="position:relative;z-index:1">Los tokens no sustituyen un plan. Sin plan activo, solo sirven para documentos de eFile.</p>
+          </aside>
+        </div>
+      </section>
+
+      <section class="promo" aria-label="Promoción de salida">
+        <div>
+          <h2>Promoción de salida · hasta el 30 de junio de 2026</h2>
+          <p><strong>Contrata hoy y paga el precio anual como mensual.</strong> Cancela cuando quieras. Conservas este precio mensual hasta que canceles.</p>
+          <p>Después del 30 de junio de 2026, el precio mensual regresa a su tarifa normal. Para obtener el precio anual después de esa fecha, será necesario pagar el año completo.</p>
+        </div>
+        <span class="tag">Precio Fundador</span>
+      </section>
+
+
+      <section class="promo experta-plan-promo" aria-label="Promoción Experta IA">
+        <div>
+          <h2>Experta + IA · promoción única mayo–junio 2026</h2>
+          <p><strong>Los casos de Experta + IA pagan solo el 35% inicial del fee.</strong> El 65% por éxito no se cobra durante mayo y junio de 2026 para impulsar alianzas beta con licitantes que decidan comenzar con la tecnología.</p>
+          <p>Requiere plan activo de Smart Tender, Smart Pricing y eFile. Al ejecutarse por staff experto consume 1 crédito Smart Tender y 1 crédito Smart Pricing.</p>
+          <div class="promo-metrics"><div><span>Se paga</span><strong>35%</strong></div><div><span>Bonificación beta</span><strong>65%</strong></div></div>
+          <div class="promo-actions"><a class="btn accent" href="../tender.html" target="_top">Ver comisión Experta + IA</a><a class="btn" href="#planes">Contratar plan Tender</a></div>
+        </div>
+        <span class="tag">Experta + IA Beta</span>
+      </section>
+
+      <section class="solution-strip" aria-label="Vista general de soluciones">
+        <button class="solution-card active" data-solution="tender">
+          <span class="top"><span><h3>Smart Tender</h3><p>Oportunidades, análisis, seguimiento y propuesta.</p></span><span class="mini-mark">↯</span></span>
+          <span class="badge green">Smart Pricing · Propuesta IA</span>
+        </button>
+        <button class="solution-card" data-solution="pricing">
+          <span class="top"><span><h3>Smart Pricing</h3><p>Precio inteligente, público y por dependencia.</p></span><span class="mini-mark">↯</span></span>
+          <span class="badge green">Estudios + tokens</span>
+        </button>
+        <button class="solution-card" data-solution="file">
+          <span class="top"><span><h3>Smart File</h3><p>Expedientes legales, alertas y trazabilidad.</p></span><span class="mini-mark">↯</span></span>
+          <span class="badge green">WA opcional</span>
+        </button>
+        <button class="solution-card" data-solution="lex">
+          <span class="top"><span><h3>Smart Lex</h3><p>Abogado de IA para abogados.</p></span><span class="mini-mark">↯</span></span>
+          <span class="badge green">WA Add-On · documentos finales</span>
+        </button>
+        <button class="solution-card" data-solution="tokens">
+          <span class="top"><span><h3>Tokens</h3><p>Capacidad adicional disponible siempre.</p></span><span class="mini-mark efile">↯</span></span>
+          <span class="badge efile">Siempre disponibles</span>
+        </button>
+        <button class="solution-card" data-solution="gov">
+          <span class="top"><span><h3>Gobierno / Institucional</h3><p>Tender Gov y Pricing Gov.</p></span><span class="mini-mark gov">↯</span></span>
+          <span class="badge gov">Contactar Ventas</span>
+        </button>
+      </section>
+
+      <div class="layout">
+        <section class="main-card" id="planes" aria-labelledby="solution-title">
+          <div class="section-head">
+            <div>
+              <span class="kicker" id="solution-kicker">Empresas / Profesionales · Licitaciones</span>
+              <h2 id="solution-title">Smart Tender</h2>
+              <p id="solution-description">Encuentra, analiza, sigue y compite licitaciones. Desde cada oportunidad puedes usar Smart Pricing, Propuesta IA y, si cumples requisitos, Experta + IA.</p>
+            </div>
+            <div class="badges" id="solution-badges">
+              <span class="badge green">Sí admite tokens</span>
+              <span class="badge efile">eFile activo</span>
+              <span class="badge green">WA add-on</span>
+            </div>
+          </div>
+          <div class="plan-grid" id="plan-grid"></div>
+          <p class="microcopy" id="solution-note">Smart Tender no crea licitaciones del lado proveedor: analiza oportunidades existentes, define pricing y prepara la propuesta.</p>
+        </section>
+      </div>
+
+      <section class="token-detail" aria-labelledby="token-detail-title">
+        <h2 id="token-detail-title">Paquetes de tokens</h2>
+        <p>Capacidad adicional y uso documental. Antes de consumir tokens, el usuario siempre verá el costo y deberá confirmar.</p>
+        <div class="token-packages">
+          <article class="package"><h3>Free</h3><div class="tokens">5 tokens</div><div class="cost">$0 MXN · sin IVA</div></article>
+          <article class="package"><h3>Lite</h3><div class="tokens">10 tokens</div><div class="cost">$490 MXN · sin IVA</div></article>
+          <article class="package"><h3>Plus</h3><div class="tokens">25 tokens</div><div class="cost">$990 MXN · sin IVA</div></article>
+          <article class="package"><h3>Max</h3><div class="tokens">100 tokens</div><div class="cost">$2,990 MXN · sin IVA</div></article>
+        </div>
+        <div class="notice">Comprar tokens no habilita por sí solo Smart Tender, Smart Pricing, Smart File, Smart Lex, Tender Gov, Pricing Gov, Propuesta IA ni Experta + IA.</div>
+      </section>
+
+      <section class="conversion" id="conversiones" aria-labelledby="conversion-title">
+        <h2 id="conversion-title">Conversión de tokens</h2>
+        <p>Tabla independiente para créditos y documentos, separada del flujo de preparación de propuestas.</p>
+        <table class="conversion-table">
+          <thead><tr><th>Uso</th><th>Conversión</th><th>Regla operativa</th></tr></thead>
+          <tbody>
+            <tr><td><strong>eFile</strong>Documentos avanzados</td><td>1 generación, actualización, validación o descarga documental avanzada = <strong>1 token</strong></td><td>Aplica al expediente administrativo y documental estructurado.</td></tr>
+            <tr><td><strong>Smart Tender</strong>Capacidad adicional</td><td>1 crédito Smart Tender = <strong>5 tokens</strong></td><td>Uso adicional para licitación/oportunidad cuando el plan se agota.</td></tr>
+            <tr><td><strong>Smart Pricing</strong>Estudio adicional</td><td>1 crédito Smart Pricing = <strong>10 tokens</strong></td><td>Uso adicional para estudio cuando el plan se agota.</td></tr>
+            <tr><td><strong>Propuesta IA / Experta + IA</strong>Preparación de propuesta</td><td>No se muestra como descarga documental.</td><td>Se consume conforme a créditos de Smart Tender y Smart Pricing. Experta + IA requiere Smart Tender + Smart Pricing + eFile activo y, al ejecutarse por staff, consume 1 crédito Smart Tender + 1 crédito Smart Pricing.</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="gov-block" id="gobierno" aria-labelledby="gov-title">
+        <div class="section-head">
+          <div>
+            <span class="kicker">Gobierno / Institucional</span>
+            <h2 id="gov-title">Tender Gov y Pricing Gov</h2>
+            <p>Soluciones para dependencias y entidades de gobierno. Se muestran como contacto comercial, sin precios públicos.</p>
+          </div>
+          <div class="badges"><span class="badge gov">Contactar Ventas</span><span class="badge">Sin precios públicos</span></div>
+        </div>
+        <div class="gov-grid">
+          <article class="gov-card">
+            <span class="mark gov"><span class="bolt"></span></span>
+            <h3>Tender Gov</h3>
+            <p>Crea y publica licitaciones con mayor capacidad operativa y menor riesgo de error.</p>
+            <a class="btn gov" href="mailto:ventas@smartlicit.com">Contactar Ventas</a>
+          </article>
+          <article class="gov-card">
+            <span class="mark pricing-gov"><span class="bolt"></span></span>
+            <h3>Pricing Gov</h3>
+            <p>Genera estudios de mercado institucionales, trazables y auditables.</p>
+            <a class="btn gov" href="mailto:ventas@smartlicit.com">Contactar Ventas</a>
+          </article>
+        </div>
+      </section>
+
+      <section class="final-strip" aria-label="Información de pago">
+        <div><strong>Aceptamos todas las tarjetas</strong><br><span>Pago seguro con pasarela BBVA integrada de forma nativa · MXN · precios sin IVA.</span></div>
+        <div class="cards"><i>Visa</i><i>Mastercard</i><i>Amex</i><i>BBVA</i></div>
+      </section>
+    </div>
+  </main>
+
+  <div class="modal-bg" id="token-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal">
+      <div class="modal-head">
+        <div>
+          <h2 id="modal-title">Comprar tokens SmartLicit</h2>
+          <p>Capacidad adicional para Smart Tender, Smart Pricing y documentos avanzados de eFile.</p>
+        </div>
+        <button class="close" id="close-token-modal" aria-label="Cerrar">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="token-packages">
+          <article class="package"><h3>Free</h3><div class="tokens">5 tokens</div><div class="cost">$0 MXN · sin IVA</div><button class="btn efile slim" style="margin-top:12px;width:100%">Activar</button></article>
+          <article class="package"><h3>Lite</h3><div class="tokens">10 tokens</div><div class="cost">$490 MXN · sin IVA</div><button class="btn primary slim" style="margin-top:12px;width:100%">Comprar</button></article>
+          <article class="package"><h3>Plus</h3><div class="tokens">25 tokens</div><div class="cost">$990 MXN · sin IVA</div><button class="btn primary slim" style="margin-top:12px;width:100%">Comprar</button></article>
+          <article class="package"><h3>Max</h3><div class="tokens">100 tokens</div><div class="cost">$2,990 MXN · sin IVA</div><button class="btn primary slim" style="margin-top:12px;width:100%">Comprar</button></article>
+        </div>
+        <div class="notice">Antes de consumir tokens, el usuario siempre verá el costo y deberá confirmar.</div>
+      </div>
+    </div>
+  </div>
+<script>
+    const money = n => n === 0 ? '$0' : '$' + Number(n).toLocaleString('es-MX');
+    const planData = {
+      tender: {
+        kicker:'Empresas / Profesionales · Licitaciones',
+        title:'Smart Tender',
+        description:'Encuentra, analiza, sigue y compite licitaciones. Desde cada oportunidad puedes usar Smart Pricing, Propuesta IA y, si cumples requisitos, Experta + IA.',
+        note:'Smart Tender no crea licitaciones del lado proveedor: analiza oportunidades existentes, define pricing y prepara la propuesta.',
+        badges:['Sí admite tokens','eFile activo','WA add-on'],
+        badgeClasses:['green','efile','green'],
+        plans:[
+          {name:'Free',unit:'1 licitación',promo:0,normal:0,annual:0,saving:0,wa:49,tokens:'1 licitación adicional = 5 tokens',efile:'Expediente base disponible',features:['Búsqueda y lectura inicial de oportunidades','Análisis básico con IA','Expansión vía tokens cuando aplique'],mirror:{kind:'pricing',title:'Mirror Smart Pricing',label:'Agregar 1 Smart Pricing Free',price:0,copy:'Agrega 1 estudio Smart Pricing al paquete Free.'},featured:false},
+          {name:'Básico',unit:'5 licitaciones',promo:790,normal:990,annual:9480,saving:2400,wa:99,tokens:'1 crédito Smart Tender = 5 tokens',efile:'eFile activo incluido',features:['Búsqueda, lectura y análisis con IA','Alertas y seguimiento','Acciones: Smart Pricing, Propuesta IA y Experta + IA según requisitos'],mirror:{kind:'pricing',title:'Mirror Smart Pricing',label:'Agregar 5 Smart Pricing',price:390,copy:'Precio paquete con Tender. Costo adicional al plan elegido.'},featured:true},
+          {name:'PyME',unit:'10 licitaciones',promo:1290,normal:1590,annual:15480,saving:3600,wa:190,tokens:'1 crédito Smart Tender = 5 tokens',efile:'eFile activo incluido',features:['Mayor capacidad de oportunidades','Alertas y seguimiento por volumen','Preparación de propuesta con IA'],mirror:{kind:'pricing',title:'Mirror Smart Pricing',label:'Agregar 10 Smart Pricing',price:790,copy:'Precio paquete con Tender. Costo adicional al plan elegido.'},featured:false},
+          {name:'Corporativo',unit:'25 licitaciones',promo:2990,normal:3490,annual:35880,saving:6000,wa:290,tokens:'1 crédito Smart Tender = 5 tokens',efile:'eFile activo incluido',features:['Capacidad alta de licitaciones','Gestión operativa para equipos','Mejor trazabilidad de oportunidades y propuestas'],mirror:{kind:'pricing',title:'Mirror Smart Pricing',label:'Agregar 25 Smart Pricing',price:1290,copy:'Precio paquete con Tender. Costo adicional al plan elegido.'},featured:false}
+        ]
+      },
+      pricing: {
+        kicker:'Empresas / Profesionales · Precios',
+        title:'Smart Pricing',
+        description:'Inteligencia de precios para evaluar precio inteligente, precio público, precio por dependencia, rentabilidad, viabilidad y estrategia económica.',
+        note:'Smart Pricing entrega estudios, señales económicas y puede enviar Smart Pricing finales, PDF final, Excel de evidencia y documentos entregables por WhatsApp a hasta 3 números registrados.',
+        badges:['Sí admite tokens','eFile activo','WA add-on'],
+        badgeClasses:['green','efile','green'],
+        plans:[
+          {name:'Free',unit:'1 estudio',promo:0,normal:0,annual:0,saving:0,wa:99,waBenefit:'Envía Smart Pricing finales y documentos entregables por WhatsApp a hasta 3 números registrados.',tokens:'1 crédito Smart Pricing = 10 tokens',efile:'Expediente base disponible',features:['Estudio inicial','Consulta básica de señales de precio','Expansión vía tokens cuando aplique']},
+          {name:'Básico',unit:'10 estudios',promo:790,normal:990,annual:9480,saving:2400,wa:149,waBenefit:'Envía Smart Pricing finales y documentos entregables por WhatsApp a hasta 3 números registrados.',tokens:'1 crédito Smart Pricing = 10 tokens',efile:'eFile activo incluido',features:['Estudios de mercado','Comparativas de precios','Insumos para decisión comercial'],featured:true},
+          {name:'Intermedio',unit:'20 estudios',promo:1290,normal:1590,annual:15480,saving:3600,wa:190,waBenefit:'Envía Smart Pricing finales y documentos entregables por WhatsApp a hasta 3 números registrados.',tokens:'1 crédito Smart Pricing = 10 tokens',efile:'eFile activo incluido',features:['Mayor volumen de estudios','Comparativas y señales de rentabilidad','Precio Fundador confirmado hasta 30 de junio de 2026']},
+          {name:'Avanzado',unit:'50 estudios',promo:2990,normal:3490,annual:35880,saving:6000,wa:290,waBenefit:'Envía Smart Pricing finales y documentos entregables por WhatsApp a hasta 3 números registrados.',tokens:'1 crédito Smart Pricing = 10 tokens',efile:'eFile activo incluido',features:['Alta capacidad analítica','Estrategia económica por volumen','Precio Fundador confirmado hasta 30 de junio de 2026']}
+        ]
+      },
+      file: {
+        kicker:'Empresas / Profesionales · Monitoreo legal',
+        title:'Smart File',
+        description:'Monitoreo de expedientes legales, alertas y trazabilidad documental. No se mezcla con licitaciones salvo caso concreto.',
+        note:'Smart File opera por expediente monitoreado. Tokens no aplica.',
+        badges:['Tokens no aplica','WA add-on','eFile activo'],
+        badgeClasses:['','green','efile'],
+        plans:[
+          {name:'Free',unit:'1 expediente',promo:0,normal:0,annual:0,saving:0,wa:49,tokens:'No aplica',efile:'Expediente base disponible',features:['Monitoreo inicial','Visibilidad centralizada','WA opcional']},
+          {name:'Profesional',unit:'5 expedientes',promo:790,normal:990,annual:9480,saving:2400,wa:99,tokens:'No aplica',efile:'eFile activo incluido',features:['Monitoreo de expedientes','Alertas de seguimiento','Trazabilidad legal operativa']},
+          {name:'Despacho',unit:'10 expedientes',promo:1990,normal:2590,annual:23880,saving:7200,wa:190,tokens:'No aplica',efile:'eFile activo incluido',features:['Mayor capacidad de expedientes','Alertas para operación de despacho','Visibilidad centralizada']},
+          {name:'Gran Despacho',unit:'20 expedientes',promo:3990,normal:4590,annual:47880,saving:7200,wa:290,tokens:'No aplica',efile:'eFile activo incluido',features:['Capacidad alta de monitoreo','Control documental','Trazabilidad para equipos']}
+        ]
+      },
+      lex: {
+        kicker:'Empresas / Profesionales · Legal AI',
+        title:'Smart Lex',
+        description:'Abogado de IA para abogados. Organiza, analiza y genera trabajo jurídico con mayor velocidad y trazabilidad.',
+        note:'Smart Lex opera por proyecto legal; puede enviar documentos finales por WhatsApp a hasta 3 números registrados para revisión o autorización. Tokens no aplica.',
+        badges:['WA add-on','Tokens no aplica','eFile activo'],
+        badgeClasses:['green','','efile'],
+        plans:[
+          {name:'Free',unit:'1 proyecto legal',promo:0,normal:0,annual:0,saving:0,wa:99,waBenefit:'Enviar documentos finales creados en Smart Lex por WhatsApp a hasta 3 números registrados para revisión o autorización.',tokens:'No aplica',efile:'Expediente base disponible',features:['Proyecto legal inicial','Asistencia de IA básica','Organización documental'],mirror:{kind:'file',title:'Mirror Smart File',label:'Agregar 1 Smart File Free',price:0,copy:'Agrega monitoreo documental/legal básico al proyecto Free.'}},
+          {name:'Profesional',unit:'5 proyectos legales',promo:790,normal:990,annual:9480,saving:2400,wa:149,waBenefit:'Enviar documentos finales creados en Smart Lex por WhatsApp a hasta 3 números registrados para revisión o autorización.',tokens:'No aplica',efile:'eFile activo incluido',features:['Análisis jurídico','Generación de escritos','Estructuración del trabajo legal'],mirror:{kind:'file',title:'Mirror Smart File',label:'Agregar 5 Smart File',price:790,copy:'Precio paquete con Lex. Costo adicional al plan elegido.'}},
+          {name:'Despacho',unit:'10 proyectos legales',promo:1290,normal:1590,annual:15480,saving:3600,wa:190,waBenefit:'Enviar documentos finales creados en Smart Lex por WhatsApp a hasta 3 números registrados para revisión o autorización.',tokens:'No aplica',efile:'eFile activo incluido',features:['Mayor volumen de proyectos','Trabajo jurídico asistido por IA','Trazabilidad de entregables'],mirror:{kind:'file',title:'Mirror Smart File',label:'Agregar 10 Smart File',price:1990,copy:'Precio paquete con Lex. Costo adicional al plan elegido.'}},
+          {name:'Gran Despacho',unit:'20 proyectos legales',promo:1990,normal:2590,annual:23880,saving:7200,wa:290,waBenefit:'Enviar documentos finales creados en Smart Lex por WhatsApp a hasta 3 números registrados para revisión o autorización.',tokens:'No aplica',efile:'eFile activo incluido',features:['Capacidad alta de proyectos','Operación para equipos jurídicos','Control de documentos y entregables'],mirror:{kind:'file',title:'Mirror Smart File',label:'Agregar 20 Smart File',price:3990,copy:'Precio paquete con Lex. Costo adicional al plan elegido.'}}
+        ]
+      }
+    };
+
+    const govPlanData = {
+      tenderGov: {
+        label:'Tender Gov',
+        kicker:'Gobierno / Institucional · Tender Gov',
+        title:'Tender Gov',
+        description:'Solución B2G para que dependencias y entidades creen, revisen y publiquen licitaciones sin errores.',
+        note:'Tender Gov es B2G. La contratación institucional se cotiza por alcance, seguridad, repositorio y permisos. Los paquetes son Supuesto configurable para navegación pública.',
+        plans:[
+          {name:'Inicial',unit:'1 unidad compradora',promo:'Cotización',normal:'Institucional',annual:'Según alcance',saving:'Supuesto',wa:null,tokens:'Supuesto configurable',efile:'Repositorio institucional',features:['Flujo base de creación','Roles mínimos','Drive institucional seguro']},
+          {name:'Equipo',unit:'Hasta 3 unidades',promo:'Cotización',normal:'Institucional',annual:'Según alcance',saving:'Supuesto',wa:null,tokens:'Supuesto configurable',efile:'Repositorio institucional',features:['Revisión jurídica y técnica','Permisos por rol','Bitácora de cambios'],featured:true},
+          {name:'Dependencia',unit:'Multiunidad',promo:'Cotización',normal:'Institucional',annual:'Según alcance',saving:'Supuesto',wa:null,tokens:'Supuesto configurable',efile:'Repositorio institucional',features:['Plantillas reutilizables','POBALINES y reglas','Auditoría operativa']},
+          {name:'Entidad',unit:'Enterprise Gov',promo:'Cotización',normal:'Institucional',annual:'Según alcance',saving:'Supuesto',wa:null,tokens:'Supuesto configurable',efile:'Repositorio institucional',features:['Gobernanza avanzada','Integraciones y seguridad','Acompañamiento institucional']}
+        ]
+      },
+      pricingGov: {
+        label:'Pricing Gov',
+        kicker:'Gobierno / Institucional · Pricing Gov',
+        title:'Pricing Gov',
+        description:'B2G para estudios de mercado gubernamentales, fuentes, comparabilidad, POBALINES, evidencia, cálculo, dictamen y exportables.',
+        note:'Pricing Gov opera con reglas institucionales y repositorios seguros. Los paquetes se presentan como Supuesto configurable para completar navegación pública.',
+        plans:[
+          {name:'Paquete 50',unit:'50 estudios',promo:'Cotización',normal:'Institucional',annual:'Según alcance',saving:'Supuesto',wa:null,tokens:'Supuesto configurable',efile:'Repositorio institucional',features:['Estudios institucionales','Fuentes trazables','Exportables base']},
+          {name:'Paquete 100',unit:'100 estudios',promo:'Cotización',normal:'Institucional',annual:'Según alcance',saving:'Supuesto',wa:null,tokens:'Supuesto configurable',efile:'Repositorio institucional',features:['Mayor capacidad','Comparabilidad avanzada','Roles por unidad'],featured:true},
+          {name:'Paquete 200',unit:'200 estudios',promo:'Cotización',normal:'Institucional',annual:'Según alcance',saving:'Supuesto',wa:null,tokens:'Supuesto configurable',efile:'Repositorio institucional',features:['Uso multiunidad','POBALINES y reglas','Auditoría ampliada']},
+          {name:'Paquete 500',unit:'500 estudios',promo:'Cotización',normal:'Institucional',annual:'Según alcance',saving:'Supuesto',wa:null,tokens:'Supuesto configurable',efile:'Repositorio institucional',features:['Alta capacidad','Integraciones','Gobernanza institucional']}
+        ]
+      }
+    };
+
+    const planGrid = document.getElementById('plan-grid');
+    const solutionTitle = document.getElementById('solution-title');
+    const solutionKicker = document.getElementById('solution-kicker');
+    const solutionDescription = document.getElementById('solution-description');
+    const solutionBadges = document.getElementById('solution-badges');
+    const solutionNote = document.getElementById('solution-note');
+
+    function planCard(plan, opts = {}){
+      const isGov = opts && opts.gov === true;
+      const knownPromo = typeof plan.promo === 'number';
+      const normalAnnual = (typeof plan.normal === 'number' ? plan.normal * 12 : null);
+      const annualLabel = knownPromo ? money(plan.annual) : (isGov ? plan.annual : (normalAnnual ? money(normalAnnual) : 'Editar en CMS'));
+      const annualTitle = knownPromo ? 'Total anual equivalente' : 'Total anual normal';
+      const saving = knownPromo ? money(plan.saving) : (isGov ? plan.saving : 'Por definir');
+      const priceBlock = knownPromo ? `${money(plan.promo)} <small>MXN / mes</small>` : (isGov ? `<span style="font-size:21px;letter-spacing:-.04em">${plan.promo}</span>` : `<span style="font-size:18px;letter-spacing:-.03em">Precio Fundador<br>por confirmar</span>`);
+      const normalBlock = isGov ? plan.normal : (plan.normal === 0 ? 'Precio mensual: $0 MXN / mes' : `Después del 30 de junio: ${money(plan.normal)} MXN / mes`);
+      const features = plan.features.map(f=>`<li>${f}</li>`).join('');
+      const ribbon = plan.featured ? `<span class="ribbon badge ${isGov?'gov':'green'}">Recomendado</span>` : (plan.assumption ? '<span class="ribbon badge warn">Supuesto CMS</span>' : '');
+      const waBenefit = plan.waBenefit || 'Enviar alertas y entregables por WhatsApp a hasta 3 números registrados.';
+      const waLine = plan.wa !== null ? `<li>WhatsApp Add-On disponible · +${money(plan.wa)} MXN / mes</li>` : (isGov ? '<li>Contacto institucional vía ventas</li>' : '<li>WhatsApp: No aplica</li>');
+      const mirrorCombo = (!isGov && plan.mirror) ? `<div class="mirror-card ${plan.mirror.kind==='file'?'lex-mirror':''}"><div class="mirror-card-top"><div class="mirror-card-title"><span class="mirror-icon">↯</span><span>${plan.mirror.title}</span></div><span class="mirror-check">✓</span></div><p class="mirror-copy">${plan.mirror.copy}</p><p class="addon-price">Precio adicional: +${money(plan.mirror.price)} MXN / mes</p><label class="mirror-checkbox"><input type="checkbox" aria-label="${plan.mirror.label} ${plan.name}"> ${plan.mirror.label}</label></div>` : '';
+      const addonNote = (!isGov && (plan.wa !== null || plan.mirror)) ? '<p class="addon-note">Los paquetes seleccionados se suman al precio mensual del plan.</p>' : '';
+      const waCombo = (!isGov && plan.wa !== null) ? `<div class="wa-card"><div class="wa-card-top"><div class="wa-card-logo"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0OCA0OCIgYXJpYS1sYWJlbD0iV2hhdHNBcHAiPgogIDxjaXJjbGUgY3g9IjI0IiBjeT0iMjQiIHI9IjIyIiBmaWxsPSIjMjVEMzY2Ii8+CiAgPHBhdGggZmlsbD0iI2ZmZiIgZD0iTTM0LjcgMjkuMWMtLjQgMS4yLTIuMiAyLjItMy4xIDIuMy0uOC4xLTEuOS4yLTMuMS0uMi0uNy0uMi0xLjYtLjUtMi44LTEtNC45LTIuMS04LjEtNy04LjMtNy4zLS4yLS4zLTItMi43LTItNS4xIDAtMi40IDEuMi0zLjYgMS43LTQgLjQtLjUuOS0uNiAxLjMtLjZoLjljLjMgMCAuNy0uMSAxIC44LjQgMSAuMS4yIDEuMSAyLjcuMS4yLjIuNSAwIC44LS4xLjMtLjIuNS0uNS44LS4yLjMtLjUuNi0uNy44LS4yLjItLjQuNS0uMi45LjIuNCAxIDEuNyAyLjEgMi43IDEuNSAxLjMgMi43IDEuOCAzLjEgMiAuNC4yLjcuMiAxLS4xLjMtLjQgMS4xLTEuMyAxLjQtMS43LjMtLjQuNi0uMyAxLS4yLjQuMSAyLjYgMS4yIDMgMS40LjQuMi43LjMuOC41LjEuMi4xIDEuMy0uMyAyLjVaIi8+CiAgPHBhdGggZmlsbD0iI2ZmZiIgZD0ibTEzIDM3IDIuMi03LjhhMTYuNCAxNi40IDAgMSAxIDYuNCA0LjdMMTMgMzdabTkuOS03LjFoLjFhMTEuOSAxMS45IDAgMSAwLTUtNC41bC40LjctMS4zIDQuNSA0LjctMS4yLjguNFoiIG9wYWNpdHk9Ii45NSIvPgo8L3N2Zz4K" alt="WhatsApp"><span>WhatsApp Add-On</span></div><span class="wa-check">✓</span></div><p class="wa-benefit">${waBenefit}</p><p class="addon-price">Precio adicional: +${money(plan.wa)} MXN / mes</p><p class="addon-micro">Costo adicional al plan elegido.</p><label class="wa-checkbox"><input type="checkbox" aria-label="Agregar Notificaciones WhatsApp ${plan.name}"> Agregar Notificaciones WhatsApp</label></div>` : '';
+      return `<article class="plan ${plan.featured?'featured':''} ${isGov?'gov-plan':''}">
+        ${ribbon}
+        <h3>${plan.name}</h3>
+        <div class="capacity"><span class="capacity-bolt">⚡</span>${plan.unit} incluidas</div>
+        <div class="pricebox">
+          <div class="price-label">${isGov ? 'Modalidad institucional' : (knownPromo ? 'Precio Fundador hasta 30 junio 2026' : 'Promoción de salida')}</div>
+          <div class="price">${priceBlock}</div>
+          <div class="normal">${normalBlock}</div>
+        </div>
+        <div class="saving">
+          <div><span>${isGov ? 'Vigencia' : annualTitle}</span><strong>${annualLabel}</strong></div>
+          <div><span>${isGov ? 'Nota' : 'Ahorro anual'}</span><strong>${saving}</strong></div>
+        </div>
+        <ul class="features">
+          <li>${plan.tokens}</li>
+          ${waLine}
+          ${features}
+        </ul>
+        ${mirrorCombo}
+        ${waCombo}
+        ${addonNote}
+        <div class="efile-box"><strong>${plan.efile}</strong><p>Tu expediente administrativo y documental se mantiene actualizado con todo lo automatizable vía Urdaten y se complementa con información cargada por el usuario.</p></div>
+        <div class="card-actions"><button class="btn ${isGov?'gov':(plan.normal===0?'':'primary')} slim">${isGov?'Contactar Ventas':(plan.normal===0?'Empezar gratis':'Contratar con precio fundador')}</button><button class="btn slim">Ver detalle</button></div>
+      </article>`;
+    }
+
+
+    const tokenPackages = [
+      {name:'Free',unit:'5 tokens',cost:'$0 MXN',badge:'Canje inicial',featured:false,cta:'Activar paquete',features:['Ideal para probar documentos eFile.','eFile: 1 documento avanzado = 1 token.','No sustituye un plan activo.']},
+      {name:'Lite',unit:'10 tokens',cost:'$490 MXN',badge:'Uso puntual',featured:false,cta:'Comprar tokens',features:['Capacidad adicional para operaciones específicas.','Smart Tender: 1 crédito = 5 tokens.','Smart Pricing: 1 crédito = 10 tokens.']},
+      {name:'Plus',unit:'25 tokens',cost:'$990 MXN',badge:'Más flexible',featured:true,cta:'Comprar tokens',features:['Paquete recomendado para usuarios activos.','Puede cubrir documentos eFile y créditos adicionales.','Antes de consumir tokens, el usuario confirma el costo.']},
+      {name:'Max',unit:'100 tokens',cost:'$2,990 MXN',badge:'Mayor capacidad',featured:false,cta:'Comprar tokens',features:['Capacidad alta para equipos y operación recurrente.','Útil cuando se agotan créditos de Tender o Pricing.','No habilita por sí solo Propuesta IA ni Experta + IA.']}
+    ];
+
+    function tokenPackageCard(pkg){
+      const features = pkg.features.map(f=>`<li>${f}</li>`).join('');
+      return `<article class="plan token-plan ${pkg.featured?'featured':''}">
+        ${pkg.featured ? '<span class="ribbon badge efile">Recomendado</span>' : `<span class="ribbon badge efile">${pkg.badge}</span>`}
+        <h3>${pkg.name}</h3>
+        <div class="unit">${pkg.unit}</div>
+        <div class="pricebox">
+          <div class="price-label">Paquete de tokens</div>
+          <div class="price">${pkg.cost} <small>· sin IVA</small></div>
+          <div class="normal">Tokens siempre disponibles para capacidad adicional y uso documental.</div>
+        </div>
+        <div class="saving">
+          <div><span>Smart Tender</span><strong>1 crédito = 5 tokens</strong></div>
+          <div><span>Smart Pricing</span><strong>1 crédito = 10 tokens</strong></div>
+        </div>
+        <ul class="features">
+          ${features}
+        </ul>
+        <div class="efile-box"><strong>Regla base</strong><p>Sin plan activo, los tokens solo sirven para generación, actualización, validación o descarga documental avanzada desde eFile.</p></div>
+        <div class="card-actions"><button class="btn ${pkg.name==='Free'?'efile':'primary'} slim">${pkg.cta}</button><button class="btn slim" id="${pkg.name==='Free'?'open-token-modal-inline-free':'open-token-modal-inline-'+pkg.name.toLowerCase()}">Ver detalle</button></div>
+      </article>`;
+    }
+
+    function renderTokens(){
+      solutionKicker.textContent = 'Tokens · Capacidad adicional';
+      solutionTitle.textContent = 'Tokens';
+      solutionDescription.textContent = 'Paquetes disponibles para ampliar capacidad en Smart Tender, Smart Pricing o para generar, actualizar, validar y descargar documentos avanzados desde eFile.';
+      solutionNote.textContent = 'Comprar tokens no habilita por sí solo Smart Tender, Smart Pricing, Smart File, Smart Lex, Tender Gov, Pricing Gov, Propuesta IA ni Experta + IA.';
+      solutionBadges.innerHTML = '<span class="badge efile">Siempre disponibles</span><span class="badge green">Confirmación antes de consumir</span><span class="badge">No sustituyen planes</span>';
+      planGrid.innerHTML = tokenPackages.map(tokenPackageCard).join('');
+      planGrid.querySelectorAll('[id^="open-token-modal-inline"]').forEach(btn=>btn.addEventListener('click',()=>modal.classList.add('open')));
+    }
+
+
+    function renderGov(type = 'tenderGov'){
+      const data = govPlanData[type] || govPlanData.tenderGov;
+      solutionKicker.textContent = data.kicker;
+      solutionTitle.textContent = 'Gobierno / Institucional';
+      solutionDescription.textContent = 'Selecciona Tender Gov o Pricing Gov para ver las 4 opciones institucionales en esta misma pantalla.';
+      solutionNote.textContent = data.note;
+      solutionBadges.innerHTML = '<span class="badge gov">B2G</span><span class="badge gov">Supuesto configurable</span><span class="badge">Contacto comercial</span>';
+      const selector = `<div class="gov-selector"><div><h3>${data.title}</h3><p>${data.description}</p></div><div class="gov-tabs" role="tablist" aria-label="Selector de planes Gov"><button class="gov-tab ${type==='tenderGov'?'active':''}" type="button" data-gov-tab="tenderGov">Tender Gov</button><button class="gov-tab ${type==='pricingGov'?'active':''}" type="button" data-gov-tab="pricingGov">Pricing Gov</button></div></div>`;
+      planGrid.innerHTML = selector + data.plans.map(plan=>planCard(plan,{gov:true})).join('');
+      planGrid.querySelectorAll('[data-gov-tab]').forEach(tab=>tab.addEventListener('click',()=>renderGov(tab.dataset.govTab)));
+    }
+
+    function renderSolution(key){
+      if(key === 'tokens'){
+        renderTokens();
+        document.getElementById('planes').scrollIntoView({behavior:'smooth',block:'start'});
+        return;
+      }
+      if(key === 'gov'){
+        renderGov('tenderGov');
+        document.getElementById('planes').scrollIntoView({behavior:'smooth',block:'start'});
+        return;
+      }
+      const data = planData[key];
+      solutionKicker.textContent = data.kicker;
+      solutionTitle.textContent = data.title;
+      solutionDescription.textContent = data.description;
+      solutionNote.textContent = data.note;
+      solutionBadges.innerHTML = data.badges.map((b,i)=>`<span class="badge ${data.badgeClasses[i]||''}">${b}</span>`).join('');
+      planGrid.innerHTML = data.plans.map(planCard).join('');
+    }
+
+    function activateSolutionCard(key){
+      document.querySelectorAll('.solution-card').forEach(b=>b.classList.toggle('active', b.dataset.solution === key));
+    }
+
+    document.querySelectorAll('.solution-card').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        document.querySelectorAll('.solution-card').forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');
+        renderSolution(btn.dataset.solution);
+      });
+    });
+
+    document.querySelectorAll('[data-nav-solution]').forEach(link=>{
+      link.addEventListener('click', event=>{
+        event.preventDefault();
+        const key = link.dataset.navSolution;
+        renderSolution(key);
+        activateSolutionCard(key);
+        document.getElementById('planes').scrollIntoView({behavior:'smooth',block:'start'});
+      });
+    });
+    renderSolution('tender');
+
+    const modal = document.getElementById('token-modal');
+    document.getElementById('open-token-modal').addEventListener('click',()=>modal.classList.add('open'));
+    document.getElementById('close-token-modal').addEventListener('click',()=>modal.classList.remove('open'));
+    modal.addEventListener('click',e=>{ if(e.target === modal) modal.classList.remove('open'); });
+    document.querySelectorAll('[data-toast]').forEach(btn=>btn.addEventListener('click',()=>alert(btn.dataset.toast)));
+  </script>
+
+<footer class="slx-global-footer" aria-label="Footer SmartLicit">
+  <div class="slx-footer-container">
+    <div class="slx-footer-grid">
+      <div>
+        <div class="slx-footer-brand"><span class="slx-footer-mark" aria-hidden="true"><span>⚡</span></span><span>SmartLicit</span></div>
+        <p style="margin-top:14px;max-width:320px">Una sola inteligencia, múltiples soluciones para resolver trabajo profesional complejo.</p>
+      </div>
+      <div><h4>Soluciones</h4><a class="slx-footer-product" href="../tender.html" target="_top"><span>⚡</span> Tender</a><a class="slx-footer-product" href="../pricing.html" target="_top"><span>⚡</span> Pricing</a><a class="slx-footer-product" href="../file.html" target="_top"><span>⚡</span> File</a><a class="slx-footer-product" href="../lex.html" target="_top"><span>⚡</span> Lex</a></div>
+      <div><h4>Gobierno</h4><a class="slx-footer-gov" href="../tender-gov.html" target="_top"><span>⚡</span> Tender Gov</a><a class="slx-footer-gov" href="../pricing-gov.html" target="_top"><span>⚡</span> Pricing Gov</a><a href="../ipg.html" target="_top">IPG</a></div>
+      <div><h4>Plataforma</h4><a class="slx-footer-efile" href="../efile.html" target="_top"><span>⚡</span> eFile</a><a href="../planes.html" target="_top">Planes</a><a href="../blog.html" target="_top">Blog</a><a href="../mi-cuenta.html" target="_top">Mi Cuenta</a></div>
+      <div><h4>Workspace</h4><a class="slx-footer-drive" href="../gDrive.html" target="_top"><span>▰</span> Google Drive Workspace</a><a href="../mi-cuenta.html#facturacion" target="_top">Facturación</a><a href="../planes.html#tokens" target="_top">Tokens</a><a href="../mi-cuenta.html#integraciones" target="_top">Integraciones</a></div>
+    </div>
+    <div class="slx-footer-bottom"><span>© SmartLicit</span><span>Minimal premium · trazable · accionable.</span></div>
+  </div>
+</footer>
+
+</body>
+</html>

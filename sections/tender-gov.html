@@ -1,0 +1,497 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Tender Gov Online · SmartLicit</title>
+<meta name="description" content="Dashboard institucional online de Tender Gov para crear procedimientos de contratación con evidencia, Pricing Gov, eFile y expediente auditable." />
+<style>
+:root{
+  --lime:#B5F857;--ink:#041912;--green:#04560C;--action:#1A990F;
+  --bg:#F9F8F3;--warm:#EBEAE5;--surface:#FFFFFF;--surface-soft:#FBFAF6;--line:rgba(4,25,18,.10);--line2:rgba(4,25,18,.16);
+  --muted:#66736D;--muted2:#8A948F;--yellow:#F7BA14;--orange:#F77214;--coral:#F7645C;--coral-soft:#FFB4B0;--danger:#C62118;
+  --efile:#5462E2;--efile-mid:#8189DD;--efile-soft:#DDDFF9;--efile-deep:#063C83;
+  --tgo-header:74px;--tgo-side:304px;--radius-xl:34px;--radius-lg:26px;--radius-md:18px;--radius-sm:14px;
+  --shadow:0 20px 60px rgba(4,25,18,.07);--shadow-soft:0 9px 28px rgba(4,25,18,.045);
+  --font:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body.tender-gov-online{margin:0;color:var(--ink);font-family:var(--font);background:radial-gradient(circle at 92% 3%,rgba(247,100,92,.15),transparent 24rem),radial-gradient(circle at 9% 92%,rgba(181,248,87,.18),transparent 28rem),linear-gradient(180deg,#fff 0%,var(--bg) 58%,#fff 100%);letter-spacing:-.014em;-webkit-font-smoothing:antialiased;text-rendering:geometricPrecision}button,input,select,textarea{font:inherit}button{cursor:pointer}a{color:inherit;text-decoration:none}p,h1,h2,h3,h4{margin:0}.tgo-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+.tgo-shellbar{position:fixed;inset:0 0 auto 0;height:var(--tgo-header);z-index:60;display:flex;align-items:center;gap:14px;padding:0 20px;background:rgba(255,255,255,.92);backdrop-filter:blur(18px);border-bottom:1px solid var(--line)}
+.tgo-brand{display:flex;align-items:center;gap:10px;font-weight:880;font-size:19px;letter-spacing:-.045em}.tgo-mark{--mark-bg:var(--green);--mark-bolt:var(--lime);width:38px;height:38px;display:inline-grid;place-items:center;position:relative;flex:none}.tgo-mark:before{content:"";position:absolute;inset:0;background:var(--mark-bg);clip-path:polygon(50% 0%,61% 32%,100% 50%,61% 68%,50% 100%,39% 68%,0% 50%,39% 32%)}.tgo-mark .bolt{position:relative;z-index:1;width:15px;height:22px;background:var(--mark-bolt);clip-path:polygon(62% 0%,20% 52%,48% 52%,37% 100%,84% 38%,56% 38%)}.tgo-mark.gov{--mark-bg:var(--coral);--mark-bolt:var(--ink)}.tgo-mark.small{width:26px;height:26px}.tgo-mark.small .bolt{width:10px;height:16px}.tgo-shell-title{display:flex;gap:8px;align-items:center;color:var(--muted);font-size:12px;font-weight:850;margin-left:4px}.tgo-shell-title span{width:7px;height:7px;border-radius:99px;background:var(--coral);box-shadow:0 0 0 4px rgba(247,100,92,.15)}.tgo-shell-spacer{flex:1}.tgo-shell-pill{min-height:36px;display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:#fff;border-radius:999px;padding:0 12px;color:var(--muted);font-size:12px;font-weight:850}.tgo-shell-pill strong{color:var(--ink)}
+.tgo-sidebar{position:fixed;top:var(--tgo-header);left:0;bottom:0;width:var(--tgo-side);z-index:50;background:rgba(255,255,255,.90);backdrop-filter:blur(18px);border-right:1px solid var(--line);padding:18px 14px 22px;overflow:auto}.tgo-sidehead{padding:0 8px 14px}.tgo-sidehead .eyebrow{color:#550415;text-transform:uppercase;letter-spacing:.1em;font-size:10.5px;font-weight:950}.tgo-sidehead strong{display:block;margin-top:7px;font-size:14px;line-height:1.32}.tgo-sidehead p{margin-top:6px;color:var(--muted);font-size:12px;line-height:1.42}.tgo-side-nav{display:grid;gap:5px}.tgo-side-nav a{display:flex;align-items:center;gap:10px;min-height:36px;border-radius:14px;padding:0 11px;color:var(--muted);font-size:12.5px;font-weight:820;position:relative}.tgo-side-nav a:hover{background:#F6F5F0;color:var(--ink)}.tgo-side-nav a.active{background:rgba(247,100,92,.10);color:#550415}.tgo-side-nav a.active:before{content:"";position:absolute;left:0;top:9px;bottom:9px;width:3px;border-radius:999px;background:var(--coral)}.tgo-nav-dot{width:8px;height:8px;border-radius:99px;border:2px solid currentColor;opacity:.65}.tgo-side-card{margin:18px 2px 0;padding:14px;background:#fff;border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow-soft)}.tgo-side-card h4{font-size:13px}.tgo-side-card p{margin-top:7px;color:var(--muted);font-size:12px;line-height:1.42}.tgo-side-row{display:flex;justify-content:space-between;gap:10px;margin-top:12px;color:var(--muted);font-size:12px}.tgo-side-row strong{color:var(--ink)}.tgo-progress{height:8px;border-radius:999px;background:#EFEEE8;overflow:hidden}.tgo-progress span{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--lime),var(--green));width:72%}.tgo-progress.coral span{background:linear-gradient(90deg,var(--coral-soft),var(--coral))}.tgo-progress.file span{background:linear-gradient(90deg,var(--efile-soft),var(--efile))}
+.tgo-main{margin-left:var(--tgo-side);padding:calc(var(--tgo-header) + 56px) 26px 60px;min-height:100vh}.tgo-wrap{max-width:1500px;margin:0 auto}.tgo-card{background:rgba(255,255,255,.92);border:1px solid var(--line);border-radius:var(--radius-lg);box-shadow:var(--shadow-soft);padding:20px}.tgo-card.compact{padding:16px}.tgo-card.tint{background:linear-gradient(135deg,rgba(255,255,255,.94),rgba(255,180,176,.10))}.tgo-card.file{background:linear-gradient(135deg,#fff,rgba(221,223,249,.42))}.tgo-section{scroll-margin-top:100px;margin-top:18px}.tgo-section:first-child{margin-top:0}.tgo-module-head{display:flex;justify-content:space-between;gap:18px;align-items:flex-start;margin-bottom:16px}.tgo-eyebrow{display:inline-flex;align-items:center;gap:8px;width:max-content;border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 11px;color:var(--muted);font-size:11.5px;font-weight:900;text-transform:uppercase;letter-spacing:.08em}.tgo-eyebrow .spark{width:8px;height:8px;border-radius:99px;background:var(--coral);box-shadow:0 0 0 4px rgba(247,100,92,.16)}.tgo-eyebrow.b2g{color:#550415;background:rgba(247,100,92,.10);border-color:rgba(247,100,92,.18)}h1{margin-top:14px;font-size:clamp(34px,4.4vw,64px);line-height:.95;letter-spacing:-.075em;font-weight:860;max-width:880px}h2{font-size:21px;line-height:1.08;letter-spacing:-.045em;font-weight:850}h3{font-size:16px;letter-spacing:-.025em}h4{font-size:14px;letter-spacing:-.015em}.tgo-lead{margin-top:16px;color:var(--muted);font-size:clamp(16px,1.45vw,19px);line-height:1.48;max-width:980px}.tgo-muted{color:var(--muted);font-size:13px;line-height:1.45}.tgo-actions{display:flex;gap:9px;flex-wrap:wrap;justify-content:flex-end}.tgo-btn{min-height:40px;border:1px solid var(--line2);border-radius:999px;background:#fff;color:var(--ink);display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:0 14px;font-size:12.5px;font-weight:900;transition:.18s ease;white-space:nowrap}.tgo-btn:hover{transform:translateY(-1px);box-shadow:var(--shadow-soft);border-color:rgba(4,25,18,.24)}.tgo-btn.primary{background:var(--ink);border-color:var(--ink);color:#fff}.tgo-btn.gov{background:rgba(247,100,92,.11);border-color:rgba(247,100,92,.20);color:#550415}.tgo-btn.soft{background:rgba(181,248,87,.24);border-color:rgba(4,86,12,.16);color:var(--green)}.tgo-btn.file{background:rgba(221,223,249,.70);border-color:rgba(84,98,226,.18);color:var(--efile-deep)}.tgo-btn.warn{background:rgba(247,186,20,.14);border-color:rgba(247,186,20,.24);color:#765100}.tgo-btn.slim{min-height:32px;font-size:11.5px;padding:0 10px;border-radius:12px}.tgo-btn.block{width:100%}.tgo-badge{display:inline-flex;align-items:center;gap:6px;min-height:26px;border-radius:999px;border:1px solid var(--line);padding:0 9px;background:#fff;color:var(--muted);font-size:11px;font-weight:920;white-space:nowrap}.tgo-badge.good{background:rgba(181,248,87,.22);border-color:rgba(4,86,12,.16);color:var(--green)}.tgo-badge.process{background:rgba(247,186,20,.16);border-color:rgba(247,186,20,.28);color:#765100}.tgo-badge.gov{background:rgba(247,100,92,.11);border-color:rgba(247,100,92,.22);color:#550415}.tgo-badge.file{background:rgba(221,223,249,.68);border-color:rgba(84,98,226,.18);color:var(--efile-deep)}.tgo-badge.block{background:rgba(198,33,24,.08);border-color:rgba(198,33,24,.18);color:var(--danger)}.tgo-badge.neutral{background:#F3F2ED;color:var(--muted)}.tgo-dot{width:7px;height:7px;border-radius:99px;background:currentColor}.tgo-hero{position:relative;overflow:hidden;background:rgba(255,255,255,.86);border:1px solid var(--line);border-radius:var(--radius-xl);box-shadow:var(--shadow);padding:26px}.tgo-hero:before{content:"";position:absolute;inset:auto -9rem -10rem auto;width:28rem;height:28rem;background:radial-gradient(circle,rgba(247,100,92,.14),transparent 70%);pointer-events:none}.tgo-hero:after{content:"";position:absolute;inset:-12rem auto auto -13rem;width:30rem;height:30rem;background:radial-gradient(circle,rgba(181,248,87,.20),transparent 72%);pointer-events:none}.tgo-hero>*{position:relative;z-index:1}.tgo-status-strip{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}.tgo-grid-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.tgo-grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.tgo-grid-4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.tgo-grid-6{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px}.tgo-kpi strong{display:block;margin-top:8px;font-size:30px;letter-spacing:-.055em}.tgo-kpi span{display:block;color:var(--muted);font-size:12.5px;font-weight:790}.tgo-kpi .mini{margin-top:8px;font-size:11.5px;color:var(--muted)}.tgo-active-grid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(320px,.7fr);gap:14px}.tgo-meta-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px}.tgo-meta{background:var(--surface-soft);border:1px solid var(--line);border-radius:16px;padding:11px}.tgo-meta span{display:block;color:var(--muted);font-size:10.5px;font-weight:950;text-transform:uppercase;letter-spacing:.07em}.tgo-meta strong{display:block;margin-top:6px;font-size:13px}.tgo-timeline{display:grid;grid-template-columns:repeat(18,minmax(92px,1fr));gap:8px;overflow:auto;padding-bottom:6px;scrollbar-width:thin}.tgo-step{min-height:80px;border:1px solid var(--line);border-radius:16px;background:#fff;padding:10px;position:relative}.tgo-step:before{content:"";width:10px;height:10px;border-radius:99px;background:#DAD7CE;display:block;margin-bottom:9px}.tgo-step.done{background:rgba(181,248,87,.16);border-color:rgba(4,86,12,.16)}.tgo-step.done:before{background:var(--green)}.tgo-step.current{background:rgba(247,186,20,.14);border-color:rgba(247,186,20,.30)}.tgo-step.current:before{background:var(--yellow)}.tgo-step.alert{background:rgba(247,100,92,.09);border-color:rgba(247,100,92,.20)}.tgo-step.alert:before{background:var(--coral)}.tgo-step.file{background:rgba(221,223,249,.52);border-color:rgba(84,98,226,.18)}.tgo-step.file:before{background:var(--efile)}.tgo-step span{display:block;color:var(--muted);font-size:10.5px;font-weight:930}.tgo-step strong{display:block;margin-top:4px;font-size:12px;line-height:1.2}.tgo-alert{display:flex;gap:12px;align-items:flex-start;border:1px solid rgba(247,100,92,.20);background:linear-gradient(135deg,rgba(247,100,92,.10),rgba(255,255,255,.86));border-radius:22px;padding:15px}.tgo-alert .icon{width:34px;height:34px;border-radius:13px;background:var(--coral);color:var(--ink);display:grid;place-items:center;font-weight:950;flex:none}.tgo-alert strong{display:block;font-size:14px}.tgo-alert p{margin-top:5px;color:var(--muted);font-size:13px;line-height:1.45}.tgo-form-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.tgo-field label{display:block;font-size:10.5px;color:var(--muted);font-weight:950;text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px}.tgo-control{width:100%;min-height:40px;border:1px solid var(--line);border-radius:14px;background:#FBFAF6;color:var(--ink);padding:0 12px;outline:0;font-size:13px}.tgo-control:focus{background:#fff;border-color:rgba(247,100,92,.30);box-shadow:0 0 0 4px rgba(247,100,92,.10)}textarea.tgo-control{padding:11px;min-height:96px;resize:vertical}.tgo-field.full{grid-column:1/-1}.tgo-tile-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}.tgo-tile{border:1px solid var(--line);background:#fff;border-radius:18px;padding:14px;text-align:left;min-height:110px}.tgo-tile:hover{border-color:rgba(247,100,92,.24);box-shadow:var(--shadow-soft);transform:translateY(-1px)}.tgo-tile.active{background:rgba(247,100,92,.08);border-color:rgba(247,100,92,.20)}.tgo-tile strong{display:block;font-size:13px}.tgo-tile span{display:block;margin-top:7px;color:var(--muted);font-size:12px;line-height:1.35}.tgo-checklist{display:grid;gap:8px}.tgo-check{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line);border-radius:15px;background:#fff;padding:11px}.tgo-check:before{content:"";width:14px;height:14px;border-radius:99px;background:#DAD7CE;margin-top:2px;flex:none}.tgo-check.done:before{background:var(--green)}.tgo-check.warn:before{background:var(--yellow)}.tgo-check.block:before{background:var(--coral)}.tgo-check.file:before{background:var(--efile)}.tgo-check strong{font-size:13px}.tgo-check span{display:block;color:var(--muted);font-size:12px;margin-top:3px;line-height:1.32}.tgo-table{width:100%;border-collapse:separate;border-spacing:0;border:1px solid var(--line);border-radius:20px;overflow:hidden;background:#fff}.tgo-table th,.tgo-table td{padding:13px 14px;border-bottom:1px solid rgba(4,25,18,.07);font-size:12.5px;text-align:left;vertical-align:top}.tgo-table th{background:#FBFAF6;color:var(--muted);font-size:10.5px;text-transform:uppercase;letter-spacing:.07em;font-weight:950}.tgo-table tr:last-child td{border-bottom:0}.tgo-table-wrap{overflow:auto;border-radius:20px}.tgo-library{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.tgo-service-card{border:1px solid var(--line);background:#fff;border-radius:22px;padding:15px;min-height:190px;display:grid;gap:10px}.tgo-service-card:hover{box-shadow:var(--shadow-soft);transform:translateY(-1px);border-color:rgba(247,100,92,.20)}.tgo-service-card h3{font-size:15px}.tgo-service-card p{color:var(--muted);font-size:12px;line-height:1.35}.tgo-service-card .footer{display:flex;gap:6px;flex-wrap:wrap;align-items:flex-end}.tgo-cost-card{display:grid;gap:10px;border:1px solid var(--line);background:#fff;border-radius:22px;padding:16px}.tgo-cost-card .code{width:max-content;border-radius:999px;padding:6px 9px;background:rgba(247,100,92,.10);color:#550415;font-size:11px;font-weight:950}.tgo-tags{display:flex;gap:6px;flex-wrap:wrap}.tgo-tag{display:inline-flex;min-height:24px;align-items:center;border-radius:999px;background:#F1F0EA;color:var(--muted);padding:0 8px;font-size:10.5px;font-weight:900}.tgo-tag.file{background:var(--efile-soft);color:var(--efile-deep)}.tgo-tag.good{background:rgba(181,248,87,.26);color:var(--green)}.tgo-tag.gov{background:rgba(255,180,176,.40);color:#550415}.tgo-robot-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(330px,.58fr);gap:14px}.tgo-robot-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.tgo-stat{border:1px solid var(--line);background:#fff;border-radius:18px;padding:13px}.tgo-stat span{display:block;color:var(--muted);font-size:11px;font-weight:900}.tgo-stat strong{display:block;margin-top:5px;font-size:24px;letter-spacing:-.045em}.tgo-drive-panel{display:grid;grid-template-columns:1fr 1fr;gap:10px}.tgo-drive-item{border:1px solid var(--line);background:#fff;border-radius:18px;padding:14px}.tgo-drive-item span{display:block;color:var(--muted);font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.06em}.tgo-drive-item strong{display:block;margin-top:7px;font-size:13px;line-height:1.32}.tgo-workbench{display:grid;grid-template-columns:300px minmax(420px,1fr) 330px;gap:14px;align-items:start}.tgo-left-context,.tgo-ai-panel,.tgo-doc-live{border:1px solid var(--line);background:#fff;border-radius:26px;box-shadow:var(--shadow-soft);padding:16px}.tgo-left-context{display:grid;gap:10px}.tgo-doc-live{min-height:690px;background:#F7F6F1}.tgo-doc-page{background:#fff;border:1px solid rgba(4,25,18,.08);border-radius:22px;box-shadow:0 10px 30px rgba(4,25,18,.05);padding:28px;min-height:640px}.tgo-doc-title{font-size:27px;letter-spacing:-.055em;font-weight:880;line-height:1.05}.tgo-doc-sub{margin-top:8px;color:var(--muted);font-size:12px}.tgo-doc-section{margin-top:22px;padding-top:16px;border-top:1px solid rgba(4,25,18,.08)}.tgo-doc-section h3{font-size:15px}.tgo-doc-section p,.tgo-doc-section li{margin-top:8px;color:var(--muted);font-size:13.5px;line-height:1.55}.tgo-comment{margin-top:10px;border-left:3px solid var(--coral);background:rgba(247,100,92,.08);border-radius:0 14px 14px 0;padding:10px;color:#550415;font-size:12.5px;font-weight:720}.tgo-ai-panel{display:grid;gap:10px;position:sticky;top:92px}.tgo-ai-msg{border:1px solid var(--line);background:#FBFAF6;border-radius:18px;padding:12px}.tgo-ai-msg strong{font-size:13px}.tgo-ai-msg p{margin-top:5px;color:var(--muted);font-size:12.5px;line-height:1.4}.tgo-ai-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.tgo-doc-list{display:grid;gap:8px}.tgo-doc-item{display:flex;justify-content:space-between;gap:8px;align-items:center;border:1px solid var(--line);background:#FBFAF6;border-radius:15px;padding:10px}.tgo-doc-item strong{font-size:12.5px}.tgo-doc-item span{display:block;margin-top:2px;color:var(--muted);font-size:11px}.tgo-toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%) translateY(20px);z-index:200;min-height:42px;display:flex;align-items:center;border-radius:999px;padding:0 15px;background:var(--ink);color:#fff;box-shadow:var(--shadow);font-size:13px;font-weight:850;opacity:0;pointer-events:none;transition:.22s ease}.tgo-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}.tgo-mobile-menu{display:none;position:fixed;right:16px;bottom:16px;z-index:120;border:0;border-radius:999px;background:var(--ink);color:#fff;min-height:46px;padding:0 16px;font-weight:900;box-shadow:var(--shadow)}
+@media (max-width:1320px){.tgo-grid-6{grid-template-columns:repeat(3,minmax(0,1fr))}.tgo-grid-4,.tgo-library{grid-template-columns:repeat(3,minmax(0,1fr))}.tgo-workbench{grid-template-columns:260px minmax(350px,1fr)}.tgo-ai-panel{grid-column:1/-1;position:static}.tgo-active-grid,.tgo-robot-grid{grid-template-columns:1fr}.tgo-tile-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:980px){:root{--tgo-side:0px}.tgo-sidebar{transform:translateX(-104%);transition:.22s ease;width:304px;box-shadow:var(--shadow);z-index:130}.tgo-sidebar.open{transform:translateX(0)}.tgo-main{margin-left:0;padding-inline:18px}.tgo-mobile-menu{display:inline-flex;align-items:center;gap:8px}.tgo-grid-2,.tgo-grid-3,.tgo-grid-4,.tgo-grid-6,.tgo-meta-grid,.tgo-form-grid,.tgo-drive-panel{grid-template-columns:1fr}.tgo-library{grid-template-columns:repeat(2,minmax(0,1fr))}.tgo-workbench{grid-template-columns:1fr}.tgo-doc-live{min-height:auto}.tgo-doc-page{min-height:auto}.tgo-shell-pill.hide-sm{display:none}.tgo-module-head{display:grid}.tgo-actions{justify-content:flex-start}.tgo-robot-stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:620px){.tgo-shellbar{padding:0 12px}.tgo-brand span:last-child{display:none}.tgo-main{padding:calc(var(--tgo-header) + 48px) 12px 44px}.tgo-hero,.tgo-card{border-radius:22px;padding:16px}h1{font-size:36px}.tgo-library,.tgo-tile-grid{grid-template-columns:1fr}.tgo-robot-stats{grid-template-columns:1fr}.tgo-table th,.tgo-table td{padding:10px}.tgo-ai-actions{grid-template-columns:1fr}.tgo-toast{width:calc(100% - 24px);justify-content:center;text-align:center;border-radius:18px}.tgo-sidehead strong{font-size:13px}}
+
+/* Ajuste Beta 1.9 final: herramientas Gov + footer global */
+.tgo-tool-card .tgo-tool-title{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:900;letter-spacing:-.02em}.tgo-tool-card .tgo-tool-title:before{content:"⚡";color:var(--coral);font-weight:950}.tgo-tool-card .tgo-tool-actions{display:grid;gap:7px;margin-top:12px}.tgo-tool-card .tgo-tool-actions a,.tgo-tool-card .tgo-tool-actions button{width:100%;min-height:34px;border:1px solid var(--line);border-radius:13px;background:#fff;color:var(--muted);display:flex;align-items:center;justify-content:space-between;gap:8px;padding:0 10px;font-size:11.5px;font-weight:880;text-align:left}.tgo-tool-card .tgo-tool-actions a:hover,.tgo-tool-card .tgo-tool-actions button:hover{background:#F6F5F0;color:var(--ink);border-color:var(--line2)}.tgo-tool-card .tgo-tool-actions .primary{background:var(--ink);border-color:var(--ink);color:#fff}.tgo-tool-card .tgo-tool-actions .gov{background:rgba(247,100,92,.10);border-color:rgba(247,100,92,.18);color:#550415}.tgo-tool-card .tgo-tool-actions .file{background:rgba(221,223,249,.62);border-color:rgba(84,98,226,.18);color:#063C83}.tgo-tool-card .tgo-tool-actions .soft{background:rgba(181,248,87,.20);border-color:rgba(4,86,12,.16);color:var(--green)}
+.slx-global-footer{margin-top:42px;padding:44px 0 32px;border-top:1px solid var(--line,rgba(4,25,18,.10));background:#fff;color:var(--ink,#041912);clear:both}.slx-global-footer .slx-footer-container{width:min(1180px,calc(100% - 48px));margin-inline:auto}.slx-footer-grid{display:grid;grid-template-columns:1.25fr repeat(4,1fr);gap:24px}.slx-footer-brand{display:inline-flex;align-items:center;gap:10px;font-weight:850;letter-spacing:-.035em;font-size:20px;white-space:nowrap}.slx-footer-mark{--symbol-bg:#04560C;--symbol-bolt:#B5F857;width:34px;height:34px;position:relative;display:inline-grid;place-items:center;flex:none}.slx-footer-mark:before{content:"";position:absolute;inset:0;background:var(--symbol-bg);clip-path:polygon(50% 0%,61% 32%,100% 50%,61% 68%,50% 100%,39% 68%,0% 50%,39% 32%)}.slx-footer-mark span{position:relative;z-index:1;color:var(--symbol-bolt);font-weight:950;font-size:17px}.slx-global-footer h4{margin:0 0 12px;font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted2,var(--muted-2,#8A948F))}.slx-global-footer a,.slx-global-footer p{display:block;margin:0 0 9px;color:var(--muted,#66736D);font-size:14px;line-height:1.45;text-decoration:none}.slx-global-footer a:hover{color:var(--ink,#041912)}.slx-footer-bottom{margin-top:34px;display:flex;justify-content:space-between;gap:16px;color:var(--muted2,var(--muted-2,#8A948F));font-size:13px}.slx-footer-efile,.slx-footer-efile span{color:#063C83!important;font-weight:850}.slx-footer-gov span{color:#C62118}.slx-footer-product span{color:#81C91C}.slx-footer-drive span{color:#063C83;font-weight:900}@media (max-width:1080px){.slx-footer-grid{grid-template-columns:repeat(2,1fr)}}@media (max-width:700px){.slx-global-footer .slx-footer-container{width:min(100% - 24px,1180px)}.slx-footer-grid{grid-template-columns:1fr}.slx-footer-bottom{flex-direction:column}}
+</style>
+
+<style>
+/* Beta 1.8 · Market Express Gov */
+.tgo-market-express{margin-top:24px}.tgo-market-grid{display:grid;grid-template-columns:1.08fr .92fr;gap:16px}.tgo-me-card{background:#fff;border:1px solid rgba(4,25,18,.10);border-radius:24px;box-shadow:0 8px 24px rgba(4,25,18,.045);padding:18px}.tgo-me-card h2{margin:0;font-size:30px;letter-spacing:-.06em}.tgo-me-card h3{margin:0;font-size:17px}.tgo-me-card p{margin:8px 0 0;color:#66736D;font-size:13px;line-height:1.45}.tgo-flow{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:14px}.tgo-flow div{border:1px solid rgba(4,25,18,.09);border-radius:15px;background:#FBFAF6;padding:10px;font-size:11.5px;font-weight:850}.tgo-me-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}.tgo-me-field{border:1px solid rgba(4,25,18,.09);border-radius:16px;background:#fff;padding:11px}.tgo-me-field span{display:block;color:#66736D;font-size:10px;text-transform:uppercase;letter-spacing:.07em;font-weight:900}.tgo-me-field strong{display:block;margin-top:6px;font-size:14px}.tgo-me-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.tgo-warning{border:1px solid rgba(247,100,92,.22);background:rgba(247,100,92,.08);border-radius:18px;padding:13px;margin-top:14px;color:#550415;font-weight:780;line-height:1.42}@media(max-width:980px){.tgo-market-grid{grid-template-columns:1fr}.tgo-flow{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:620px){.tgo-flow,.tgo-me-fields{grid-template-columns:1fr}}
+</style>
+</head>
+<body class="tender-gov-online">
+<header class="tgo-shellbar" aria-label="Barra interna Tender Gov">
+  <a class="tgo-brand" href="../index.html#page=home" target="_top" aria-label="SmartLicit"><span class="tgo-mark gov" aria-hidden="true"><span class="bolt"></span></span><span>SmartLicit</span></a>
+  <div class="tgo-shell-title"><span></span>Tender Gov Online · Ambiente institucional</div>
+  <div class="tgo-shell-spacer"></div>
+  <div class="tgo-shell-pill hide-sm">Perfil institucional: <strong>activo</strong></div>
+  <div class="tgo-shell-pill hide-sm">Rol: <strong>Unidad Compradora</strong></div>
+</header>
+
+<aside class="tgo-sidebar" id="tgoSidebar" aria-label="Navegación interna Tender Gov Online">
+  <div class="tgo-sidehead">
+    <div class="eyebrow">B2G · Tender Gov</div>
+    <strong>Workbench institucional para crear procedimientos.</strong>
+    <p>Dashboard, journey, Pricing Gov, eFile, repositorio seguro y auditoría en una sola vista navegable.</p>
+  </div>
+  <nav class="tgo-side-nav" id="tgoSideNav">
+    <a href="#dashboard" class="active"><span class="tgo-nav-dot"></span>Dashboard</a>
+    <a href="#crear-procedimiento"><span class="tgo-nav-dot"></span>Crear procedimiento</a>
+    <a href="#perfil-institucional"><span class="tgo-nav-dot"></span>Perfil institucional</a>
+    <a href="#requisicion"><span class="tgo-nav-dot"></span>Requisición / Pre Orden</a>
+    <a href="#estudio-mercado"><span class="tgo-nav-dot"></span>Estudio de mercado</a>
+    <a href="#bases-anexos"><span class="tgo-nav-dot"></span>Bases y anexos</a>
+    <a href="#paquetes-documentales"><span class="tgo-nav-dot"></span>Paquetes documentales</a>
+    <a href="#plantillas-servicios"><span class="tgo-nav-dot"></span>Plantillas de servicios</a>
+    <a href="#plantillas-costos"><span class="tgo-nav-dot"></span>Plantillas de costos</a>
+    <a href="#comite-validadores"><span class="tgo-nav-dot"></span>Comité y validadores</a>
+    <a href="#publicacion"><span class="tgo-nav-dot"></span>Publicación</a>
+    <a href="#aclaraciones"><span class="tgo-nav-dot"></span>Aclaraciones</a>
+    <a href="#propuestas"><span class="tgo-nav-dot"></span>Propuestas</a>
+    <a href="#evaluacion"><span class="tgo-nav-dot"></span>Evaluación</a>
+    <a href="#fallo"><span class="tgo-nav-dot"></span>Fallo</a>
+    <a href="#contrato"><span class="tgo-nav-dot"></span>Contrato</a>
+    <a href="#expediente-final"><span class="tgo-nav-dot"></span>Expediente final</a>
+    <a href="#auditoria"><span class="tgo-nav-dot"></span>Auditoría</a>
+  </nav>
+  <div class="tgo-side-card tgo-tool-card" aria-label="Herramientas Gov">
+    <div class="tgo-tool-title">Herramientas Gov</div>
+    <p>Acciones asistidas para crear procedimientos y Express Orders.</p>
+    <div class="tgo-tool-actions">
+      <a class="primary" href="#crear-procedimiento">Crear procedimiento <span>→</span></a>
+      <a class="gov" href="#market-express-gov">Crear Express Order <span>→</span></a>
+      <a href="#requisicion">Subir requisición <span>→</span></a>
+      <a href="#publicacion">Validar monto <span>→</span></a>
+      <a class="file" href="../pricing-gov.html" target="_top">Abrir Pricing Gov <span>→</span></a>
+      <a class="gov" href="../pricing-gov.html#pricing-express" target="_top">Ejecutar Pricing Express <span>→</span></a>
+      <a class="file" href="#paquetes-documentales">Validar eFile <span>→</span></a>
+      <a href="#paquetes-documentales">Resolver faltantes <span>→</span></a>
+      <a href="#bases-anexos">Crear bases <span>→</span></a>
+      <a class="soft" href="#publicacion">Preparar publicación <span>→</span></a>
+      <a href="#market-express-gov">Ver respuestas <span>→</span></a>
+      <a class="file" href="#expediente-final">Cerrar expediente <span>→</span></a>
+    </div>
+    <p>Las acciones se ajustan al régimen, POBALINES y reglas institucionales cargadas.</p>
+  </div>
+
+  <div class="tgo-side-card">
+    <h4>eFile readiness</h4>
+    <div class="tgo-side-row"><span>General</span><strong>82%</strong></div>
+    <div class="tgo-progress file" aria-hidden="true"><span style="width:82%"></span></div>
+    <p>3 faltantes críticos antes de publicación.</p>
+  </div>
+  <div class="tgo-side-card">
+    <h4>Ventana 24h</h4>
+    <div class="tgo-side-row"><span>Tiempo restante</span><strong>14h 22m</strong></div>
+    <div class="tgo-progress coral" aria-hidden="true"><span style="width:41%"></span></div>
+    <p>Robot de precios activo con evidencia comparable.</p>
+  </div>
+</aside>
+
+<button class="tgo-mobile-menu" id="tgoMobileMenu" type="button">☰ Navegar</button>
+
+<main class="tgo-main">
+  <div class="tgo-wrap">
+
+    <section class="tgo-section" id="dashboard">
+      <div class="tgo-hero">
+        <div class="tgo-module-head">
+          <div>
+            <div class="tgo-eyebrow b2g"><span class="spark"></span>B2G · Tender Gov Online</div>
+            <h1>Tender Gov Online</h1>
+            <p class="tgo-lead">Construye procedimientos de contratación con reglas institucionales, Pricing Gov, eFile y expediente auditable.</p>
+            <p class="tgo-muted" style="margin-top:12px;max-width:980px">Desde la requisición hasta el expediente final, Tender Gov guía a áreas requirentes, unidades compradoras, jurídico, presupuesto, control interno y comité para crear licitaciones públicas con evidencia, trazabilidad y revisión asistida por IA.</p>
+            <div class="tgo-status-strip">
+              <span class="tgo-badge gov"><span class="tgo-dot"></span>Perfil institucional activo</span>
+              <span class="tgo-badge file"><span class="tgo-dot"></span>Repositorio seguro activo</span>
+              <span class="tgo-badge good"><span class="tgo-dot"></span>Unidad Compradora</span>
+              <span class="tgo-badge process"><span class="tgo-dot"></span>Pricing Gov en proceso</span>
+            </div>
+          </div>
+          <div class="tgo-actions">
+            <a class="tgo-btn primary" href="#crear-procedimiento">Crear procedimiento</a>
+            <a class="tgo-btn gov" href="#requisicion">Cargar requisición</a>
+            <a class="tgo-btn file" href="../pricing-gov.html" target="_top">Abrir Pricing Gov</a>
+          </div>
+        </div>
+        <div class="tgo-grid-6" aria-label="KPIs principales">
+          <div class="tgo-card compact tgo-kpi"><span>Procesos activos</span><strong>12</strong><div class="mini">4 con revisión abierta</div></div>
+          <div class="tgo-card compact tgo-kpi"><span>En revisión jurídica</span><strong>4</strong><div class="mini">2 bloqueos duros</div></div>
+          <div class="tgo-card compact tgo-kpi"><span>Estudios de mercado</span><strong>7</strong><div class="mini">Pricing Gov conectado</div></div>
+          <div class="tgo-card compact tgo-kpi"><span>Espera 24h</span><strong>2</strong><div class="mini">robot de precios activo</div></div>
+          <div class="tgo-card compact tgo-kpi"><span>Expedientes completos</span><strong>89%</strong><div class="mini">repositorio seguro</div></div>
+          <div class="tgo-card compact tgo-kpi"><span>Faltantes eFile</span><strong>3</strong><div class="mini">críticos antes de publicar</div></div>
+        </div>
+      </div>
+
+      <div class="tgo-section tgo-active-grid">
+        <article class="tgo-card tint">
+          <div class="tgo-module-head" style="margin-bottom:10px">
+            <div>
+              <div class="tgo-eyebrow"><span class="spark"></span>Proceso activo</div>
+              <h2>LPN-2026-004 · Servicio integral de limpieza institucional</h2>
+              <p class="tgo-muted" style="margin-top:8px">Secretaría de Innovación Pública · Dirección de Adquisiciones · Servicios Generales.</p>
+            </div>
+            <span class="tgo-badge process">En estudio de mercado</span>
+          </div>
+          <div class="tgo-meta-grid">
+            <div class="tgo-meta"><span>Régimen</span><strong>Federal</strong></div>
+            <div class="tgo-meta"><span>Área requirente</span><strong>Servicios Generales</strong></div>
+            <div class="tgo-meta"><span>Unidad compradora</span><strong>Dirección de Adquisiciones</strong></div>
+            <div class="tgo-meta"><span>Suficiencia</span><strong>Validada</strong></div>
+            <div class="tgo-meta"><span>POBALINES</span><strong>Cargadas</strong></div>
+            <div class="tgo-meta"><span>Pricing Gov</span><strong>En proceso</strong></div>
+            <div class="tgo-meta"><span>eFile readiness</span><strong>82%</strong></div>
+            <div class="tgo-meta"><span>Repositorio seguro</span><strong>Activo</strong></div>
+            <div class="tgo-meta"><span>Drive espejo</span><strong>Conectado</strong></div>
+          </div>
+          <div class="tgo-actions" style="justify-content:flex-start;margin-top:16px">
+            <a class="tgo-btn primary" href="#workbench">Abrir workbench</a>
+            <a class="tgo-btn file" href="#expediente-final">Ver expediente</a>
+            <a class="tgo-btn gov" href="#paquetes-documentales">Resolver faltantes</a>
+            <a class="tgo-btn" href="../pricing-gov.html" target="_top">Abrir Pricing Gov</a>
+          </div>
+        </article>
+        <aside class="tgo-card file">
+          <div class="tgo-eyebrow"><span class="spark" style="background:var(--efile)"></span>Repositorio y Drive</div>
+          <h2 style="margin-top:10px">Expediente oficial + espejo operativo</h2>
+          <p class="tgo-muted" style="margin-top:8px">En Tender Gov, el repositorio seguro conserva el expediente oficial. Drive funciona como espejo operativo controlado.</p>
+          <div class="tgo-drive-panel" style="margin-top:14px">
+            <div class="tgo-drive-item"><span>Repositorio seguro</span><strong>Fuente primaria · activo</strong></div>
+            <div class="tgo-drive-item"><span>Google Drive</span><strong>Drive espejo · conectado</strong></div>
+            <div class="tgo-drive-item"><span>Cuenta</span><strong>licitaciones@innovacion.gob.mx</strong></div>
+            <div class="tgo-drive-item"><span>Carpeta</span><strong>/Tender Gov/LPN-2026-004</strong></div>
+          </div>
+        </aside>
+      </div>
+
+      <article class="tgo-card tgo-section">
+        <div class="tgo-module-head">
+          <div><div class="tgo-eyebrow"><span class="spark"></span>Journey institucional</div><h2>De requisición a expediente cerrado</h2></div>
+          <span class="tgo-badge gov">Reglas parametrizadas por régimen y POBALINES</span>
+        </div>
+        <div class="tgo-timeline" aria-label="Estados del procedimiento">
+          <div class="tgo-step done"><span>01</span><strong>Borrador</strong></div><div class="tgo-step done"><span>02</span><strong>Perfil institucional validado</strong></div><div class="tgo-step done"><span>03</span><strong>Requisición cargada</strong></div><div class="tgo-step done"><span>04</span><strong>Extracción IA validada</strong></div><div class="tgo-step current"><span>05</span><strong>Estudio de mercado</strong></div><div class="tgo-step"><span>06</span><strong>Bases y anexos</strong></div><div class="tgo-step alert"><span>07</span><strong>Revisión jurídica</strong></div><div class="tgo-step done"><span>08</span><strong>Validación presupuestal</strong></div><div class="tgo-step"><span>09</span><strong>Comité / autorizadores</strong></div><div class="tgo-step current"><span>10</span><strong>En espera 24h</strong></div><div class="tgo-step"><span>11</span><strong>Publicado</strong></div><div class="tgo-step"><span>12</span><strong>Aclaraciones</strong></div><div class="tgo-step"><span>13</span><strong>Recepción de propuestas</strong></div><div class="tgo-step"><span>14</span><strong>Evaluación técnica</strong></div><div class="tgo-step"><span>15</span><strong>Evaluación económica</strong></div><div class="tgo-step alert"><span>16</span><strong>Fallo</strong></div><div class="tgo-step file"><span>17</span><strong>Contrato</strong></div><div class="tgo-step file"><span>18</span><strong>Expediente cerrado</strong></div>
+        </div>
+      </article>
+
+      <div class="tgo-alert tgo-section" role="note">
+        <div class="icon">⚡</div>
+        <div><strong>Alerta institucional</strong><p>Las reglas de precio, evaluación y publicación dependen del régimen, POBALINES y versión normativa cargada en el perfil institucional. Tender Gov no sustituye la validación legal; la estructura, evidencia y trazabilidad la hacen más controlable.</p></div>
+      </div>
+    </section>
+
+    <section class="tgo-section" id="workbench">
+      <div class="tgo-module-head">
+        <div><div class="tgo-eyebrow b2g"><span class="spark"></span>Workbench de creación · Interfaz de tercios</div><h2>Expediente vivo, documento y asistente IA en una sola pantalla</h2><p class="tgo-muted" style="margin-top:8px">La vista separa documentos del expediente, documento vivo y asistencia contextual con observaciones norma · regla · riesgo · acción.</p></div>
+        <div class="tgo-actions"><button class="tgo-btn file" data-toast="Evidencia guardada en repositorio seguro y espejo Drive.">Guardar evidencia</button><button class="tgo-btn primary" data-toast="Publicación preparada en borrador; faltan validaciones críticas.">Preparar publicación</button></div>
+      </div>
+      <div class="tgo-workbench">
+        <aside class="tgo-left-context">
+          <div class="tgo-eyebrow"><span class="spark" style="background:var(--efile)"></span>Izquierda · checklist</div>
+          <div class="tgo-doc-list">
+            <div class="tgo-doc-item"><div><strong>Requisición / Pre Orden</strong><span>PDF fuente · validado</span></div><span class="tgo-badge good">Listo</span></div>
+            <div class="tgo-doc-item"><div><strong>Bases</strong><span>Borrador v4</span></div><span class="tgo-badge process">En edición</span></div>
+            <div class="tgo-doc-item"><div><strong>Anexos</strong><span>Técnico, económico, legal</span></div><span class="tgo-badge file">3 docs</span></div>
+            <div class="tgo-doc-item"><div><strong>Estudio de mercado</strong><span>Pricing Gov · evidencia</span></div><span class="tgo-badge process">87%</span></div>
+            <div class="tgo-doc-item"><div><strong>Paquete legal / eFile</strong><span>3 faltantes críticos</span></div><span class="tgo-badge block">Bloqueo</span></div>
+            <div class="tgo-doc-item"><div><strong>POBALINES</strong><span>Versión 2026</span></div><span class="tgo-badge good">Cargadas</span></div>
+            <div class="tgo-doc-item"><div><strong>Calendario</strong><span>Aclaraciones y fallo</span></div><span class="tgo-badge neutral">Borrador</span></div>
+            <div class="tgo-doc-item"><div><strong>Matriz de evaluación</strong><span>Técnica / económica</span></div><span class="tgo-badge process">Pendiente</span></div>
+            <div class="tgo-doc-item"><div><strong>Repositorio seguro</strong><span>Fuente primaria</span></div><span class="tgo-badge file">Activo</span></div>
+            <div class="tgo-doc-item"><div><strong>Drive espejo</strong><span>Sincronización controlada</span></div><span class="tgo-badge file">Conectado</span></div>
+            <div class="tgo-doc-item"><div><strong>Bitácora</strong><span>54 eventos auditables</span></div><span class="tgo-badge good">Activa</span></div>
+          </div>
+        </aside>
+        <section class="tgo-doc-live">
+          <div class="tgo-doc-page" aria-label="Documento vivo">
+            <div class="tgo-eyebrow"><span class="spark"></span>Centro · documento vivo</div>
+            <div class="tgo-doc-title">Bases de licitación · Servicio integral de limpieza institucional</div>
+            <div class="tgo-doc-sub">LPN-2026-004 · Secretaría de Innovación Pública · Borrador v4 · Repositorio seguro activo</div>
+            <div class="tgo-doc-section"><h3>1. Datos del procedimiento</h3><p>Licitación pública nacional bajo régimen institucional cargado. Unidad compradora: Dirección de Adquisiciones. Área requirente: Servicios Generales.</p></div>
+            <div class="tgo-doc-section"><h3>2. Objeto de contratación</h3><p>Contratación del servicio integral de limpieza institucional para inmuebles administrativos, sanitarios, áreas críticas y espacios comunes.</p><div class="tgo-comment">Sugerencia IA: validar que el alcance excluya obra pública y active clasificador legal si existen adecuaciones.</div></div>
+            <div class="tgo-doc-section"><h3>3. Alcance técnico</h3><ul><li>Sitios, metros cuadrados, turnos, supervisores, operarios, insumos, maquinaria y bitácora mensual.</li><li>Indicadores SLA, evidencias de cumplimiento y penalizaciones por incumplimiento.</li></ul></div>
+            <div class="tgo-doc-section"><h3>4. Requisitos de participación</h3><p>Paquete fiscal-laboral, técnico-financiero, integridad pública, certificaciones sectoriales y garantías/fianzas según eFile readiness.</p></div>
+            <div class="tgo-doc-section"><h3>5. Criterios de evaluación</h3><p>Matriz técnica/económica parametrizada por régimen, POBALINES y reglas institucionales cargadas.</p></div>
+            <div class="tgo-doc-section"><h3>6. Estudio de mercado</h3><p>Pricing Gov en proceso. Evidencia comparable, rango competitivo, precio ideal, precio no aceptable y conveniente sujetos a reglas institucionales.</p></div>
+            <div class="tgo-doc-section"><h3>7. Calendario</h3><p>Publicación programada tras ventana 24h, junta de aclaraciones, recepción de propuestas, evaluación, fallo y contrato.</p></div>
+            <div class="tgo-doc-section"><h3>8. Anexos</h3><p>Anexo técnico, plantilla de costos CT-01, matriz de evaluación, estudio de mercado, paquete documental y bitácora.</p></div>
+            <div class="tgo-doc-section"><h3>9. Condiciones contractuales</h3><p>Garantías, fianzas, responsabilidad civil, evidencias mensuales y control de cambios.</p></div>
+            <div class="tgo-doc-section"><h3>10. Penalizaciones y SLA</h3><p>Penalizaciones por incumplimiento de cobertura, horarios, evidencia mensual, calidad de servicio y tiempos de respuesta.</p></div>
+          </div>
+        </section>
+        <aside class="tgo-ai-panel">
+          <div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start"><div><div class="tgo-eyebrow"><span class="spark"></span>Derecha · Asistente IA</div><h2 style="margin-top:10px">Revisión contextual</h2></div><span class="tgo-mark small gov" aria-hidden="true"><span class="bolt"></span></span></div>
+          <div class="tgo-ai-msg"><strong>Detecté 3 faltantes críticos antes de publicación.</strong><p>Faltan póliza RC, validación REPSE si aplica y cierre jurídico del anexo técnico.</p></div>
+          <div class="tgo-ai-msg"><strong>La suficiencia presupuestal está validada.</strong><p>El folio presupuestal cubre la etapa de publicación; revisar vigencia para firma.</p></div>
+          <div class="tgo-ai-msg"><strong>El estudio de mercado requiere evidencia comparable adicional.</strong><p>96 fuentes consultadas, 71 válidas. Sugiero reforzar fuentes por zona geográfica.</p></div>
+          <div class="tgo-ai-msg"><strong>Esta regla depende del régimen institucional cargado.</strong><p>No se hardcodean umbrales de precio; se aplican reglas del perfil y POBALINES.</p></div>
+          <div class="tgo-ai-msg"><strong>La plantilla de limpieza activa paquete laboral y REPSE si aplica.</strong><p>Validar si el servicio especializado exige registro y cumplimiento parafiscal.</p></div>
+          <div class="tgo-ai-msg"><strong>No publiques hasta cerrar revisión jurídica y Pricing Gov.</strong><p>Estado actual: publicación bloqueada por faltantes documentales y matriz económica.</p></div>
+          <div class="tgo-ai-actions">
+            <button class="tgo-btn slim gov" data-toast="Equivalencia técnica validada en borrador.">Validar equivalencia técnica</button>
+            <a class="tgo-btn slim" href="../pricing-gov.html" target="_top">Abrir Pricing Gov</a>
+            <button class="tgo-btn slim" data-toast="Precio no aceptable revisado según régimen y POBALINES cargadas.">Revisar precio no aceptable</button>
+            <button class="tgo-btn slim" data-toast="Precio conveniente revisado según reglas institucionales.">Revisar precio conveniente</button>
+            <button class="tgo-btn slim file" data-toast="Visto bueno jurídico solicitado.">Solicitar visto bueno jurídico</button>
+            <button class="tgo-btn slim file" data-toast="Faltantes eFile enviados a responsable documental.">Resolver faltantes eFile</button>
+            <button class="tgo-btn slim" data-toast="Cláusula de integridad agregada al borrador.">Agregar cláusula</button>
+            <button class="tgo-btn slim" data-toast="Bases versionadas como v5 con bitácora.">Versionar bases</button>
+            <button class="tgo-btn slim primary" data-toast="Publicación preparada; mantiene bloqueo hasta checklist completo.">Preparar publicación</button>
+            <button class="tgo-btn slim file" data-toast="Evidencia guardada en repositorio seguro.">Guardar evidencia</button>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="tgo-section" id="crear-procedimiento">
+      <article class="tgo-card">
+        <div class="tgo-module-head"><div><div class="tgo-eyebrow"><span class="spark"></span>1 · Crear procedimiento</div><h2>Selecciona tipo, régimen y repositorio desde el inicio</h2><p class="tgo-muted" style="margin-top:8px">Tender Gov inicia con un perfil institucional, no con un PDF aislado.</p></div><div class="tgo-actions"><button class="tgo-btn primary" data-toast="Procedimiento iniciado como borrador LPN-2026-005.">Iniciar procedimiento</button><button class="tgo-btn" data-toast="Borrador guardado en repositorio seguro.">Guardar borrador</button></div></div>
+        <div class="tgo-tile-grid">
+          <button class="tgo-tile active" data-toast="Tipo seleccionado: Licitación pública."><strong>Licitación pública</strong><span>Regla general con expediente completo.</span></button><button class="tgo-tile" data-toast="Tipo seleccionado: Invitación restringida."><strong>Invitación restringida</strong><span>Configurable por régimen y umbrales.</span></button><button class="tgo-tile" data-toast="Tipo seleccionado: Adjudicación directa."><strong>Adjudicación directa</strong><span>Requiere justificación y evidencia.</span></button><button class="tgo-tile" data-toast="Tipo seleccionado: Procedimiento configurable."><strong>Procedimiento configurable</strong><span>Para reglas estatales o municipales.</span></button><button class="tgo-tile" data-toast="Marcado como Supuesto configurable."><strong>Supuesto configurable</strong><span>Validación legal antes de publicar.</span></button>
+        </div>
+        <div class="tgo-form-grid" style="margin-top:14px">
+          <div class="tgo-field"><label>Nombre del procedimiento</label><input class="tgo-control" value="Servicio integral de limpieza institucional"></div>
+          <div class="tgo-field"><label>Tipo</label><select class="tgo-control"><option>Servicios</option><option>Bienes</option><option>Mixto</option></select></div>
+          <div class="tgo-field"><label>Régimen aplicable</label><select class="tgo-control"><option>Federal</option><option>Estatal</option><option>Municipal</option><option>Organismo autónomo</option></select></div>
+          <div class="tgo-field"><label>Entidad compradora</label><input class="tgo-control" value="Secretaría de Innovación Pública"></div>
+          <div class="tgo-field"><label>Área requirente</label><input class="tgo-control" value="Servicios Generales"></div>
+          <div class="tgo-field"><label>Área contratante</label><input class="tgo-control" value="Dirección de Adquisiciones"></div>
+          <div class="tgo-field"><label>Unidad administrativa</label><input class="tgo-control" value="Unidad Compradora Central"></div>
+          <div class="tgo-field"><label>Prioridad</label><select class="tgo-control"><option>Alta</option><option>Media</option><option>Baja</option></select></div>
+          <div class="tgo-field"><label>Fecha estimada de publicación</label><input class="tgo-control" value="2026-05-14"></div>
+          <div class="tgo-field"><label>Canal oficial de publicación</label><input class="tgo-control" value="Compras MX / canal institucional"></div>
+          <div class="tgo-field"><label>Repositorio seguro</label><input class="tgo-control" value="Activo · LPN-2026-004"></div>
+        </div>
+      </article>
+    </section>
+
+    <section class="tgo-section" id="perfil-institucional">
+      <div class="tgo-module-head"><div><div class="tgo-eyebrow"><span class="spark"></span>2 · Perfil institucional</div><h2>Motor parametrizable por institución, régimen y POBALINES</h2><p class="tgo-muted" style="margin-top:8px">Tender Gov no es un flujo duro: hereda responsables, reglas, umbrales, calendario y versionado normativo.</p></div><div class="tgo-actions"><button class="tgo-btn gov" data-toast="Perfil institucional abierto para actualización.">Actualizar perfil institucional</button><button class="tgo-btn" data-toast="POBALINES 2026 cargadas y versionadas.">Cargar POBALINES</button><button class="tgo-btn soft" data-toast="Reglas institucionales validadas.">Validar reglas</button></div></div>
+      <div class="tgo-grid-4">
+        <div class="tgo-card compact"><span class="tgo-badge gov">Régimen activo</span><h3 style="margin-top:12px">Federal / Estatal / Municipal</h3><p class="tgo-muted">Selección obligatoria al crear proyecto.</p></div>
+        <div class="tgo-card compact"><span class="tgo-badge good">POBALINES cargadas</span><h3 style="margin-top:12px">Versión 2026</h3><p class="tgo-muted">Reglas, montos, responsables y criterios.</p></div>
+        <div class="tgo-card compact"><span class="tgo-badge file">Responsables</span><h3 style="margin-top:12px">Área requirente · Jurídico · Presupuesto</h3><p class="tgo-muted">Dueños visibles y segregación de funciones.</p></div>
+        <div class="tgo-card compact"><span class="tgo-badge process">Reglas de evaluación</span><h3 style="margin-top:12px">Técnica / económica</h3><p class="tgo-muted">Matriz parametrizable por procedimiento.</p></div>
+        <div class="tgo-card compact"><span class="tgo-badge gov">Umbrales configurables</span><h3 style="margin-top:12px">No hardcodeados</h3><p class="tgo-muted">Dependen del régimen y reglas cargadas.</p></div>
+        <div class="tgo-card compact"><span class="tgo-badge gov">Precio no aceptable/no conveniente</span><h3 style="margin-top:12px">Regla institucional</h3><p class="tgo-muted">Se calcula con metodología y evidencia.</p></div>
+        <div class="tgo-card compact"><span class="tgo-badge good">Calendario institucional</span><h3 style="margin-top:12px">Aclaraciones · propuestas · fallo</h3><p class="tgo-muted">Fechas versionadas y auditables.</p></div>
+        <div class="tgo-card compact"><span class="tgo-badge file">Control interno</span><h3 style="margin-top:12px">Observa y valida trazabilidad</h3><p class="tgo-muted">Bitácora de cambios y aprobaciones.</p></div>
+      </div>
+    </section>
+
+    <section class="tgo-section" id="requisicion">
+      <article class="tgo-card">
+        <div class="tgo-module-head"><div><div class="tgo-eyebrow"><span class="spark"></span>3 · Requisición / Pre Orden</div><h2>Carga, extracción IA, normalización y validación de partidas</h2><p class="tgo-muted" style="margin-top:8px">El requerimiento se convierte en objeto raíz del expediente: folio, partidas, presupuesto, anexos y suficiencia.</p></div><div class="tgo-actions"><button class="tgo-btn gov" data-toast="Selector de PDF abierto para subir requisición.">Subir requisición</button><button class="tgo-btn soft" data-toast="Extracción IA ejecutada: 28 campos detectados.">Extraer con IA</button><button class="tgo-btn" data-toast="Partidas validadas; 1 alerta por marca sin equivalente.">Validar partidas</button><button class="tgo-btn file" data-toast="Requisición guardada en repositorio seguro.">Guardar en repositorio</button></div></div>
+        <div class="tgo-grid-3">
+          <div class="tgo-card compact file"><h3>PDF cargado</h3><p class="tgo-muted" style="margin-top:8px">REQ-SG-2026-118.pdf · 14 páginas · anexos técnicos detectados.</p><div class="tgo-status-strip"><span class="tgo-badge good">Legible</span><span class="tgo-badge file">Repositorio</span></div></div>
+          <div class="tgo-card compact"><h3>Campos visibles</h3><div class="tgo-meta-grid" style="grid-template-columns:repeat(2,1fr)"><div class="tgo-meta"><span>Folio</span><strong>REQ-SG-118</strong></div><div class="tgo-meta"><span>Fecha</span><strong>06/05/2026</strong></div><div class="tgo-meta"><span>Área</span><strong>Servicios Generales</strong></div><div class="tgo-meta"><span>Tipo</span><strong>Servicios</strong></div><div class="tgo-meta"><span>Moneda</span><strong>MXN</strong></div><div class="tgo-meta"><span>Ubicación</span><strong>3 inmuebles</strong></div><div class="tgo-meta"><span>Partidas</span><strong>12</strong></div><div class="tgo-meta"><span>Presupuesto</span><strong>$4.8 M</strong></div></div></div>
+          <div class="tgo-card compact"><h3>Validaciones</h3><div class="tgo-checklist" style="margin-top:10px"><div class="tgo-check done"><div><strong>Suficiencia presupuestal</strong><span>Validada con clave / partida presupuestal.</span></div></div><div class="tgo-check done"><div><strong>Normalización de unidades</strong><span>m², turno, supervisor, operario.</span></div></div><div class="tgo-check warn"><div><strong>Marca sin equivalente</strong><span>1 alerta crítica para revisión técnica.</span></div></div><div class="tgo-check block"><div><strong>Datos faltantes</strong><span>Penalización SLA no capturada.</span></div></div></div></div>
+        </div>
+      </article>
+    </section>
+
+    <section class="tgo-section" id="estudio-mercado">
+      <div class="tgo-module-head"><div><div class="tgo-eyebrow"><span class="spark"></span>4 · Estudio de mercado / Pricing Gov</div><h2>Investigación obligatoria, evidencia comparable y precios defendibles</h2><p class="tgo-muted" style="margin-top:8px">Reglas parametrizadas según régimen institucional y POBALINES cargadas.</p></div><div class="tgo-actions"><a class="tgo-btn primary" href="../pricing-gov.html" target="_top">Abrir Pricing Gov</a><button class="tgo-btn gov" data-toast="Robot 24h ejecutado sobre fuentes objetivo.">Ejecutar robot 24h</button><button class="tgo-btn file" data-toast="Paquete de evidencia abierto.">Ver evidencia</button><button class="tgo-btn" data-toast="Estudio exportado a expediente y Drive espejo.">Exportar estudio</button></div></div>
+      <div class="tgo-grid-4">
+        <div class="tgo-card compact"><span class="tgo-badge process">Estado</span><h3 style="margin-top:12px">Investigación en proceso</h3><p class="tgo-muted">Precio y metodología en validación.</p></div><div class="tgo-card compact"><span class="tgo-badge file">Fuentes consultadas</span><h3 style="margin-top:12px">96 / 150</h3><p class="tgo-muted">Marketplaces, históricos, portales y RFQ.</p></div><div class="tgo-card compact"><span class="tgo-badge good">Evidencia capturada</span><h3 style="margin-top:12px">71 fuentes válidas</h3><p class="tgo-muted">Fecha, hora, fuente y comparabilidad.</p></div><div class="tgo-card compact"><span class="tgo-badge good">Comparabilidad</span><h3 style="margin-top:12px">87%</h3><p class="tgo-muted">Score promedio tras descarte de outliers.</p></div><div class="tgo-card compact"><span class="tgo-badge neutral">Precio público</span><h3 style="margin-top:12px">Referencia observable</h3><p class="tgo-muted">No expone reservas internas.</p></div><div class="tgo-card compact"><span class="tgo-badge good">Rango competitivo</span><h3 style="margin-top:12px">Banda defendible</h3><p class="tgo-muted">Con fuentes y notas de descarte.</p></div><div class="tgo-card compact"><span class="tgo-badge gov">Precio ideal</span><h3 style="margin-top:12px">Supuesto configurable</h3><p class="tgo-muted">Mediana ponderada por confiabilidad.</p></div><div class="tgo-card compact"><span class="tgo-badge gov">Precio no aceptable</span><h3 style="margin-top:12px">Según régimen</h3><p class="tgo-muted">No hardcodeado.</p></div><div class="tgo-card compact"><span class="tgo-badge gov">Precio conveniente</span><h3 style="margin-top:12px">Según POBALINES</h3><p class="tgo-muted">Riesgo de insolvencia/dumping.</p></div><div class="tgo-card compact"><span class="tgo-badge block">Riesgo sobreprecio</span><h3 style="margin-top:12px">Medio</h3><p class="tgo-muted">Pendiente de evidencia local.</p></div><div class="tgo-card compact"><span class="tgo-badge process">Riesgo precio bajo</span><h3 style="margin-top:12px">Bajo</h3><p class="tgo-muted">Sin señal de inviabilidad.</p></div><div class="tgo-card compact"><span class="tgo-badge file">Confiabilidad</span><h3 style="margin-top:12px">92%</h3><p class="tgo-muted">Última evidencia: 06/05/2026 12:40.</p></div>
+      </div>
+      <article class="tgo-card tgo-section" id="robot-precios">
+        <div class="tgo-robot-grid">
+          <div><div class="tgo-eyebrow"><span class="spark"></span>Robot de precios · Ventana 24h</div><h2 style="margin-top:12px">Salida defendible, no sólo un número</h2><p class="tgo-muted" style="margin-top:8px">El robot normaliza unidades, descarta outliers, captura evidencia y deja paquete de auditoría para Pricing Gov.</p><div class="tgo-robot-stats" style="margin-top:14px"><div class="tgo-stat"><span>Fuentes objetivo</span><strong>150</strong></div><div class="tgo-stat"><span>Consultadas</span><strong>96</strong></div><div class="tgo-stat"><span>Evidencia válida</span><strong>71</strong></div><div class="tgo-stat"><span>Outliers descartados</span><strong>8</strong></div><div class="tgo-stat"><span>Comparabilidad</span><strong>87%</strong></div><div class="tgo-stat"><span>Estado</span><strong>En proceso</strong></div><div class="tgo-stat"><span>Tiempo restante</span><strong>14h</strong></div><div class="tgo-stat"><span>Minutos</span><strong>22m</strong></div></div></div>
+          <aside class="tgo-card compact"><h3>Outputs internos</h3><div class="tgo-checklist" style="margin-top:10px"><div class="tgo-check done"><div><strong>Rango competitivo</strong><span>Calculado con fuentes comparables.</span></div></div><div class="tgo-check warn"><div><strong>Precio ideal</strong><span>Supuesto configurable por modelo.</span></div></div><div class="tgo-check block"><div><strong>Riesgo de sobreprecio</strong><span>Señal pendiente de evidencia local.</span></div></div><div class="tgo-check done"><div><strong>Riesgo de precio bajo</strong><span>Sin señal material.</span></div></div></div><div class="tgo-actions" style="justify-content:flex-start;margin-top:12px"><button class="tgo-btn slim file" data-toast="Evidencia abierta en panel Pricing Gov.">Ver evidencia</button><button class="tgo-btn slim" data-toast="Recalculo simulado con 104 fuentes.">Recalcular</button><button class="tgo-btn slim primary" data-toast="Reporte Pricing Gov exportado.">Exportar reporte Pricing Gov</button></div></aside>
+        </div>
+      </article>
+    </section>
+
+    <section class="tgo-section" id="bases-anexos">
+      <article class="tgo-card">
+        <div class="tgo-module-head"><div><div class="tgo-eyebrow"><span class="spark"></span>5 · Bases y anexos</div><h2>Convocatoria, anexos, matriz y control de versión</h2><p class="tgo-muted" style="margin-top:8px">Las bases se generan desde requisición, Pricing Gov, POBALINES y paquetes eFile.</p></div><div class="tgo-actions"><button class="tgo-btn primary" data-toast="Bases generadas como borrador v5.">Generar bases</button><button class="tgo-btn" data-toast="Anexo técnico versionado.">Versionar anexos</button><button class="tgo-btn file" data-toast="Documento guardado en repositorio seguro.">Guardar en repositorio</button></div></div>
+        <div class="tgo-grid-4"><div class="tgo-card compact"><span class="tgo-badge process">Bases</span><h3 style="margin-top:12px">Borrador v4</h3><p class="tgo-muted">Pendiente de visto bueno jurídico.</p></div><div class="tgo-card compact"><span class="tgo-badge good">Anexo técnico</span><h3 style="margin-top:12px">Operación + SLA</h3><p class="tgo-muted">Limpieza con sitio, m², turnos y evidencia.</p></div><div class="tgo-card compact"><span class="tgo-badge file">Matriz evaluación</span><h3 style="margin-top:12px">Técnica / económica</h3><p class="tgo-muted">Pesos configurables por régimen.</p></div><div class="tgo-card compact"><span class="tgo-badge block">Bloqueos</span><h3 style="margin-top:12px">3 faltantes</h3><p class="tgo-muted">eFile + cierre jurídico.</p></div></div>
+      </article>
+    </section>
+
+    <section class="tgo-section" id="paquetes-documentales">
+      <div class="tgo-module-head"><div><div class="tgo-eyebrow"><span class="spark"></span>6 · Paquetes documentales / eFile readiness</div><h2>Checklist dinámico por riesgo, sector y vigencia</h2><p class="tgo-muted" style="margin-top:8px">Estados eFile: vigente, por vencer, vencido, incompleto, validado, rechazado.</p></div><div class="tgo-actions"><button class="tgo-btn file" data-toast="eFile validado: readiness 82%.">Validar eFile</button><button class="tgo-btn gov" data-toast="Faltantes críticos asignados a responsable documental.">Resolver faltantes</button><button class="tgo-btn" data-toast="Paquete documental abierto.">Ver paquete documental</button></div></div>
+      <div class="tgo-grid-3">
+        <article class="tgo-card file"><h2>Semáforo eFile</h2><div class="tgo-grid-2" style="margin-top:14px"><div class="tgo-stat"><span>Readiness general</span><strong>82%</strong></div><div class="tgo-stat"><span>Faltantes críticos</span><strong>3</strong></div><div class="tgo-stat"><span>Por vencer</span><strong>5</strong></div><div class="tgo-stat"><span>Validados</span><strong>41</strong></div></div><div class="tgo-progress file" style="margin-top:14px"><span style="width:82%"></span></div></article>
+        <article class="tgo-card"><h2>Paquetes activos</h2><div class="tgo-checklist" style="margin-top:12px"><div class="tgo-check done"><div><strong>Administrativo público</strong><span>Datos del ente, responsables, suficiencia, POBALINES.</span></div></div><div class="tgo-check block"><div><strong>Fiscal-laboral público</strong><span>Falta validación REPSE si aplica.</span></div></div><div class="tgo-check done"><div><strong>Técnico-financiero</strong><span>Experiencia, capacidad, seguros, fianzas.</span></div></div><div class="tgo-check warn"><div><strong>Integridad y auditoría</strong><span>Declaraciones y conflicto de interés pendientes.</span></div></div></div></article>
+        <article class="tgo-card"><h2>Complementarios</h2><div class="tgo-checklist" style="margin-top:12px"><div class="tgo-check file"><div><strong>Certificaciones y sectorial</strong><span>ISO, NOM, permisos, inocuidad, seguridad privada.</span></div></div><div class="tgo-check warn"><div><strong>Garantías y fianzas</strong><span>Póliza RC por cargar.</span></div></div><div class="tgo-check done"><div><strong>Evidencia para auditoría</strong><span>PriceEvidence, actas, bitácora, aprobaciones.</span></div></div></div></article>
+      </div>
+    </section>
+
+    <section class="tgo-section" id="plantillas-servicios">
+      <div class="tgo-module-head"><div><div class="tgo-eyebrow"><span class="spark"></span>7 · Plantillas de servicios</div><h2>Plantillas de operación + costo + cumplimiento</h2><p class="tgo-muted" style="margin-top:8px">Cada plantilla solicita datos operativos, cumplimiento crítico, evidencia mensual y plantilla de costos asociada.</p></div></div>
+      <div class="tgo-alert" style="margin-bottom:14px"><div class="icon">!</div><div><strong>Clasificador legal para obra menor / adecuaciones</strong><p>Si el objeto cruza a obra pública o servicios relacionados, requiere dictamen legal y sale del flujo estándar MVP.</p></div></div>
+      <div class="tgo-library" id="serviceLibrary"></div>
+    </section>
+
+    <section class="tgo-section" id="plantillas-costos">
+      <div class="tgo-module-head"><div><div class="tgo-eyebrow"><span class="spark"></span>8 · Plantillas de costos</div><h2>Arquetipos reutilizables para construir servicios en tercios</h2><p class="tgo-muted" style="margin-top:8px">Costos directos, indirectos, pricing, validaciones salariales, SLA, penalizaciones y evidencia.</p></div></div>
+      <div class="tgo-grid-3" id="costLibrary"></div>
+    </section>
+
+    <section class="tgo-section" id="comite-validadores">
+      <article class="tgo-card">
+        <div class="tgo-module-head"><div><div class="tgo-eyebrow"><span class="spark"></span>9 · Comité y validadores</div><h2>Roles, permisos y segregación de funciones</h2><p class="tgo-muted" style="margin-top:8px">Cada aprobación deja responsable, timestamp, versión y bitácora.</p></div><div class="tgo-actions"><button class="tgo-btn file" data-toast="Visto bueno solicitado a control interno.">Solicitar visto bueno</button><button class="tgo-btn gov" data-toast="Expediente enviado a jurídico.">Enviar a jurídico</button><button class="tgo-btn" data-toast="Validación presupuestal solicitada.">Solicitar validación presupuestal</button><button class="tgo-btn primary" data-toast="Revisión cerrada si todos los roles aprueban.">Cerrar revisión</button></div></div>
+        <div class="tgo-table-wrap"><table class="tgo-table"><thead><tr><th>Rol</th><th>Estado</th><th>Acción pendiente</th><th>Última actividad</th></tr></thead><tbody><tr><td>Área requirente</td><td><span class="tgo-badge good">Aprobado</span></td><td>Sin pendientes</td><td>Validó alcance técnico</td></tr><tr><td>Área contratante</td><td><span class="tgo-badge process">En proceso</span></td><td>Versionar bases</td><td>Borrador v4</td></tr><tr><td>Unidad compradora</td><td><span class="tgo-badge good">Activo</span></td><td>Coordinar publicación</td><td>Abrió Pricing Gov</td></tr><tr><td>Presupuesto</td><td><span class="tgo-badge good">Validado</span></td><td>Confirmar vigencia para firma</td><td>Suficiencia validada</td></tr><tr><td>Jurídico</td><td><span class="tgo-badge block">Pendiente</span></td><td>Revisar cláusulas y anexos</td><td>Observó anexo técnico</td></tr><tr><td>Control interno</td><td><span class="tgo-badge process">Observando</span></td><td>Verificar bitácora</td><td>Revisó 54 eventos</td></tr><tr><td>Comité</td><td><span class="tgo-badge neutral">No convocado</span></td><td>Se activa según régimen</td><td>—</td></tr><tr><td>Evaluador técnico</td><td><span class="tgo-badge neutral">Pendiente</span></td><td>Recibir propuestas</td><td>—</td></tr><tr><td>Evaluador económico</td><td><span class="tgo-badge neutral">Pendiente</span></td><td>Cerrar técnica</td><td>—</td></tr><tr><td>Auditor / consulta</td><td><span class="tgo-badge file">Sólo lectura</span></td><td>Sin edición</td><td>Consultó expediente</td></tr></tbody></table></div>
+      </article>
+    </section>
+
+    <section class="tgo-section" id="publicacion">
+      <article class="tgo-card">
+        <div class="tgo-module-head"><div><div class="tgo-eyebrow"><span class="spark"></span>10 · Publicación</div><h2>Checklist de publicación y ventana 24h</h2><p class="tgo-muted" style="margin-top:8px">Sin checklist completo, la publicación permanece bloqueada.</p></div><div class="tgo-actions"><button class="tgo-btn gov" data-toast="Checklist de publicación preparado.">Preparar publicación</button><button class="tgo-btn" data-toast="Publicación programada tras ventana 24h.">Programar publicación</button><button class="tgo-btn file" data-toast="Vista pública simulada generada sin precio oculto.">Ver vista pública</button><button class="tgo-btn primary" data-toast="Envío a canal oficial bloqueado por faltantes críticos.">Enviar a canal oficial</button></div></div>
+        <div class="tgo-grid-4"><div class="tgo-check done"><div><strong>Checklist completo</strong><span>78% · faltan 3 críticos.</span></div></div><div class="tgo-check done"><div><strong>Bases generadas</strong><span>Borrador v4.</span></div></div><div class="tgo-check warn"><div><strong>Estudio de mercado listo</strong><span>En proceso 24h.</span></div></div><div class="tgo-check block"><div><strong>Paquete documental validado</strong><span>Faltantes eFile.</span></div></div><div class="tgo-check block"><div><strong>Revisión jurídica cerrada</strong><span>Pendiente.</span></div></div><div class="tgo-check file"><div><strong>Repositorio seguro activo</strong><span>Fuente primaria.</span></div></div><div class="tgo-check warn"><div><strong>Ventana de espera 24h</strong><span>14h 22m restantes.</span></div></div><div class="tgo-check done"><div><strong>Canal oficial</strong><span>Compras MX / institucional.</span></div></div></div>
+      </article>
+    </section>
+
+    <section class="tgo-section" id="aclaraciones">
+      <article class="tgo-card">
+        <div class="tgo-module-head"><div><div class="tgo-eyebrow"><span class="spark"></span>11 · Aclaraciones</div><h2>Preguntas, respuestas, acta y versionado de bases</h2></div><div class="tgo-actions"><button class="tgo-btn gov" data-toast="Respuesta de aclaración creada en borrador.">Responder aclaración</button><button class="tgo-btn file" data-toast="Acta de aclaraciones generada.">Generar acta</button><button class="tgo-btn" data-toast="Bases versionadas con cambio sustantivo.">Versionar bases</button></div></div>
+        <div class="tgo-grid-4"><div class="tgo-card compact"><span class="tgo-badge process">Preguntas recibidas</span><h3 style="margin-top:12px">8</h3></div><div class="tgo-card compact"><span class="tgo-badge warn process">Respuestas en borrador</span><h3 style="margin-top:12px">5</h3></div><div class="tgo-card compact"><span class="tgo-badge file">Acta de aclaraciones</span><h3 style="margin-top:12px">Pendiente</h3></div><div class="tgo-card compact"><span class="tgo-badge gov">Cambios sustantivos</span><h3 style="margin-top:12px">2</h3></div></div>
+      </article>
+    </section>
+
+    <section class="tgo-section" id="propuestas">
+      <article class="tgo-card">
+        <div class="tgo-module-head"><div><div class="tgo-eyebrow"><span class="spark"></span>12 · Propuestas</div><h2>Recepción documental y elegibilidad de participantes</h2></div><div class="tgo-actions"><button class="tgo-btn file" data-toast="Matriz de recepción abierta.">Abrir matriz</button><button class="tgo-btn" data-toast="Propuestas comparadas por cumplimiento documental.">Comparar propuestas</button><button class="tgo-btn primary" data-toast="Dictamen preliminar generado.">Generar dictamen</button></div></div>
+        <div class="tgo-grid-3"><div class="tgo-card compact"><h3>Recepción de propuestas</h3><p class="tgo-muted" style="margin-top:8px">12 propuestas recibidas · 10 completas · 2 prevención documental.</p></div><div class="tgo-card compact"><h3>Riesgo documental</h3><p class="tgo-muted" style="margin-top:8px">SAT/IMSS/Infonavit y sectoriales se validan contra eFile.</p></div><div class="tgo-card compact"><h3>Propietarios separados</h3><p class="tgo-muted" style="margin-top:8px">Documentos del comprador, proveedor y expediente no se mezclan.</p></div></div>
+      </article>
+    </section>
+
+    <section class="tgo-section" id="evaluacion">
+      <article class="tgo-card">
+        <div class="tgo-module-head"><div><div class="tgo-eyebrow"><span class="spark"></span>13 · Evaluación</div><h2>Técnica, económica, matriz y dictámenes</h2></div><div class="tgo-actions"><button class="tgo-btn file" data-toast="Matriz técnica/económica abierta.">Abrir matriz</button><button class="tgo-btn" data-toast="Propuestas comparadas por scoring.">Comparar propuestas</button><button class="tgo-btn primary" data-toast="Dictamen de evaluación generado.">Generar dictamen</button></div></div>
+        <div class="tgo-table-wrap"><table class="tgo-table"><thead><tr><th>Proveedor</th><th>Cumple / no cumple</th><th>Score técnico</th><th>Score económico</th><th>Observaciones</th></tr></thead><tbody><tr><td>Proveedor Alfa</td><td><span class="tgo-badge good">Cumple</span></td><td>92</td><td>88</td><td>Mejor evidencia operativa.</td></tr><tr><td>Proveedor Beta</td><td><span class="tgo-badge process">Revisar</span></td><td>84</td><td>93</td><td>Precio bajo; validar viabilidad laboral.</td></tr><tr><td>Proveedor Gamma</td><td><span class="tgo-badge block">No cumple</span></td><td>61</td><td>79</td><td>Falta permiso sectorial.</td></tr></tbody></table></div>
+      </article>
+    </section>
+
+    <section class="tgo-section" id="fallo">
+      <article class="tgo-card tint">
+        <div class="tgo-module-head"><div><div class="tgo-eyebrow"><span class="spark"></span>14 · Fallo</div><h2>Motivación técnica, económica y legal</h2><p class="tgo-muted" style="margin-top:8px">El fallo debe explicar razones legales, técnicas y económicas, incluyendo precio no aceptable/no conveniente cuando aplique.</p></div><div class="tgo-actions"><button class="tgo-btn primary" data-toast="Fallo generado como borrador; falta revisión final.">Generar fallo</button><button class="tgo-btn file" data-toast="Motivación agregada al expediente.">Guardar motivación</button></div></div>
+        <div class="tgo-grid-4"><div class="tgo-card compact"><span class="tgo-badge process">Fallo en preparación</span><h3 style="margin-top:12px">Borrador</h3></div><div class="tgo-card compact"><span class="tgo-badge good">Ganador</span><h3 style="margin-top:12px">Por definir</h3></div><div class="tgo-card compact"><span class="tgo-badge file">Dictámenes</span><h3 style="margin-top:12px">Técnico · económico · legal</h3></div><div class="tgo-card compact"><span class="tgo-badge gov">Bitácora</span><h3 style="margin-top:12px">Completa</h3></div></div>
+      </article>
+    </section>
+
+    <section class="tgo-section" id="contrato">
+      <article class="tgo-card file">
+        <div class="tgo-module-head"><div><div class="tgo-eyebrow"><span class="spark" style="background:var(--efile)"></span>15 · Contrato</div><h2>Formalización, garantías y condiciones de ejecución</h2></div><div class="tgo-actions"><button class="tgo-btn primary" data-toast="Contrato preparado desde bases y fallo.">Preparar contrato</button><button class="tgo-btn file" data-toast="Garantías/fianzas vinculadas a eFile.">Vincular garantías</button></div></div>
+        <div class="tgo-grid-4"><div class="tgo-check done"><div><strong>Contrato</strong><span>Plantilla institucional.</span></div></div><div class="tgo-check warn"><div><strong>Garantías/fianzas</strong><span>Pendientes de proveedor adjudicado.</span></div></div><div class="tgo-check file"><div><strong>Condiciones contractuales</strong><span>SLA, penalizaciones y evidencia mensual.</span></div></div><div class="tgo-check done"><div><strong>Repositorio</strong><span>Versionado y permisos.</span></div></div></div>
+      </article>
+    </section>
+
+    <section class="tgo-section" id="expediente-final">
+      <article class="tgo-card">
+        <div class="tgo-module-head"><div><div class="tgo-eyebrow"><span class="spark"></span>16 · Expediente final</div><h2>Cierre auditable del procedimiento</h2><p class="tgo-muted" style="margin-top:8px">Integra requisición, estudio, bases, aclaraciones, propuestas, evaluación, fallo, contrato, garantías y bitácora.</p></div><div class="tgo-actions"><button class="tgo-btn primary" data-toast="Expediente cerrado si todos los artefactos están completos.">Cerrar expediente</button><button class="tgo-btn file" data-toast="Paquete de auditoría exportado.">Exportar auditoría</button></div></div>
+        <div class="tgo-grid-3"><div class="tgo-card compact"><h3>Exportables</h3><p class="tgo-muted" style="margin-top:8px">PDF, DOCX, XLSX, estructura de datos y evidencias.</p></div><div class="tgo-card compact"><h3>Bitácora completa</h3><p class="tgo-muted" style="margin-top:8px">Actor, rol, fecha, cambio, versión y hash interno.</p></div><div class="tgo-card compact"><h3>Repositorio final</h3><p class="tgo-muted" style="margin-top:8px">Fuente primaria segura; Drive sólo espejo operativo.</p></div></div>
+      </article>
+    </section>
+
+    <section class="tgo-section" id="auditoria">
+      <article class="tgo-card">
+        <div class="tgo-module-head"><div><div class="tgo-eyebrow"><span class="spark"></span>17 · Auditoría</div><h2>Reconstrucción completa: quién cambió qué, cuándo y por qué</h2></div><div class="tgo-actions"><button class="tgo-btn file" data-toast="Bitácora exportada.">Exportar bitácora</button><button class="tgo-btn" data-toast="Vista de auditoría actualizada.">Actualizar auditoría</button></div></div>
+        <div class="tgo-table-wrap"><table class="tgo-table"><thead><tr><th>Fecha</th><th>Actor</th><th>Rol</th><th>Acción</th><th>Objeto</th><th>Versión</th><th>Evidencia</th></tr></thead><tbody><tr><td>06/05/2026 12:40</td><td>Laura Medina</td><td>Unidad compradora</td><td>Ejecutó Pricing Gov</td><td>Estudio de mercado</td><td>v1</td><td>PriceEvidence-071</td></tr><tr><td>06/05/2026 11:12</td><td>Alejandro Ruiz</td><td>Jurídico</td><td>Observó cláusula</td><td>Bases</td><td>v4</td><td>OBS-JUR-014</td></tr><tr><td>06/05/2026 10:33</td><td>María Torres</td><td>Presupuesto</td><td>Validó suficiencia</td><td>Requisición</td><td>v2</td><td>SF-2026-118</td></tr><tr><td>06/05/2026 09:50</td><td>Sistema</td><td>IA</td><td>Extrajo partidas</td><td>Pre Orden</td><td>v1</td><td>OCR-REQ-SG-118</td></tr></tbody></table></div>
+      </article>
+    </section>
+
+  </div>
+
+<section class="module-section tgo-market-express" id="market-express-gov">
+  <div class="section-title"><div><span class="eyebrow gov"><span class="spark"></span>Market Express Gov</span><h2>Publica Express Orders gubernamentales con trazabilidad, eFile y reglas institucionales.</h2><p>Market Express permite a instituciones publicar órdenes de compra inmediatas para productos o servicios, sujetas a montos, reglas y condiciones legales aplicables. Cada publicación conserva evidencia, requisitos eFile, estado de adjudicación y expediente.</p></div></div>
+  <div class="tgo-market-grid">
+    <article class="tgo-me-card"><h3>Flujo Express Order</h3><div class="tgo-flow"><div>Crear Express Order</div><div>Cargar Pre Orden / requisición</div><div>Seleccionar producto o servicio</div><div>Validar monto y régimen</div><div>Validar proveedor elegible</div><div>Publicar</div><div>Recibir respuestas</div><div>Confirmar proveedor</div><div>Generar orden</div><div>Cerrar expediente</div></div><div class="tgo-me-actions"><button class="btn primary">Crear Express Order</button><button class="btn gov">Subir Pre Orden</button><button class="btn">Validar monto</button><button class="btn">Publicar ahora</button></div></article>
+    <aside class="tgo-me-card"><h3>EXG-2026-014 · Cartuchos de tóner</h3><div class="tgo-me-fields"><div class="tgo-me-field"><span>Área requirente</span><strong>Servicios Generales</strong></div><div class="tgo-me-field"><span>Unidad compradora</span><strong>Dirección de Adquisiciones</strong></div><div class="tgo-me-field"><span>Régimen aplicable</span><strong>Parametrizado</strong></div><div class="tgo-me-field"><span>Monto estimado</span><strong>Validación pendiente</strong></div><div class="tgo-me-field"><span>Producto / servicio</span><strong>Producto</strong></div><div class="tgo-me-field"><span>Fecha límite</span><strong>Hoy 15:00</strong></div><div class="tgo-me-field"><span>Requisitos eFile</span><strong>Proveedor verificado</strong></div><div class="tgo-me-field"><span>Repositorio seguro</span><strong>Activo · Drive espejo</strong></div></div><div class="tgo-me-actions"><button class="btn gov">Ver respuestas</button><button class="btn">Generar orden</button><button class="btn efile">Cerrar expediente</button></div></aside>
+  </div>
+  <div class="tgo-warning">Las Express Orders gubernamentales deben obedecer al régimen aplicable, montos autorizados, reglas internas y evidencia de mercado correspondiente.</div>
+</section>
+
+
+<footer class="slx-global-footer" aria-label="Footer SmartLicit">
+  <div class="slx-footer-container">
+    <div class="slx-footer-grid">
+      <div>
+        <div class="slx-footer-brand"><span class="slx-footer-mark" aria-hidden="true"><span>⚡</span></span><span>SmartLicit</span></div>
+        <p style="margin-top:14px;max-width:320px">Una sola inteligencia, múltiples soluciones para resolver trabajo profesional complejo.</p>
+      </div>
+      <div><h4>Soluciones</h4><a class="slx-footer-product" href="../tender.html" target="_top"><span>⚡</span> Tender</a><a class="slx-footer-product" href="../pricing.html" target="_top"><span>⚡</span> Pricing</a><a class="slx-footer-product" href="../file.html" target="_top"><span>⚡</span> File</a><a class="slx-footer-product" href="../lex.html" target="_top"><span>⚡</span> Lex</a></div>
+      <div><h4>Gobierno</h4><a class="slx-footer-gov" href="../tender-gov.html" target="_top"><span>⚡</span> Tender Gov</a><a class="slx-footer-gov" href="../pricing-gov.html" target="_top"><span>⚡</span> Pricing Gov</a><a href="../ipg.html" target="_top">IPG</a></div>
+      <div><h4>Plataforma</h4><a class="slx-footer-efile" href="../efile.html" target="_top"><span>⚡</span> eFile</a><a href="../planes.html" target="_top">Planes</a><a href="../blog.html" target="_top">Blog</a><a href="../mi-cuenta.html" target="_top">Mi Cuenta</a></div>
+      <div><h4>Workspace</h4><a class="slx-footer-drive" href="../gDrive.html" target="_top"><span>▰</span> Google Drive Workspace</a><a href="../mi-cuenta.html#facturacion" target="_top">Facturación</a><a href="../planes.html#tokens" target="_top">Tokens</a><a href="../mi-cuenta.html#integraciones" target="_top">Integraciones</a></div>
+    </div>
+    <div class="slx-footer-bottom"><span>© SmartLicit</span><span>Minimal premium · trazable · accionable.</span></div>
+  </div>
+</footer>
+
+</main>
+<div class="tgo-toast" id="tgoToast" role="status" aria-live="polite">Acción simulada</div>
+<script>
+(function(){
+  const sidebar=document.getElementById('tgoSidebar');
+  const navLinks=[...document.querySelectorAll('#tgoSideNav a')];
+  const toast=document.getElementById('tgoToast');
+  const services=[
+    ['Limpieza','Sitios, m², superficies, áreas críticas, turnos, operarios y supervisores.','REPSE si aplica, IMSS/Infonavit, químicos, seguridad e higiene.','CT-01','Riesgo laboral'],
+    ['Seguridad privada','Casetas, guardias, turnos, armado/no armado, rondines, CCTV y reportes.','Permiso federal/estatal, seguros, capacitación y cumplimiento laboral.','CT-02','Alto riesgo'],
+    ['Lavandería','Kg/piezas por día, recolección, desinfección, empaque y tiempos de retorno.','Higiene/sanidad aplicable, transporte y evidencia de entrega.','CT-03','Volumen'],
+    ['Comedor / alimentos','Comensales, menús, gramajes, dietas, cocina, mermas y evidencia.','Distintivo H, NOM-251, permisos sanitarios e inocuidad.','CT-04','Sanitario'],
+    ['Mantenimiento general','Activos, preventivo/correctivo, cuadrillas, refacciones y reportes.','Seguridad industrial, seguros y cumplimiento laboral.','CT-05','Operativo'],
+    ['Mantenimiento HVAC','Equipos, capacidad, filtros, refacciones, SLA y tiempos de respuesta.','Certificaciones técnicas, seguridad y residuos.','CT-05','Técnico'],
+    ['Mantenimiento eléctrico','Tableros, circuitos, inspecciones, emergencias y mediciones.','Seguridad eléctrica, DC-3/competencia y seguros.','CT-05','Crítico'],
+    ['Mantenimiento hidrosanitario','Redes, bombas, cisternas, drenaje, emergencias y monitoreo.','Seguridad, disposición de residuos y laboral.','CT-05','Técnico'],
+    ['Jardinería','m² verdes, especies, frecuencia, poda, fertilización y maquinaria.','Químicos/ambiental y seguridad del personal.','CT-01','Operativo'],
+    ['Fumigación y control de plagas','Tipo de plaga, frecuencia, químicos, áreas sensibles y evidencias.','Permisos, fichas de seguridad y sanitario.','CT-01','Sanitario'],
+    ['Recolección y manejo de residuos','Volúmenes, tipo de residuo, contenedores, frecuencia y manifiestos.','Permisos ambientales y de transporte.','CT-03','Ambiental'],
+    ['Transporte de personal','Rutas, horarios, unidades, pasajeros, GPS e incidencias.','Seguro, permisos vehiculares y operadores.','CT-07','Logístico'],
+    ['Logística y distribución','Orígenes/destinos, pallets, ventanas, devoluciones y tracking.','Seguros, permisos de transporte y trazabilidad.','CT-07','Logístico'],
+    ['Arrendamiento de equipo','Tipo de equipo, plazo, mantenimiento, disponibilidad y reposición.','Seguro, garantía y soporte técnico.','CT-08','Activo'],
+    ['Servicios de TI','Alcance, ambientes, usuarios, integraciones, soporte y uptime.','Privacidad, seguridad de información y continuidad.','CT-06','Digital'],
+    ['Ciberseguridad','Activos, monitoreo, incidentes, pentest, vulnerabilidades y reportes.','ISO/IEC 27001 opcional, privacidad y continuidad.','CT-06','Crítico'],
+    ['Call center','Asientos, horarios, campañas, scripts, QA, abandono, TMO y reportes.','Privacidad, laboral y soporte tecnológico.','CT-01','Operativo'],
+    ['Facility management','Sitios, activos, servicios múltiples, coordinación, mesa de ayuda y SLA.','REPSE si aplica, seguros y control de subcontratistas.','CT-01','Integral'],
+    ['Salud ocupacional','Cobertura, personal médico/enfermería, campañas y expedientes.','Permisos sanitarios, datos sensibles y seguros.','CT-01','Sensible'],
+    ['Consultoría profesional','Problema, alcance, entregables, perfiles, horas, hitos y aceptación.','Confidencialidad, conflicto y referencias.','CT-10','Profesional'],
+    ['Servicios especializados con personal en sitio','Headcount, roles, turnos, supervisor, herramientas, evidencia y SLA.','REPSE, IMSS, Infonavit, STPS y seguros.','CT-01','Alto riesgo'],
+    ['Obra menor / adecuaciones','Sitios, alcances, cantidades, cronograma, materiales y supervisión.','Clasificador legal obligatorio; si es obra pública, sale del MVP.','CT-09','Clasificador legal obligatorio']
+  ];
+  const costs=[
+    ['CT-01','Personal intensivo recurrente','Limpieza, jardinería, call center, facility, onsite especializado','Headcount, sueldo integrado, prestaciones, seguridad social, uniformes, supervisión, insumos, indirectos, margen','Precio mensual, por elemento, por turno, por sitio'],
+    ['CT-02','Seguridad privada','Vigilancia','Guardias, turnos, supervisores, equipo, radios/CCTV, seguro, permisos, RC, backoffice, margen','Precio por puesto, turno, mes y cobertura'],
+    ['CT-03','Volumen procesado','Lavandería, residuos','Kg/pieza/contenedor, logística, desinfección, empaque, trazabilidad, indirectos','Precio por kg, pieza, viaje o retiro'],
+    ['CT-04','Consumo alimentario','Comedor / dieta','Comensales, menú, gramaje, mermas, personal cocina, energía, higiene, indirectos','Precio por comensal, servicio, día, mes'],
+    ['CT-05','Mantenimiento técnico','General, HVAC, eléctrico, hidrosanitario','Bolsa preventiva, correctivos, cuadrillas, guardias, refacciones, SLA, emergencias','Fee base, costo por visita, bolsa correctiva'],
+    ['CT-06','Tecnología y ciberseguridad','TI, ciber','Roles/hora, licencias, nube, ambientes, soporte, transición, continuidad','Fee mensual, por sprint, por proyecto'],
+    ['CT-07','Transporte y logística','Transporte personal, distribución','Ruta, km, unidad, combustible, operador, mantenimiento, GPS, seguros','Precio por ruta, km, viaje o mes'],
+    ['CT-08','Arrendamiento de equipo','Renta de equipo','Canon, mantenimiento, reemplazo, uptime, soporte, depreciación','Renta mensual, costo total del plazo'],
+    ['CT-09','Adecuación ligera','Obra menor permitida en MVP','Materiales, cuadrilla, supervisión, seguridad, cronograma','Precio fijo, alzado o por entregable'],
+    ['CT-10','Resultado profesional','Consultoría','Perfiles, horas, hitos, QA, aprobaciones, gastos','Por entregable, hito, paquete o bolsa']
+  ];
+  const serviceRoot=document.getElementById('serviceLibrary');
+  services.forEach(s=>{const card=document.createElement('article');card.className='tgo-service-card';card.innerHTML=`<div class="tgo-tags"><span class="tgo-badge gov">${s[3]}</span><span class="tgo-badge ${s[4].includes('obligatorio')?'block':'file'}">${s[4]}</span></div><h3>${s[0]}</h3><p><strong>Datos requeridos:</strong> ${s[1]}</p><p><strong>Cumplimiento crítico:</strong> ${s[2]}</p><div class="footer"><span class="tgo-tag good">SLA</span><span class="tgo-tag file">eFile</span><span class="tgo-tag gov">Pricing Gov</span></div>`;serviceRoot.appendChild(card)});
+  const costRoot=document.getElementById('costLibrary');
+  costs.forEach(c=>{const card=document.createElement('article');card.className='tgo-cost-card';card.innerHTML=`<span class="code">${c[0]}</span><h3>${c[1]}</h3><p class="tgo-muted"><strong>Aplica a:</strong> ${c[2]}</p><p class="tgo-muted"><strong>Variables:</strong> ${c[3]}</p><p class="tgo-muted"><strong>Outputs:</strong> ${c[4]}</p><div class="tgo-tags"><span class="tgo-tag">Mano de obra</span><span class="tgo-tag">Seguridad social</span><span class="tgo-tag">Insumos</span><span class="tgo-tag">Equipos</span><span class="tgo-tag">Supervisión</span><span class="tgo-tag">Seguros</span><span class="tgo-tag">Fianzas</span><span class="tgo-tag">SLA</span><span class="tgo-tag">Penalizaciones</span><span class="tgo-tag file">Evidencia</span></div><div class="tgo-actions" style="justify-content:flex-start"><button class="tgo-btn slim" data-toast="Plantilla ${c[0]} abierta.">Abrir plantilla</button><button class="tgo-btn slim gov" data-toast="Escenario ${c[0]} calculado.">Calcular escenario</button><a class="tgo-btn slim file" href="../pricing-gov.html" target="_top">Enviar a Pricing Gov</a></div>`;costRoot.appendChild(card)});
+  function showToast(msg){toast.textContent=msg||'Acción simulada';toast.classList.add('show');clearTimeout(showToast._t);showToast._t=setTimeout(()=>toast.classList.remove('show'),2200)}
+  document.addEventListener('click',e=>{const b=e.target.closest('[data-toast]');if(b){showToast(b.dataset.toast)}});
+  document.getElementById('tgoMobileMenu').addEventListener('click',()=>sidebar.classList.toggle('open'));
+  navLinks.forEach(a=>a.addEventListener('click',()=>{sidebar.classList.remove('open')}));
+  const sections=navLinks.map(a=>document.querySelector(a.getAttribute('href'))).filter(Boolean);
+  const obs=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){const id='#'+entry.target.id;navLinks.forEach(a=>a.classList.toggle('active',a.getAttribute('href')===id));}})},{rootMargin:'-35% 0px -58% 0px',threshold:.01});
+  sections.forEach(s=>obs.observe(s));
+})();
+</script>
+</body>
+</html>

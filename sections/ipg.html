@@ -1,0 +1,1112 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>IPG · Índice de Precios Gubernamentales · SmartLicit</title>
+<meta name="description" content="Prototipo navegable de la sección IPG de SmartLicit: precios, contratos, proveedores, dependencias, CUCOP, históricos y comparativos." />
+<style>
+:root{
+  --lime:#B5F857;
+  --ink:#041912;
+  --green:#04560C;
+  --action:#1A990F;
+  --bg:#F9F8F3;
+  --surface:#FFFFFF;
+  --surface-soft:#FBFAF6;
+  --warm:#EBEAE5;
+  --warm2:#CDCABF;
+  --muted:#66736D;
+  --muted2:#8A948F;
+  --line:rgba(4,25,18,.10);
+  --line2:rgba(4,25,18,.16);
+  --blue:#5462E2;
+  --blue-soft:#BBC0F3;
+  --blue-soft2:#DDDFF9;
+  --blue-bright:#8B9BF7;
+  --night:#060517;
+  --deep:#080353;
+  --yellow:#F7BA14;
+  --orange:#F77214;
+  --red:#C62118;
+  --coral:#F7645C;
+  --gov-soft:#FFB4B0;
+  --shadow:0 22px 70px rgba(4,25,18,.07);
+  --shadow-soft:0 8px 24px rgba(4,25,18,.045);
+  --radius-xl:34px;
+  --radius-lg:24px;
+  --radius-md:18px;
+  --radius-sm:14px;
+  --font:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  color:var(--ink);
+  font-family:var(--font);
+  background:
+    radial-gradient(circle at 86% 2%, rgba(181,248,87,.20), transparent 30rem),
+    radial-gradient(circle at 12% 92%, rgba(84,98,226,.12), transparent 33rem),
+    linear-gradient(180deg,#FFFFFF 0%, var(--bg) 58%, #FFFFFF 100%);
+  -webkit-font-smoothing:antialiased;
+  text-rendering:geometricPrecision;
+  letter-spacing:-.014em;
+}
+a{color:inherit;text-decoration:none}
+button,input,select{font:inherit}button{cursor:pointer}
+h1,h2,h3,h4,p{margin:0}.muted{color:var(--muted)}
+.wrap{width:min(1240px,calc(100% - 42px));margin-inline:auto}.section{padding:34px 0}
+.topbar{position:sticky;top:0;z-index:90;height:74px;background:rgba(255,255,255,.91);backdrop-filter:blur(18px);border-bottom:1px solid var(--line);display:flex;align-items:center}
+.nav{display:flex;align-items:center;justify-content:space-between;gap:10px}.topbar .wrap.nav{width:min(1560px,calc(100% - 32px));}.brand{display:flex;align-items:center;gap:10px;font-size:20px;font-weight:850;letter-spacing:-.045em;white-space:nowrap}.mark{--mark-bg:var(--green);--mark-bolt:var(--lime);width:38px;height:38px;display:inline-grid;place-items:center;position:relative;flex:0 0 auto}.mark:before{content:"";position:absolute;inset:0;background:var(--mark-bg);clip-path:polygon(50% 0%,61% 32%,100% 50%,61% 68%,50% 100%,39% 68%,0% 50%,39% 32%)}.bolt{width:16px;height:23px;position:relative;z-index:1;background:var(--mark-bolt);clip-path:polygon(62% 0%,20% 52%,48% 52%,37% 100%,84% 38%,56% 38%)}.mark.gov{--mark-bg:var(--red);--mark-bolt:var(--gov-soft)}.mark.pricing-gov{--mark-bg:var(--coral);--mark-bolt:var(--ink)}
+.site-nav{display:flex;align-items:center;justify-content:center;gap:1px;flex:1;overflow:auto;padding-bottom:2px;scrollbar-width:none}.site-nav::-webkit-scrollbar{display:none}.site-nav a{display:inline-flex;align-items:center;gap:5px;min-height:38px;padding:0 7px;border-radius:999px;color:rgba(4,25,18,.68);font-size:12.35px;font-weight:720;white-space:nowrap;border:1px solid transparent}.site-nav a:hover,.site-nav a.active{color:var(--ink);background:var(--bg);border-color:var(--line)}.site-nav a.active{background:rgba(181,248,87,.30);color:var(--green);border-color:rgba(4,86,12,.14)}.nav-bolt{font-weight:950;line-height:1;font-size:14px;color:#81C91C}.gov-tender .nav-bolt{color:var(--red)}.gov-pricing .nav-bolt{color:#C62118}
+.header-search{position:relative;flex:0 1 330px;min-width:220px}.header-search:before{content:"⌕";position:absolute;left:14px;top:50%;transform:translateY(-52%);color:var(--muted);font-weight:900}.header-search input{width:100%;height:40px;border:1px solid var(--line);border-radius:999px;background:#FBFAF6;outline:0;padding:0 14px 0 40px;font-size:13px;color:var(--ink)}.header-search input:focus{border-color:rgba(26,153,15,.30);box-shadow:0 0 0 4px rgba(181,248,87,.20);background:#fff}.account{position:relative;flex:0 0 auto}.account-trigger{display:inline-flex;align-items:center;gap:6px;min-height:38px;padding:0 12px;border-radius:999px;font-size:13px;font-weight:830;color:var(--muted);border:1px solid var(--line);background:#fff;white-space:nowrap}.account-trigger:hover{color:var(--ink);background:var(--bg);border-color:var(--line2)}
+.hero{padding:68px 0 24px}.hero-grid{display:grid;grid-template-columns:minmax(0,1.02fr) minmax(420px,.98fr);gap:30px;align-items:center}.eyebrow{display:inline-flex;align-items:center;gap:8px;width:max-content;border:1px solid var(--line);background:rgba(255,255,255,.74);border-radius:999px;padding:8px 12px;color:var(--muted);font-size:13px;font-weight:760;box-shadow:0 1px 0 rgba(4,25,18,.03)}.eyebrow .spark{width:8px;height:8px;border-radius:99px;background:var(--lime);box-shadow:0 0 0 4px rgba(181,248,87,.22)}h1{margin-top:22px;font-size:clamp(42px,5.8vw,74px);line-height:.92;letter-spacing:-.075em;font-weight:850;max-width:850px}.lead{margin-top:22px;color:rgba(4,25,18,.70);font-size:clamp(17px,1.8vw,22px);line-height:1.42;max-width:780px}.hero-support{margin-top:14px;color:rgba(4,25,18,.52);font-size:15px;line-height:1.55;max-width:760px}.hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:28px}.btn{min-height:42px;border:1px solid var(--line2);border-radius:999px;background:#fff;color:var(--ink);display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:0 15px;font-size:13.5px;font-weight:830;transition:.18s ease;white-space:nowrap}.btn:hover{transform:translateY(-1px);box-shadow:var(--shadow-soft);border-color:rgba(4,25,18,.26)}.btn.primary{background:var(--ink);color:#fff;border-color:var(--ink)}.btn.accent{background:var(--lime);border-color:var(--lime);color:var(--ink)}.btn.blue{background:rgba(84,98,226,.09);border-color:rgba(84,98,226,.22);color:var(--deep)}.btn.warn{background:rgba(247,186,20,.12);border-color:rgba(247,186,20,.24);color:#7A5200}.btn.slim{min-height:32px;font-size:11.5px;padding:0 10px;border-radius:11px}.btn.danger{background:rgba(198,33,24,.08);border-color:rgba(198,33,24,.18);color:var(--red)}
+.hero-panel{position:relative;overflow:hidden;border:1px solid var(--line);border-radius:var(--radius-xl);background:rgba(255,255,255,.86);box-shadow:var(--shadow);padding:18px}.hero-panel:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 8% 4%, rgba(181,248,87,.25), transparent 14rem),radial-gradient(circle at 100% 100%, rgba(187,192,243,.33), transparent 16rem);pointer-events:none}.hero-panel>*{position:relative;z-index:1}.panel-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}.dots{display:flex;gap:6px}.dots span{width:8px;height:8px;border-radius:99px;background:var(--warm2)}.badge{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:6px 9px;font-size:11px;font-weight:950;white-space:nowrap;border:1px solid var(--line);background:#F7F6F1;color:var(--muted)}.badge.good{background:rgba(181,248,87,.18);color:var(--green);border-color:rgba(4,86,12,.14)}.badge.blue{background:rgba(84,98,226,.10);color:var(--deep);border-color:rgba(84,98,226,.18)}.badge.warn{background:rgba(247,186,20,.14);color:#7A5200;border-color:rgba(247,186,20,.24)}.badge.danger{background:rgba(198,33,24,.08);color:var(--red);border-color:rgba(198,33,24,.18)}.badge.dark{background:var(--night);border-color:var(--night);color:#fff}.badge.coral{background:rgba(247,100,92,.10);color:#550415;border-color:rgba(247,100,92,.18)}
+.master-card{background:#fff;border:1px solid var(--line);border-radius:24px;padding:16px;box-shadow:var(--shadow-soft)}.master-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.master-head h3{font-size:22px;letter-spacing:-.055em}.master-head p{color:var(--muted);font-size:12.5px;line-height:1.45;margin-top:4px}.master-kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:12px}.mini-kpi{background:#FBFAF6;border:1px solid var(--line);border-radius:16px;padding:11px}.mini-kpi span{display:block;color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.08em;font-weight:950}.mini-kpi strong{display:block;margin-top:6px;font-size:19px;letter-spacing:-.045em}.mini-chart{height:200px;border:1px solid var(--line);border-radius:18px;background:#FBFAF6;margin-top:12px;padding:10px;overflow:hidden}.legend{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:10px;font-size:11px;color:var(--muted);font-weight:850}.legend i{width:10px;height:10px;border-radius:99px;display:inline-block}.legend .g{background:var(--green)}.legend .b{background:var(--blue)}.legend .l{background:var(--lime)}.legend .o{background:var(--orange)}
+.filter-shell{position:sticky;top:86px;z-index:60;padding:10px 0 8px;background:linear-gradient(180deg,rgba(249,248,243,.92),rgba(249,248,243,.78));backdrop-filter:blur(14px)}.filters{background:rgba(255,255,255,.90);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow-soft);padding:14px}.filter-title{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}.filter-title h2{font-size:18px;letter-spacing:-.04em}.filter-grid{display:grid;grid-template-columns:minmax(260px,2fr) repeat(5,minmax(118px,1fr)) auto;gap:8px;align-items:end}.field label{display:block;color:var(--muted);font-size:10.5px;text-transform:uppercase;letter-spacing:.08em;font-weight:950;margin:0 0 5px}.control{width:100%;height:38px;border:1px solid var(--line);background:#FBFAF6;border-radius:12px;padding:0 10px;color:var(--ink);outline:0;font-size:12.5px}.control:focus{border-color:rgba(26,153,15,.30);box-shadow:0 0 0 3px rgba(181,248,87,.18);background:#fff}.filter-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px;justify-content:center}.filter-actions .btn{min-height:34px;font-size:12px}.saved-views{display:none;justify-content:center;gap:7px;flex-wrap:wrap;margin-top:10px}.saved-views.active{display:flex}.saved-view-chip{border:1px solid rgba(84,98,226,.18);background:rgba(84,98,226,.08);color:var(--deep);border-radius:999px;padding:7px 10px;font-size:11.5px;font-weight:850;white-space:nowrap}
+.toc{position:sticky;top:196px;z-index:45;margin:6px auto 14px;display:flex;justify-content:center}.toc-inner{display:flex;justify-content:center;gap:7px;overflow:auto;padding:8px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.84);backdrop-filter:blur(16px);box-shadow:var(--shadow-soft);scrollbar-width:none;width:max-content;max-width:100%;margin-inline:auto}.toc-inner::-webkit-scrollbar{display:none}.toc a{display:inline-flex;min-height:32px;align-items:center;border:1px solid transparent;border-radius:999px;padding:0 11px;color:var(--muted);font-size:12px;font-weight:850;white-space:nowrap}.toc a:hover,.toc a.active{background:var(--bg);color:var(--ink);border-color:var(--line)}.toc a.active{background:rgba(181,248,87,.25);color:var(--green)}
+.section-title{display:flex;justify-content:space-between;gap:18px;align-items:flex-end;margin-bottom:18px}.section-title h2{font-size:clamp(30px,4vw,48px);line-height:.98;letter-spacing:-.065em;font-weight:850}.section-title p{margin-top:10px;color:var(--muted);font-size:15px;line-height:1.5;max-width:760px}.section-title .right-tools{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}.grid-5{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}.grid-4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.grid-2{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(360px,.8fr);gap:14px}.stack{display:grid;gap:12px}
+.card{background:#fff;border:1px solid var(--line);border-radius:var(--radius-lg);box-shadow:var(--shadow-soft);padding:17px}.card-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:12px}.card h3{font-size:18px;letter-spacing:-.04em}.card h4{font-size:15px;letter-spacing:-.025em}.card p{color:var(--muted);font-size:12.7px;line-height:1.48;margin-top:5px}.kpi{background:#fff;border:1px solid var(--line);border-radius:20px;padding:15px;box-shadow:var(--shadow-soft);min-height:128px;display:flex;flex-direction:column;justify-content:space-between}.kpi span{color:var(--muted);font-size:10.5px;text-transform:uppercase;letter-spacing:.08em;font-weight:950}.kpi strong{display:block;margin-top:8px;font-size:30px;letter-spacing:-.065em}.kpi small{color:var(--muted);font-size:11.5px;line-height:1.35}.index-card{min-height:138px;transition:.18s ease}.index-card:hover{transform:translateY(-2px);box-shadow:var(--shadow);border-color:rgba(4,25,18,.19)}.index-card .icon{width:34px;height:34px;border-radius:14px;background:rgba(181,248,87,.22);color:var(--green);display:grid;place-items:center;font-weight:950}.index-card.blue .icon{background:rgba(84,98,226,.10);color:var(--deep)}.index-card.warn .icon{background:rgba(247,186,20,.14);color:#7A5200}.index-card.danger .icon{background:rgba(198,33,24,.08);color:var(--red)}
+.chart-card{display:flex;flex-direction:column;min-height:440px}.chart-toolbar{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0}.chart-toolbar select,.chart-toolbar input{height:32px;border:1px solid var(--line);background:#FBFAF6;border-radius:999px;padding:0 9px;font-size:11.5px;color:var(--muted);font-weight:760;outline:0}.chart-toolbar select:focus,.chart-toolbar input:focus{border-color:rgba(84,98,226,.25);background:#fff}.chart-area{flex:1;min-height:230px;background:#FBFAF6;border:1px solid var(--line);border-radius:18px;padding:12px;position:relative;overflow:hidden}.chart-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}.metric-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:10px}.metric{border:1px solid var(--line);border-radius:14px;background:#fff;padding:9px}.metric span{display:block;color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.07em;font-weight:950}.metric strong{display:block;margin-top:4px;font-size:16px;letter-spacing:-.035em}.bar-list{display:grid;gap:10px;padding:8px}.bar-row{display:grid;grid-template-columns:88px 1fr 70px;gap:10px;align-items:center;font-size:12px;font-weight:820;color:var(--muted)}.bar-track{height:12px;border-radius:999px;background:#EDECE5;overflow:hidden}.bar-fill{height:100%;border-radius:inherit;background:var(--green)}.bar-fill.blue{background:var(--blue)}.bar-fill.lime{background:var(--lime)}.bar-fill.yellow{background:var(--yellow)}.bar-fill.red{background:var(--red)}
+.heatmap{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;padding:10px}.state-cell{height:42px;border-radius:10px;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;color:rgba(4,25,18,.65);background:#fff}.level1{background:rgba(181,248,87,.18)}.level2{background:rgba(181,248,87,.38)}.level3{background:rgba(4,86,12,.68);color:#fff}.level4{background:rgba(84,98,226,.76);color:#fff}.scatter{position:relative;height:100%;min-height:230px}.point{position:absolute;width:14px;height:14px;border-radius:50%;background:var(--green);box-shadow:0 0 0 6px rgba(181,248,87,.18);border:2px solid #fff;cursor:pointer}.point.blue{background:var(--blue);box-shadow:0 0 0 6px rgba(84,98,226,.12)}.point.warn{background:var(--yellow);box-shadow:0 0 0 6px rgba(247,186,20,.16)}.point.danger{background:var(--red);box-shadow:0 0 0 6px rgba(198,33,24,.12)}.axis{position:absolute;left:12px;right:12px;bottom:36px;border-bottom:1px solid var(--line)}.axis-y{position:absolute;left:32px;top:14px;bottom:36px;border-left:1px solid var(--line)}.axis-label{position:absolute;color:var(--muted2);font-size:10px;font-weight:800}.axis-label.x{bottom:8px;left:44%;}.axis-label.y{top:44%;left:-4px;transform:rotate(-90deg)}
+.table-wrap{max-width:100%;overflow:auto;background:#fff;border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow-soft);margin-top:12px}table{width:100%;border-collapse:collapse;min-width:1080px}th,td{padding:13px 14px;border-bottom:1px solid rgba(4,25,18,.07);text-align:left;font-size:12.5px;vertical-align:middle}th{color:var(--muted);font-size:10.5px;text-transform:uppercase;letter-spacing:.07em;font-weight:950;background:#FBFAF6}tr:last-child td{border-bottom:0}tbody tr:hover{background:#FCFCFA}.project-name{font-weight:900;font-size:13.5px;line-height:1.25}.sub{display:flex;gap:7px;flex-wrap:wrap;margin-top:5px;color:var(--muted);font-size:11.5px;font-weight:680}.row-actions{display:flex;gap:6px;justify-content:flex-end}.contract-row{cursor:pointer}
+.compare-shell{display:grid;grid-template-columns:350px 1fr;gap:14px}.select-panel{background:#fff;border:1px solid var(--line);border-radius:24px;padding:16px;box-shadow:var(--shadow-soft)}.select-panel .field{margin-bottom:10px}.result-card{background:#fff;border:1px solid var(--line);border-radius:24px;padding:16px;box-shadow:var(--shadow-soft)}.semáforo{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:12px}.signal{border:1px solid var(--line);border-radius:16px;padding:12px;background:#FBFAF6}.signal strong{font-size:18px}.signal span{display:block;margin-top:4px;color:var(--muted);font-size:11px;line-height:1.3}.signal.green{border-color:rgba(26,153,15,.18);background:rgba(181,248,87,.16)}.signal.yellow{border-color:rgba(247,186,20,.24);background:rgba(247,186,20,.13)}.signal.red{border-color:rgba(198,33,24,.18);background:rgba(198,33,24,.08)}.signal.blue{border-color:rgba(84,98,226,.18);background:rgba(84,98,226,.08)}
+.company-list{display:grid;gap:8px}.company-check{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;border:1px solid var(--line);border-radius:16px;padding:10px;background:#fff}.company-check input{width:18px;height:18px;accent-color:var(--green)}.company-check strong{display:block;font-size:13px}.company-check span{display:block;color:var(--muted);font-size:11px;margin-top:2px}.sum-box{background:var(--night);color:#fff;border-radius:24px;padding:18px;box-shadow:0 18px 48px rgba(6,5,23,.18)}.sum-box span{display:block;color:rgba(255,255,255,.68);font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-weight:950}.sum-box strong{display:block;font-size:34px;letter-spacing:-.065em;margin-top:6px}.sum-box p{margin-top:8px;color:rgba(255,255,255,.72);font-size:12.5px;line-height:1.45}
+.cucop-grid{display:grid;grid-template-columns:320px 1fr;gap:14px}.tree{background:#fff;border:1px solid var(--line);border-radius:24px;padding:16px;box-shadow:var(--shadow-soft)}.tree ul{list-style:none;padding:0;margin:8px 0 0;display:grid;gap:8px}.tree li{border:1px solid var(--line);border-radius:14px;padding:10px;background:#FBFAF6;color:var(--muted);font-size:12px;font-weight:820}.tree li.active{background:rgba(181,248,87,.18);color:var(--green);border-color:rgba(26,153,15,.18)}.alert-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}.alert-card{background:#fff;border:1px solid var(--line);border-radius:22px;padding:14px;box-shadow:var(--shadow-soft);min-height:160px}.alert-card strong{display:block;font-size:15px;letter-spacing:-.025em}.alert-card p{color:var(--muted);font-size:12px;line-height:1.42;margin-top:8px}.alert-card .severity{margin-top:12px}
+.drawer{position:fixed;inset:0 0 0 auto;width:min(520px,100%);z-index:110;background:#fff;box-shadow:-24px 0 70px rgba(4,25,18,.18);transform:translateX(105%);transition:.22s ease;border-left:1px solid var(--line);display:flex;flex-direction:column}.drawer.open{transform:translateX(0)}.drawer-head{padding:18px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.drawer-head h3{font-size:22px;letter-spacing:-.045em}.drawer-body{padding:18px;overflow:auto;display:grid;gap:12px}.drawer-row{display:grid;grid-template-columns:150px 1fr;gap:10px;border-bottom:1px solid rgba(4,25,18,.06);padding:10px 0}.drawer-row span{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.07em;font-weight:950}.drawer-row strong{font-size:13px;line-height:1.35}.overlay{position:fixed;inset:0;background:rgba(6,5,23,.22);z-index:100;opacity:0;pointer-events:none;transition:.2s ease}.overlay.open{opacity:1;pointer-events:auto}.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,30px);opacity:0;z-index:130;background:var(--ink);color:#fff;border-radius:999px;padding:12px 16px;font-size:13px;font-weight:820;box-shadow:var(--shadow);transition:.2s ease}.toast.show{opacity:1;transform:translate(-50%,0)}
+.mobile-demo{display:grid;grid-template-columns:340px 1fr;gap:14px;align-items:center}.phone{width:300px;max-width:100%;border:1px solid var(--line);border-radius:36px;background:#fff;padding:14px;box-shadow:var(--shadow);margin:auto}.phone-screen{border:1px solid var(--line);border-radius:26px;background:#FBFAF6;padding:12px;min-height:560px}.phone-top{height:34px;border-radius:999px;background:#fff;border:1px solid var(--line);display:flex;align-items:center;padding:0 10px;color:var(--muted);font-size:11px;font-weight:780}.phone-card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:12px;margin-top:10px}.phone-card h4{font-size:14px}.phone-card p{color:var(--muted);font-size:11.5px;line-height:1.4;margin-top:5px}.footer{padding:38px 0 54px;border-top:1px solid var(--line);margin-top:40px;background:#fff}.footer-grid{display:grid;grid-template-columns:1.1fr repeat(3,.7fr);gap:20px}.footer h4{font-size:14px;margin-bottom:10px}.footer a,.footer p{display:block;color:var(--muted);font-size:13px;line-height:1.8}.footer .brand{margin-bottom:12px}
+@media (max-width:1120px){.hero-grid,.grid-2,.compare-shell,.cucop-grid,.mobile-demo{grid-template-columns:1fr}.grid-5{grid-template-columns:repeat(3,1fr)}.grid-4{grid-template-columns:repeat(2,1fr)}.grid-3{grid-template-columns:1fr}.alert-grid{grid-template-columns:repeat(2,1fr)}.filter-grid{grid-template-columns:1fr 1fr}.site-nav{max-width:520px}.header-search{display:none}.toc{top:190px}}
+@media (max-width:760px){.wrap{width:min(100% - 24px,1240px)}.topbar{height:auto;min-height:74px}.nav{flex-wrap:wrap;padding:8px 0}.site-nav{order:3;width:100%;justify-content:flex-start}.hero{padding-top:42px}h1{font-size:45px}.grid-5,.grid-4,.alert-grid,.metric-row,.master-kpis,.semáforo{grid-template-columns:1fr}.filter-grid{grid-template-columns:1fr}.toc{top:130px}.footer-grid{grid-template-columns:1fr}.drawer{width:100%}}
+
+/* Buscador universal expandible · inspirado en la sección IPG de muestra.html */
+body.ipg-search-open{overflow:hidden}
+.ipg-search-shell{position:fixed;inset:0;z-index:96;opacity:0;pointer-events:none;transition:opacity .22s ease}
+.ipg-search-shell.open{opacity:1;pointer-events:auto}
+.ipg-search-backdrop{position:absolute;inset:0;background:rgba(4,25,18,.18);backdrop-filter:blur(12px)}
+.ipg-search-screen{
+  position:relative;
+  z-index:1;
+  width:min(1560px,calc(100% - 32px));
+  max-height:calc(100vh - 108px);
+  margin:88px auto 18px;
+  display:grid;
+  grid-template-rows:auto auto auto minmax(0,1fr);
+  gap:0;
+  overflow:hidden;
+  border:1px solid var(--line);
+  border-radius:32px;
+  background:rgba(255,255,255,.96);
+  box-shadow:0 34px 90px rgba(4,25,18,.18);
+  transform:translateY(16px) scale(.988);
+  transition:transform .22s ease;
+}
+.ipg-search-shell.open .ipg-search-screen{transform:translateY(0) scale(1)}
+.ipg-search-screen-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:16px;
+  padding:18px 20px 14px;
+  border-bottom:1px solid var(--line);
+  background:
+    radial-gradient(circle at 0% 0%, rgba(181,248,87,.18), transparent 14rem),
+    radial-gradient(circle at 100% 100%, rgba(84,98,226,.08), transparent 15rem),
+    rgba(255,255,255,.92);
+}
+.ipg-search-screen-head h3{
+  margin-top:8px;
+  font-size:28px;
+  line-height:1.02;
+  letter-spacing:-.055em;
+}
+.ipg-search-screen-head p{
+  margin-top:8px;
+  color:var(--muted);
+  font-size:13.2px;
+  line-height:1.45;
+  max-width:860px;
+}
+.ipg-search-head-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.ipg-search-toolbar{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto auto;
+  gap:10px;
+  align-items:center;
+  padding:14px 20px;
+  background:#fff;
+  border-bottom:1px solid var(--line);
+}
+.ipg-search-input-wrap{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  min-height:50px;
+  padding:0 14px;
+  border:1px solid var(--line2);
+  border-radius:18px;
+  background:#FBFAF6;
+}
+.ipg-search-input-wrap .search-icon{font-size:16px;font-weight:900;color:var(--muted)}
+.ipg-search-input-wrap input{
+  flex:1;
+  height:48px;
+  border:0;
+  outline:0;
+  background:transparent;
+  color:var(--ink);
+  font-size:14px;
+}
+.ipg-search-input-wrap:focus-within{
+  background:#fff;
+  border-color:rgba(26,153,15,.28);
+  box-shadow:0 0 0 4px rgba(181,248,87,.18);
+}
+.ipg-search-summary-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  flex-wrap:wrap;
+  padding:12px 20px 14px;
+  border-bottom:1px solid var(--line);
+  background:#fff;
+}
+.ipg-result-summary{
+  color:var(--muted);
+  font-size:12.6px;
+  line-height:1.45;
+  font-weight:760;
+}
+.ipg-active-filters{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.ipg-chip{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  min-height:30px;
+  padding:0 10px;
+  border-radius:999px;
+  border:1px solid var(--line);
+  background:#FBFAF6;
+  color:var(--muted);
+  font-size:11.3px;
+  font-weight:850;
+  white-space:nowrap;
+}
+.ipg-chip strong{color:var(--ink);font-weight:900}
+.ipg-chip.good{background:rgba(181,248,87,.18);border-color:rgba(4,86,12,.14);color:var(--green)}
+.ipg-chip.blue{background:rgba(84,98,226,.08);border-color:rgba(84,98,226,.18);color:var(--deep)}
+.ipg-search-table-wrap{
+  min-height:0;
+  overflow:auto;
+  background:#F7F6F1;
+}
+.ipg-search-table{
+  width:100%;
+  min-width:1280px;
+  border-collapse:separate;
+  border-spacing:0;
+}
+.ipg-search-table thead th{
+  position:sticky;
+  top:0;
+  z-index:2;
+  padding:16px 14px 14px;
+  text-align:left;
+  background:#F7F6F1;
+  color:rgba(4,25,18,.56);
+  font-size:10.7px;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  font-weight:950;
+  border-bottom:1px solid rgba(4,25,18,.07);
+}
+.ipg-search-table tbody td{
+  padding:14px 14px;
+  vertical-align:top;
+  background:rgba(255,255,255,.82);
+  border-bottom:1px solid rgba(4,25,18,.06);
+}
+.ipg-search-table tbody tr:hover td{background:#fff}
+.ipg-col-contract{width:23%}
+.ipg-col-dependency{width:21%}
+.ipg-col-purchase{width:12%}
+.ipg-col-procedure{width:19%}
+.ipg-col-amount{width:9%}
+.ipg-col-provider{width:13%}
+.ipg-col-actions{width:12%}
+.ipg-contract-title{
+  font-size:13.5px;
+  line-height:1.14;
+  letter-spacing:-.022em;
+  font-weight:900;
+  text-transform:uppercase;
+}
+.ipg-contract-meta,
+.ipg-dependency-sub,
+.ipg-purchase-meta,
+.ipg-amount-meta,
+.ipg-provider-meta{
+  margin-top:4px;
+  color:var(--muted);
+  font-size:11.9px;
+  line-height:1.3;
+}
+.ipg-dependency-main,
+.ipg-provider-name{
+  font-size:13px;
+  line-height:1.18;
+  font-weight:820;
+  text-transform:uppercase;
+}
+.ipg-provider-name{letter-spacing:-.015em}
+.ipg-procedure-text{
+  max-width:320px;
+  font-size:13px;
+  line-height:1.2;
+  font-weight:780;
+  display:-webkit-box;
+  -webkit-line-clamp:3;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+}
+.ipg-purchase-badge{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:30px;
+  padding:0 11px;
+  border-radius:999px;
+  border:1px solid rgba(4,86,12,.14);
+  background:rgba(181,248,87,.20);
+  color:var(--green);
+  font-size:11px;
+  font-weight:900;
+  letter-spacing:.02em;
+}
+.ipg-amount-main{
+  font-size:13.8px;
+  line-height:1.18;
+  font-weight:950;
+  letter-spacing:-.02em;
+}
+.ipg-action-stack{
+  display:grid;
+  gap:8px;
+  justify-items:end;
+}
+.ipg-action-pill{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:36px;
+  padding:0 14px;
+  border-radius:14px;
+  border:1px solid var(--line2);
+  background:#fff;
+  color:var(--ink);
+  font-size:12px;
+  font-weight:900;
+  white-space:nowrap;
+  transition:.18s ease;
+}
+.ipg-action-pill:hover{
+  transform:translateY(-1px);
+  box-shadow:var(--shadow-soft);
+  border-color:rgba(4,25,18,.22);
+}
+.ipg-action-pill.secondary{
+  background:#FBFAF6;
+}
+.ipg-action-pill.pricing{
+  background:rgba(181,248,87,.20);
+  border-color:rgba(4,86,12,.14);
+  color:var(--ink);
+}
+.ipg-search-empty{
+  padding:26px 18px!important;
+  text-align:center;
+  color:var(--muted);
+  font-size:13px;
+  font-weight:760;
+}
+.ipg-search-mobile-list{display:none}
+.ipg-mobile-card{
+  border-top:1px solid rgba(4,25,18,.06);
+  padding:14px;
+  background:#fff;
+}
+.ipg-mobile-card:first-child{border-top:0}
+.ipg-mobile-top{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:10px;
+}
+.ipg-mobile-card .ipg-contract-title{margin-top:10px}
+.ipg-mobile-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px 14px;
+  margin-top:12px;
+}
+.ipg-mobile-field span{
+  display:block;
+  color:var(--muted2);
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  font-weight:950;
+}
+.ipg-mobile-field strong{
+  display:block;
+  margin-top:4px;
+  font-size:12.6px;
+  line-height:1.25;
+}
+.ipg-mobile-actions{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-top:14px;
+}
+@media (max-width:1120px){
+  .ipg-search-screen{width:min(100% - 24px, 1560px); margin-top:82px; max-height:calc(100vh - 96px)}
+  .ipg-search-toolbar{grid-template-columns:1fr; align-items:stretch}
+  .ipg-search-head-actions{justify-content:flex-end}
+}
+@media (max-width:900px){
+  .ipg-search-table-wrap{display:none}
+  .ipg-search-mobile-list{display:block; min-height:0; overflow:auto; background:#fff}
+}
+@media (max-width:760px){
+  body.ipg-search-open{overflow:hidden}
+  .ipg-search-screen{width:min(100% - 12px, 1560px); margin-top:74px; max-height:calc(100vh - 84px); border-radius:24px}
+  .ipg-search-screen-head{padding:16px 14px 12px}
+  .ipg-search-screen-head h3{font-size:23px}
+  .ipg-search-toolbar,
+  .ipg-search-summary-row{padding-inline:14px}
+  .ipg-search-head-actions .btn{width:auto}
+}
+
+.site-nav .nav-bolt,.topnav .nav-bolt.b2b{color:#81C91C!important}.site-nav .gov-tender .nav-bolt,.site-nav .gov-pricing .nav-bolt,.topnav .nav-bolt.gov{color:#C62118!important}</style>
+
+<style id="slx-global-footer-style">
+.slx-global-footer{margin-top:42px;padding:44px 0 32px;border-top:1px solid var(--line,rgba(4,25,18,.10));background:#fff;color:var(--ink,#041912);clear:both}.slx-global-footer .slx-footer-container{width:min(1180px,calc(100% - 48px));margin-inline:auto}.slx-footer-grid{display:grid;grid-template-columns:1.25fr repeat(4,1fr);gap:24px}.slx-footer-brand{display:inline-flex;align-items:center;gap:10px;font-weight:850;letter-spacing:-.035em;font-size:20px;white-space:nowrap}.slx-footer-mark{--symbol-bg:#04560C;--symbol-bolt:#B5F857;width:34px;height:34px;position:relative;display:inline-grid;place-items:center;flex:none}.slx-footer-mark:before{content:"";position:absolute;inset:0;background:var(--symbol-bg);clip-path:polygon(50% 0%,61% 32%,100% 50%,61% 68%,50% 100%,39% 68%,0% 50%,39% 32%)}.slx-footer-mark span{position:relative;z-index:1;color:var(--symbol-bolt);font-weight:950;font-size:17px}.slx-global-footer h4{margin:0 0 12px;font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted2,var(--muted-2,#8A948F))}.slx-global-footer a,.slx-global-footer p{display:block;margin:0 0 9px;color:var(--muted,#66736D);font-size:14px;line-height:1.45;text-decoration:none}.slx-global-footer a:hover{color:var(--ink,#041912)}.slx-footer-bottom{margin-top:34px;display:flex;justify-content:space-between;gap:16px;color:var(--muted2,var(--muted-2,#8A948F));font-size:13px}.slx-footer-efile,.slx-footer-efile span{color:#063C83!important;font-weight:850}.slx-footer-gov span{color:#C62118}.slx-footer-product span{color:#81C91C}.slx-footer-drive span{color:#063C83;font-weight:900}@media (max-width:1080px){.slx-footer-grid{grid-template-columns:repeat(2,1fr)}}@media (max-width:700px){.slx-global-footer .slx-footer-container{width:min(100% - 24px,1180px)}.slx-footer-grid{grid-template-columns:1fr}.slx-footer-bottom{flex-direction:column}}
+</style>
+
+<style>
+/* Beta 1.8 · Market Express Gov en IPG */
+.ipg-market-express{margin:30px auto 0;width:min(1220px,calc(100% - 40px))}.ipg-me-card{background:#fff;border:1px solid rgba(4,25,18,.10);border-radius:24px;box-shadow:0 8px 24px rgba(4,25,18,.045);padding:18px}.ipg-me-card h2{margin:0;font-size:34px;letter-spacing:-.06em}.ipg-me-card p{margin:8px 0 0;color:#66736D;line-height:1.45}.ipg-me-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:14px}.ipg-me-metric{border:1px solid rgba(4,25,18,.09);border-radius:18px;background:#FBFAF6;padding:12px}.ipg-me-metric span{display:block;color:#66736D;font-size:10px;text-transform:uppercase;letter-spacing:.07em;font-weight:900}.ipg-me-metric strong{display:block;margin-top:6px;font-size:20px}.ipg-me-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}@media(max-width:900px){.ipg-me-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:560px){.ipg-me-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="wrap nav">
+    <a class="brand" href="#overview" aria-label="SmartLicit IPG">
+      <span class="mark"><span class="bolt"></span></span><span>SmartLicit</span>
+    </a>
+    <nav class="site-nav" aria-label="Menú principal">
+      <a href="#"><span class="nav-bolt">↯</span>Tender</a>
+      <a href="#"><span class="nav-bolt">↯</span>Pricing</a>
+      <a href="#"><span class="nav-bolt">↯</span>File</a>
+      <a href="#"><span class="nav-bolt">↯</span>Lex</a>
+      <a class="gov-tender" href="#"><span class="nav-bolt">↯</span>Tender Gov</a>
+      <a class="gov-pricing" href="#"><span class="nav-bolt">↯</span>Pricing Gov</a>
+      <a href="#">Planes</a>
+      <a href="#">Blog</a>
+      <a class="active" href="#overview"><span class="nav-bolt">↯</span>IPG</a>
+    </nav>
+    <label class="header-search"><input id="headerSearch" placeholder="Buscar producto, dependencia, proveedor, RFC, CUCOP o contrato…" /></label>
+    <div class="account"><button class="account-trigger">Mi Cuenta⌄</button></div>
+  </div>
+</header>
+
+<main>
+  <section class="hero" id="overview">
+    <div class="wrap hero-grid">
+      <div>
+        <div class="eyebrow"><span class="spark"></span> IPG · Smart Pricing</div>
+        <h1>IPG · Índice de Precios Gubernamentales</h1>
+        <p class="lead">Una ventana total a las compras públicas del país: precios, contratos, proveedores, dependencias, CUCOP, históricos y comparativos de mercado en una sola interfaz.</p>
+        <p class="hero-support">Consulta información disponible de contratos adjudicados de 2020 a 2026, comenzando por las últimas adjudicaciones y retrocediendo históricamente según disponibilidad de datos.</p>
+        <div class="hero-actions">
+          <a class="btn primary" href="#precios">Explorar precios</a>
+          <a class="btn accent" href="#comparador">Comparar mercado vs gobierno</a>
+          <a class="btn blue" href="#empresas">Buscar por RFC</a>
+          <a class="btn" href="#contratos">Ver contratos recientes</a>
+        </div>
+      </div>
+      <aside class="hero-panel" aria-label="Panel resumen IPG">
+        <div class="panel-top"><div class="dots"><span></span><span></span><span></span></div><span class="badge good">Datos demo para maqueta</span></div>
+        <div class="master-card">
+          <div class="master-head">
+            <div><h3>El pulso de los precios públicos.</h3><p>Precio mercado vs precio gobierno con CUCOP, fuente, confianza y rutas a evidencia.</p></div>
+            <span class="badge blue">Última actualización · demo</span>
+          </div>
+          <div class="master-kpis">
+            <div class="mini-kpi"><span>Contratos</span><strong>128,450</strong></div>
+            <div class="mini-kpi"><span>Monto</span><strong>$428,900 M</strong></div>
+            <div class="mini-kpi"><span>CUCOP</span><strong>8,000+</strong></div>
+          </div>
+          <div class="mini-chart" data-detail="Histórico dual · IPG">
+            <svg viewBox="0 0 560 188" width="100%" height="100%" role="img" aria-label="Gráfico demo de precio público y precio gobierno">
+              <defs><linearGradient id="band" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#B5F857" stop-opacity=".28"/><stop offset="1" stop-color="#B5F857" stop-opacity=".02"/></linearGradient></defs>
+              <rect x="0" y="0" width="560" height="188" rx="16" fill="#FBFAF6"/>
+              <g stroke="rgba(4,25,18,.10)" stroke-width="1"><line x1="36" y1="34" x2="532" y2="34"/><line x1="36" y1="76" x2="532" y2="76"/><line x1="36" y1="118" x2="532" y2="118"/><line x1="36" y1="160" x2="532" y2="160"/></g>
+              <path d="M42 138 C100 106, 146 95, 198 108 C252 122, 286 72, 338 80 C396 88, 420 58, 486 52 C512 50, 525 42, 532 36 L532 160 L42 160 Z" fill="url(#band)"/>
+              <path d="M42 132 C98 111, 151 106, 205 116 C260 129, 296 92, 344 96 C402 102, 431 82, 488 76 C512 74, 526 65, 532 58" fill="none" stroke="#5462E2" stroke-width="4" stroke-linecap="round"/>
+              <path d="M42 146 C102 126, 158 121, 212 130 C266 139, 304 110, 355 116 C410 121, 443 103, 492 94 C515 90, 528 84, 532 76" fill="none" stroke="#04560C" stroke-width="4" stroke-linecap="round"/>
+              <g fill="#04560C"><circle cx="42" cy="146" r="4"/><circle cx="212" cy="130" r="4"/><circle cx="355" cy="116" r="4"/><circle cx="532" cy="76" r="4"/></g>
+              <text x="38" y="178" fill="#8A948F" font-size="12" font-weight="800">2020</text><text x="284" y="178" fill="#8A948F" font-size="12" font-weight="800">2023</text><text x="500" y="178" fill="#8A948F" font-size="12" font-weight="800">2026</text>
+            </svg>
+          </div>
+          <div class="legend"><span><i class="b"></i> precio de mercado</span><span><i class="g"></i> precio gobierno</span><span><i class="l"></i> rango IPG</span></div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="filter-shell" id="filtros">
+    <div class="wrap filters">
+      <div class="filter-title">
+        <div><h2>Filtros IPG</h2><p class="muted" style="font-size:12.5px;margin-top:4px">Todos los gráficos y tablas responden a estos filtros. El usuario puede guardar vistas y comparar múltiples empresas o dependencias.</p></div>
+        <span class="badge good" id="filterSummary">Nacional · 2020–2026 · Todas las fuentes</span>
+      </div>
+      <div class="filter-grid">
+        <div class="field"><label>Buscador universal</label><input id="globalQuery" class="control" placeholder="Producto, servicio, proveedor, RFC, dependencia, contrato o CUCOP" /></div>
+        <div class="field"><label>Periodo</label><select id="period" class="control"><option>2020–2026</option><option>2026</option><option>2025</option><option>2024</option><option>2023</option><option>Últimos 30 días</option></select></div>
+        <div class="field"><label>Compra</label><select id="purchaseType" class="control"><option>Producto y servicio</option><option>Producto</option><option>Servicio</option><option>Obra</option><option>Arrendamiento</option></select></div>
+        <div class="field"><label>Procedimiento</label><select id="procedure" class="control"><option>Todos</option><option>Licitación pública</option><option>Invitación restringida</option><option>Adjudicación directa</option><option>Convenio modificatorio</option></select></div>
+        <div class="field"><label>Dependencia</label><select id="dependency" class="control"><option>Todas</option><option>IMSS</option><option>ISSSTE</option><option>Secretaría de Salud</option><option>SEDENA</option><option>UNAM</option></select></div>
+        <div class="field"><label>Tipo de procedimiento</label><select id="procedureLevel" class="control"><option>Todos</option><option>Municipal</option><option>Estatal</option><option>Federal</option></select></div>
+        <button class="btn primary" id="applyFilters">Aplicar filtros</button>
+      </div>
+      <div class="filter-actions">
+        <button class="btn slim" data-toast="Vista limpiada">Limpiar</button>
+        <button class="btn slim" id="saveViewBtn">Guardar vista</button>
+        <button class="btn slim" data-toast="Selección lista para exportar">Exportar</button>
+        <button class="btn slim accent" data-open-detail="Análisis IPG generado">Generar análisis</button>
+        <button class="btn slim blue" data-toast="Filtros avanzados abiertos">+ Filtros avanzados: estado, municipio, CUCOP, RFC, fuente, monto</button>
+      </div>
+      <div class="saved-views" id="savedViews" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <div class="wrap toc" aria-label="Navegación interna IPG">
+    <div class="toc-inner">
+      <a class="tab-link active" href="#overview">Overview</a><a class="tab-link" href="#precios">Precios</a><a class="tab-link" href="#servicios">Servicios</a><a class="tab-link" href="#productos">Productos</a><a class="tab-link" href="#dependencias">Dependencias</a><a class="tab-link" href="#empresas">Empresas / RFC</a><a class="tab-link" href="#contratos">Contratos</a><a class="tab-link" href="#comparador">Comparador</a><a class="tab-link" href="#cucop">CUCOP</a><a class="tab-link" href="#mapa">Mapa</a><a class="tab-link" href="#historico">Histórico</a><a class="tab-link" href="#alertas">Alertas</a>
+    </div>
+  </div>
+
+  <section class="section" id="precios">
+    <div class="wrap">
+      <div class="section-title"><div><span class="badge good">Overview</span><h2>Índice de compras públicas</h2><p>Una entrada rápida a precios, contratos, proveedores, dependencias, CUCOP, comparadores, evidencia y alertas.</p></div></div>
+      <div class="grid-5" style="margin-bottom:14px">
+        <div class="kpi"><div><span>Contratos analizados</span><strong>128,450</strong></div><small>2020–2026 · según disponibilidad</small></div>
+        <div class="kpi"><div><span>Monto adjudicado</span><strong>$428,900 M</strong></div><small>MXN acumulado filtrable</small></div>
+        <div class="kpi"><div><span>Empresas identificadas</span><strong>31,284</strong></div><small>Consulta por razón social o RFC</small></div>
+        <div class="kpi"><div><span>CUCOP / partidas</span><strong>8,000+</strong></div><small>Productos y servicios normalizados</small></div>
+        <div class="kpi"><div><span>Dependencias</span><strong>1,240</strong></div><small>Federal, estatal y municipal</small></div>
+      </div>
+      <div class="grid-4">
+        <a class="card index-card" href="#productos"><div class="card-head"><div class="icon">₱</div><span class="badge good">Precios</span></div><h3>Precios por producto</h3><p>Histórico, mercado, dependencia y precio inteligente.</p></a>
+        <a class="card index-card" href="#servicios"><div class="card-head"><div class="icon">↯</div><span class="badge blue">Servicios</span></div><h3>Precios por servicio</h3><p>Limpieza, seguridad privada, mantenimiento, transporte, TI y más.</p></a>
+        <a class="card index-card warn" href="#contratos"><div class="card-head"><div class="icon">#</div><span class="badge warn">Contratos</span></div><h3>Contratos adjudicados</h3><p>Últimas adjudicaciones hacia histórico 2020.</p></a>
+        <a class="card index-card blue" href="#empresas"><div class="card-head"><div class="icon">RFC</div><span class="badge blue">Empresas</span></div><h3>Empresas y RFC</h3><p>Consulta concentración, montos adjudicados y pagos.</p></a>
+        <a class="card index-card" href="#dependencias"><div class="card-head"><div class="icon">D</div><span class="badge good">Dependencias</span></div><h3>Dependencias</h3><p>Compara comportamiento de compra por entidad.</p></a>
+        <a class="card index-card blue" href="#cucop"><div class="card-head"><div class="icon">C</div><span class="badge blue">CUCOP</span></div><h3>CUCOP y partidas</h3><p>Ubica cada precio dentro de su clasificación presupuestal.</p></a>
+        <a class="card index-card" href="#comparador"><div class="card-head"><div class="icon">↔</div><span class="badge good">Comparador</span></div><h3>Comparador</h3><p>Mercado vs gobierno vs dependencia.</p></a>
+        <a class="card index-card danger" href="#alertas"><div class="card-head"><div class="icon">!</div><span class="badge danger">Alertas</span></div><h3>Alertas</h3><p>Sobreprecios, subprecios, outliers y variaciones abruptas.</p></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="servicios">
+    <div class="wrap">
+      <div class="section-title"><div><span class="badge good">Servicios</span><h2>Servicios</h2><p>Analiza precios de servicios contratados por gobierno, filtrables por dependencia, entidad, tipo de procedimiento, proveedor, RFC y CUCOP.</p></div><div class="right-tools"><button class="btn slim">Servicio de limpieza</button><button class="btn slim">Seguridad privada</button><button class="btn slim">Mantenimiento</button></div></div>
+      <div class="grid-3">
+        <article class="card chart-card" data-detail="Servicios de limpieza · precio histórico">
+          <div class="card-head"><div><span class="badge good">CUCOP visible</span><h3>Servicios de limpieza · precio histórico</h3><p>Precio adjudicado por unidad comparable a través del tiempo.</p></div><span class="badge blue">2020–2026</span></div>
+          <div class="chart-toolbar"><select><option>Secretaría de Salud</option><option>IMSS</option><option>ISSSTE</option></select><select><option>Todos los estados</option><option>CDMX</option><option>Edomex</option></select><select><option>Licitación pública</option><option>Adjudicación directa</option></select><select><option>m²</option><option>jornada</option><option>contrato</option></select></div>
+          <div class="chart-area">
+            <svg viewBox="0 0 480 240" width="100%" height="100%"><rect width="480" height="240" rx="16" fill="#FBFAF6"/><g stroke="rgba(4,25,18,.10)"><line x1="32" y1="50" x2="456" y2="50"/><line x1="32" y1="100" x2="456" y2="100"/><line x1="32" y1="150" x2="456" y2="150"/><line x1="32" y1="200" x2="456" y2="200"/></g><path d="M44 165 C90 132,130 122,180 138 C230 156,260 112,308 110 C356 108,382 85,430 75" fill="none" stroke="#5462E2" stroke-width="4" stroke-linecap="round"/><path d="M44 180 C92 158,136 150,184 160 C235 171,268 132,318 136 C370 140,396 116,430 105" fill="none" stroke="#04560C" stroke-width="4" stroke-linecap="round"/><path d="M44 194 C88 170,135 164,184 174 C238 183,272 150,322 154 C370 157,399 136,430 126 L430 204 L44 204 Z" fill="#B5F857" opacity=".20"/><g fill="#04560C"><circle cx="44" cy="180" r="4"/><circle cx="184" cy="160" r="4"/><circle cx="318" cy="136" r="4"/><circle cx="430" cy="105" r="4"/></g><text x="36" y="226" fill="#8A948F" font-size="12" font-weight="800">2020</text><text x="210" y="226" fill="#8A948F" font-size="12" font-weight="800">2023</text><text x="405" y="226" fill="#8A948F" font-size="12" font-weight="800">2026</text></svg>
+          </div>
+          <div class="metric-row"><div class="metric"><span>Precio unidad</span><strong>$42.80/m²</strong></div><div class="metric"><span>Mercado</span><strong>$46.20/m²</strong></div><div class="metric"><span>Brecha</span><strong>-7.3%</strong></div></div>
+          <div class="chart-actions"><button class="btn slim" data-open-detail="Servicio de limpieza · contrato demo">Ver detalle</button><button class="btn slim">Comparar</button><button class="btn slim blue">Abrir contratos</button></div>
+        </article>
+        <article class="card chart-card" data-detail="Seguridad privada · comparación por dependencia">
+          <div class="card-head"><div><span class="badge good">CUCOP visible</span><h3>Seguridad privada · comparación por dependencia</h3><p>Compara precios adjudicados por elemento, turno o servicio mensual.</p></div><span class="badge warn">Top dependencias</span></div>
+          <div class="chart-toolbar"><select><option>2026</option><option>2025</option><option>2024</option></select><select><option>Empresa adjudicada</option><option>RFC</option></select><select><option>Elemento mensual</option><option>Turno</option></select></div>
+          <div class="chart-area"><div class="bar-list">
+            <div class="bar-row"><span>IMSS</span><div class="bar-track"><div class="bar-fill" style="width:82%"></div></div><strong>$21,800</strong></div><div class="bar-row"><span>ISSSTE</span><div class="bar-track"><div class="bar-fill lime" style="width:68%"></div></div><strong>$19,400</strong></div><div class="bar-row"><span>SEDENA</span><div class="bar-track"><div class="bar-fill blue" style="width:76%"></div></div><strong>$20,900</strong></div><div class="bar-row"><span>UNAM</span><div class="bar-track"><div class="bar-fill" style="width:58%"></div></div><strong>$17,600</strong></div><div class="bar-row"><span>Salud</span><div class="bar-track"><div class="bar-fill yellow" style="width:91%"></div></div><strong>$24,100</strong></div><div class="bar-row"><span>Estado A</span><div class="bar-track"><div class="bar-fill red" style="width:97%"></div></div><strong>$25,300</strong></div></div></div>
+          <div class="metric-row"><div class="metric"><span>Contratos</span><strong>386</strong></div><div class="metric"><span>Monto</span><strong>$1,240 M</strong></div><div class="metric"><span>Proveedor</span><strong>Empresa A</strong></div></div>
+          <div class="chart-actions"><button class="btn slim">Seleccionar dependencias</button><button class="btn slim" data-open-detail="Seguridad privada · dependencia demo">Comparar contra mercado</button><button class="btn slim blue">Ver contratos</button></div>
+        </article>
+        <article class="card chart-card" id="mapa" data-detail="Mapa de servicios contratados">
+          <div class="card-head"><div><span class="badge blue">Mapa / heatmap</span><h3>Mapa de servicios contratados</h3><p>Distribución territorial de montos, precios medios y concentración por proveedor.</p></div><span class="badge good">México</span></div>
+          <div class="chart-toolbar"><select><option>Servicio: limpieza</option><option>Seguridad privada</option><option>Mantenimiento</option></select><select><option>2020–2026</option><option>2026</option></select><select><option>Federal + estatal + municipal</option></select></div>
+          <div class="chart-area"><div class="heatmap" aria-label="Mapa demo por intensidad"><div class="state-cell level2">BC</div><div class="state-cell level1">SON</div><div class="state-cell level3">CHH</div><div class="state-cell level1">COA</div><div class="state-cell level2">NL</div><div class="state-cell level1">TAM</div><div class="state-cell level4">CDMX</div><div class="state-cell level2">JAL</div><div class="state-cell level3">GTO</div><div class="state-cell level2">QRO</div><div class="state-cell level4">MEX</div><div class="state-cell level1">PUE</div><div class="state-cell level3">VER</div><div class="state-cell level2">YUC</div><div class="state-cell level1">BCS</div><div class="state-cell level2">SIN</div><div class="state-cell level1">DGO</div><div class="state-cell level2">SLP</div><div class="state-cell level3">MICH</div><div class="state-cell level2">GRO</div><div class="state-cell level1">OAX</div></div></div>
+          <div class="metric-row"><div class="metric"><span>Estado</span><strong>CDMX</strong></div><div class="metric"><span>Monto</span><strong>$984 M</strong></div><div class="metric"><span>Precio medio</span><strong>$43.1/m²</strong></div></div>
+          <div class="chart-actions"><button class="btn slim" data-open-detail="Mapa de servicios · CDMX">Ver detalle</button><button class="btn slim">Comparar</button><button class="btn slim blue">Abrir contratos</button></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="productos">
+    <div class="wrap">
+      <div class="section-title"><div><span class="badge blue">Productos</span><h2>Productos</h2><p>Compara precios de bienes comprados por gobierno contra mercado, histórico, CUCOP, dependencia y proveedor adjudicado.</p></div><div class="right-tools"><button class="btn slim">Consumibles informáticos</button><button class="btn slim">Material de limpieza</button><button class="btn slim">Productos médicos</button></div></div>
+      <div class="grid-3">
+        <article class="card chart-card" data-detail="Consumibles informáticos · mercado vs gobierno">
+          <div class="card-head"><div><span class="badge good">CUCOP visible</span><h3>Consumibles informáticos · mercado vs gobierno</h3><p>Compara precio de mercado, precio adjudicado y precio por dependencia.</p></div><span class="badge blue">Precio inteligente IPG</span></div>
+          <div class="chart-toolbar"><select><option>Tóner / consumible</option><option>Equipo de cómputo</option></select><select><option>Marca / especificación</option></select><select><option>Todas las dependencias</option></select></div>
+          <div class="chart-area"><svg viewBox="0 0 480 240" width="100%" height="100%"><rect width="480" height="240" rx="16" fill="#FBFAF6"/><g stroke="rgba(4,25,18,.10)"><line x1="32" y1="50" x2="456" y2="50"/><line x1="32" y1="100" x2="456" y2="100"/><line x1="32" y1="150" x2="456" y2="150"/><line x1="32" y1="200" x2="456" y2="200"/></g><path d="M42 152 C98 124,140 106,190 122 C240 139,282 86,330 90 C378 94,404 70,436 58" fill="none" stroke="#5462E2" stroke-width="4" stroke-linecap="round"/><path d="M42 172 C96 152,145 146,196 154 C245 162,284 132,334 126 C386 120,410 106,436 94" fill="none" stroke="#04560C" stroke-width="4" stroke-linecap="round"/><path d="M42 162 C95 142,145 132,194 144 C250 153,285 111,336 108 C388 105,412 90,436 78" fill="none" stroke="#F7BA14" stroke-width="3" stroke-dasharray="7 7" stroke-linecap="round"/><g fill="#04560C"><circle cx="196" cy="154" r="4"/><circle cx="334" cy="126" r="4"/><circle cx="436" cy="94" r="4"/></g><text x="36" y="226" fill="#8A948F" font-size="12" font-weight="800">2020</text><text x="210" y="226" fill="#8A948F" font-size="12" font-weight="800">2023</text><text x="405" y="226" fill="#8A948F" font-size="12" font-weight="800">2026</text></svg></div>
+          <div class="metric-row"><div class="metric"><span>Mercado</span><strong>$1,188</strong></div><div class="metric"><span>Dependencia</span><strong>$1,065</strong></div><div class="metric"><span>Variación</span><strong>-10.4%</strong></div></div>
+          <div class="chart-actions"><button class="btn slim" data-open-detail="Consumibles informáticos · contrato demo">Ver detalle</button><button class="btn slim">Comparar</button><button class="btn slim blue">Abrir contratos</button></div>
+        </article>
+        <article class="card chart-card" data-detail="Material de limpieza · ranking de precios por proveedor">
+          <div class="card-head"><div><span class="badge good">Ranking</span><h3>Material de limpieza · ranking de precios por proveedor</h3><p>Detecta dispersión, concentración y variación de precios por empresa adjudicada.</p></div><span class="badge warn">Outliers</span></div>
+          <div class="chart-toolbar"><select><option>Producto: cloro 1L</option><option>Desinfectante</option></select><select><option>Presentación</option></select><select><option>RFC</option></select></div>
+          <div class="chart-area"><div class="bar-list"><div class="bar-row"><span>Empresa A</span><div class="bar-track"><div class="bar-fill" style="width:63%"></div></div><strong>$18.2</strong></div><div class="bar-row"><span>Empresa B</span><div class="bar-track"><div class="bar-fill lime" style="width:51%"></div></div><strong>$16.7</strong></div><div class="bar-row"><span>Empresa C</span><div class="bar-track"><div class="bar-fill blue" style="width:74%"></div></div><strong>$21.4</strong></div><div class="bar-row"><span>Empresa D</span><div class="bar-track"><div class="bar-fill yellow" style="width:87%"></div></div><strong>$25.8</strong></div><div class="bar-row"><span>Empresa E</span><div class="bar-track"><div class="bar-fill red" style="width:98%"></div></div><strong>$31.0</strong></div></div></div>
+          <div class="metric-row"><div class="metric"><span>Mínimo</span><strong>$14.90</strong></div><div class="metric"><span>Promedio</span><strong>$22.62</strong></div><div class="metric"><span>Máximo</span><strong>$31.00</strong></div></div>
+          <div class="chart-actions"><button class="btn slim" data-open-detail="Material de limpieza · proveedor demo">Ver detalle</button><button class="btn slim">Comparar</button><button class="btn slim blue">Sumar adjudicado y cobrado</button></div>
+        </article>
+        <article class="card chart-card" data-detail="Productos médicos / papelería · dispersión de adjudicaciones">
+          <div class="card-head"><div><span class="badge blue">Scatter plot</span><h3>Productos médicos / papelería · dispersión de adjudicaciones</h3><p>Identifica outliers, compras atípicas y diferencias entre precio de mercado y precio gubernamental.</p></div><span class="badge danger">Sobreprecio</span></div>
+          <div class="chart-toolbar"><select><option>Producto médico</option><option>Papelería</option></select><select><option>CUCOP</option></select><select><option>2020–2026</option></select></div>
+          <div class="chart-area"><div class="scatter"><div class="axis"></div><div class="axis-y"></div><span class="axis-label x">Precio unitario</span><span class="axis-label y">Monto total</span><button class="point" data-open-detail="Punto · Compra recurrente" style="left:18%;bottom:28%"></button><button class="point blue" data-open-detail="Punto · Licitación pública" style="left:32%;bottom:48%;width:18px;height:18px"></button><button class="point warn" data-open-detail="Punto · Revisar desviación" style="left:52%;bottom:35%;width:22px;height:22px"></button><button class="point danger" data-open-detail="Punto · Posible outlier" style="left:76%;bottom:67%;width:28px;height:28px"></button><button class="point" data-open-detail="Punto · Contrato demo" style="left:61%;bottom:22%;width:16px;height:16px"></button><button class="point blue" data-open-detail="Punto · Compra estatal" style="left:44%;bottom:70%;width:20px;height:20px"></button></div></div>
+          <div class="metric-row"><div class="metric"><span>Outliers</span><strong>12</strong></div><div class="metric"><span>Contratos</span><strong>428</strong></div><div class="metric"><span>Variación</span><strong>+18.6%</strong></div></div>
+          <div class="chart-actions"><button class="btn slim" data-open-detail="Dispersión de adjudicaciones · demo">Ver detalle</button><button class="btn slim">Comparar</button><button class="btn slim blue">Abrir contratos</button></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="comparador">
+    <div class="wrap">
+      <div class="section-title"><div><span class="badge good">Comparador</span><h2>Comparador de precios</h2><p>Compara precio de mercado, precio público, precio por dependencia, histórico adjudicado y rango IPG para tomar decisiones de compra o competencia.</p></div></div>
+      <div class="compare-shell">
+        <aside class="select-panel">
+          <div class="field"><label>Producto o servicio</label><select class="control"><option>Servicio de limpieza integral</option><option>Tóner / consumible informático</option><option>Seguridad privada</option></select></div>
+          <div class="field"><label>CUCOP</label><input class="control" value="Servicio de limpieza / partida demo" /></div>
+          <div class="field"><label>Dependencia A</label><select class="control"><option>IMSS</option><option>Secretaría de Salud</option><option>UNAM</option></select></div>
+          <div class="field"><label>Dependencia B</label><select class="control"><option>ISSSTE</option><option>SEDENA</option><option>Estado de México</option></select></div>
+          <div class="field"><label>Tipo de procedimiento</label><select id="compareProcedureLevel" class="control"><option>Federal</option><option>Estatal</option><option>Municipal</option></select></div>
+          <div class="field"><label>Periodo</label><select class="control"><option>2020–2026</option><option>2026</option><option>2025</option><option>2024</option><option>2023</option></select></div>
+          <button class="btn primary" style="width:100%" data-toast="Comparación actualizada">Comparar</button>
+        </aside>
+        <div class="result-card">
+          <div class="card-head"><div><h3>Mercado vs gobierno vs dependencia</h3><p>Resultado comparativo con rango histórico, mediana, outliers y señal de presupuesto.</p></div><span class="badge good">Dentro de rango defendible</span></div>
+          <div class="chart-area" style="min-height:205px"><div class="bar-list"><div class="bar-row"><span>Mercado</span><div class="bar-track"><div class="bar-fill blue" style="width:88%"></div></div><strong>$46.20</strong></div><div class="bar-row"><span>Gobierno</span><div class="bar-track"><div class="bar-fill" style="width:78%"></div></div><strong>$42.80</strong></div><div class="bar-row"><span>IMSS</span><div class="bar-track"><div class="bar-fill lime" style="width:74%"></div></div><strong>$41.30</strong></div><div class="bar-row"><span>ISSSTE</span><div class="bar-track"><div class="bar-fill yellow" style="width:92%"></div></div><strong>$48.60</strong></div><div class="bar-row"><span>Rango IPG</span><div class="bar-track"><div class="bar-fill" style="width:68%"></div></div><strong>$38–$49</strong></div></div></div>
+          <div class="semáforo"><div class="signal green"><strong>Defendible</strong><span>Dentro de rango histórico.</span></div><div class="signal yellow"><strong>Revisar</strong><span>ISSSTE +13.5% vs gobierno.</span></div><div class="signal red"><strong>Outliers</strong><span>3 contratos fuera de rango.</span></div><div class="signal blue"><strong>Mercado</strong><span>Dato externo normalizado.</span></div></div>
+          <div class="chart-actions"><button class="btn slim" data-toast="Comparación guardada">Guardar comparación</button><button class="btn slim">Generar reporte</button><button class="btn slim accent">Enviar a Smart Pricing</button><button class="btn slim blue">Abrir contratos relacionados</button></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="empresas">
+    <div class="wrap">
+      <div class="section-title"><div><span class="badge blue">Empresas / RFC</span><h2>Empresas y RFC</h2><p>Consulta contratos adjudicados por empresa, suma montos adjudicados y cobrados, compara participación y detecta concentración.</p></div><div class="right-tools"><input class="control" style="width:330px;border-radius:999px" placeholder="Buscar empresa, razón social o RFC…" /></div></div>
+      <div class="grid-2">
+        <div class="card"><div class="card-head"><div><h3>Selector múltiple de empresas</h3><p>Selecciona empresas para sumar adjudicado y cobrado.</p></div><span class="badge good">Multiselección</span></div><div class="company-list" id="companyList"><label class="company-check"><input type="checkbox" data-amount="1280" data-paid="990" checked><span><strong>Servicios Integrales del Centro, S.A. de C.V.</strong><span>RFC SIC230101AB1 · limpieza · seguridad</span></span><b>$1,280 M</b></label><label class="company-check"><input type="checkbox" data-amount="840" data-paid="702" checked><span><strong>Abastecedora Médica Nacional</strong><span>RFC AMN210220XY9 · insumos médicos</span></span><b>$840 M</b></label><label class="company-check"><input type="checkbox" data-amount="420" data-paid="360"><span><strong>Soluciones TI del Bajío</strong><span>RFC STB190412UU3 · consumibles informáticos</span></span><b>$420 M</b></label><label class="company-check"><input type="checkbox" data-amount="310" data-paid="295"><span><strong>Materiales Limpios MX</strong><span>RFC MLM180701QW2 · material de limpieza</span></span><b>$310 M</b></label></div><div class="chart-actions"><button class="btn slim" id="sumCompanies">Sumar selección</button><button class="btn slim">Comparar empresas</button><button class="btn slim blue">Ver red de dependencias</button></div></div>
+        <div class="stack"><div class="sum-box"><span>Total adjudicado seleccionado</span><strong id="amountSum">$2,120 M</strong><p id="paidSum">Total cobrado estimado: $1,692 M · Datos demo según contratos con dato de pago.</p></div><div class="card"><div class="card-head"><div><h3>Participación por año</h3><p>Línea demo de adjudicaciones acumuladas.</p></div></div><div class="mini-chart" style="height:160px"><svg viewBox="0 0 480 160" width="100%" height="100%"><rect width="480" height="160" rx="16" fill="#FBFAF6"/><path d="M32 130 C90 105,125 112,170 90 C225 64,270 82,315 52 C360 26,406 40,448 28" fill="none" stroke="#04560C" stroke-width="4" stroke-linecap="round"/><path d="M32 145 C90 130,125 128,170 112 C224 98,270 110,315 84 C363 60,410 67,448 50" fill="none" stroke="#5462E2" stroke-width="3" stroke-linecap="round"/></svg></div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="contratos">
+    <div class="wrap">
+      <div class="section-title"><div><span class="badge warn">Últimas adjudicaciones primero</span><h2>Últimas licitaciones y contratos adjudicados</h2><p>Consulta desde las adjudicaciones más recientes hacia el histórico disponible desde 2020.</p></div><div class="right-tools"><button class="btn slim">Hoy</button><button class="btn slim">Últimos 7 días</button><button class="btn slim">2026</button><button class="btn slim">2025</button><button class="btn slim">2024</button></div></div>
+      <div class="table-wrap"><table><thead><tr><th>Fecha</th><th>Contrato / procedimiento</th><th>Dependencia</th><th>Producto / servicio</th><th>CUCOP / partida</th><th>Empresa</th><th>RFC</th><th>Monto adjudicado</th><th>Monto cobrado</th><th>Tipo</th><th>Estado</th><th>Fuente</th><th>Acción</th></tr></thead><tbody>
+        <tr class="contract-row" data-contract="LA-012345-2026"><td>2026-04-20</td><td><div class="project-name">LA-012345-2026</div><div class="sub">Servicio de limpieza integral</div></td><td>Secretaría de Salud</td><td>Limpieza</td><td><span class="badge good">CUCOP demo</span></td><td>Servicios Integrales del Centro</td><td>SIC230101AB1</td><td>$48.6 M</td><td>$31.2 M</td><td>Licitación pública</td><td><span class="badge good">Vigente</span></td><td>CompraNet</td><td><button class="btn slim" data-open-detail="Contrato LA-012345-2026">Ver detalle</button></td></tr>
+        <tr class="contract-row" data-contract="AD-778812-2026"><td>2026-04-17</td><td><div class="project-name">AD-778812-2026</div><div class="sub">Consumibles informáticos</div></td><td>IMSS</td><td>Tóner / cartuchos</td><td><span class="badge blue">CUCOP demo</span></td><td>Soluciones TI del Bajío</td><td>STB190412UU3</td><td>$12.4 M</td><td>Sin dato</td><td>Adjudicación directa</td><td><span class="badge warn">Sin dato de pago</span></td><td>Portal estatal</td><td><button class="btn slim" data-open-detail="Contrato AD-778812-2026">Ver detalle</button></td></tr>
+        <tr class="contract-row" data-contract="LP-090120-2026"><td>2026-04-12</td><td><div class="project-name">LP-090120-2026</div><div class="sub">Seguridad privada</div></td><td>UNAM</td><td>Seguridad privada</td><td><span class="badge good">CUCOP demo</span></td><td>Guardias Nacionales Privados</td><td>GNP220707CD1</td><td>$82.1 M</td><td>$56.8 M</td><td>Licitación pública</td><td><span class="badge good">Vigente</span></td><td>Transparencia</td><td><button class="btn slim" data-open-detail="Contrato LP-090120-2026">Ver detalle</button></td></tr>
+        <tr class="contract-row" data-contract="IR-554233-2025"><td>2025-12-29</td><td><div class="project-name">IR-554233-2025</div><div class="sub">Material de limpieza</div></td><td>ISSSTE</td><td>Desinfectantes</td><td><span class="badge warn">CUCOP demo</span></td><td>Materiales Limpios MX</td><td>MLM180701QW2</td><td>$9.8 M</td><td>$9.1 M</td><td>Invitación restringida</td><td><span class="badge danger">Revisar precio</span></td><td>Contrato</td><td><button class="btn slim" data-open-detail="Contrato IR-554233-2025">Ver detalle</button></td></tr>
+      </tbody></table></div>
+    </div>
+  </section>
+
+  <section class="section" id="cucop">
+    <div class="wrap">
+      <div class="section-title"><div><span class="badge blue">CUCOP</span><h2>CUCOP, partida y presupuesto</h2><p>Cada gráfico debe mostrar la clasificación CUCOP o partida relacionada para entender qué se compró, cómo se clasificó y si está dentro de presupuesto.</p></div></div>
+      <div class="cucop-grid"><aside class="tree"><h3>Árbol de categorías</h3><p class="muted" style="font-size:12.5px;margin-top:6px">El CUCOP debe estar visible en cada gráfico, tooltip, tabla y drawer de detalle.</p><ul><li class="active">Servicios generales / limpieza</li><li>Servicios de seguridad privada</li><li>Consumibles informáticos</li><li>Material de limpieza</li><li>Productos médicos</li><li>Papelería</li></ul></aside><div class="grid-3"><div class="card"><span class="badge good">Dentro</span><h3>Servicio de limpieza</h3><p>Contratos asociados: 1,284 · Precio promedio $42.8/m² · mercado $46.2/m²</p></div><div class="card"><span class="badge warn">Revisar</span><h3>Seguridad privada</h3><p>Contratos asociados: 386 · Precio medio $21,800/elemento · variación alta por estado.</p></div><div class="card"><span class="badge danger">Fuera de rango</span><h3>Material de limpieza</h3><p>Contratos asociados: 614 · variación contra mercado +18.6% · outliers detectados.</p></div><div class="card"><span class="badge blue">Mercado</span><h3>Consumibles informáticos</h3><p>Precio mercado: $1,188 · precio dependencia $1,065 · precio inteligente IPG $1,095.</p></div><div class="card"><span class="badge good">Presupuesto</span><h3>Presupuesto estimado</h3><p>Rango IPG defendible: $38–$49 por unidad comparable.</p></div><div class="card"><span class="badge warn">Dato</span><h3>Fuente y normalización</h3><p>Datos demo: CompraNet, portal estatal, contratos, fallos y referencias públicas.</p></div></div></div>
+    </div>
+  </section>
+
+  <section class="section" id="dependencias">
+    <div class="wrap"><div class="section-title"><div><span class="badge good">Dependencias</span><h2>Dependencias</h2><p>Compara comportamiento de compra por entidad compradora, concentración de proveedores y desviaciones contra mercado.</p></div></div><div class="grid-4"><div class="card"><h3>IMSS</h3><p>+14.2% variación vs mercado · 2,840 contratos · 46 CUCOP activos.</p></div><div class="card"><h3>ISSSTE</h3><p>+6.1% variación vs mercado · 1,920 contratos · 38 CUCOP activos.</p></div><div class="card"><h3>SEDENA</h3><p>+3.4% variación vs mercado · 1,104 contratos · 28 CUCOP activos.</p></div><div class="card"><h3>UNAM</h3><p>-2.1% variación vs mercado · 728 contratos · 19 CUCOP activos.</p></div></div></div>
+  </section>
+
+  <section class="section" id="historico">
+    <div class="wrap"><div class="section-title"><div><span class="badge blue">Histórico 2020–2026</span><h2>Histórico</h2><p>Retrospectiva de precios, montos adjudicados y contratos disponibles. No presenta predicción futura como dato confirmado.</p></div></div><div class="card"><div class="mini-chart" style="height:260px"><svg viewBox="0 0 900 260" width="100%" height="100%"><rect width="900" height="260" rx="18" fill="#FBFAF6"/><g stroke="rgba(4,25,18,.10)"><line x1="50" y1="42" x2="860" y2="42"/><line x1="50" y1="92" x2="860" y2="92"/><line x1="50" y1="142" x2="860" y2="142"/><line x1="50" y1="192" x2="860" y2="192"/></g><path d="M60 190 C145 132,210 158,285 132 C364 103,425 118,498 84 C580 47,650 66,720 58 C786 50,824 38,850 34" fill="none" stroke="#04560C" stroke-width="5" stroke-linecap="round"/><path d="M60 210 C150 175,220 190,295 165 C370 140,433 150,506 118 C582 86,650 94,730 82 C792 73,824 66,850 60" fill="none" stroke="#5462E2" stroke-width="4" stroke-linecap="round"/><text x="54" y="236" fill="#8A948F" font-size="13" font-weight="800">2020</text><text x="210" y="236" fill="#8A948F" font-size="13" font-weight="800">2021</text><text x="360" y="236" fill="#8A948F" font-size="13" font-weight="800">2022</text><text x="510" y="236" fill="#8A948F" font-size="13" font-weight="800">2023</text><text x="660" y="236" fill="#8A948F" font-size="13" font-weight="800">2024</text><text x="810" y="236" fill="#8A948F" font-size="13" font-weight="800">2026</text></svg></div></div></div>
+  </section>
+
+  <section class="section" id="alertas">
+    <div class="wrap"><div class="section-title"><div><span class="badge danger">Alertas IPG</span><h2>Alertas e insights</h2><p>Detecta variaciones relevantes, concentración, sobreprecios, subprecios, anomalías y cambios abruptos.</p></div></div><div class="alert-grid"><div class="alert-card"><span class="badge danger severity">Alta</span><strong>Aumento abrupto</strong><p>Precio +18% frente a mediana histórica en material de limpieza.</p><button class="btn slim">Ver evidencia</button></div><div class="alert-card"><span class="badge warn severity">Media</span><strong>Disminución abrupta</strong><p>Precio 34% bajo rango IPG; revisar riesgo de incumplimiento.</p><button class="btn slim">Ver evidencia</button></div><div class="alert-card"><span class="badge warn severity">Media</span><strong>Inconsistencia regional</strong><p>Estado seleccionado supera rango regional comparable.</p><button class="btn slim">Ver evidencia</button></div><div class="alert-card"><span class="badge blue severity">Concentración</span><strong>Proveedor concentrado</strong><p>RFC acumula 62% del monto en una categoría.</p><button class="btn slim">Ver evidencia</button></div><div class="alert-card"><span class="badge danger severity">Riesgo</span><strong>Precio fuera de rango</strong><p>Contrato marcado como posible outlier contra mercado.</p><button class="btn slim">Ver evidencia</button></div><div class="alert-card"><span class="badge warn severity">Dato</span><strong>Contratos sin pago</strong><p>No todos los contratos tienen dato de pago disponible.</p><button class="btn slim">Ver evidencia</button></div><div class="alert-card"><span class="badge warn severity">CUCOP</span><strong>Alta variación</strong><p>Partida con dispersión superior a umbral de revisión.</p><button class="btn slim">Ver evidencia</button></div><div class="alert-card"><span class="badge danger severity">Dependencia</span><strong>Superior al mercado</strong><p>Precio dependencia +24% vs mercado externo normalizado.</p><button class="btn slim">Ver evidencia</button></div><div class="alert-card"><span class="badge blue severity">RFC</span><strong>Compra recurrente</strong><p>Compra recurrente a mismo RFC en periodo corto.</p><button class="btn slim">Ver evidencia</button></div><div class="alert-card"><span class="badge warn severity">Unidad</span><strong>No comparable</strong><p>Precio no comparable por unidad inconsistente.</p><button class="btn slim">Ver evidencia</button></div></div></div>
+  </section>
+
+  <section class="section" id="mobile">
+    <div class="wrap mobile-demo"><div class="phone"><div class="phone-screen"><div class="phone-top">⌕ Buscar RFC, producto o dependencia…</div><div class="phone-card"><span class="badge good">IPG móvil</span><h4>Filtros en drawer</h4><p>Periodo, dependencia, CUCOP, RFC y fuente se abren sin perder contexto.</p></div><div class="phone-card"><h4>Servicios de limpieza</h4><p>Precio gobierno $42.80/m² · mercado $46.20/m².</p><div class="bar-track"><div class="bar-fill" style="width:78%"></div></div></div><div class="phone-card"><h4>Detalle inferior</h4><p>Al tocar un punto, barra o fila se abre un drawer inferior con contrato, CUCOP y fuente.</p><button class="btn slim accent">Aplicar filtros</button> <button class="btn slim">Comparar</button></div></div></div><div><span class="badge blue">Responsive</span><h2 style="font-size:42px;letter-spacing:-.065em;line-height:1">Mobile / responsive</h2><p class="lead">El usuario puede buscar una empresa, un RFC, un producto, un servicio o una dependencia sin perder contexto. Los gráficos se apilan y los filtros viven en drawer.</p></div></div>
+  </section>
+
+<section class="ipg-market-express" id="market-express-gov-ipg">
+  <article class="ipg-me-card"><span class="eyebrow gov"><span class="spark"></span>Market Express Gov</span><h2>Market Express Gov en IPG</h2><p><strong>Datos de Express Orders gubernamentales para enriquecer el Índice de Precios Gubernamentales.</strong></p><p>Cuando las instituciones publiquen y adjudiquen Express Orders desde SmartLicit, el IPG podrá integrar esos datos como evidencia de precios inmediatos, tiempos de respuesta, montos adjudicados y comportamiento de proveedores.</p><div class="ipg-me-grid"><div class="ipg-me-metric"><span>Express Orders publicadas</span><strong>En espera</strong></div><div class="ipg-me-metric"><span>Express Orders adjudicadas</span><strong>En espera</strong></div><div class="ipg-me-metric"><span>Precio promedio observado</span><strong>Próximamente</strong></div><div class="ipg-me-metric"><span>Tiempo promedio</span><strong>Próximamente</strong></div><div class="ipg-me-metric"><span>Categorías activas</span><strong>Próximamente</strong></div><div class="ipg-me-metric"><span>Dependencias compradoras</span><strong>Próximamente</strong></div><div class="ipg-me-metric"><span>Proveedores participantes</span><strong>Próximamente</strong></div><div class="ipg-me-metric"><span>Estado</span><strong>En espera de operación</strong></div></div><div class="ipg-me-actions"><a class="btn gov" href="../tender-gov.html" target="_top">Ver Market Express Gov</a><a class="btn" href="../ipg.html" target="_top">Abrir IPG</a><a class="btn" href="../pricing-gov.html" target="_top">Abrir Pricing Gov</a></div></article>
+</section>
+
+</main>
+<div class="ipg-search-shell" id="ipgSearchShell" aria-hidden="true">
+  <div class="ipg-search-backdrop" id="ipgSearchBackdrop"></div>
+  <section class="ipg-search-screen" aria-labelledby="ipgSearchTitle" role="dialog" aria-modal="true">
+    <div class="ipg-search-screen-head">
+      <div>
+        <span class="badge blue">Buscador universal IPG</span>
+        <h3 id="ipgSearchTitle">Resultados expandibles por contrato, proveedor, RFC, dependencia o partida</h3>
+        <p>La búsqueda se activa desde el buscador universal del IPG y despliega una pantalla navegable con resultados, acciones y detalle contextual, tomando como referencia la sección IPG de muestra.html.</p>
+      </div>
+      <div class="ipg-search-head-actions">
+        <button class="btn slim" id="ipgSearchReset" type="button">Limpiar</button>
+        <button class="btn slim" id="ipgSearchClose" type="button">Cerrar</button>
+      </div>
+    </div>
+    <div class="ipg-search-toolbar">
+      <label class="ipg-search-input-wrap" for="ipgUniversalInput">
+        <span class="search-icon" aria-hidden="true">⌕</span>
+        <input id="ipgUniversalInput" type="text" placeholder="Buscar contrato, proveedor, RFC, dependencia, expediente, procedimiento o partida" />
+      </label>
+      <button class="btn primary" id="ipgUniversalApply" type="button">Buscar</button>
+      <button class="btn blue" id="ipgUniversalPricing" type="button">Smart Pricing</button>
+    </div>
+    <div class="ipg-search-summary-row">
+      <div class="ipg-result-summary" id="ipgResultSummary">Resultados IPG listos para exploración.</div>
+      <div class="ipg-active-filters" id="ipgActiveFilters"></div>
+    </div>
+    <div class="ipg-search-table-wrap">
+      <table class="ipg-search-table" aria-label="Resultados del buscador universal IPG">
+        <thead>
+          <tr>
+            <th class="ipg-col-contract">Contrato</th>
+            <th class="ipg-col-dependency">Dependencia</th>
+            <th class="ipg-col-purchase">Compra</th>
+            <th class="ipg-col-procedure">Procedimiento</th>
+            <th class="ipg-col-amount">Importe</th>
+            <th class="ipg-col-provider">Proveedor</th>
+            <th class="ipg-col-actions">Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="ipgSearchBody"></tbody>
+      </table>
+    </div>
+    <div class="ipg-search-mobile-list" id="ipgSearchMobileList"></div>
+  </section>
+</div>
+
+
+<div class="overlay" id="overlay"></div>
+<aside class="drawer" id="drawer" aria-label="Detalle del contrato o adjudicación">
+  <div class="drawer-head"><div><span class="badge blue">Drawer de detalle</span><h3 id="drawerTitle">Detalle del contrato / adjudicación</h3></div><button class="btn slim" id="closeDrawer">Cerrar</button></div>
+  <div class="drawer-body" id="drawerBody"></div>
+</aside>
+<div class="toast" id="toast">Acción realizada</div>
+
+<script>
+const $ = (s, r=document) => r.querySelector(s);
+const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
+const drawer = $('#drawer');
+const overlay = $('#overlay');
+const drawerTitle = $('#drawerTitle');
+const drawerBody = $('#drawerBody');
+const toast = $('#toast');
+
+const ipgUniversalContracts = [{"id": "IPG-2023-001", "periodo": "2023", "orden": "APF", "ramo": "HACIENDA Y CRÉDITO PÚBLICO", "tipoInstitucion": "APF", "siglas": "INDAABIN", "institucion": "INSTITUTO DE ADMINISTRACION Y AVALUOS DE BIENES NACIONALES", "uc": "DIRECCIÓN GENERAL DE AVALÚOS Y OBRAS", "expediente": "E-2023-00057974", "referencia": "01-23-233-2023-1153", "tituloExpediente": "01-23-233 SERVICIOS PROFESIONALES PARA LA ELABORACION DEL AVALUO", "partida": "33903", "ley": "LAASSP", "procedimiento": "ADJUDICACIÓN DIRECTA POR PATENTES, LICENCIAS, OFERENTE ÚNICO U OBRAS DE ARTE", "numeroProcedimiento": "AA-06-A00-006A00997-N-1605-2023", "compra": "SERVICIOS", "categoria": "Servicios profesionales", "caracter": "NACIONAL", "fechaPublicacion": "2023-11-15 15:22:51", "fechaFallo": "", "codigoContrato": "C-2023-00069059", "numeroContrato": "01-23-233-2023-1153", "tituloContrato": "01-23-233 SERVICIOS PROFESIONALES PARA LA ELABORACION DEL AVALUO", "descripcionContrato": "ATENDER LA SOLICITUD DE SERVICIOS VALUATORIO, JUSTIPRECIACIONES DE RENTA Y OTROS TRABAJOS VALUATORIO A NIVEL DE CONSULTORÍA QUE REQUIEREN LAS DEPENDENCIAS Y ENTIDADES DE LA ADMINISTRACIÓN PÚBLICA FEDERAL Y DEMÁS INSTITUCIONES PÚBLICAS.", "importe": "4165.77", "moneda": "MXN", "estatus": "Formalizado", "montoMin": "", "montoMax": "", "rfc": "AAA050125HB8", "proveedor": "ANAYA AMOR ARQUITECTOS SA DE CV", "pais": "MX", "nacionalidad": "MEXICANA", "estratificacion": "MICRO", "origen": "Compras MX", "anuncio": "https://comprasmx.buengobierno.gob.mx/sitiopublico/#/sitiopublico/detalle/d1990358502f4ca69c2ed048975f6c1c/procedimiento"}, {"id": "IPG-2023-002", "periodo": "2023", "orden": "APF", "ramo": "HACIENDA Y CRÉDITO PÚBLICO", "tipoInstitucion": "APF", "siglas": "INDAABIN", "institucion": "INSTITUTO DE ADMINISTRACION Y AVALUOS DE BIENES NACIONALES", "uc": "DIRECCIÓN GENERAL DE AVALÚOS Y OBRAS", "expediente": "E-2023-00058017", "referencia": "01-23-151-2023-974", "tituloExpediente": "01-23-151 SERVICIOS PROFESIONALES PARA LA ELABORACIÓN  DE AVALÚOS", "partida": "33903", "ley": "LAASSP", "procedimiento": "ADJUDICACIÓN DIRECTA POR PATENTES, LICENCIAS, OFERENTE ÚNICO U OBRAS DE ARTE", "numeroProcedimiento": "AA-06-A00-006A00997-N-1607-2023", "compra": "SERVICIOS", "categoria": "Servicios profesionales", "caracter": "NACIONAL", "fechaPublicacion": "2023-07-07 17:50:50", "fechaFallo": "", "codigoContrato": "C-2023-00069082", "numeroContrato": "01-23-151-2023-974", "tituloContrato": "01-23-151 SERVICIOS PROFESIONALES PARA LA ELABORACIÓN  DE AVALÚOS", "descripcionContrato": "ATENDER LA SOLICITUD DE SERVICIOS VALUATORIO, JUSTIPRECIACIONES DE RENTA Y OTROS TRABAJOS VALUATORIO A NIVEL DE CONSULTORÍA QUE REQUIEREN LAS DEPENDENCIAS Y ENTIDADES DE LA ADMINISTRACIÓN PÚBLICA FEDERAL Y DEMÁS INSTITUCIONES PÚBLICAS.", "importe": "4165.77", "moneda": "MXN", "estatus": "Formalizado", "montoMin": "", "montoMax": "", "rfc": "AAA050125HB8", "proveedor": "ANAYA AMOR ARQUITECTOS SA DE CV", "pais": "MX", "nacionalidad": "MEXICANA", "estratificacion": "MICRO", "origen": "Compras MX", "anuncio": "https://comprasmx.buengobierno.gob.mx/sitiopublico/#/sitiopublico/detalle/5c9e97eb5afb46f6860600e82ecb87e6/procedimiento"}, {"id": "IPG-2023-003", "periodo": "2023", "orden": "APF", "ramo": "HACIENDA Y CRÉDITO PÚBLICO", "tipoInstitucion": "APF", "siglas": "INDAABIN", "institucion": "INSTITUTO DE ADMINISTRACION Y AVALUOS DE BIENES NACIONALES", "uc": "DIRECCIÓN GENERAL DE AVALÚOS Y OBRAS", "expediente": "E-2023-00059164", "referencia": "01-23-179-2023-926", "tituloExpediente": "01-23-179 SERVICIOS PROFESIONALES PARA LA ELABORACION DEL AVALUO", "partida": "33903", "ley": "LAASSP", "procedimiento": "ADJUDICACIÓN DIRECTA POR PATENTES, LICENCIAS, OFERENTE ÚNICO U OBRAS DE ARTE", "numeroProcedimiento": "AA-06-A00-006A00997-N-1679-2023", "compra": "SERVICIOS", "categoria": "Servicios profesionales", "caracter": "NACIONAL", "fechaPublicacion": "2023-07-10 20:03:28", "fechaFallo": "", "codigoContrato": "C-2023-00070580", "numeroContrato": "01-23-179-2023-926", "tituloContrato": "01-23-179 SERVICIOS PROFESIONALES PARA LA ELABORACION DEL AVALUO", "descripcionContrato": "ATENDER LA SOLICITUD DE SERVICIOS VALUATORIO, JUSTIPRECIACIONES DE RENTA Y OTROS TRABAJOS VALUATORIO A NIVEL DE CONSULTORÍA QUE REQUIEREN LAS DEPENDENCIAS Y ENTIDADES DE LA ADMINISTRACIÓN PÚBLICA FEDERAL Y DEMÁS INSTITUCIONES PÚBLICAS.", "importe": "4165.77", "moneda": "MXN", "estatus": "Formalizado", "montoMin": "", "montoMax": "", "rfc": "AAA050125HB8", "proveedor": "ANAYA AMOR ARQUITECTOS SA DE CV", "pais": "MX", "nacionalidad": "MEXICANA", "estratificacion": "MICRO", "origen": "Compras MX", "anuncio": "https://comprasmx.buengobierno.gob.mx/sitiopublico/#/sitiopublico/detalle/3bcd23ee8f6f4aa8919be5461f35f7fe/procedimiento"}, {"id": "IPG-2023-004", "periodo": "2023", "orden": "APF", "ramo": "AGRICULTURA Y DESARROLLO RURAL", "tipoInstitucion": "APF", "siglas": "SENASICA", "institucion": "SERVICIO NACIONAL DE SANIDAD, INOCUIDAD Y CALIDAD AGROALIMENTARIA", "uc": "DIRECCIÓN DE RECURSOS MATERIALES Y SERVICIOS GENERALES", "expediente": "E-2023-00031865", "referencia": "SERVICIO AGENTE ADUANAL IMPORTACIÓN DIARIA DE HUEVECILLOS DE MOSCA MEDITERRANEO", "tituloExpediente": "SERVICIO AGENTE ADUANAL IMPORTACIÓN DIARIA DE HUEVECILLOS DE MOSCA MEDITERRANEO", "partida": "33901", "ley": "LAASSP", "procedimiento": "INVITACIÓN A CUANDO MENOS 3 PERSONAS POR MONTOS MÁXIMOS POR EXCEPCIÓN", "numeroProcedimiento": "IA-08-B00-008B00001-N-46-2023", "compra": "SERVICIOS", "categoria": "Servicios", "caracter": "NACIONAL", "fechaPublicacion": "2023-04-27 03:32:06", "fechaFallo": "2023-05-03 23:00:00", "codigoContrato": "C-2023-00040813", "numeroContrato": "046-2023-001", "tituloContrato": "SERVICIO AGENTE ADUANAL IMPORTACIÓN DIARIA DE HUEVECILLOS DE MOSCA MEDITERRANEO", "descripcionContrato": "IA-08-B00-008B00001-N-46-2023 SERVICIO AGENTE ADUANAL IMPORTACIÓN DIARIA DE HUEVECILLOS DE MOSCA MEDITERRANEO", "importe": "1286250.0", "moneda": "MXN", "estatus": "FORMALIZADO", "montoMin": "1471470.0", "montoMax": "1706905.2", "rfc": "AAA950914AC6", "proveedor": "AGENCIAS ADUANALES ARJO SA DE CV", "pais": "MX", "nacionalidad": "MEXICANA", "estratificacion": "PEQUEÑA", "origen": "Compras MX", "anuncio": "https://comprasmx.buengobierno.gob.mx/sitiopublico/#/sitiopublico/detalle/730fcc6b3f094aa4b93deb1a20fe762c/procedimiento"}, {"id": "IPG-2023-005", "periodo": "2023", "orden": "APF", "ramo": "EDUCACIÓN PÚBLICA", "tipoInstitucion": "APF", "siglas": "ONCETV", "institucion": "XE-IPN CANAL 11", "uc": "DIRECCION DE ADMINISTRACION Y FINANZAS", "expediente": "E-2023-00094245", "referencia": "2309453/SRMYS/2753-CCLXXXIX/23", "tituloExpediente": "DISEÑADOR CREATIVO", "partida": "33901", "ley": "LAASSP", "procedimiento": "ADJUDICACIÓN DIRECTA POR SERVICIOS PRESTADOS POR PERSONA FÍSICA, QUE NO REQUIERA DE OTRO ESPECIALISTA O TÉCNICO", "numeroProcedimiento": "AA-11-B01-011B01001-N-2224-2023", "compra": "SERVICIOS", "categoria": "Servicios", "caracter": "NACIONAL", "fechaPublicacion": "2023-10-13 16:50:24", "fechaFallo": "", "codigoContrato": "C-2023-00126495", "numeroContrato": "XEIPN-2339-23", "tituloContrato": "DISEÑADOR CREATIVO", "descripcionContrato": "DESARROLLAR TEXTOS QUE APOYEN LAS CAPSULAS, CORTES DEL CANAL Y LAS PRESENTACIONES DE LOS PROGRAMAS DE TELEVISION. BRINDAR APOYO EN EL DESARROLLO CREATIVO DE LOS CONTENIDOS", "importe": "73725.0", "moneda": "MXN", "estatus": "FORMALIZADO", "montoMin": "73725.0", "montoMax": "73725.0", "rfc": "AAAB840713HJ4", "proveedor": "BENJAMIN APARICIO ANDRADE", "pais": "MX", "nacionalidad": "MEXICANA", "estratificacion": "NO MIPYME", "origen": "Compras MX", "anuncio": "https://comprasmx.buengobierno.gob.mx/sitiopublico/#/sitiopublico/detalle/6fcf3c3b05724b1f9178096c300cbbf3/procedimiento"}, {"id": "IPG-2024-006", "periodo": "2024", "orden": "APF", "ramo": "DEFENSA NACIONAL", "tipoInstitucion": "APF", "siglas": "GAFSACOMM", "institucion": "GRUPO AEROPORTUARIO, FERROVIARIO, DE SERVICIOS AUXILIARES Y CONEXOS, OLMECA-MAYA-MEXICA, S.A. DE C.V.", "uc": "DIRECCIÓN GENERAL DE RECURSOS MATERIALES Y SERVICIOS GENERALES", "expediente": "E-2024-00086454", "referencia": "6C.4.79-2024", "tituloExpediente": "ELABORACIÓN E IMPLEMENTACIÓN DE SISTEMA DE GESTIÓN AMBIENTAL", "partida": "33303", "ley": "LAASSP", "procedimiento": "ADJUDICACIÓN DIRECTA POR MONTOS MÁXIMOS POR EXCEPCIÓN", "numeroProcedimiento": "AA-07-H0C-007H0C999-N-84-2024", "compra": "SERVICIOS", "categoria": "Servicios", "caracter": "NACIONAL", "fechaPublicacion": "2024-08-13 23:49:53", "fechaFallo": "2024-08-30 00:00:00", "codigoContrato": "C-2024-00118295", "numeroContrato": "GAFSACOMM-0070-2024", "tituloContrato": "ELABORACIÓN E IMPLEMENTACIÓN DE SISTEMA DE GESTIÓN AMBIENTAL", "descripcionContrato": "DISEÑAR Y ASESORAR EN LA ELABORACIÓN E IMPLEMENTACIÓN DEL SISTEMA DE GESTIÓN AMBIENTAL (SISGAM), PARA QUE ESTO SE LLEVE A CABO SE TIENE QUE APEGAR A LO ESTABLECIDO EN LAS NORMAS NMX-SAA-14001-IMNC-2015, ISO 14001:2015, ISO 9001:2015 Y NMX-CC-9001-IMNC-2015, ESTO CON LA FINALIDAD DE QUE EL AEROPUERTO ESTABLEZCA DE FORMA CLARA Y DETALLADA LAS ACTIVIDADES QUE SE LLEVARÁN A CABO PARA LA EJECUCIÓN SISGAM.", "importe": "712217.5", "moneda": "MXN", "estatus": "FORMALIZADO", "montoMin": "712217.5", "montoMax": "826172.3", "rfc": "A&E0509282Q9", "proveedor": "ANALYSIS & EXPERTISE SC", "pais": "MX", "nacionalidad": "MEXICANA", "estratificacion": "PEQUEÑA", "origen": "Compras MX", "anuncio": "https://comprasmx.buengobierno.gob.mx/sitiopublico/#/sitiopublico/detalle/8a12e12fd15343f7b81b559f8d5ba953/procedimiento"}, {"id": "IPG-2024-007", "periodo": "2024", "orden": "APF", "ramo": "HACIENDA Y CRÉDITO PÚBLICO", "tipoInstitucion": "APF", "siglas": "INDAABIN", "institucion": "INSTITUTO DE ADMINISTRACION Y AVALUOS DE BIENES NACIONALES", "uc": "DIRECCIÓN GENERAL DE AVALÚOS Y OBRAS", "expediente": "E-2024-00082310", "referencia": "01-24-176-2024-1652", "tituloExpediente": "01-24-176   SERVICIOS PROFESIONALES PARA LA ELABORACIÓN DEL AVALÚO", "partida": "33903", "ley": "LAASSP", "procedimiento": "ADJUDICACIÓN DIRECTA POR PATENTES, LICENCIAS, OFERENTE ÚNICO U OBRAS DE ARTE", "numeroProcedimiento": "AA-06-A00-006A00997-N-1838-2024", "compra": "SERVICIOS", "categoria": "Servicios profesionales", "caracter": "NACIONAL", "fechaPublicacion": "2024-07-26 02:56:12", "fechaFallo": "2024-04-04 00:00:00", "codigoContrato": "C-2024-00103558", "numeroContrato": "01-24-176", "tituloContrato": "01-24-176   SERVICIOS PROFESIONALES PARA LA ELABORACIÓN DEL AVALÚO", "descripcionContrato": "ATENDER LA SOLICITUD DE SERVICIOS VALUATORIO, JUSTIPRECIACIONES DE RENTA Y OTROS TRABAJOS VALUATORIO A NIVEL DE CONSULTORÍA QUE REQUIEREN LAS DEPENDENCIAS Y ENTIDADES DE LA ADMINISTRACIÓN PÚBLICA FEDERAL Y DEMÁS INSTITUCIONES PÚBLICAS.", "importe": "10235.77", "moneda": "MXN", "estatus": "Formalizado", "montoMin": "", "montoMax": "", "rfc": "AAA050125HB8", "proveedor": "ANAYA AMOR ARQUITECTOS SA DE CV", "pais": "MX", "nacionalidad": "MEXICANA", "estratificacion": "MICRO", "origen": "Compras MX", "anuncio": "https://comprasmx.buengobierno.gob.mx/sitiopublico/#/sitiopublico/detalle/342e699d830944b6a05ad9a0e54fbbee/procedimiento"}, {"id": "IPG-2024-008", "periodo": "2024", "orden": "APF", "ramo": "HACIENDA Y CRÉDITO PÚBLICO", "tipoInstitucion": "APF", "siglas": "INDAABIN", "institucion": "INSTITUTO DE ADMINISTRACION Y AVALUOS DE BIENES NACIONALES", "uc": "DIRECCIÓN GENERAL DE AVALÚOS Y OBRAS", "expediente": "E-2025-00040219", "referencia": "01-24-114-2024-792", "tituloExpediente": "01-24-114   SERVICIOS PROFESIONALES PARA LA ELABORACION DEL AVALÚO", "partida": "33903", "ley": "LAASSP", "procedimiento": "ADJUDICACIÓN DIRECTA POR PATENTES, LICENCIAS, OFERENTE ÚNICO U OBRAS DE ARTE", "numeroProcedimiento": "AA-06-A00-006A00997-N-272-2025", "compra": "SERVICIOS", "categoria": "Servicios profesionales", "caracter": "NACIONAL", "fechaPublicacion": "2025-05-13 21:00:23", "fechaFallo": "2024-02-22 00:00:00", "codigoContrato": "C-2025-00043918", "numeroContrato": "01-24-114-2024-792", "tituloContrato": "01-24-114   SERVICIOS PROFESIONALES PARA LA ELABORACION DEL AVALÚO", "descripcionContrato": "ATENDER LA SOLICITUD DE SERVICIOS VALUATORIO, JUSTIPRECIACIONES DE RENTA Y OTROS TRABAJOS VALUATORIO A NIVEL DE CONSULTORÍA QUE REQUIEREN LAS DEPENDENCIAS Y ENTIDADES DE LA ADMINISTRACIÓN PÚBLICA FEDERAL Y DEMÁS INSTITUCIONES PÚBLICAS.", "importe": "4288.46", "moneda": "MXN", "estatus": "Formalizado", "montoMin": "", "montoMax": "", "rfc": "AAA050125HB8", "proveedor": "ANAYA AMOR ARQUITECTOS SA DE CV", "pais": "MX", "nacionalidad": "MEXICANA", "estratificacion": "MICRO", "origen": "Compras MX", "anuncio": "https://comprasmx.buengobierno.gob.mx/sitiopublico/#/sitiopublico/detalle/3e5410bc8daf4fdebaa01fac66d034c8/procedimiento"}, {"id": "IPG-2024-009", "periodo": "2024", "orden": "APF", "ramo": "HACIENDA Y CRÉDITO PÚBLICO", "tipoInstitucion": "APF", "siglas": "INDAABIN", "institucion": "INSTITUTO DE ADMINISTRACION Y AVALUOS DE BIENES NACIONALES", "uc": "DIRECCIÓN GENERAL DE AVALÚOS Y OBRAS", "expediente": "E-2025-00053471", "referencia": "01-24-1156-2024-5511", "tituloExpediente": "01-24-1156  SERVICIOS PROFESIONALES PARA LA ELABORACION DEL AVALUO", "partida": "33903", "ley": "LAASSP", "procedimiento": "ADJUDICACIÓN DIRECTA POR PATENTES, LICENCIAS, OFERENTE ÚNICO U OBRAS DE ARTE", "numeroProcedimiento": "AA-06-A00-006A00997-N-1714-2025", "compra": "SERVICIOS", "categoria": "Servicios profesionales", "caracter": "NACIONAL", "fechaPublicacion": "2025-06-19 03:59:04", "fechaFallo": "2024-09-21 00:00:00", "codigoContrato": "C-2025-00060243", "numeroContrato": "01-24-1156-2024-5511", "tituloContrato": "01-24-1156  SERVICIOS PROFESIONALES PARA LA ELABORACION DEL AVALUO", "descripcionContrato": "ATENDER LA SOLICITUD DE SERVICIOS VALUATORIO, JUSTIPRECIACIONES DE RENTA Y OTROS TRABAJOS VALUATORIO A NIVEL DE CONSULTORÍA QUE REQUIEREN LAS DEPENDENCIAS Y ENTIDADES DE LA ADMINISTRACIÓN PÚBLICA FEDERAL Y DEMÁS INSTITUCIONES PÚBLICAS.", "importe": "4733.85", "moneda": "MXN", "estatus": "Formalizado", "montoMin": "", "montoMax": "", "rfc": "AAA050125HB8", "proveedor": "ANAYA AMOR ARQUITECTOS SA DE CV", "pais": "MX", "nacionalidad": "MEXICANA", "estratificacion": "MICRO", "origen": "Compras MX", "anuncio": "https://comprasmx.buengobierno.gob.mx/sitiopublico/#/sitiopublico/detalle/024a026353b445f3b7dfc63d1c2fcc72/procedimiento"}, {"id": "IPG-2024-010", "periodo": "2024", "orden": "APF", "ramo": "HACIENDA Y CRÉDITO PÚBLICO", "tipoInstitucion": "APF", "siglas": "INDAABIN", "institucion": "INSTITUTO DE ADMINISTRACION Y AVALUOS DE BIENES NACIONALES", "uc": "DIRECCIÓN GENERAL DE AVALÚOS Y OBRAS", "expediente": "E-2025-00054162", "referencia": "01-24-1157-2024-5510", "tituloExpediente": "01-24-1157   SERVICIOS PROFESIONALES PARA LA ELABORACION DEL AVALUO", "partida": "33903", "ley": "LAASSP", "procedimiento": "ADJUDICACIÓN DIRECTA POR PATENTES, LICENCIAS, OFERENTE ÚNICO U OBRAS DE ARTE", "numeroProcedimiento": "AA-06-A00-006A00997-N-1967-2025", "compra": "SERVICIOS", "categoria": "Servicios profesionales", "caracter": "NACIONAL", "fechaPublicacion": "2025-06-19 22:54:16", "fechaFallo": "2024-09-21 00:00:00", "codigoContrato": "C-2025-00060911", "numeroContrato": "01-24-1157-2024-5510", "tituloContrato": "01-24-1157   SERVICIOS PROFESIONALES PARA LA ELABORACION DEL AVALUO", "descripcionContrato": "ATENDER LA SOLICITUD DE SERVICIOS VALUATORIO, JUSTIPRECIACIONES DE RENTA Y OTROS TRABAJOS VALUATORIO A NIVEL DE CONSULTORÍA QUE REQUIEREN LAS DEPENDENCIAS Y ENTIDADES DE LA ADMINISTRACIÓN PÚBLICA FEDERAL Y DEMÁS INSTITUCIONES PÚBLICAS.", "importe": "4733.85", "moneda": "MXN", "estatus": "Formalizado", "montoMin": "", "montoMax": "", "rfc": "AAA050125HB8", "proveedor": "ANAYA AMOR ARQUITECTOS SA DE CV", "pais": "MX", "nacionalidad": "MEXICANA", "estratificacion": "MICRO", "origen": "Compras MX", "anuncio": "https://comprasmx.buengobierno.gob.mx/sitiopublico/#/sitiopublico/detalle/35be4ea42613437ebdf7bb54273850f5/procedimiento"}, {"id": "IPG-2025-011", "periodo": "2025", "orden": "APF", "ramo": "MARINA", "tipoInstitucion": "APF", "siglas": "ASIPONA-Puerto Vallarta", "institucion": "ADMINISTRACION DEL SISTEMA PORTUARIO NACIONAL PUERTO VALLARTA, S.A. DE C.V.", "uc": "PUERTO VALLARTA-GERENCIA DE ADMINISTRACION Y FINANZAS, DIRECCION GENERAL", "expediente": "E-2025-00104673", "referencia": "ASIPONA-PV-GAF-34-2025", "tituloExpediente": "SERVICIOS PROFESIONALES PARA LA ASESORÍA FISCAL, FINANCIERA Y CONTABLE PARA LOS", "partida": "33104", "ley": "LAASSP", "procedimiento": "ADJUDICACIÓN DIRECTA POR MONTOS MÁXIMOS POR EXCEPCIÓN", "numeroProcedimiento": "AA-13-J2V-013J2V001-N-42-2025", "compra": "SERVICIOS", "categoria": "Servicios profesionales", "caracter": "NACIONAL", "fechaPublicacion": "2025-11-02 02:22:33", "fechaFallo": "2025-08-21 00:00:00", "codigoContrato": "C-2025-00121302", "numeroContrato": "ASIPONA-PV-GAF-34-2025", "tituloContrato": "SERVICIOS PROFESIONALES PARA LA ASESORÍA FISCAL, FINANCIERA Y CONTABLE PARA LOS", "descripcionContrato": "SERVICIOS PROFESIONALES PARA LA ASESORÍA FISCAL, FINANCIERA Y CONTABLE PARA LOS EJERCICIOS 2025 Y 2026, EN LA ADMINISTRACIÓN DEL SISTEMA PORTUARIO NACIONAL PUERTO VALLARTA, S.A. DE C.V.", "importe": "228000.0", "moneda": "MXN", "estatus": "FORMALIZADO", "montoMin": "228000.0", "montoMax": "264480.0", "rfc": "A&C011129BI1", "proveedor": "ASESORES & CONTADORES CONFIANS SC", "pais": "MX", "nacionalidad": "Mexicana", "estratificacion": "NO ASIGNADO", "origen": "Compras MX", "anuncio": "https://comprasmx.buengobierno.gob.mx/sitiopublico/#/sitiopublico/detalle/3f335fdbfbe64de1bd36d1482e0d717f/procedimiento"}, {"id": "IPG-2025-012", "periodo": "2025", "orden": "GEM", "ramo": "MÉXICO", "tipoInstitucion": "GE", "siglas": "IMIFE", "institucion": "INSTITUTO MEXIQUENSE DE LA INFRAESTRUCTURA FÍSICA EDUCATIVA", "uc": "DEPARTAMENTO DE CONCURSOS Y CONTRATOS", "expediente": "E-2025-00006960", "referencia": "IMIFE-005-I2025", "tituloExpediente": "ESCUELA PRIMARIA \"REYES AZTECAS\", CCT 15DPR1477Q", "partida": "61600", "ley": "LOPSRM", "procedimiento": "INVITACIÓN A CUANDO MENOS 3 PERSONAS POR MONTOS MÁXIMOS PARA EXCEPCIÓN", "numeroProcedimiento": "IO-74-030-915109922-N-8-2025", "compra": "OBRA PÚBLICA", "categoria": "Otros", "caracter": "NACIONAL", "fechaPublicacion": "2025-01-21 00:54:43", "fechaFallo": "2025-02-05 20:00:00", "codigoContrato": "C-2025-00008552", "numeroContrato": "IMIFE-007-FPR-I2025", "tituloContrato": "ESCUELA PRIMARIA \"REYES AZTECAS\", CCT 15DPR1477Q", "descripcionContrato": "CONSTRUCCIÓN DE CISTERNA, CONSTRUCCIÓN DE RED PLUVIAL Y SUSTITUCIÓN DE BARDA PERIMETRAL, EN LA ESCUELA PRIMARIA \"REYES AZTECAS\", UBICADA EN ECATEPEC DE MORELOS, MUNICIPIO DE ECATEPEC DE MORELOS, MÉXICO", "importe": "1651066.66", "moneda": "MXN", "estatus": "Formalizado", "montoMin": "", "montoMax": "", "rfc": "A&M0602013E2", "proveedor": "AQ&MK SA DE CV", "pais": "MX", "nacionalidad": "MEXICANA", "estratificacion": "PEQUEÑA", "origen": "Compras MX", "anuncio": "https://comprasmx.buengobierno.gob.mx/sitiopublico/#/sitiopublico/detalle/ed882b4649d04b7d8054e1d953c8ef49/procedimiento"}, {"id": "IPG-2025-013", "periodo": "2025", "orden": "APF", "ramo": "HACIENDA Y CRÉDITO PÚBLICO", "tipoInstitucion": "APF", "siglas": "INDAABIN", "institucion": "INSTITUTO DE ADMINISTRACION Y AVALUOS DE BIENES NACIONALES", "uc": "DIRECCIÓN GENERAL DE AVALÚOS Y OBRAS", "expediente": "E-2025-00111771", "referencia": "2025-6088-", "tituloExpediente": "2025-6088   SERVICIOS PROFESIONALES PARA LA ELABORACION DEL AVALUO", "partida": "33903", "ley": "LAASSP", "procedimiento": "ADJUDICACIÓN DIRECTA POR PATENTES, LICENCIAS, OFERENTE ÚNICO U OBRAS DE ARTE", "numeroProcedimiento": "AA-06-A00-006A00997-N-4157-2025", "compra": "SERVICIOS", "categoria": "Servicios profesionales", "caracter": "NACIONAL", "fechaPublicacion": "2025-11-26 18:00:47", "fechaFallo": "2025-11-26 00:00:00", "codigoContrato": "C-2025-00127309", "numeroContrato": "2025-6088", "tituloContrato": "2025-6088   SERVICIOS PROFESIONALES PARA LA ELABORACION DEL AVALUO", "descripcionContrato": "ATENDER LA SOLICITUD DE SERVICIOS VALUATORIO, JUSTIPRECIACIONES DE RENTA Y OTROS TRABAJOS VALUATORIO A NIVEL DE CONSULTORÍA QUE REQUIEREN LAS DEPENDENCIAS Y ENTIDADES DE LA ADMINISTRACIÓN PÚBLICA FEDERAL Y DEMÁS INSTITUCIONES PÚBLICAS.", "importe": "9244.67", "moneda": "MXN", "estatus": "Formalizado", "montoMin": "", "montoMax": "", "rfc": "AAA050125HB8", "proveedor": "ANAYA AMOR ARQUITECTOS SA DE CV", "pais": "MX", "nacionalidad": "MEXICANA", "estratificacion": "MICRO", "origen": "Compras MX", "anuncio": "https://comprasmx.buengobierno.gob.mx/sitiopublico/#/sitiopublico/detalle/9f01116623754d0a9efe94a8ad7c8730/procedimiento"}, {"id": "IPG-2025-014", "periodo": "2025", "orden": "APF", "ramo": "EDUCACIÓN PÚBLICA", "tipoInstitucion": "APF", "siglas": "CONAFE", "institucion": "CONSEJO NACIONAL DE FOMENTO EDUCATIVO", "uc": "COORDINACIÓN TERRITORIAL PARA EL SERVICIO EDUCATIVO DEL CONAFE EN CHIAPAS", "expediente": "E-2025-00061768", "referencia": "AD/005/CHIS2025", "tituloExpediente": "MATERIAL ELECTRICO PARA LA COORDINACION TERRITORIAL DE CHIAPAS", "partida": "24601", "ley": "LAASSP", "procedimiento": "ADJUDICACIÓN DIRECTA POR MONTOS MÁXIMOS POR EXCEPCIÓN", "numeroProcedimiento": "AA-11-L6W-011L6W005-N-5-2025", "compra": "ADQUISICIONES", "categoria": "Otros", "caracter": "NACIONAL", "fechaPublicacion": "2025-07-16 02:06:34", "fechaFallo": "2025-07-14 00:00:00", "codigoContrato": "C-2025-00071623", "numeroContrato": "AD/005/CHIS2025", "tituloContrato": "MATERIAL ELECTRICO PARA LA COORDINACION TERRITORIAL DE CHIAPAS", "descripcionContrato": "ADQUISICION DE MATERIAL ELECTRICO PARA LA COORDINACION TERRITORIAL Y SEDES REGIONALES, QUE BRINDAN SERVICIO EDUCATIVO DEL CONSEJO NACIONAL DE FO-MENTO EDUCATIVO EN EL ESTADO DE CHIAPAS", "importe": "137850.0", "moneda": "MXN", "estatus": "FORMALIZADO", "montoMin": "137850.0", "montoMax": "159906.0", "rfc": "AAAC790922SD3", "proveedor": "CARLOS EMMANUEL ALTAMIRANO ALFARO", "pais": "MX", "nacionalidad": "MEXICANA", "estratificacion": "MEDIANA", "origen": "Compras MX", "anuncio": "https://comprasmx.buengobierno.gob.mx/sitiopublico/#/sitiopublico/detalle/9548b87fea584b9aa962fa87832ca4e5/procedimiento"}, {"id": "IPG-2025-015", "periodo": "2025", "orden": "APF", "ramo": "MEDIO AMBIENTE Y RECURSOS NATURALES", "tipoInstitucion": "APF", "siglas": "IMTA", "institucion": "INSTITUTO MEXICANO DE TECNOLOGIA DEL AGUA", "uc": "COORDINACION DE ADMINISTRACION", "expediente": "E-2025-00021557", "referencia": "EXPEDIENTE 021-2025", "tituloExpediente": "APOYO VEHICULAR EN LA CONSERVACIÓN DE VEHÍCULOS TERRESTRES DEL IMTA", "partida": "35501", "ley": "LAASSP", "procedimiento": "ADJUDICACIÓN DIRECTA POR MONTOS MÁXIMOS POR EXCEPCIÓN", "numeroProcedimiento": "AA-16-RJE-016RJE001-N-26-2025", "compra": "SERVICIOS", "categoria": "Servicios", "caracter": "NACIONAL", "fechaPublicacion": "2025-03-11 23:45:27", "fechaFallo": "2025-03-18 00:00:00", "codigoContrato": "C-2025-00028652", "numeroContrato": "IMTA-AD-009-2025", "tituloContrato": "APOYO VEHICULAR EN LA CONSERVACIÓN DE VEHÍCULOS TERRESTRES DEL IMTA", "descripcionContrato": "APOYO VEHICULAR EN LA CONSERVACIÓN DE VEHÍCULOS TERRESTRES DEL INSTITUTO MEXICANO DE TECNOLOGÍA DEL AGUA (IMTA)", "importe": "137750.0", "moneda": "MXN", "estatus": "FORMALIZADO", "montoMin": "137750.0", "montoMax": "155717.18", "rfc": "AAAE920106LW3", "proveedor": "JOSE EDUARDO AYALA ALVAREZ", "pais": "MX", "nacionalidad": "MEXICANA", "estratificacion": "MICRO", "origen": "Compras MX", "anuncio": "https://comprasmx.buengobierno.gob.mx/sitiopublico/#/sitiopublico/detalle/6b8d5d3b105142d09197092e0ef74606/procedimiento"}];
+const ipgSearchShell = $('#ipgSearchShell');
+const ipgSearchBackdrop = $('#ipgSearchBackdrop');
+const ipgSearchBody = $('#ipgSearchBody');
+const ipgSearchMobileList = $('#ipgSearchMobileList');
+const ipgUniversalInput = $('#ipgUniversalInput');
+const ipgResultSummary = $('#ipgResultSummary');
+const ipgActiveFilters = $('#ipgActiveFilters');
+let ipgUniversalFilteredRows = [...ipgUniversalContracts];
+
+function escapeHtml(value){
+  return String(value ?? '')
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;')
+    .replace(/'/g,'&#39;');
+}
+function ipgCurrency(value){
+  const n = Number(String(value || '0').replace(/,/g,''));
+  return new Intl.NumberFormat('es-MX',{style:'currency',currency:'MXN',maximumFractionDigits:0}).format(isFinite(n)?n:0);
+}
+function ipgClassifyLevel(row){
+  if ((row.orden || '').toUpperCase() === 'APF' || (row.tipoInstitucion || '').toUpperCase() === 'APF') return 'Federal';
+  if ((row.orden || '').toUpperCase() === 'GEM' || (row.tipoInstitucion || '').toUpperCase() === 'GE' || (row.tipoInstitucion || '').toUpperCase() === 'ESTATAL') return 'Estatal';
+  return 'Municipal';
+}
+function ipgMatchesPurchase(row, value){
+  if(!value || value === 'Producto y servicio') return true;
+  const compra = String(row.compra || '').toUpperCase();
+  if(value === 'Producto') return compra.includes('ADQUISIC') || compra.includes('BIEN');
+  if(value === 'Servicio') return compra.includes('SERVICIO');
+  if(value === 'Obra') return compra.includes('OBRA');
+  if(value === 'Arrendamiento') return compra.includes('ARREND');
+  return true;
+}
+function ipgMatchesProcedure(row, value){
+  if(!value || value === 'Todos') return true;
+  const proc = String(row.procedimiento || '').toUpperCase();
+  if(value === 'Licitación pública') return proc.includes('LICITACIÓN');
+  if(value === 'Invitación restringida') return proc.includes('INVITACIÓN');
+  if(value === 'Adjudicación directa') return proc.includes('ADJUDICACIÓN');
+  if(value === 'Convenio modificatorio') return proc.includes('CONVENIO');
+  return proc.includes(String(value).toUpperCase());
+}
+function ipgMatchesPeriod(row, value){
+  if(!value || value === '2020–2026' || value === 'Últimos 30 días') return true;
+  return String(row.periodo || '').includes(String(value));
+}
+function ipgMatchesDependency(row, value){
+  if(!value || value === 'Todas') return true;
+  const hay = [row.siglas, row.institucion, row.uc].join(' ').toUpperCase();
+  return hay.includes(String(value).toUpperCase());
+}
+function ipgMatchesLevel(row, value){
+  if(!value || value === 'Todos') return true;
+  return ipgClassifyLevel(row) === value;
+}
+function ipgCollectHaystack(row){
+  return [
+    row.tituloContrato,
+    row.tituloExpediente,
+    row.referencia,
+    row.expediente,
+    row.numeroContrato,
+    row.siglas,
+    row.institucion,
+    row.uc,
+    row.compra,
+    row.categoria,
+    row.procedimiento,
+    row.proveedor,
+    row.rfc,
+    row.partida
+  ].join(' ').toLowerCase();
+}
+function syncUniversalQueries(value){
+  const val = String(value ?? '');
+  if($('#globalQuery')) $('#globalQuery').value = val;
+  if($('#headerSearch')) $('#headerSearch').value = val;
+  if(ipgUniversalInput) ipgUniversalInput.value = val;
+}
+function getIpgActiveChips(query, rows){
+  const chips = [];
+  if(query) chips.push(`<span class="ipg-chip good"><strong>Búsqueda:</strong> ${escapeHtml(query)}</span>`);
+  const dep = $('#dependency')?.value;
+  const period = $('#period')?.value;
+  const purchase = $('#purchaseType')?.value;
+  const procedureVal = $('#procedure')?.value;
+  const level = $('#procedureLevel')?.value;
+  if(dep && dep !== 'Todas') chips.push(`<span class="ipg-chip"><strong>Dependencia:</strong> ${escapeHtml(dep)}</span>`);
+  if(period && period !== '2020–2026') chips.push(`<span class="ipg-chip blue"><strong>Periodo:</strong> ${escapeHtml(period)}</span>`);
+  if(purchase && purchase !== 'Producto y servicio') chips.push(`<span class="ipg-chip"><strong>Compra:</strong> ${escapeHtml(purchase)}</span>`);
+  if(procedureVal && procedureVal !== 'Todos') chips.push(`<span class="ipg-chip"><strong>Procedimiento:</strong> ${escapeHtml(procedureVal)}</span>`);
+  if(level && level !== 'Todos') chips.push(`<span class="ipg-chip"><strong>Nivel:</strong> ${escapeHtml(level)}</span>`);
+  if(!chips.length) chips.push(`<span class="ipg-chip good"><strong>Vista:</strong> últimas adjudicaciones demo</span>`);
+  chips.push(`<span class="ipg-chip blue"><strong>Resultados:</strong> ${rows.length}</span>`);
+  return chips.join('');
+}
+function renderIpgUniversalResults(){
+  const query = (ipgUniversalInput?.value || '').trim().toLowerCase();
+  const period = $('#period')?.value || '';
+  const purchase = $('#purchaseType')?.value || '';
+  const procedureVal = $('#procedure')?.value || '';
+  const dependencyVal = $('#dependency')?.value || '';
+  const level = $('#procedureLevel')?.value || '';
+  const rows = ipgUniversalContracts.filter(row => {
+    return (!query || ipgCollectHaystack(row).includes(query)) &&
+      ipgMatchesPeriod(row, period) &&
+      ipgMatchesPurchase(row, purchase) &&
+      ipgMatchesProcedure(row, procedureVal) &&
+      ipgMatchesDependency(row, dependencyVal) &&
+      ipgMatchesLevel(row, level);
+  });
+  ipgUniversalFilteredRows = rows;
+  const summary = [];
+  summary.push(`<strong>${rows.length}</strong> resultados`);
+  summary.push(query ? `coinciden con “${escapeHtml(query)}”` : 'visibles en esta expansión del buscador universal');
+  if(dependencyVal && dependencyVal !== 'Todas') summary.push(`en <strong>${escapeHtml(dependencyVal)}</strong>`);
+  ipgResultSummary.innerHTML = summary.join(' · ');
+  ipgActiveFilters.innerHTML = getIpgActiveChips(ipgUniversalInput?.value || '', rows);
+
+  if(!rows.length){
+    ipgSearchBody.innerHTML = `<tr><td class="ipg-search-empty" colspan="7">No encontramos coincidencias. Prueba con otro RFC, contrato, dependencia o partida.</td></tr>`;
+    ipgSearchMobileList.innerHTML = `<div class="ipg-mobile-card"><div class="ipg-contract-title">Sin coincidencias</div><div class="ipg-contract-meta">Ajusta la búsqueda o limpia filtros para volver a la vista completa.</div></div>`;
+    return;
+  }
+
+  ipgSearchBody.innerHTML = rows.map((row, index) => `
+    <tr class="ipg-search-result-row" data-ipg-row="${escapeHtml(row.id)}">
+      <td>
+        <div class="ipg-contract-title">${escapeHtml(row.tituloContrato || row.tituloExpediente || 'Contrato sin título')}</div>
+        <div class="ipg-contract-meta">${escapeHtml(row.periodo)} · ${escapeHtml(row.expediente)} · Partida ${escapeHtml(row.partida || 'Sin dato')}</div>
+      </td>
+      <td>
+        <div class="ipg-dependency-main">${escapeHtml(row.siglas || row.institucion || 'Sin dependencia')}</div>
+        <div class="ipg-dependency-sub">${escapeHtml(row.uc || row.institucion || 'Sin unidad compradora')}</div>
+      </td>
+      <td>
+        <span class="ipg-purchase-badge">${escapeHtml((row.compra || 'Sin dato').toUpperCase())}</span>
+        <div class="ipg-purchase-meta">${escapeHtml(row.categoria || 'Sin categoría')}</div>
+      </td>
+      <td><div class="ipg-procedure-text">${escapeHtml(row.procedimiento || 'Sin procedimiento')}</div></td>
+      <td>
+        <div class="ipg-amount-main">${escapeHtml(ipgCurrency(row.importe))}</div>
+        <div class="ipg-amount-meta">${escapeHtml(row.moneda || 'MXN')}</div>
+      </td>
+      <td>
+        <div class="ipg-provider-name">${escapeHtml(row.proveedor || 'Sin proveedor')}</div>
+        <div class="ipg-provider-meta">${escapeHtml(row.rfc || 'Sin RFC')} · ${escapeHtml(row.estratificacion || 'Sin estratificación')}</div>
+      </td>
+      <td>
+        <div class="ipg-action-stack">
+          <button class="ipg-action-pill secondary" type="button" data-ipg-detail="${index}">Detalle</button>
+          <button class="ipg-action-pill pricing" type="button" data-ipg-pricing="${index}">Smart Pricing</button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+
+  ipgSearchMobileList.innerHTML = rows.map((row, index) => `
+    <article class="ipg-mobile-card" data-ipg-mobile-row="${escapeHtml(row.id)}">
+      <div class="ipg-mobile-top">
+        <span class="ipg-purchase-badge">${escapeHtml((row.compra || 'Sin dato').toUpperCase())}</span>
+        <span class="badge blue">${escapeHtml(row.periodo || 'IPG')}</span>
+      </div>
+      <div class="ipg-contract-title">${escapeHtml(row.tituloContrato || row.tituloExpediente || 'Contrato sin título')}</div>
+      <div class="ipg-contract-meta">${escapeHtml(row.expediente)} · Partida ${escapeHtml(row.partida || 'Sin dato')}</div>
+      <div class="ipg-mobile-grid">
+        <div class="ipg-mobile-field"><span>Dependencia</span><strong>${escapeHtml(row.siglas || row.institucion || 'Sin dependencia')}</strong></div>
+        <div class="ipg-mobile-field"><span>Proveedor</span><strong>${escapeHtml(row.proveedor || 'Sin proveedor')}</strong></div>
+        <div class="ipg-mobile-field"><span>Importe</span><strong>${escapeHtml(ipgCurrency(row.importe))}</strong></div>
+        <div class="ipg-mobile-field"><span>RFC</span><strong>${escapeHtml(row.rfc || 'Sin RFC')}</strong></div>
+      </div>
+      <div class="ipg-mobile-actions">
+        <button class="btn slim" type="button" data-ipg-detail="${index}">Detalle</button>
+        <button class="btn slim accent" type="button" data-ipg-pricing="${index}">Smart Pricing</button>
+      </div>
+    </article>
+  `).join('');
+
+  $$('[data-ipg-detail]').forEach(btn => btn.addEventListener('click', event => {
+    event.stopPropagation();
+    const row = ipgUniversalFilteredRows[Number(btn.dataset.ipgDetail)];
+    if(row) openIpgUniversalDetail(row);
+  }));
+  $$('[data-ipg-pricing]').forEach(btn => btn.addEventListener('click', event => {
+    event.stopPropagation();
+    const row = ipgUniversalFilteredRows[Number(btn.dataset.ipgPricing)];
+    if(row) openIpgUniversalPricing(row);
+  }));
+  $$('.ipg-search-result-row').forEach((tr, index) => tr.addEventListener('click', event => {
+    if(event.target.closest('button')) return;
+    const row = ipgUniversalFilteredRows[index];
+    if(row) openIpgUniversalDetail(row);
+  }));
+}
+function openIpgSearchScreen(initialValue=''){
+  syncUniversalQueries(initialValue);
+  renderIpgUniversalResults();
+  ipgSearchShell.classList.add('open');
+  ipgSearchShell.setAttribute('aria-hidden','false');
+  document.body.classList.add('ipg-search-open');
+}
+function closeIpgSearchScreen(){
+  ipgSearchShell.classList.remove('open');
+  ipgSearchShell.setAttribute('aria-hidden','true');
+  document.body.classList.remove('ipg-search-open');
+  $('#globalQuery')?.blur();
+  $('#headerSearch')?.blur();
+  ipgUniversalInput?.blur();
+}
+function openIpgUniversalDetail(row){
+  drawerTitle.textContent = row.tituloContrato || row.tituloExpediente || 'Detalle de contrato';
+  drawerBody.innerHTML = `
+    <div class="card"><div class="card-head"><div><span class="badge blue">Contrato IPG</span><h3>${escapeHtml(row.tituloContrato || row.tituloExpediente || 'Detalle de contrato')}</h3><p>${escapeHtml(row.descripcionContrato || 'Sin descripción disponible')}</p></div><span class="badge good">${escapeHtml(ipgClassifyLevel(row))}</span></div></div>
+    <div class="drawer-row"><span>Expediente</span><strong>${escapeHtml(row.expediente || 'Sin expediente')}</strong></div>
+    <div class="drawer-row"><span>Número de contrato</span><strong>${escapeHtml(row.numeroContrato || 'Sin contrato')}</strong></div>
+    <div class="drawer-row"><span>Número de procedimiento</span><strong>${escapeHtml(row.numeroProcedimiento || 'Sin dato')}</strong></div>
+    <div class="drawer-row"><span>Dependencia</span><strong>${escapeHtml(row.institucion || row.siglas || 'Sin dependencia')}<br>${escapeHtml(row.uc || '')}</strong></div>
+    <div class="drawer-row"><span>Compra / categoría</span><strong>${escapeHtml(row.compra || 'Sin dato')} · ${escapeHtml(row.categoria || 'Sin categoría')}</strong></div>
+    <div class="drawer-row"><span>Procedimiento</span><strong>${escapeHtml(row.procedimiento || 'Sin procedimiento')}</strong></div>
+    <div class="drawer-row"><span>Importe</span><strong>${escapeHtml(ipgCurrency(row.importe))} ${escapeHtml(row.moneda || 'MXN')}</strong></div>
+    <div class="drawer-row"><span>Proveedor</span><strong>${escapeHtml(row.proveedor || 'Sin proveedor')}<br>${escapeHtml(row.rfc || 'Sin RFC')} · ${escapeHtml(row.estratificacion || 'Sin estratificación')}</strong></div>
+    <div class="drawer-row"><span>CUCOP / partida</span><strong>Partida ${escapeHtml(row.partida || 'Sin dato')} · fuente ${escapeHtml(row.origen || 'IPG demo')}</strong></div>
+    <div class="drawer-row"><span>Publicación / fallo</span><strong>${escapeHtml(row.fechaPublicacion || 'Sin publicación')}${row.fechaFallo ? '<br>Fallo: ' + escapeHtml(row.fechaFallo) : ''}</strong></div>
+    <div class="chart-actions">
+      <button class="btn slim accent" type="button" id="ipgDrawerPricing">Smart Pricing</button>
+      <button class="btn slim blue" type="button" id="ipgDrawerSource">Ver fuente</button>
+      <button class="btn slim" type="button" id="ipgDrawerCloseSearch">Volver a resultados</button>
+    </div>
+  `;
+  overlay.classList.add('open');
+  drawer.classList.add('open');
+  setTimeout(() => {
+    $('#ipgDrawerPricing')?.addEventListener('click', () => openIpgUniversalPricing(row));
+    $('#ipgDrawerSource')?.addEventListener('click', () => {
+      if (typeof showToast === 'function') showToast('Fuente pública lista para revisión.');
+      else { toast.textContent = 'Fuente pública lista para revisión.'; toast.classList.add('show'); setTimeout(()=>toast.classList.remove('show'), 1600); }
+    });
+    $('#ipgDrawerCloseSearch')?.addEventListener('click', () => {
+      closeDrawer();
+      openIpgSearchScreen(ipgUniversalInput?.value || $('#globalQuery')?.value || '');
+    });
+  }, 0);
+}
+function openIpgUniversalPricing(row){
+  closeIpgSearchScreen();
+  document.getElementById('comparador')?.scrollIntoView({behavior:'smooth', block:'start'});
+  if (typeof showToast === 'function') showToast(`Contrato enviado a Smart Pricing: ${row.siglas || row.institucion || 'IPG'}`);
+  else {
+    toast.textContent = `Contrato enviado a Smart Pricing: ${row.siglas || row.institucion || 'IPG'}`;
+    toast.classList.add('show');
+    setTimeout(()=>toast.classList.remove('show'), 1600);
+  }
+}
+function bindIpgUniversalTriggers(){
+  const openers = ['globalQuery','headerSearch'];
+  openers.forEach(id => {
+    const el = $('#'+id);
+    if(!el) return;
+    el.addEventListener('focus', () => openIpgSearchScreen(el.value || ''));
+    el.addEventListener('input', () => openIpgSearchScreen(el.value || ''));
+    el.addEventListener('keydown', event => {
+      if(event.key === 'Enter'){
+        event.preventDefault();
+        openIpgSearchScreen(el.value || '');
+      }
+      if(event.key === 'Escape') closeIpgSearchScreen();
+    });
+  });
+  ipgUniversalInput?.addEventListener('input', event => {
+    syncUniversalQueries(event.target.value);
+    renderIpgUniversalResults();
+  });
+  $('#ipgUniversalApply')?.addEventListener('click', () => {
+    syncUniversalQueries(ipgUniversalInput?.value || '');
+    renderIpgUniversalResults();
+  });
+  $('#ipgUniversalPricing')?.addEventListener('click', () => {
+    closeIpgSearchScreen();
+    document.getElementById('comparador')?.scrollIntoView({behavior:'smooth', block:'start'});
+    if (typeof showToast === 'function') showToast('Vista enviada a Smart Pricing / Comparador.');
+  });
+  $('#ipgSearchClose')?.addEventListener('click', closeIpgSearchScreen);
+  $('#ipgSearchBackdrop')?.addEventListener('click', closeIpgSearchScreen);
+  $('#ipgSearchReset')?.addEventListener('click', () => {
+    syncUniversalQueries('');
+    renderIpgUniversalResults();
+  });
+  document.addEventListener('keydown', event => {
+    if(event.key === 'Escape' && ipgSearchShell.classList.contains('open')) closeIpgSearchScreen();
+  });
+  $('#applyFilters')?.addEventListener('click', () => {
+    syncUniversalQueries($('#globalQuery')?.value || '');
+    if(ipgSearchShell.classList.contains('open') || ($('#globalQuery')?.value || '').trim()) openIpgSearchScreen($('#globalQuery')?.value || '');
+  });
+}
+bindIpgUniversalTriggers();
+
+const detailRows = (title) => [
+  ['Procedimiento', title.includes('Contrato') ? title.replace('Contrato ', '') : 'LA-012345-2026'],
+  ['Contrato', 'Contrato demo IPG-2026-001'],
+  ['Dependencia', $('#dependency')?.value || 'Secretaría de Salud'],
+  ['Unidad compradora', 'Dirección de Recursos Materiales'],
+  ['Producto o servicio', title || 'Servicio de limpieza integral'],
+  ['CUCOP', 'CUCOP / partida demo visible'],
+  ['Partida', 'Partida presupuestal normalizada'],
+  ['Empresa adjudicada', 'Servicios Integrales del Centro, S.A. de C.V.'],
+  ['RFC', 'SIC230101AB1'],
+  ['Fecha', '2026-04-20'],
+  ['Monto adjudicado', '$48.6 M MXN'],
+  ['Monto cobrado', '$31.2 M MXN · dato demo'],
+  ['Precio unitario', '$42.80 por unidad comparable'],
+  ['Cantidad', '1,134,000 unidades normalizadas'],
+  ['Procedimiento', $('#procedure')?.value || 'Licitación pública'],
+  ['Tipo de procedimiento', $('#procedureLevel')?.value || $('#compareProcedureLevel')?.value || 'Federal'],
+  ['Estado del contrato', 'Vigente'],
+  ['Fuente', 'CompraNet / portal público / contrato'],
+  ['Comparativo contra mercado', '7.3% menor que mercado estimado'],
+  ['Comparativo contra dependencia', 'Dentro de rango histórico de la dependencia'],
+  ['Rango IPG', '$38–$49 por unidad comparable'],
+  ['Señales', 'sin outlier crítico · CUCOP visible · dato disponible según fuente']
+];
+function openDrawer(title='Detalle del contrato / adjudicación'){
+  drawerTitle.textContent = title;
+  drawerBody.innerHTML = detailRows(title).map(([k,v]) => `<div class="drawer-row"><span>${k}</span><strong>${v}</strong></div>`).join('') +
+    `<div class="chart-actions"><button class="btn slim">Comparar</button><button class="btn slim">Agregar a análisis</button><button class="btn slim blue">Ver empresa</button><button class="btn slim blue">Ver dependencia</button><button class="btn slim accent">Generar reporte</button><button class="btn slim">Exportar</button></div>`;
+  overlay.classList.add('open'); drawer.classList.add('open');
+}
+function closeDrawer(){overlay.classList.remove('open');drawer.classList.remove('open')}
+$('#closeDrawer').addEventListener('click', closeDrawer); overlay.addEventListener('click', closeDrawer);
+function showToast(msg){toast.textContent=msg;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),1600)}
+$$('[data-open-detail]').forEach(el=>el.addEventListener('click', e=>{e.preventDefault(); e.stopPropagation(); openDrawer(el.dataset.openDetail)}));
+$$('[data-detail]').forEach(el=>el.addEventListener('dblclick', ()=>openDrawer(el.dataset.detail)));
+$$('[data-toast]').forEach(el=>el.addEventListener('click', e=>{e.preventDefault();showToast(el.dataset.toast)}));
+let savedViewCount = 0;
+$('#saveViewBtn')?.addEventListener('click', e=>{
+  e.preventDefault();
+  savedViewCount += 1;
+  const period=$('#period')?.value || '2020–2026';
+  const dep=$('#dependency')?.value || 'Todas';
+  const level=$('#procedureLevel')?.value || 'Todos';
+  const proc=$('#procedure')?.value || 'Todos';
+  const type=$('#purchaseType')?.value || 'Producto y servicio';
+  const query=$('#globalQuery')?.value?.trim();
+  const savedViews=$('#savedViews');
+  savedViews?.classList.add('active');
+  if(savedViews){
+    const chip=document.createElement('button');
+    chip.type='button';
+    chip.className='saved-view-chip';
+    chip.textContent=`Vista ${savedViewCount} · ${query ? query + ' · ' : ''}${dep} · ${level} · ${period}`;
+    chip.title=`Comparativo: ${type} · ${proc}`;
+    chip.addEventListener('click', ()=>openDrawer(`Vista comparable ${savedViewCount} · ${dep} · ${level} · ${period}`));
+    savedViews.appendChild(chip);
+  }
+  showToast('Vista guardada para comparación');
+});
+$('#applyFilters').addEventListener('click', ()=>{
+  const period=$('#period').value, dep=$('#dependency').value, proc=$('#procedure').value, type=$('#purchaseType').value, level=$('#procedureLevel')?.value || 'Todos';
+  $('#filterSummary').textContent = `${dep} · ${level} · ${period} · ${proc} · ${type}`;
+  showToast('Filtros aplicados a gráficos y tablas');
+});
+function updateSum(){let amount=0, paid=0; $$('#companyList input:checked').forEach(i=>{amount+=Number(i.dataset.amount||0); paid+=Number(i.dataset.paid||0)}); $('#amountSum').textContent = `$${amount.toLocaleString('es-MX')} M`; $('#paidSum').textContent = `Total cobrado estimado: $${paid.toLocaleString('es-MX')} M · Datos demo según contratos con dato de pago.`}
+$$('#companyList input').forEach(i=>i.addEventListener('change', updateSum)); $('#sumCompanies').addEventListener('click', ()=>{updateSum();showToast('Selección sumada')}); updateSum();
+const sections = ['overview','precios','servicios','productos','dependencias','empresas','contratos','comparador','cucop','mapa','historico','alertas'];
+const obs = new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){$$('.tab-link').forEach(a=>a.classList.toggle('active', a.getAttribute('href') === '#'+entry.target.id));}})},{rootMargin:'-35% 0px -55% 0px', threshold:.01});
+sections.forEach(id=>{const s=$('#'+id); if(s) obs.observe(s)});
+$$('.contract-row').forEach(r=>r.addEventListener('click', e=>{if(!e.target.closest('button')) openDrawer('Contrato '+(r.dataset.contract||'demo'))}));
+$('#headerSearch')?.addEventListener('keydown', e=>{ if(e.key==='Enter'){ $('#globalQuery').value=e.target.value; $('#applyFilters').click(); document.getElementById('filtros').scrollIntoView({behavior:'smooth'});} });
+</script>
+
+<footer class="slx-global-footer" aria-label="Footer SmartLicit">
+  <div class="slx-footer-container">
+    <div class="slx-footer-grid">
+      <div>
+        <div class="slx-footer-brand"><span class="slx-footer-mark" aria-hidden="true"><span>⚡</span></span><span>SmartLicit</span></div>
+        <p style="margin-top:14px;max-width:320px">Una sola inteligencia, múltiples soluciones para resolver trabajo profesional complejo.</p>
+      </div>
+      <div><h4>Soluciones</h4><a class="slx-footer-product" href="../tender.html" target="_top"><span>⚡</span> Tender</a><a class="slx-footer-product" href="../pricing.html" target="_top"><span>⚡</span> Pricing</a><a class="slx-footer-product" href="../file.html" target="_top"><span>⚡</span> File</a><a class="slx-footer-product" href="../lex.html" target="_top"><span>⚡</span> Lex</a></div>
+      <div><h4>Gobierno</h4><a class="slx-footer-gov" href="../tender-gov.html" target="_top"><span>⚡</span> Tender Gov</a><a class="slx-footer-gov" href="../pricing-gov.html" target="_top"><span>⚡</span> Pricing Gov</a><a href="../ipg.html" target="_top">IPG</a></div>
+      <div><h4>Plataforma</h4><a class="slx-footer-efile" href="../efile.html" target="_top"><span>⚡</span> eFile</a><a href="../planes.html" target="_top">Planes</a><a href="../blog.html" target="_top">Blog</a><a href="../mi-cuenta.html" target="_top">Mi Cuenta</a></div>
+      <div><h4>Workspace</h4><a class="slx-footer-drive" href="../gDrive.html" target="_top"><span>▰</span> Google Drive Workspace</a><a href="../mi-cuenta.html#facturacion" target="_top">Facturación</a><a href="../planes.html#tokens" target="_top">Tokens</a><a href="../mi-cuenta.html#integraciones" target="_top">Integraciones</a></div>
+    </div>
+    <div class="slx-footer-bottom"><span>© SmartLicit</span><span>Minimal premium · trazable · accionable.</span></div>
+  </div>
+</footer>
+
+</body>
+</html>

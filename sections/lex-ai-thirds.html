@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Smart Lex · Asistente · Tercios</title>
+  <meta name="description" content="Interfaz en tercios de Smart Lex para trabajo legal asistido con entregables, documento vivo y asistente contextual." />
+  <style>
+:root{
+  --lime:#B5F857;
+  --ink:#041912;
+  --green:#04560C;
+  --action:#1A990F;
+  --bg:#F9F8F3;
+  --surface:#FFFFFF;
+  --warm:#EBEAE5;
+  --warm2:#CDCABF;
+  --muted:#66736D;
+  --muted2:#8A948F;
+  --line:rgba(4,25,18,.10);
+  --line2:rgba(4,25,18,.16);
+  --efile:#5462E2;
+  --efile-soft:#BBC0F3;
+  --efile-bright:#8B9BF7;
+  --efile-night:#060517;
+  --efile-deep:#080353;
+  --gov-red:#F7645C;
+  --gov-coral:#F7645C;
+  --gov-soft:#FFB4B0;
+  --yellow:#F7BA14;
+  --orange:#F77214;
+  --lex:#F8596D;
+  --lex-deep:#550415;
+  --shadow:0 20px 60px rgba(4,25,18,.07);
+  --shadow-soft:0 8px 24px rgba(4,25,18,.045);
+  --radius-xl:34px;
+  --radius-lg:24px;
+  --radius-md:18px;
+  --radius-sm:14px;
+  --font:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  color:var(--ink);
+  font-family:var(--font);
+  background:
+    radial-gradient(circle at 86% 4%, rgba(181,248,87,.20), transparent 28rem),
+    radial-gradient(circle at 12% 86%, rgba(84,98,226,.12), transparent 30rem),
+    linear-gradient(180deg,#FFFFFF 0%, var(--bg) 68%, #FFFFFF 100%);
+  -webkit-font-smoothing:antialiased;
+  text-rendering:geometricPrecision;
+  letter-spacing:-.014em;
+}
+a{color:inherit;text-decoration:none}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.frame-offset{height:74px}
+.wrap{width:min(1220px,calc(100% - 40px));margin-inline:auto}
+.wide-wrap{width:min(1540px,calc(100% - 34px));margin-inline:auto}
+.section{padding:36px 0 74px}
+.hero{padding:48px 0 24px}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.02fr) minmax(360px,.98fr);gap:28px;align-items:stretch}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;width:max-content;border:1px solid var(--line);background:rgba(255,255,255,.74);border-radius:999px;padding:8px 12px;color:var(--muted);font-size:13px;font-weight:760;box-shadow:0 1px 0 rgba(4,25,18,.03)}
+.eyebrow .spark{width:8px;height:8px;border-radius:99px;background:var(--lime);box-shadow:0 0 0 4px rgba(181,248,87,.22)}
+.eyebrow.gov .spark{background:var(--gov-soft);box-shadow:0 0 0 4px rgba(247,100,92,.18)}
+.eyebrow.lex .spark{background:var(--lex);box-shadow:0 0 0 4px rgba(248,89,109,.14)}
+h1,h2,h3,p{margin:0}
+h1{margin-top:22px;font-size:clamp(42px,5.8vw,76px);line-height:.94;letter-spacing:-.075em;font-weight:860;max-width:820px}
+.lead{margin-top:22px;color:rgba(4,25,18,.68);font-size:clamp(17px,1.85vw,21px);line-height:1.43;max-width:760px}
+.hero-actions,.actions{display:flex;gap:11px;flex-wrap:wrap;margin-top:28px}
+.btn{min-height:44px;border:1px solid var(--line2);border-radius:999px;background:#fff;color:var(--ink);display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:0 16px;font-size:14px;font-weight:820;transition:.18s ease;white-space:nowrap}
+.btn:hover{transform:translateY(-1px);box-shadow:var(--shadow-soft);border-color:rgba(4,25,18,.26)}
+.btn.primary{background:var(--ink);color:#fff;border-color:var(--ink)}
+.btn.accent{background:var(--lime);border-color:var(--lime);color:var(--ink)}
+.btn.efile{background:rgba(84,98,226,.09);border-color:rgba(84,98,226,.22);color:var(--efile-deep)}
+.btn.gov{background:rgba(247,100,92,.10);border-color:rgba(247,100,92,.20);color:#550415}
+.btn.lex{background:rgba(248,89,109,.10);border-color:rgba(248,89,109,.22);color:var(--lex-deep)}
+.btn.slim{min-height:34px;font-size:12px;padding:0 11px}
+.btn[disabled],.btn.disabled{opacity:.56;cursor:not-allowed;transform:none;box-shadow:none}
+.card{background:rgba(255,255,255,.86);border:1px solid var(--line);border-radius:var(--radius-lg);box-shadow:var(--shadow-soft);padding:18px}
+.card.dark{background:var(--ink);color:#fff;border-color:rgba(255,255,255,.12);box-shadow:var(--shadow)}
+.card.dark p,.card.dark .muted{color:rgba(255,255,255,.70)}
+.card h2{font-size:28px;line-height:1.04;letter-spacing:-.055em}
+.card h3{font-size:18px;line-height:1.1;letter-spacing:-.04em}
+.card p{margin-top:8px;color:var(--muted);line-height:1.48;font-size:14px}
+.badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
+.badge{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 10px;color:var(--muted);font-size:12px;font-weight:860;white-space:nowrap}
+.badge:before{content:"";width:7px;height:7px;border-radius:99px;background:var(--warm2)}
+.badge.green{color:var(--green);border-color:rgba(4,86,12,.16);background:rgba(181,248,87,.18)}.badge.green:before{background:var(--action)}
+.badge.efile{color:var(--efile-deep);border-color:rgba(84,98,226,.18);background:rgba(84,98,226,.08)}.badge.efile:before{background:var(--efile)}
+.badge.gov{color:#550415;border-color:rgba(247,100,92,.20);background:rgba(247,100,92,.08)}.badge.gov:before{background:var(--gov-coral)}
+.badge.warn{color:#745000;border-color:rgba(247,186,20,.28);background:rgba(247,186,20,.12)}.badge.warn:before{background:var(--yellow)}
+.badge.lex{color:var(--lex-deep);border-color:rgba(248,89,109,.24);background:rgba(248,89,109,.10)}.badge.lex:before{background:var(--lex)}
+.micro{font-size:12.5px;color:var(--muted);line-height:1.45}
+.divider{height:1px;background:var(--line);margin:16px 0}
+.hero-panel{position:relative;overflow:hidden;border:1px solid var(--line);border-radius:var(--radius-xl);background:rgba(255,255,255,.84);box-shadow:var(--shadow);padding:18px;min-height:100%}
+.hero-panel:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 8% 4%, rgba(181,248,87,.25), transparent 13rem),radial-gradient(circle at 100% 100%, rgba(187,192,243,.36), transparent 16rem);pointer-events:none}
+.hero-panel.gov:before{background:radial-gradient(circle at 8% 4%, rgba(247,100,92,.18), transparent 13rem),radial-gradient(circle at 100% 100%, rgba(255,180,176,.28), transparent 16rem)}
+.hero-panel.lex:before{background:radial-gradient(circle at 8% 4%, rgba(248,89,109,.20), transparent 13rem),radial-gradient(circle at 100% 100%, rgba(187,192,243,.34), transparent 16rem)}
+.panel-content{position:relative;z-index:1;display:grid;gap:12px}
+.status-board{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.status-tile{border:1px solid var(--line);border-radius:18px;background:#fff;padding:14px}
+.status-tile span{display:block;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-weight:900}.status-tile strong{display:block;margin-top:7px;font-size:24px;letter-spacing:-.045em}.status-tile small{display:block;margin-top:5px;color:var(--muted);line-height:1.35;font-size:12px}
+.flow-row{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center;margin-top:12px}.flow-node{border:1px solid var(--line);background:#fff;border-radius:18px;padding:13px}.flow-node strong{display:block;font-size:14px}.flow-node span{display:block;margin-top:4px;font-size:12px;color:var(--muted);line-height:1.36}.flow-arrow{color:var(--green);font-weight:950}
+.section-title{display:flex;justify-content:space-between;gap:18px;align-items:end;margin:28px 0 14px}.section-title h2{font-size:clamp(30px,3.4vw,44px);line-height:1;letter-spacing:-.065em}.section-title p{margin-top:8px;color:var(--muted);font-size:15px;line-height:1.45;max-width:800px}
+.plan-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.plan{position:relative;overflow:hidden;background:#fff;border:1px solid var(--line);border-radius:24px;padding:18px;display:flex;flex-direction:column;min-height:500px;box-shadow:var(--shadow-soft)}.plan.featured{border-color:rgba(4,86,12,.25);box-shadow:0 16px 42px rgba(4,86,12,.08)}.plan.gov-plan.featured{border-color:rgba(247,100,92,.28);box-shadow:0 16px 42px rgba(247,100,92,.08)}.plan h3{font-size:22px;letter-spacing:-.05em}.unit{margin-top:7px;color:var(--muted);font-size:13px;font-weight:760;line-height:1.35}.ribbon{position:absolute;right:14px;top:14px}.pricebox{margin-top:16px;border:1px solid var(--line);border-radius:18px;background:#FBFAF6;padding:14px}.price-label{font-size:11px;color:var(--muted);font-weight:900;text-transform:uppercase;letter-spacing:.07em}.price{margin-top:8px;font-size:30px;font-weight:950;letter-spacing:-.06em}.price small{font-size:12px;color:var(--muted);font-weight:800;letter-spacing:0}.normal{margin-top:6px;color:var(--muted);font-size:12px;line-height:1.35}.saving{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.saving div{border:1px solid var(--line);border-radius:14px;padding:10px;background:#fff}.saving span{display:block;color:var(--muted);font-size:10.5px;font-weight:900;text-transform:uppercase;letter-spacing:.06em}.saving strong{display:block;margin-top:5px;font-size:14px}.features{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:8px}.features li{font-size:13px;line-height:1.38;color:rgba(4,25,18,.78);display:flex;gap:8px}.features li:before{content:"";width:7px;height:7px;border-radius:99px;background:var(--lime);margin-top:6px;flex:none}.wa-box{margin-top:12px;border:1px solid rgba(4,86,12,.16);border-radius:16px;padding:12px;background:rgba(181,248,87,.12)}.wa-box label{display:block;font-size:11px;color:var(--green);font-weight:920;text-transform:uppercase;letter-spacing:.06em;margin-bottom:7px}.wa-box select{width:100%;height:38px;border:1px solid rgba(4,86,12,.18);border-radius:12px;background:#fff;color:var(--ink);padding:0 10px;outline:none;font-size:12.5px;font-weight:780}.wa-box.disabled{background:#FBFAF6;border-color:var(--line)}.wa-box.disabled label{color:var(--muted)}.efile-box{margin-top:auto;border:1px solid rgba(84,98,226,.16);background:rgba(84,98,226,.07);border-radius:16px;padding:12px}.efile-box strong{display:block;color:var(--efile-deep);font-size:13px}.efile-box p{margin-top:5px;font-size:12px;color:var(--muted);line-height:1.4}.card-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}
+.info-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.info-card{background:#fff;border:1px solid var(--line);border-radius:22px;padding:18px;box-shadow:var(--shadow-soft)}.info-card h3{font-size:17px}.info-card p{font-size:13.5px;color:var(--muted);line-height:1.45;margin-top:8px}
+.gate-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:16px;align-items:stretch}.filter-mock{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.field label{display:block;font-size:11px;color:var(--muted);font-weight:900;text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px}.control{width:100%;height:42px;border:1px solid var(--line);border-radius:13px;background:#FBFAF6;color:var(--muted);padding:0 10px;outline:none}.control[disabled]{opacity:.72}.lock-card{border:1px solid rgba(4,86,12,.18);background:linear-gradient(180deg,rgba(181,248,87,.20),rgba(255,255,255,.86));border-radius:24px;padding:20px;box-shadow:var(--shadow-soft)}.lock-icon{width:44px;height:44px;border-radius:16px;background:var(--ink);color:#fff;display:grid;place-items:center;font-weight:950}.chart-mock{height:270px;border:1px solid var(--line);border-radius:22px;background:#fff;position:relative;overflow:hidden}.chart-mock svg{position:absolute;inset:0;width:100%;height:100%}.chart-label{position:absolute;left:16px;top:14px;display:grid;gap:2px}.chart-label strong{font-size:14px}.chart-label span{font-size:12px;color:var(--muted)}
+.workspace-body{background:#F6F6F1}.workspace{padding:20px 0 38px}.workspace-top{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;margin-bottom:14px}.workspace-title h1{font-size:clamp(28px,3.6vw,48px);line-height:.98;letter-spacing:-.065em;margin-top:8px}.workspace-title p{margin-top:8px;color:var(--muted);font-size:14px;line-height:1.45;max-width:720px}.workspace-shell{display:grid;grid-template-columns:300px minmax(0,1fr) 360px;gap:14px;align-items:stretch;min-height:calc(100vh - 170px)}.rail,.editor,.assistant{background:#fff;border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow-soft);overflow:hidden;min-height:100%}.rail-head,.assistant-head,.editor-head{padding:16px;border-bottom:1px solid var(--line);display:flex;align-items:flex-start;justify-content:space-between;gap:12px}.rail-head strong,.assistant-head strong,.editor-head strong{display:block;font-size:15px}.rail-head span,.assistant-head span,.editor-head span{display:block;margin-top:4px;color:var(--muted);font-size:12px}.progress{height:8px;background:#F0EFEA;border-radius:999px;overflow:hidden;margin:14px 16px}.progress span{display:block;height:100%;width:68%;background:var(--lime);border-radius:inherit}.deliverables{display:grid;gap:7px;padding:0 12px 16px}.deliverable{border:1px solid var(--line);border-radius:15px;background:#FBFAF6;padding:12px;display:grid;grid-template-columns:1fr auto;gap:8px;align-items:start}.deliverable.active{background:rgba(181,248,87,.17);border-color:rgba(4,86,12,.20)}.deliverable.file{background:rgba(84,98,226,.07);border-color:rgba(84,98,226,.16)}.deliverable.lex{background:rgba(248,89,109,.08);border-color:rgba(248,89,109,.18)}.deliverable strong{font-size:13px;line-height:1.25}.deliverable small{display:block;margin-top:4px;color:var(--muted);font-size:11.5px;line-height:1.32}.state{border:1px solid var(--line);border-radius:999px;padding:5px 7px;background:#fff;color:var(--muted);font-size:10px;font-weight:900;white-space:nowrap}.state.ok{color:var(--green);background:rgba(181,248,87,.18);border-color:rgba(4,86,12,.16)}.state.warn{color:#745000;background:rgba(247,186,20,.12);border-color:rgba(247,186,20,.24)}.state.bad{color:#8A130C;background:rgba(247,100,92,.08);border-color:rgba(247,100,92,.20)}.state.lex{color:var(--lex-deep);background:rgba(248,89,109,.10);border-color:rgba(248,89,109,.20)}.drive-card{margin:0 12px 14px;border:1px solid rgba(84,98,226,.16);background:rgba(84,98,226,.07);border-radius:18px;padding:13px}.drive-card strong{display:block;color:var(--efile-deep);font-size:13px}.drive-card span{display:block;margin-top:5px;color:var(--muted);font-size:12px;line-height:1.35}.gbar{height:48px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:10px;padding:0 16px;background:#FBFAF6}.gbar-left{display:flex;align-items:center;gap:9px}.gdoc-icon,.gsheet-icon{width:29px;height:29px;border-radius:10px;display:grid;place-items:center;color:#fff;font-size:11px;font-weight:950}.gdoc-icon{background:#4285F4}.gsheet-icon{background:#0F9D58}.doc-content{padding:24px;background:#fff;min-height:calc(100vh - 254px)}.doc-page{max-width:840px;margin-inline:auto;border:1px solid var(--line);border-radius:18px;background:#fff;box-shadow:0 14px 38px rgba(4,25,18,.06);padding:38px 44px;min-height:640px}.doc-page h2{font-size:25px;letter-spacing:-.045em}.doc-page p{margin-top:10px;color:var(--ink);font-size:14px;line-height:1.6}.doc-section-title{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:950;margin:24px 0 10px}.line{height:11px;background:#F1F0EA;border-radius:999px;margin:9px 0}.line.w92{width:92%}.line.w78{width:78%}.line.w64{width:64%}.line.w44{width:44%}.sheet-table{border:1px solid var(--line);border-radius:16px;overflow:hidden;margin-top:16px}.sheet-row{display:grid;grid-template-columns:1.3fr .7fr .7fr .7fr;min-height:38px}.sheet-row>div{border-right:1px solid var(--line);border-bottom:1px solid var(--line);padding:9px 10px;font-size:12px}.sheet-row.head>div{font-weight:900;background:#FBFAF6;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}.sheet-row>div:last-child{border-right:0}.assistant-body{padding:14px;display:grid;gap:12px}.ai-card{border:1px solid var(--line);border-radius:18px;background:#FBFAF6;padding:14px}.ai-card h3{font-size:15px}.ai-card p,.ai-card li{font-size:12.5px;color:var(--muted);line-height:1.45}.ai-card ul{margin:10px 0 0;padding-left:18px}.chat{display:grid;gap:8px}.msg{padding:11px 12px;border-radius:16px;font-size:12.5px;line-height:1.45}.msg.ai{background:rgba(181,248,87,.18);border:1px solid rgba(4,86,12,.14)}.msg.user{background:#fff;border:1px solid var(--line);justify-self:end;max-width:86%}.assistant-input{display:flex;gap:8px}.assistant-input input{flex:1;height:40px;border:1px solid var(--line);border-radius:13px;background:#fff;padding:0 11px;outline:none;font-size:12.5px}.assistant-input button{height:40px;border:0;border-radius:13px;background:var(--ink);color:#fff;font-weight:900;padding:0 12px}.mobile-note{display:none}
+@media (max-width:1180px){
+  .hero-grid,.gate-grid{grid-template-columns:1fr}.plan-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.workspace-shell{grid-template-columns:1fr}.rail,.assistant{min-height:auto}.mobile-note{display:block}.doc-content{min-height:auto}.doc-page{min-height:520px}.info-grid{grid-template-columns:1fr}
+}
+@media (max-width:760px){
+  .wrap,.wide-wrap{width:min(100% - 24px,1540px)}.hero{padding-top:34px}h1{font-size:42px}.plan-grid,.status-board,.filter-mock{grid-template-columns:1fr}.section-title{display:block}.saving{grid-template-columns:1fr}.workspace-top{display:block}.workspace-actions{margin-top:12px}.doc-page{padding:24px 20px}.flow-row{grid-template-columns:1fr}.flow-arrow{display:none}
+}
+
+/* Ajustes puntuales Beta 1.1: planes, WhatsApp minimal y footer global */
+.capacity{margin-top:8px;color:#F7645C;font-size:13px;font-weight:950;letter-spacing:-.01em;display:inline-flex;align-items:center;gap:6px}
+.capacity .capacity-bolt{color:#041912;font-weight:950}
+.price-label{color:#62CD4D!important}
+.price{color:#62CD4D!important}
+.features li{font-weight:800;color:rgba(4,25,18,.86)!important}
+.wa-card{margin-top:12px;border:1px solid rgba(37,211,102,.22);background:linear-gradient(180deg,rgba(37,211,102,.08),rgba(255,255,255,.92));border-radius:16px;padding:12px;display:grid;gap:10px}
+.wa-card.disabled{opacity:.56;filter:grayscale(.2);background:#FBFAF6;border-color:var(--line)}
+.wa-card-top{display:flex;align-items:center;justify-content:space-between;gap:10px}.wa-card-logo{display:flex;align-items:center;gap:9px;font-size:12.5px;font-weight:900;color:var(--ink);line-height:1.25}.wa-card-logo img{width:24px;height:24px;flex:none}.wa-check{width:20px;height:20px;display:grid;place-items:center;border-radius:999px;background:rgba(29,78,216,.10);color:#1D4ED8;font-weight:950}.wa-benefit{font-size:12.5px;color:var(--muted);line-height:1.42;margin:0}.wa-checkbox{display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:850;color:var(--ink)}.wa-checkbox input{width:16px;height:16px;accent-color:#25D366}
+.slx-global-footer{margin-top:42px;padding:44px 0 32px;border-top:1px solid var(--line,rgba(4,25,18,.10));background:#fff}.slx-global-footer .slx-footer-container{width:min(1180px,calc(100% - 48px));margin-inline:auto}.slx-footer-grid{display:grid;grid-template-columns:1.25fr repeat(4,1fr);gap:24px}.slx-footer-brand{display:inline-flex;align-items:center;gap:10px;font-weight:850;letter-spacing:-.035em;font-size:20px;white-space:nowrap}.slx-footer-mark{--symbol-bg:#04560C;--symbol-bolt:#B5F857;width:34px;height:34px;position:relative;display:inline-grid;place-items:center;flex:none}.slx-footer-mark:before{content:"";position:absolute;inset:0;background:var(--symbol-bg);clip-path:polygon(50% 0%,61% 32%,100% 50%,61% 68%,50% 100%,39% 68%,0% 50%,39% 32%)}.slx-footer-mark span{position:relative;z-index:1;color:var(--symbol-bolt);font-weight:950;font-size:17px}.slx-global-footer h4{margin:0 0 12px;font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted2,#8A948F)}.slx-global-footer a,.slx-global-footer p{display:block;margin:0 0 9px;color:var(--muted,#66736D);font-size:14px;line-height:1.45}.slx-global-footer a:hover{color:var(--ink,#041912)}.slx-footer-bottom{margin-top:34px;display:flex;justify-content:space-between;gap:16px;color:var(--muted2,#8A948F);font-size:13px}.slx-footer-efile,.slx-footer-efile span{color:#063C83!important;font-weight:850}.slx-footer-gov span{color:#F7645C}.slx-footer-product span{color:#B5F857}
+@media (max-width:1080px){.slx-footer-grid{grid-template-columns:repeat(2,1fr)}}@media (max-width:700px){.slx-global-footer .slx-footer-container{width:min(100% - 24px,1180px)}.slx-footer-grid{grid-template-columns:1fr}.slx-footer-bottom{flex-direction:column}}
+
+</style>
+
+<style id="slx-global-footer-style">
+.slx-global-footer{margin-top:42px;padding:44px 0 32px;border-top:1px solid var(--line,rgba(4,25,18,.10));background:#fff;color:var(--ink,#041912);clear:both}.slx-global-footer .slx-footer-container{width:min(1180px,calc(100% - 48px));margin-inline:auto}.slx-footer-grid{display:grid;grid-template-columns:1.25fr repeat(4,1fr);gap:24px}.slx-footer-brand{display:inline-flex;align-items:center;gap:10px;font-weight:850;letter-spacing:-.035em;font-size:20px;white-space:nowrap}.slx-footer-mark{--symbol-bg:#04560C;--symbol-bolt:#B5F857;width:34px;height:34px;position:relative;display:inline-grid;place-items:center;flex:none}.slx-footer-mark:before{content:"";position:absolute;inset:0;background:var(--symbol-bg);clip-path:polygon(50% 0%,61% 32%,100% 50%,61% 68%,50% 100%,39% 68%,0% 50%,39% 32%)}.slx-footer-mark span{position:relative;z-index:1;color:var(--symbol-bolt);font-weight:950;font-size:17px}.slx-global-footer h4{margin:0 0 12px;font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted2,var(--muted-2,#8A948F))}.slx-global-footer a,.slx-global-footer p{display:block;margin:0 0 9px;color:var(--muted,#66736D);font-size:14px;line-height:1.45;text-decoration:none}.slx-global-footer a:hover{color:var(--ink,#041912)}.slx-footer-bottom{margin-top:34px;display:flex;justify-content:space-between;gap:16px;color:var(--muted2,var(--muted-2,#8A948F));font-size:13px}.slx-footer-efile,.slx-footer-efile span{color:#063C83!important;font-weight:850}.slx-footer-gov span{color:#C62118}.slx-footer-product span{color:#81C91C}.slx-footer-drive span{color:#063C83;font-weight:900}@media (max-width:1080px){.slx-footer-grid{grid-template-columns:repeat(2,1fr)}}@media (max-width:700px){.slx-global-footer .slx-footer-container{width:min(100% - 24px,1180px)}.slx-footer-grid{grid-template-columns:1fr}.slx-footer-bottom{flex-direction:column}}
+.site-nav .nav-bolt,.topnav .nav-bolt.b2b{color:#81C91C!important}.site-nav .gov-tender .nav-bolt,.site-nav .gov-pricing .nav-bolt,.topnav .nav-bolt.gov{color:#C62118!important}</style>
+</head>
+<body class="workspace-body">
+  <div class="frame-offset" aria-hidden="true"></div>
+  <main class="workspace">
+    <div class="wide-wrap">
+      <div class="workspace-top">
+        <div class="workspace-title">
+          <div class="eyebrow lex"><span class="spark"></span>Smart Lex · Asistente legal</div>
+          <h1>Interfaz de tercios para trabajo jurídico asistido.</h1>
+          <p>Documentos, checklist, entregables y trazabilidad a la izquierda; documento vivo al centro; asistente SmartLicit IA a la derecha.</p>
+        </div>
+        <div class="workspace-actions actions" style="margin-top:0">
+          <a class="btn" href="../lex.html" target="_top">Volver al dashboard</a>
+          <a class="btn efile" href="../gDrive.html" target="_top">Abrir en Drive</a>
+          <button class="btn lex">Guardar borrador</button>
+          <button class="btn accent" title="Disponible con WhatsApp Add-On activo">Enviar por WhatsApp</button>
+        </div>
+      </div>
+      <div class="drive-card" style="margin-bottom:12px"><strong>Drive activo · rockyratapiedra@gmail.com</strong><span>/SmartLicit/Lex/Amparo fiscal Grupo Atlas/Escritos<br>Sincronizado · Última sincronización: hace 34s</span></div>
+      <div class="mobile-note badge warn" style="margin-bottom:12px">En móvil, entregables y asistente se colapsan como drawers; no desaparecen.</div>
+      <section class="workspace-shell" aria-label="Cabina de Smart Lex en tercios">
+        <aside class="rail" aria-label="Entregables, estados y trazabilidad legal">
+          <div class="rail-head"><div><strong>Documentos y entregables</strong><span>Amparo fiscal / Grupo Atlas</span></div><span class="state lex">72%</span></div>
+          <div class="progress"><span style="background:var(--lex);width:72%"></span></div>
+          <div class="deliverables">
+            <div class="deliverable active lex"><div><strong>Escrito de subsanación</strong><small>Google Doc · documento activo</small></div><span class="state lex">Encendido</span></div>
+            <div class="deliverable"><div><strong>Resumen ejecutivo</strong><small>Hechos, autoridad y materia</small></div><span class="state ok">Listo</span></div>
+            <div class="deliverable"><div><strong>Matriz de riesgo</strong><small>Riesgos procesales y estrategia</small></div><span class="state warn">Revisar</span></div>
+            <div class="deliverable file"><div><strong>Checklist eFile</strong><small>Personería, anexos, identificación</small></div><span class="state bad">Faltante</span></div>
+            <div class="deliverable"><div><strong>Estrategia procesal</strong><small>Argumentos y próximos pasos</small></div><span class="state">Borrador</span></div>
+            <div class="deliverable"><div><strong>Timeline de plazos</strong><small>Fechas críticas y responsables</small></div><span class="state ok">Activo</span></div>
+            <div class="deliverable"><div><strong>Documento final</strong><small>Versión para revisión o autorización</small></div><span class="state">Pendiente</span></div>
+          </div>
+          <div class="drive-card"><strong>Drive activo · rockyratapiedra@gmail.com</strong><span>/SmartLicit/Lex/Amparo fiscal Grupo Atlas/Escritos<br>Sincronizado</span></div>
+        </aside>
+        <section class="editor" aria-label="Documento vivo Smart Lex tipo Google Docs">
+          <div class="editor-head"><div><strong>Documento vivo</strong><span>Google Docs / Sheets / Presentations según entregable</span></div><span class="badge lex">Borrador jurídico</span></div>
+          <div class="gbar"><div class="gbar-left"><span class="gdoc-icon">Doc</span><strong>Escrito de subsanación</strong></div><span class="state ok">Guardado en Drive</span></div>
+          <div class="doc-content">
+            <article class="doc-page">
+              <h2>Escrito de subsanación</h2>
+              <p>Asunto: Amparo fiscal / Grupo Atlas. Documento vivo generado a partir de la demanda, prevención, anexos y estrategia sugerida por Smart Lex.</p>
+              <div class="doc-section-title">HECHOS</div>
+              <p>Con fecha 12 de abril se notificó prevención a la parte actora respecto de anexos y personería.</p>
+              <div class="line w92"></div><div class="line w64"></div>
+              <div class="doc-section-title">FUNDAMENTO</div>
+              <p>Se cita la norma aplicable y se identifican por separado los documentos del expediente del usuario y el corpus jurídico.</p>
+              <div class="line w92"></div><div class="line w78"></div><div class="line w44"></div>
+              <div class="doc-section-title">Checklist documental</div>
+              <div class="sheet-table">
+                <div class="sheet-row head"><div>Documento</div><div>Fuente</div><div>Status</div><div>Acción</div></div>
+                <div class="sheet-row"><div>Personería</div><div>eFile</div><div>Faltante</div><div>Solicitar</div></div>
+                <div class="sheet-row"><div>Identificación representante</div><div>eFile</div><div>Vencida</div><div>Actualizar</div></div>
+                <div class="sheet-row"><div>Prevención</div><div>Drive</div><div>Indexada</div><div>Usar</div></div>
+              </div>
+            </article>
+          </div>
+        </section>
+        <aside class="assistant" aria-label="Asistente contextual Smart Lex">
+          <div class="assistant-head"><div><strong>Asistente SmartLicit IA</strong><span>Observaciones, sugerencias, riesgos, estrategia y próximos pasos</span></div><span class="state lex">Activo</span></div>
+          <div class="assistant-body">
+            <article class="ai-card"><h3>Observación</h3><p>Conviene subsanar personería y anexos antes de ampliar argumentos. La prioridad es evitar desechamiento parcial.</p></article>
+            <article class="ai-card"><h3>Riesgos y estrategia</h3><ul><li>Identificación del representante vencida.</li><li>Personería pendiente de validación.</li><li>Riesgo medio-alto si no se atiende prevención.</li></ul></article>
+            <article class="ai-card"><h3>Acciones sugeridas</h3><div class="actions" style="margin-top:10px"><button class="btn slim lex">Sugerir redacción</button><button class="btn slim">Detectar riesgos</button><button class="btn slim efile">Validar eFile</button><button class="btn slim efile">Guardar en Drive</button><button class="btn slim accent">Marcar como final</button><button class="btn slim accent" title="Disponible con WhatsApp Add-On activo">Enviar por WhatsApp</button></div></article>
+            <div class="chat"><div class="msg ai">El escrito puede reforzar personería y solicitar tener por cumplida la prevención.</div><div class="msg user">Hazlo conservador y marca faltantes.</div><div class="msg ai">Listo. Mantengo tono procesal sobrio y agrego checklist de anexos.</div></div>
+            <div class="assistant-input"><input placeholder="Pregunta o instrucción para Smart Lex…" aria-label="Mensaje al asistente"><button>Enviar</button></div>
+          </div>
+        </aside>
+      </section>
+    </div>
+  </main>
+
+<footer class="slx-global-footer" aria-label="Footer SmartLicit">
+  <div class="slx-footer-container">
+    <div class="slx-footer-grid">
+      <div>
+        <div class="slx-footer-brand"><span class="slx-footer-mark" aria-hidden="true"><span>⚡</span></span><span>SmartLicit</span></div>
+        <p style="margin-top:14px;max-width:320px">Una sola inteligencia, múltiples soluciones para resolver trabajo profesional complejo.</p>
+      </div>
+      <div><h4>Soluciones</h4><a class="slx-footer-product" href="../tender.html" target="_top"><span>⚡</span> Tender</a><a class="slx-footer-product" href="../pricing.html" target="_top"><span>⚡</span> Pricing</a><a class="slx-footer-product" href="../file.html" target="_top"><span>⚡</span> File</a><a class="slx-footer-product" href="../lex.html" target="_top"><span>⚡</span> Lex</a></div>
+      <div><h4>Gobierno</h4><a class="slx-footer-gov" href="../tender-gov.html" target="_top"><span>⚡</span> Tender Gov</a><a class="slx-footer-gov" href="../pricing-gov.html" target="_top"><span>⚡</span> Pricing Gov</a><a href="../ipg.html" target="_top">IPG</a></div>
+      <div><h4>Plataforma</h4><a class="slx-footer-efile" href="../efile.html" target="_top"><span>⚡</span> eFile</a><a href="../planes.html" target="_top">Planes</a><a href="../blog.html" target="_top">Blog</a><a href="../mi-cuenta.html" target="_top">Mi Cuenta</a></div>
+      <div><h4>Workspace</h4><a class="slx-footer-drive" href="../gDrive.html" target="_top"><span>▰</span> Google Drive Workspace</a><a href="../mi-cuenta.html#facturacion" target="_top">Facturación</a><a href="../planes.html#tokens" target="_top">Tokens</a><a href="../mi-cuenta.html#integraciones" target="_top">Integraciones</a></div>
+    </div>
+    <div class="slx-footer-bottom"><span>© SmartLicit</span><span>Minimal premium · trazable · accionable.</span></div>
+  </div>
+</footer>
+
+</body>
+</html>

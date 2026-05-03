@@ -1,0 +1,1061 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SmartLicit.com — Home minimal institucional</title>
+  <meta name="description" content="Home minimalista, premium y ultra funcional para SmartLicit.com" />
+  <style>
+    :root {
+      --brand-lime: #B5F857;
+      --brand-dark: #041912;
+      --b2b-green: #04560C;
+      --tender-gov: #C62118;
+      --pricing-gov: #F7645C;
+      --efile-1: #BBC0F3;
+      --efile-2: #8189DD;
+      --efile-3: #8B9BF7;
+      --ipg-green: #B5F857;
+      --ipg-deep: #04560C;
+      --ipg-yellow: #F7BA14;
+      --alert: #F77214;
+      --warm: #F9F8F3;
+      --muted-warm: #EBEAE5;
+      --border: rgba(205, 202, 191, .62);
+      --border-strong: rgba(205, 202, 191, .9);
+      --surface: #FFFFFF;
+      --text: #041912;
+      --text-soft: rgba(4, 25, 18, .68);
+      --text-muted: rgba(4, 25, 18, .46);
+      --shadow-xs: 0 1px 0 rgba(4,25,18,.04);
+      --shadow-soft: 0 18px 50px rgba(4,25,18,.055);
+      --radius-xl: 30px;
+      --radius-lg: 22px;
+      --radius-md: 16px;
+      --radius-sm: 12px;
+      --container: 1180px;
+      --header-h: 76px;
+      --font: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: var(--font);
+      color: var(--text);
+      background:
+        radial-gradient(circle at 82% 14%, rgba(181, 248, 87, .13), transparent 28rem),
+        linear-gradient(180deg, #FFFFFF 0%, #FFFFFF 36%, var(--warm) 100%);
+      line-height: 1.45;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: geometricPrecision;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    button, input, select { font: inherit; }
+
+    .container { width: min(var(--container), calc(100% - 48px)); margin-inline: auto; }
+    .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      height: var(--header-h);
+      display: flex;
+      align-items: center;
+      background: rgba(255,255,255,.82);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(205,202,191,.42);
+    }
+    .nav-wrap { display:flex; align-items:center; justify-content:space-between; gap: 20px; }
+    .brand { display:inline-flex; align-items:center; gap: 10px; font-weight: 780; letter-spacing: -.035em; font-size: 20px; white-space:nowrap; }
+    .brand .symbol-shell { width: 34px; height: 34px; }
+
+    .symbol-shell {
+      --symbol-bg: var(--b2b-green);
+      --symbol-bolt: var(--brand-lime);
+      width: 42px;
+      height: 42px;
+      position: relative;
+      display: inline-grid;
+      place-items: center;
+      color: var(--symbol-bolt);
+      flex: 0 0 auto;
+    }
+    .symbol-shell::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: var(--symbol-bg);
+      clip-path: polygon(50% 0%, 61% 32%, 100% 50%, 61% 68%, 50% 100%, 39% 68%, 0% 50%, 39% 32%);
+    }
+    .symbol-shell .bolt { position: relative; z-index: 1; font-weight: 900; font-size: 18px; line-height: 1; transform: translateY(-1px); }
+
+    .nav { display:flex; align-items:center; justify-content:center; gap: 2px; flex:1; }
+    .nav a,
+    .account-trigger {
+      display:inline-flex;
+      align-items:center;
+      gap: 6px;
+      min-height: 38px;
+      padding: 0 10px;
+      border-radius: 999px;
+      font-size: 13.2px;
+      font-weight: 620;
+      color: var(--text-soft);
+      border: 1px solid transparent;
+      background: transparent;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+    .nav a:hover,
+    .account-trigger:hover {
+      color: var(--text);
+      background: var(--warm);
+      border-color: var(--border);
+    }
+    .nav .bolt-icon { font-weight: 900; line-height: 1; }
+    .nav .b2b .bolt-icon { color: var(--b2b-green); }
+    .nav .pricing-b2b .bolt-icon { color: var(--brand-lime); text-shadow: 0 0 0 var(--b2b-green); }
+    .nav .gov-tender .bolt-icon { color: var(--tender-gov); }
+    .nav .gov-pricing .bolt-icon { color: var(--pricing-gov); }
+
+    .account { position:relative; }
+    .account-menu {
+      position:absolute;
+      top: calc(100% + 10px);
+      right: 0;
+      min-width: 230px;
+      padding: 10px;
+      display:none;
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: var(--shadow-soft);
+    }
+    .account:hover .account-menu,
+    .account:focus-within .account-menu { display:grid; }
+    .account-menu a { padding: 10px 12px; border-radius: 12px; color: var(--text-soft); font-size: 14px; }
+    .account-menu a:hover { background: var(--warm); color: var(--text); }
+
+    .hero { padding: 80px 0 36px; }
+    .hero-grid { display:grid; grid-template-columns: minmax(0, 1.03fr) minmax(380px, .97fr); gap: 46px; align-items:center; }
+    .eyebrow {
+      display:inline-flex; align-items:center; gap: 8px;
+      width: fit-content;
+      padding: 7px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.74);
+      color: var(--text-soft);
+      font-size: 13px;
+      font-weight: 620;
+      box-shadow: var(--shadow-xs);
+    }
+    .eyebrow .dot { width: 8px; height:8px; border-radius:99px; background: var(--brand-lime); box-shadow: 0 0 0 4px rgba(181,248,87,.2); }
+
+    h1, h2, h3, p { margin: 0; }
+    h1 {
+      margin-top: 22px;
+      max-width: 790px;
+      font-size: clamp(46px, 6.3vw, 78px);
+      line-height: .92;
+      letter-spacing: -.073em;
+      font-weight: 790;
+    }
+    .hero-subtitle {
+      margin-top: 25px;
+      max-width: 660px;
+      color: var(--text-soft);
+      font-size: clamp(18px, 2vw, 22px);
+      line-height: 1.46;
+      letter-spacing: -.018em;
+    }
+    .hero-support { margin-top: 17px; max-width: 620px; color: var(--text-muted); font-size: 15.5px; }
+
+    .actions { margin-top: 30px; display:flex; flex-wrap:wrap; align-items:center; gap: 12px; }
+    .btn {
+      display:inline-flex; align-items:center; justify-content:center; gap: 8px;
+      min-height: 46px;
+      padding: 0 18px;
+      border:1px solid var(--border-strong);
+      border-radius: 999px;
+      background: #fff;
+      color: var(--text);
+      font-size: 14.5px;
+      font-weight: 720;
+      cursor:pointer;
+      transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease;
+    }
+    .btn:hover { transform: translateY(-1px); box-shadow: var(--shadow-soft); border-color: rgba(4,25,18,.25); }
+    .btn-primary { background: var(--brand-dark); color: #fff; border-color: var(--brand-dark); }
+    .btn-accent { background: var(--brand-lime); color: var(--brand-dark); border-color: var(--brand-lime); }
+
+    .dashboard-preview {
+      position: relative;
+      padding: 18px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      background: rgba(255,255,255,.86);
+      box-shadow: var(--shadow-soft);
+      overflow:hidden;
+    }
+    .dashboard-preview::before {
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        radial-gradient(circle at 14% 5%, rgba(181,248,87,.22), transparent 18rem),
+        radial-gradient(circle at 105% 105%, rgba(187,192,243,.24), transparent 18rem);
+      pointer-events:none;
+    }
+    .preview-top, .search-box, .preview-grid { position: relative; z-index: 1; }
+    .preview-top { display:flex; align-items:center; justify-content:space-between; margin-bottom: 14px; gap: 10px; }
+    .window-dots { display:flex; gap: 6px; }
+    .window-dots span { width: 8px; height: 8px; border-radius: 99px; background: var(--border-strong); }
+    .preview-label { font-size: 12px; color: var(--text-muted); }
+    .search-box {
+      height: 48px;
+      display:flex; align-items:center; gap: 10px;
+      padding: 0 14px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: #fff;
+      color: var(--text-muted);
+      font-size: 13.5px;
+      margin-bottom: 14px;
+    }
+    .preview-grid { display:grid; grid-template-columns: 1fr .86fr; gap: 14px; }
+
+    .card, .preview-card, .mini-chart, .status-chip, .stat, .ipg-card, .solution-card, .efile-panel, .step, .tech-item, .blog-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-xs);
+    }
+    .preview-card { padding: 14px; }
+    .opportunity-list { display:grid; gap: 10px; }
+    small { color: var(--text-muted); font-size: 12px; }
+    .preview-title { margin-top: 7px; font-size: 14px; font-weight: 750; letter-spacing: -.02em; }
+    .meta-row { display:flex; justify-content:space-between; gap: 10px; margin-top: 12px; color: var(--text-muted); font-size: 12px; }
+    .pill-row { margin-top: 10px; display:flex; flex-wrap:wrap; gap: 6px; }
+    .pill {
+      display:inline-flex;
+      align-items:center;
+      gap: 6px;
+      border:1px solid var(--border);
+      background: var(--warm);
+      color: var(--text-soft);
+      border-radius: 999px;
+      padding: 5px 8px;
+      font-size: 11.5px;
+      white-space: nowrap;
+    }
+    .pill .mini-bolt { color: var(--b2b-green); font-weight: 900; }
+    .mini-chart { padding: 14px; display:grid; gap: 12px; }
+    .chart-head { display:flex; align-items:flex-start; justify-content:space-between; gap: 10px; }
+    .chart-title { font-size: 14px; font-weight: 760; letter-spacing: -.02em; }
+    .line-svg { width: 100%; height: 86px; display:block; color: var(--ipg-deep); }
+    .bar-stack { display:grid; gap: 8px; }
+    .bar { height: 8px; border-radius:999px; background: var(--warm); overflow:hidden; }
+    .bar span { display:block; height:100%; border-radius:inherit; background: var(--ipg-green); }
+    .status-grid { grid-column:1/-1; display:grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .status-chip { padding: 12px; min-height: 72px; }
+    .chip-icon { display:flex; align-items:center; justify-content:space-between; color: var(--text-soft); font-size:13px; }
+    .chip-value { margin-top: 8px; font-weight: 760; letter-spacing: -.02em; font-size:14px; }
+    .chip-dot { width:8px; height:8px; border-radius:99px; display:inline-block; background: var(--brand-lime); }
+    .chip-dot.blue { background: var(--efile-2); }
+    .chip-dot.dark { background: var(--b2b-green); }
+
+    .metrics { padding: 22px 0 50px; }
+    .ticker { display:grid; grid-template-columns: repeat(7, minmax(150px, 1fr)); gap: 12px; overflow:auto; padding-bottom: 4px; }
+    .stat { min-width:155px; padding: 16px; }
+    .stat strong { display:block; margin-bottom:4px; font-size: 22px; letter-spacing: -.04em; }
+    .stat .accent { color: var(--b2b-green); }
+    .stat span { color: var(--text-muted); font-size: 12.5px; }
+
+    .section { padding: 74px 0; }
+    .section-header { display:flex; justify-content:space-between; align-items:end; gap: 24px; margin-bottom: 28px; }
+    .section-copy { max-width: 760px; }
+    .kicker { margin-bottom: 10px; color: var(--text-muted); font-size: 12.5px; font-weight: 790; letter-spacing: .095em; text-transform: uppercase; }
+    h2 { font-size: clamp(32px, 4vw, 54px); line-height: 1.02; letter-spacing: -.058em; font-weight: 790; }
+    .section-copy p { margin-top: 14px; color: var(--text-soft); font-size: 17px; max-width: 760px; }
+    .filters { display:flex; flex-wrap:wrap; gap: 8px; justify-content:flex-end; max-width: 470px; }
+    .filter { height: 38px; padding: 0 12px; border: 1px solid var(--border); border-radius: 999px; background:#fff; color: var(--text-soft); font-size: 13px; }
+
+    .ipg-grid { display:grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .ipg-card { padding: 18px; min-height: 254px; transition: transform .16s ease, box-shadow .16s ease; }
+    .ipg-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-soft); }
+    .ipg-head { display:flex; align-items:flex-start; justify-content:space-between; gap: 12px; margin-bottom: 16px; }
+    .ipg-title { margin-top: 2px; font-size: 17px; font-weight: 780; letter-spacing: -.026em; }
+    .ipg-icon { width: 36px; height: 36px; display:grid; place-items:center; border: 1px solid var(--border); border-radius: 13px; background: var(--warm); color: var(--ipg-deep); font-weight: 800; }
+    .chart-wrap { height: 112px; display:grid; place-items:center; overflow:hidden; border:1px solid rgba(205,202,191,.48); border-radius: 16px; background: linear-gradient(180deg, #fff 0%, rgba(249,248,243,.76) 100%); }
+    .ipg-card p { margin-top: 14px; color: var(--text-soft); font-size: 13.7px; }
+    .bars { width:82%; display:grid; grid-template-columns: repeat(6, 1fr); gap: 8px; align-items:end; height: 76px; }
+    .bars span { display:block; border-radius: 8px 8px 0 0; background: var(--ipg-deep); opacity: .85; }
+    .bars span:nth-child(2n) { background: var(--ipg-green); }
+    .bars span:nth-child(5) { background: var(--ipg-yellow); }
+    .h-bars { width:84%; display:grid; gap:9px; }
+    .h-bars span { height: 9px; border-radius: 999px; background: var(--ipg-deep); opacity: .76; }
+    .h-bars span:nth-child(2n) { background: var(--ipg-green); }
+    .map-mx {
+      width: 112px; height: 78px; border-radius: 24px 28px 18px 34px;
+      background:
+        radial-gradient(circle at 25% 35%, var(--ipg-deep) 0 10px, transparent 11px),
+        radial-gradient(circle at 56% 42%, var(--ipg-green) 0 13px, transparent 14px),
+        radial-gradient(circle at 75% 62%, var(--ipg-yellow) 0 10px, transparent 11px),
+        var(--warm);
+      border:1px solid var(--border-strong);
+      transform: rotate(-6deg);
+    }
+    .alert-card { width:82%; padding:16px; border:1px solid var(--border); border-radius:18px; background:#fff; }
+    .alert-card strong { font-size:28px; letter-spacing:-.04em; color: var(--alert); }
+    .alert-card span { display:block; color:var(--text-muted); font-size:12px; margin-top:4px; }
+
+    .solutions-shell { display:grid; gap: 20px; }
+    .segment-label { display:inline-flex; width:fit-content; align-items:center; gap:8px; color: var(--text-muted); font-size: 12.5px; font-weight: 800; text-transform:uppercase; letter-spacing:.09em; margin-bottom: -2px; }
+    .segment-dot { width:8px; height:8px; border-radius:99px; background: var(--b2b-green); }
+    .segment-dot.gov { background: var(--tender-gov); }
+    .solutions-grid { display:grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+    .solutions-grid.gov { grid-template-columns: repeat(2, 1fr); }
+    .solution-card { padding: 20px; min-height: 260px; display:flex; flex-direction:column; justify-content:space-between; transition: transform .16s ease, box-shadow .16s ease; }
+    .solution-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-soft); }
+    .solution-top { display:flex; align-items:start; justify-content:space-between; gap: 12px; }
+    .solution-mark { --symbol-bg: var(--b2b-green); --symbol-bolt: var(--brand-lime); }
+    .solution-card.gov-tender .solution-mark { --symbol-bg: var(--tender-gov); --symbol-bolt: #FFB4B0; }
+    .solution-card.gov-pricing .solution-mark { --symbol-bg: var(--pricing-gov); --symbol-bolt: #041912; }
+    .solution-card h3 { margin-top: 18px; font-size: 22px; letter-spacing: -.035em; }
+    .solution-card p { margin-top: 10px; color: var(--text-soft); font-size: 14.5px; }
+    .card-actions { display:flex; flex-wrap:wrap; gap: 8px; margin-top: 20px; }
+    .link-pill { padding: 8px 10px; border:1px solid var(--border); border-radius:999px; background:#fff; color: var(--text-soft); font-size: 12.5px; }
+    .link-pill:hover { color: var(--text); border-color: rgba(4,25,18,.22); background: var(--warm); }
+
+    .efile-section { padding-top: 30px; }
+    .efile-panel { display:grid; grid-template-columns: .92fr 1.08fr; gap: 26px; padding: 30px; border-radius: var(--radius-xl); position:relative; overflow:hidden; }
+    .efile-panel::before { content:""; position:absolute; inset:0; background: radial-gradient(circle at 94% 20%, rgba(139,155,247,.18), transparent 25rem), radial-gradient(circle at 20% 110%, rgba(187,192,243,.22), transparent 23rem); pointer-events:none; }
+    .efile-copy, .efile-docs { position:relative; z-index:1; }
+    .efile-copy p { margin-top:15px; color:var(--text-soft); font-size:17px; }
+    .efile-tags { margin-top:22px; display:flex; flex-wrap:wrap; gap:8px; }
+    .efile-docs { display:grid; grid-template-columns: repeat(2, 1fr); gap: 10px; align-content:center; }
+    .doc-item { display:flex; align-items:center; gap:10px; padding:12px; border:1px solid var(--border); border-radius:14px; background:#fff; color:var(--text-soft); font-size:13.5px; }
+    .doc-dot { width:9px; height:9px; border-radius:99px; background: var(--efile-2); flex:0 0 auto; }
+
+    .steps-grid { display:grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+    .step { padding:20px; min-height: 210px; }
+    .step-number { width:34px; height:34px; display:grid; place-items:center; border-radius:99px; border:1px solid var(--border); background: var(--warm); color: var(--text-muted); font-weight:780; margin-bottom:22px; }
+    .step h3 { font-size:20px; letter-spacing:-.03em; }
+    .step p { margin-top:10px; color:var(--text-soft); font-size:14.5px; }
+
+    .tech-grid { display:grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .tech-item { padding:16px; min-height:102px; display:flex; align-items:end; justify-content:space-between; gap: 12px; }
+    .tech-item strong { font-size:15px; letter-spacing:-.025em; }
+    .tech-item span { color: var(--text-muted); font-size:18px; }
+
+    .blog-grid { display:grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .blog-card { padding:20px; min-height:190px; }
+    .blog-card h3 { margin-top:28px; font-size:22px; letter-spacing:-.035em; }
+    .blog-card p { margin-top:10px; color:var(--text-soft); font-size:14px; }
+
+    .final-cta { padding: 86px 0; }
+    .cta-box {
+      padding: 44px;
+      border-radius: var(--radius-xl);
+      background:
+        radial-gradient(circle at 90% 22%, rgba(181,248,87,.16), transparent 22rem),
+        var(--brand-dark);
+      color: #fff;
+      display:grid;
+      grid-template-columns: 1fr auto;
+      gap: 24px;
+      align-items:center;
+      box-shadow: var(--shadow-soft);
+      border: 1px solid rgba(4,25,18,.12);
+    }
+    .cta-box h2 { color:#fff; max-width: 760px; }
+    .cta-box p { margin-top:14px; color:rgba(255,255,255,.72); max-width: 690px; font-size:17px; }
+    .cta-box .btn { background:#fff; color: var(--brand-dark); border-color:#fff; }
+    .cta-box .btn-secondary { background:transparent; color:#fff; border-color: rgba(255,255,255,.28); }
+    .cta-box .btn-accent { background: var(--brand-lime); color: var(--brand-dark); border-color: var(--brand-lime); }
+
+    .footer { padding: 44px 0 32px; border-top:1px solid var(--border); background:#fff; }
+    .footer-grid { display:grid; grid-template-columns: 1.25fr repeat(4, 1fr); gap: 24px; }
+    .footer h4 { margin:0 0 12px; font-size: 12.5px; letter-spacing:.08em; text-transform:uppercase; color: var(--text-muted); }
+    .footer a, .footer p { display:block; margin:0 0 9px; color: var(--text-soft); font-size:14px; }
+    .footer a:hover { color: var(--text); }
+    .footer-bottom { margin-top: 34px; display:flex; justify-content:space-between; gap:16px; color:var(--text-muted); font-size:13px; }
+
+    @media (max-width: 1080px) {
+      .nav { display:none; }
+      .hero-grid, .efile-panel, .cta-box { grid-template-columns: 1fr; }
+      .preview-grid { grid-template-columns: 1fr; }
+      .status-grid { grid-template-columns: repeat(3,1fr); }
+      .section-header { flex-direction:column; align-items:flex-start; }
+      .filters { justify-content:flex-start; }
+      .ipg-grid, .solutions-grid, .solutions-grid.gov, .steps-grid, .tech-grid, .blog-grid, .footer-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 680px) {
+      .container { width:min(100% - 28px, var(--container)); }
+      .hero { padding-top: 48px; }
+      h1 { font-size: clamp(42px, 14vw, 62px); }
+      .ticker { grid-template-columns: repeat(7, 180px); }
+      .status-grid, .ipg-grid, .solutions-grid, .solutions-grid.gov, .steps-grid, .tech-grid, .blog-grid, .footer-grid, .efile-docs { grid-template-columns: 1fr; }
+      .actions { flex-direction:column; align-items:stretch; }
+      .btn { width:100%; }
+      .dashboard-preview, .cta-box { padding: 24px; border-radius: 24px; }
+      .footer-bottom { flex-direction:column; }
+    }
+  .site-nav .nav-bolt,.topnav .nav-bolt.b2b{color:#81C91C!important}.site-nav .gov-tender .nav-bolt,.site-nav .gov-pricing .nav-bolt,.topnav .nav-bolt.gov{color:#C62118!important}
+    .expertia-home-promo{padding:10px 0 34px}.expertia-home-card{border:1px solid rgba(247,100,92,.34);border-radius:30px;background:linear-gradient(135deg,#fff,rgba(255,180,176,.22));box-shadow:var(--shadow-soft);padding:24px;display:grid;grid-template-columns:1.25fr .75fr;gap:20px;align-items:center}.expertia-home-card .kicker{color:var(--pricing-gov);font-weight:820;text-transform:uppercase;letter-spacing:.08em;font-size:12px}.expertia-home-card h2{font-size:clamp(28px,3.2vw,44px);line-height:1.02;letter-spacing:-.055em;margin-top:6px}.expertia-home-card p{margin-top:10px;color:var(--text-soft);font-size:15.5px;line-height:1.5}.expertia-home-offer{display:grid;grid-template-columns:1fr 1fr;gap:10px}.expertia-home-offer div{border:1px solid var(--border);border-radius:20px;background:#fff;padding:16px}.expertia-home-offer span{display:block;color:var(--text-muted);font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.05em}.expertia-home-offer strong{display:block;margin-top:6px;font-size:30px;letter-spacing:-.06em;color:var(--pricing-gov)}.expertia-home-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}@media(max-width:900px){.expertia-home-card{grid-template-columns:1fr}.expertia-home-offer{grid-template-columns:1fr}}
+
+</style>
+
+  <style id="plan-header-look-feel">
+    :root {
+      --border: rgba(4, 25, 18, .10);
+      --border-strong: rgba(4, 25, 18, .16);
+      --text-soft: #66736D;
+      --text-muted: #8A948F;
+      --shadow-xs: 0 1px 0 rgba(4,25,18,.03);
+      --shadow-soft: 0 8px 24px rgba(4,25,18,.045);
+      --radius-xl: 34px;
+      --radius-lg: 24px;
+      --radius-md: 18px;
+      --radius-sm: 14px;
+      --efile-2: #5462E2;
+    }
+
+    body {
+      background:
+        radial-gradient(circle at 86% 4%, rgba(181,248,87,.20), transparent 28rem),
+        radial-gradient(circle at 12% 86%, rgba(84,98,226,.12), transparent 30rem),
+        linear-gradient(180deg, #FFFFFF 0%, var(--warm) 68%, #FFFFFF 100%);
+      letter-spacing: -.014em;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      height: 74px;
+      display: flex;
+      align-items: center;
+      background: rgba(255,255,255,.88);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border);
+    }
+    .topbar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+    .topbar-brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 20px;
+      font-weight: 850;
+      letter-spacing: -.045em;
+      white-space: nowrap;
+      flex: 0 0 auto;
+    }
+    .topbar-brand .mark {
+      --mark-bg: var(--b2b-green);
+      --mark-bolt: var(--brand-lime);
+      width: 38px;
+      height: 38px;
+      display: inline-grid;
+      place-items: center;
+      position: relative;
+      flex: 0 0 auto;
+    }
+    .topbar-brand .mark::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: var(--mark-bg);
+      clip-path: polygon(50% 0%, 61% 32%, 100% 50%, 61% 68%, 50% 100%, 39% 68%, 0% 50%, 39% 32%);
+    }
+    .topbar-brand .bolt {
+      width: 16px;
+      height: 23px;
+      position: relative;
+      z-index: 1;
+      background: var(--mark-bolt);
+      clip-path: polygon(62% 0%, 20% 52%, 48% 52%, 37% 100%, 84% 38%, 56% 38%);
+    }
+    .site-nav {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      flex: 1;
+      overflow: auto;
+      padding-bottom: 2px;
+      scrollbar-width: none;
+    }
+    .site-nav::-webkit-scrollbar { display: none; }
+    .site-nav a {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      min-height: 38px;
+      padding: 0 10px;
+      border-radius: 999px;
+      color: rgba(4,25,18,.68);
+      font-size: 13.2px;
+      font-weight: 720;
+      white-space: nowrap;
+      border: 1px solid transparent;
+      background: transparent;
+      letter-spacing: -.01em;
+    }
+    .site-nav a:hover {
+      color: var(--text);
+      background: var(--warm);
+      border-color: var(--border);
+    }
+    .site-nav .nav-bolt {
+      font-weight: 950;
+      line-height: 1;
+      font-size: 14px;
+      color: var(--b2b-green);
+    }
+    .site-nav .gov-tender .nav-bolt { color: var(--tender-gov); }
+    .site-nav .gov-pricing .nav-bolt { color: var(--pricing-gov); }
+
+    .topbar .account {
+      position: relative;
+      flex: 0 0 auto;
+    }
+    .topbar .account-trigger {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      min-height: 38px;
+      padding: 0 12px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 830;
+      color: #66736D;
+      border: 1px solid var(--border);
+      background: #fff;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+    .topbar .account-trigger:hover {
+      color: var(--text);
+      background: var(--warm);
+      border-color: var(--border-strong);
+    }
+    .topbar .account-menu {
+      position: absolute;
+      top: calc(100% + 10px);
+      right: 0;
+      min-width: 230px;
+      padding: 10px;
+      display: none;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: var(--shadow-soft);
+      z-index: 80;
+    }
+    .topbar .account:hover .account-menu,
+    .topbar .account:focus-within .account-menu {
+      display: grid;
+    }
+    .topbar .account-menu a {
+      padding: 10px 12px;
+      border-radius: 12px;
+      color: #66736D;
+      font-size: 14px;
+      font-weight: 700;
+    }
+    .topbar .account-menu a:hover {
+      background: var(--warm);
+      color: var(--text);
+    }
+
+    .eyebrow {
+      border-color: var(--border);
+      background: rgba(255,255,255,.72);
+      box-shadow: 0 1px 0 rgba(4,25,18,.03);
+      color: var(--text-soft);
+      font-weight: 760;
+    }
+    .hero-subtitle,
+    .section-copy p,
+    .hero-support,
+    .ipg-card p,
+    .solution-card p,
+    .efile-copy p,
+    .step p,
+    .blog-card p,
+    .footer a,
+    .footer p {
+      color: var(--text-soft);
+    }
+    .kicker,
+    small,
+    .footer-bottom,
+    .preview-label,
+    .meta-row,
+    .stat span,
+    .preview-card small,
+    .chip-icon,
+    .doc-item,
+    .footer h4 {
+      color: var(--text-muted);
+    }
+
+    .btn {
+      min-height: 44px;
+      padding: 0 16px;
+      border: 1px solid var(--border-strong);
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 820;
+      transition: .18s ease;
+    }
+    .btn:hover {
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-soft);
+      border-color: rgba(4,25,18,.26);
+    }
+    .btn-primary {
+      background: var(--brand-dark);
+      color: #fff;
+      border-color: var(--brand-dark);
+    }
+    .btn-accent {
+      background: var(--brand-lime);
+      color: var(--brand-dark);
+      border-color: var(--brand-lime);
+    }
+
+    .dashboard-preview,
+    .efile-panel,
+    .cta-box {
+      border-radius: var(--radius-xl);
+      box-shadow: 0 20px 60px rgba(4,25,18,.07);
+    }
+    .card,
+    .preview-card,
+    .mini-chart,
+    .status-chip,
+    .stat,
+    .ipg-card,
+    .solution-card,
+    .efile-panel,
+    .step,
+    .tech-item,
+    .blog-card,
+    .doc-item,
+    .alert-card {
+      border-color: var(--border);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-xs);
+    }
+    .pill,
+    .filter,
+    .link-pill {
+      border-color: var(--border);
+    }
+    .solution-card,
+    .ipg-card,
+    .blog-card,
+    .step {
+      transition: .18s ease;
+    }
+    .solution-card:hover,
+    .ipg-card:hover,
+    .blog-card:hover,
+    .step:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-soft);
+    }
+    .section h2,
+    h1,
+    .blog-card h3,
+    .solution-card h3,
+    .step h3,
+    .chart-title,
+    .preview-title {
+      letter-spacing: -.055em;
+    }
+    .footer {
+      border-top: 1px solid var(--border);
+      background: #fff;
+    }
+
+    @media (max-width: 700px) {
+      .topbar {
+        height: 66px;
+      }
+      .topbar-brand {
+        font-size: 18px;
+      }
+      .topbar-brand .mark {
+        width: 34px;
+        height: 34px;
+      }
+      .container {
+        width: min(100% - 24px, var(--container));
+      }
+    }
+  </style>
+
+
+<style id="slx-global-footer-style">
+.slx-global-footer{margin-top:42px;padding:44px 0 32px;border-top:1px solid var(--line,rgba(4,25,18,.10));background:#fff;color:var(--ink,#041912);clear:both}.slx-global-footer .slx-footer-container{width:min(1180px,calc(100% - 48px));margin-inline:auto}.slx-footer-grid{display:grid;grid-template-columns:1.25fr repeat(4,1fr);gap:24px}.slx-footer-brand{display:inline-flex;align-items:center;gap:10px;font-weight:850;letter-spacing:-.035em;font-size:20px;white-space:nowrap}.slx-footer-mark{--symbol-bg:#04560C;--symbol-bolt:#B5F857;width:34px;height:34px;position:relative;display:inline-grid;place-items:center;flex:none}.slx-footer-mark:before{content:"";position:absolute;inset:0;background:var(--symbol-bg);clip-path:polygon(50% 0%,61% 32%,100% 50%,61% 68%,50% 100%,39% 68%,0% 50%,39% 32%)}.slx-footer-mark span{position:relative;z-index:1;color:var(--symbol-bolt);font-weight:950;font-size:17px}.slx-global-footer h4{margin:0 0 12px;font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted2,var(--muted-2,#8A948F))}.slx-global-footer a,.slx-global-footer p{display:block;margin:0 0 9px;color:var(--muted,#66736D);font-size:14px;line-height:1.45;text-decoration:none}.slx-global-footer a:hover{color:var(--ink,#041912)}.slx-footer-bottom{margin-top:34px;display:flex;justify-content:space-between;gap:16px;color:var(--muted2,var(--muted-2,#8A948F));font-size:13px}.slx-footer-efile,.slx-footer-efile span{color:#063C83!important;font-weight:850}.slx-footer-gov span{color:#C62118}.slx-footer-product span{color:#81C91C}.slx-footer-drive span{color:#063C83;font-weight:900}@media (max-width:1080px){.slx-footer-grid{grid-template-columns:repeat(2,1fr)}}@media (max-width:700px){.slx-global-footer .slx-footer-container{width:min(100% - 24px,1180px)}.slx-footer-grid{grid-template-columns:1fr}.slx-footer-bottom{flex-direction:column}}
+</style>
+</head>
+<body>
+  <header class="topbar" aria-label="Navegación principal">
+    <div class="container topbar-inner">
+      <a href="#top" class="topbar-brand" aria-label="SmartLicit inicio">
+        <span class="mark" aria-hidden="true"><span class="bolt"></span></span>
+        <span>SmartLicit</span>
+      </a>
+      <nav class="site-nav" aria-label="Menú principal SmartLicit">
+        <a href="#smart-tender" aria-label="Smart Tender"><span class="nav-bolt" aria-hidden="true">⚡</span>Tender</a>
+        <a href="#smart-pricing-card" aria-label="Smart Pricing"><span class="nav-bolt" aria-hidden="true">⚡</span>Pricing</a>
+        <a href="#smart-file" aria-label="Smart File"><span class="nav-bolt" aria-hidden="true">⚡</span>File</a>
+        <a href="#smart-lex" aria-label="Smart Lex"><span class="nav-bolt" aria-hidden="true">⚡</span>Lex</a>
+        <a class="gov-tender" href="#tender-gov" aria-label="Tender Gov"><span class="nav-bolt" aria-hidden="true">⚡</span>Tender Gov</a>
+        <a class="gov-pricing" href="#pricing-gov" aria-label="Pricing Gov"><span class="nav-bolt" aria-hidden="true">⚡</span>Pricing Gov</a>
+        <a href="../planes.html" target="_top" aria-label="Planes">Planes</a>
+        <a href="#blog" aria-label="Blog">Blog</a>
+        <a href="#ipg" aria-label="Índice de Precios Gubernamentales">IPG</a>
+      </nav>
+      <div class="account">
+        <button class="account-trigger" type="button" aria-haspopup="true" aria-expanded="false" aria-label="Mi Cuenta">Mi Cuenta ▾</button>
+        <div class="account-menu" role="menu" aria-label="Opciones de Mi Cuenta">
+          <a href="#" role="menuitem">Perfil</a>
+          <a href="#" role="menuitem">Historial</a>
+          <a href="#" role="menuitem">Configuración</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <div class="eyebrow"><span class="dot" aria-hidden="true"></span> Ecosistema de inteligencia operativa</div>
+          <h1>SmartLicit. Una sola inteligencia, múltiples soluciones.</h1>
+          <p class="hero-subtitle">Encuentra oportunidades, entiende precios públicos, organiza expedientes, monitorea riesgos y prepara trabajo profesional complejo desde una experiencia simple, clara y trazable.</p>
+          <p class="hero-support">SmartLicit conecta licitaciones, inteligencia de precios, eFile, IA jurídica y soluciones para gobierno en un ecosistema diseñado para actuar, no solo consultar.</p>
+          <div class="actions" aria-label="Acciones principales">
+            <a class="btn btn-primary" href="#smart-tender">Explorar Smart Tender</a>
+            <a class="btn" href="#ipg">Ver IPG</a>
+            <a class="btn" href="#soluciones">Conocer soluciones</a>
+          </div>
+        </div>
+
+        <aside class="dashboard-preview" aria-label="Preview del dashboard SmartLicit">
+          <div class="preview-top">
+            <div class="window-dots" aria-hidden="true"><span></span><span></span><span></span></div>
+            <span class="preview-label">Vista operativa</span>
+          </div>
+          <div class="search-box" aria-label="Buscador de licitaciones y precios">
+            <span aria-hidden="true">⌕</span>
+            <span>Buscar licitación, producto, dependencia o estado…</span>
+          </div>
+          <div class="preview-grid">
+            <div class="opportunity-list">
+              <article class="preview-card">
+                <small>Licitación detectada · Cierre próximo</small>
+                <div class="preview-title">Suministro integral para unidad médica estatal</div>
+                <div class="meta-row"><span>Compatibilidad alta</span><span>$ estimado</span></div>
+                <div class="pill-row" aria-label="Acciones internas Smart Tender">
+                  <span class="pill"><span class="mini-bolt">⚡</span> Smart Pricing</span>
+                  <span class="pill"><span class="mini-bolt">⚡</span> Propuesta IA</span>
+                  <span class="pill"><span class="mini-bolt">⚡</span> Experta + IA</span>
+                </div>
+              </article>
+              <article class="preview-card">
+                <small>Dependencia municipal · En análisis</small>
+                <div class="preview-title">Servicios de mantenimiento y soporte operativo</div>
+                <div class="meta-row"><span>eFile requerido</span><span>7 días</span></div>
+              </article>
+            </div>
+            <article class="mini-chart" aria-label="Cluster IPG resumido">
+              <div class="chart-head">
+                <div>
+                  <small>IPG · Smart Pricing</small>
+                  <div class="chart-title">Precio por dependencia</div>
+                </div>
+                <span class="pill">Activo</span>
+              </div>
+              <svg class="line-svg" viewBox="0 0 260 100" role="img" aria-label="Gráfica de línea de precio histórico">
+                <path d="M8 76 C32 62, 46 72, 72 54 S120 42, 142 48 S178 74, 205 36 S238 22, 252 28" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" opacity=".86"/>
+                <path d="M8 58 L252 58" stroke="currentColor" opacity=".10"/>
+                <path d="M8 30 L252 30" stroke="currentColor" opacity=".10"/>
+              </svg>
+              <div class="bar-stack" aria-hidden="true">
+                <div class="bar"><span style="width:76%"></span></div>
+                <div class="bar"><span style="width:52%; background:var(--ipg-yellow)"></span></div>
+                <div class="bar"><span style="width:64%; background:var(--ipg-deep)"></span></div>
+              </div>
+            </article>
+            <div class="status-grid">
+              <div class="status-chip"><div class="chip-icon">eFile <span class="chip-dot blue"></span></div><div class="chip-value">Activo</div></div>
+              <div class="status-chip"><div class="chip-icon">Créditos <span class="chip-dot"></span></div><div class="chip-value">Disponibles</div></div>
+              <div class="status-chip"><div class="chip-icon">Plan <span class="chip-dot dark"></span></div><div class="chip-value">Operativo</div></div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+
+    <section class="expertia-home-promo" aria-label="Promoción Experta IA beta">
+      <div class="container expertia-home-card">
+        <div>
+          <div class="kicker">Promoción de salida · mayo y junio 2026</div>
+          <h2>Experta + IA: paga solo el 35% inicial del fee.</h2>
+          <p>Durante mayo y junio de 2026, las personas que utilicen Experta + IA solo pagarán el fee inicial no reembolsable. El 65% por éxito no se cobra en esta promoción única para crear alianzas y permitir que los licitantes comiencen el beta con SmartLicit.</p>
+          <div class="expertia-home-actions"><a class="btn btn-primary" href="../tender.html" target="_top">Ver Experta + IA</a><a class="btn" href="../planes.html" target="_top">Ver planes</a></div>
+        </div>
+        <div class="expertia-home-offer" aria-label="Detalle de promoción">
+          <div><span>Se paga</span><strong>35%</strong><small>Fee inicial no reembolsable</small></div>
+          <div><span>No se cobra</span><strong>65%</strong><small>Fee por éxito en la ventana beta</small></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="metrics" aria-label="Métricas de inteligencia de mercado">
+      <div class="container ticker">
+        <div class="stat"><strong class="accent">+114</strong><span>Portales monitoreados</span></div>
+        <div class="stat"><strong class="accent">+8,000</strong><span>Bienes y servicios</span></div>
+        <div class="stat"><strong>5–10 años</strong><span>Histórico según disponibilidad</span></div>
+        <div class="stat"><strong>IPG</strong><span>Índice de Precios Gubernamentales</span></div>
+        <div class="stat"><strong>eFile</strong><span>Expediente documental</span></div>
+        <div class="stat"><strong>Alertas</strong><span>Por giro y oportunidad</span></div>
+        <div class="stat"><strong>Gov</strong><span>Soluciones para gobierno</span></div>
+      </div>
+    </section>
+
+    <section class="section" id="ipg">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-copy">
+            <div class="kicker">IPG · Smart Pricing</div>
+            <h2>El pulso de los precios públicos.</h2>
+            <p>Clusters derivados de Smart Pricing para entender cómo se comportan los precios públicos por producto, dependencia, entidad y periodo.</p>
+          </div>
+          <form class="filters" aria-label="Filtros IPG">
+            <select class="filter" aria-label="Producto"><option>Producto</option></select>
+            <select class="filter" aria-label="Estado"><option>Estado</option></select>
+            <select class="filter" aria-label="Dependencia"><option>Dependencia</option></select>
+            <select class="filter" aria-label="Periodo"><option>Periodo</option></select>
+          </form>
+        </div>
+        <div class="ipg-grid">
+          <article class="ipg-card">
+            <div class="ipg-head"><div><small>Cluster 01</small><div class="ipg-title">Precio inteligente</div></div><span class="ipg-icon">⌁</span></div>
+            <div class="chart-wrap"><svg class="line-svg" viewBox="0 0 260 100"><path d="M12 72 C40 48, 62 62, 90 44 S142 36, 166 48 S206 74, 246 28" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" opacity=".86"/><path d="M10 60 L250 60" stroke="currentColor" opacity=".12"/><path d="M10 34 L250 34" stroke="currentColor" opacity=".10"/></svg></div>
+            <p>Estimación accionable para competir con mayor control económico.</p>
+          </article>
+          <article class="ipg-card">
+            <div class="ipg-head"><div><small>Cluster 02</small><div class="ipg-title">Precio público</div></div><span class="ipg-icon">▥</span></div>
+            <div class="chart-wrap"><div class="bars"><span style="height:32%"></span><span style="height:54%"></span><span style="height:48%"></span><span style="height:76%"></span><span style="height:66%"></span><span style="height:42%"></span></div></div>
+            <p>Referencia basada en precios observables de mercado y compras públicas.</p>
+          </article>
+          <article class="ipg-card">
+            <div class="ipg-head"><div><small>Cluster 03</small><div class="ipg-title">Precio por dependencia</div></div><span class="ipg-icon">≡</span></div>
+            <div class="chart-wrap"><div class="h-bars"><span style="width:86%"></span><span style="width:64%"></span><span style="width:72%"></span><span style="width:48%"></span><span style="width:58%"></span></div></div>
+            <p>Compara comportamiento de compra entre entidades y unidades compradoras.</p>
+          </article>
+          <article class="ipg-card">
+            <div class="ipg-head"><div><small>Cluster 04</small><div class="ipg-title">Variación por estado</div></div><span class="ipg-icon">◎</span></div>
+            <div class="chart-wrap"><div class="map-mx" aria-label="Heatmap de México"></div></div>
+            <p>Detecta diferencias regionales y presión de precio.</p>
+          </article>
+          <article class="ipg-card">
+            <div class="ipg-head"><div><small>Cluster 05</small><div class="ipg-title">Histórico 5–10 años</div></div><span class="ipg-icon">↔</span></div>
+            <div class="chart-wrap"><svg class="line-svg" viewBox="0 0 260 100"><path d="M12 76 C36 72, 48 58, 72 60 S110 80, 132 48 S180 32, 204 42 S232 58, 248 30" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" opacity=".86"/><path d="M12 82 L248 82" stroke="currentColor" opacity=".14"/></svg></div>
+            <p>Observa tendencias retrospectivas según disponibilidad de datos.</p>
+          </article>
+          <article class="ipg-card">
+            <div class="ipg-head"><div><small>Cluster 06</small><div class="ipg-title">Alertas de oscilación</div></div><span class="ipg-icon">!</span></div>
+            <div class="chart-wrap"><div class="alert-card"><strong>↗ 12%</strong><span>Variación detectada en el periodo</span></div></div>
+            <p>Identifica cambios abruptos, volatilidad y señales de riesgo.</p>
+          </article>
+        </div>
+        <div class="actions">
+          <a class="btn btn-primary" href="#">Explorar IPG</a>
+          <a class="btn" id="smart-pricing" href="#soluciones">Ver Smart Pricing</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="soluciones">
+      <div class="container solutions-shell">
+        <div class="section-copy">
+          <div class="kicker">Ecosistema SmartLicit</div>
+          <h2>Una inteligencia, múltiples soluciones.</h2>
+          <p>Cada solución resuelve una parte crítica del trabajo profesional complejo. Juntas forman el ecosistema SmartLicit.</p>
+        </div>
+        <div class="segment-label"><span class="segment-dot"></span>Empresas / Profesionales</div>
+        <div class="solutions-grid">
+          <article id="smart-tender" class="solution-card">
+            <div><div class="solution-top"><span class="symbol-shell solution-mark" aria-hidden="true"><span class="bolt">⚡</span></span><small>B2B</small></div><h3>Smart Tender</h3><p>Encuentra, analiza, sigue y compite licitaciones desde una sola vista inteligente.</p></div>
+            <div class="card-actions"><a class="link-pill" href="#">Ver oportunidades</a><a class="link-pill" href="#">Conocer Smart Tender</a></div>
+          </article>
+          <article id="smart-pricing-card" class="solution-card">
+            <div><div class="solution-top"><span class="symbol-shell solution-mark" aria-hidden="true"><span class="bolt">⚡</span></span><small>B2B</small></div><h3>Smart Pricing</h3><p>Calcula precio inteligente, precio público y precio por dependencia para evaluar rentabilidad, viabilidad y estrategia económica.</p></div>
+            <div class="card-actions"><a class="link-pill" href="#ipg">Explorar IPG</a><a class="link-pill" href="#">Conocer Smart Pricing</a></div>
+          </article>
+          <article id="smart-file" class="solution-card">
+            <div><div class="solution-top"><span class="symbol-shell solution-mark" aria-hidden="true"><span class="bolt">⚡</span></span><small>B2B</small></div><h3>Smart File</h3><p>Monitorea expedientes legales, alertas y trazabilidad documental.</p></div>
+            <div class="card-actions"><a class="link-pill" href="#">Conocer Smart File</a></div>
+          </article>
+          <article id="smart-lex" class="solution-card">
+            <div><div class="solution-top"><span class="symbol-shell solution-mark" aria-hidden="true"><span class="bolt">⚡</span></span><small>B2B</small></div><h3>Smart Lex</h3><p>Abogado de IA para abogados: análisis, apoyo jurídico y trabajo legal asistido.</p></div>
+            <div class="card-actions"><a class="link-pill" href="#">Conocer Smart Lex</a></div>
+          </article>
+        </div>
+        <div class="segment-label"><span class="segment-dot gov"></span>Gobierno</div>
+        <div class="solutions-grid gov">
+          <article id="tender-gov" class="solution-card gov-tender">
+            <div><div class="solution-top"><span class="symbol-shell solution-mark" aria-hidden="true"><span class="bolt">⚡</span></span><small>B2G</small></div><h3>Tender Gov</h3><p>Solución para dependencias y entidades que necesitan crear y publicar licitaciones con mayor control, claridad y capacidad operativa.</p></div>
+            <div class="card-actions"><a class="link-pill" href="#">Conocer Tender Gov</a></div>
+          </article>
+          <article id="pricing-gov" class="solution-card gov-pricing">
+            <div><div class="solution-top"><span class="symbol-shell solution-mark" aria-hidden="true"><span class="bolt">⚡</span></span><small>B2G</small></div><h3>Pricing Gov</h3><p>Solución para gobierno orientada a generar estudios de mercado con trazabilidad, evidencia y soporte técnico.</p></div>
+            <div class="card-actions"><a class="link-pill" href="#">Conocer Pricing Gov</a></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section efile-section" id="efile">
+      <div class="container">
+        <div class="efile-panel">
+          <div class="efile-copy">
+            <div class="kicker">Capa base documental</div>
+            <h2>eFile: la capa documental que conecta todo.</h2>
+            <p>Tu expediente administrativo y documental estructurado para reducir fricción, reutilizar información y habilitar automatizaciones.</p>
+            <div class="efile-tags">
+              <span class="pill">Centraliza documentos</span>
+              <span class="pill">Soporta cumplimiento</span>
+              <span class="pill">Reutiliza información</span>
+              <span class="pill">Habilita automatizaciones</span>
+            </div>
+            <div class="actions"><a class="btn btn-primary" href="#">Completar mi eFile</a></div>
+          </div>
+          <div class="efile-docs" aria-label="Documentos eFile">
+            <div class="doc-item"><span class="doc-dot"></span> RFC</div>
+            <div class="doc-item"><span class="doc-dot"></span> Constancia de Situación Fiscal</div>
+            <div class="doc-item"><span class="doc-dot"></span> Opinión de cumplimiento</div>
+            <div class="doc-item"><span class="doc-dot"></span> Acta constitutiva</div>
+            <div class="doc-item"><span class="doc-dot"></span> Poderes</div>
+            <div class="doc-item"><span class="doc-dot"></span> Identificaciones</div>
+            <div class="doc-item"><span class="doc-dot"></span> Documentos técnicos</div>
+            <div class="doc-item"><span class="doc-dot"></span> Trazabilidad documental</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-copy">
+            <div class="kicker">De los datos a la acción</div>
+            <h2>Deja de consultar datos sueltos. Empieza a operar con inteligencia.</h2>
+          </div>
+        </div>
+        <div class="steps-grid">
+          <article class="step"><div class="step-number">1</div><h3>Centraliza</h3><p>SmartLicit reúne información dispersa de licitaciones, precios, dependencias, expedientes y fuentes públicas.</p></article>
+          <article class="step"><div class="step-number">2</div><h3>Analiza</h3><p>Smart Pricing transforma datos en rangos, históricos, dependencias, señales y clusters IPG.</p></article>
+          <article class="step"><div class="step-number">3</div><h3>Prepara</h3><p>Smart Tender permite pasar de oportunidad a pricing y propuesta con asistencia de IA.</p></article>
+          <article class="step"><div class="step-number">4</div><h3>Ejecuta</h3><p>eFile, créditos, planes e historial permiten operar con trazabilidad y control.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-copy">
+            <div class="kicker">Arquitectura de producto</div>
+            <h2>La potencia de un ecosistema, no de una página.</h2>
+            <p>Una capa tecnológica diseñada para convertir fuentes, documentos, precios y decisiones en flujos operables.</p>
+          </div>
+        </div>
+        <div class="tech-grid">
+          <div class="tech-item"><strong>Data lake de licitaciones y precios</strong><span>01</span></div>
+          <div class="tech-item"><strong>Normalización de fuentes</strong><span>02</span></div>
+          <div class="tech-item"><strong>Filtros por giro u objeto social</strong><span>03</span></div>
+          <div class="tech-item"><strong>Históricos de precios</strong><span>04</span></div>
+          <div class="tech-item"><strong>Clusters IPG</strong><span>05</span></div>
+          <div class="tech-item"><strong>eFile documental</strong><span>06</span></div>
+          <div class="tech-item"><strong>Planes y créditos</strong><span>07</span></div>
+          <div class="tech-item"><strong>IA para propuesta</strong><span>08</span></div>
+          <div class="tech-item"><strong>Revisión experta asistida por IA</strong><span>09</span></div>
+          <div class="tech-item"><strong>Trazabilidad de acciones</strong><span>10</span></div>
+          <div class="tech-item"><strong>Identidad y cuenta de usuario</strong><span>11</span></div>
+          <div class="tech-item"><strong>Estudios de mercado</strong><span>12</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="blog">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-copy">
+            <div class="kicker">Blog / Recursos</div>
+            <h2>Inteligencia para competir mejor.</h2>
+          </div>
+          <a class="btn" href="#">Ver Blog</a>
+        </div>
+        <div class="blog-grid">
+          <article class="blog-card"><small>Guía</small><h3>Cómo leer una licitación pública</h3><p>De requisitos y fechas clave a riesgos de cumplimiento.</p></article>
+          <article class="blog-card"><small>Pricing</small><h3>Qué es el precio por dependencia</h3><p>Una referencia para entender comportamiento de compra institucional.</p></article>
+          <article class="blog-card"><small>eFile</small><h3>Cómo preparar tu eFile antes de competir</h3><p>Documentos base para reducir fricción operativa y documental.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="final-cta">
+      <div class="container">
+        <div class="cta-box">
+          <div>
+            <h2>Empieza con una sola inteligencia. Activa múltiples soluciones.</h2>
+            <p>Explora oportunidades, entiende precios, estructura documentos y opera con mayor claridad desde SmartLicit.</p>
+          </div>
+          <div class="actions">
+            <a class="btn btn-accent" href="#">Entrar a Mi Cuenta</a>
+            <a class="btn btn-secondary" href="#smart-tender">Explorar Smart Tender</a>
+            <a class="btn btn-secondary" href="#ipg">Ver IPG</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+<footer class="slx-global-footer" aria-label="Footer SmartLicit">
+  <div class="slx-footer-container">
+    <div class="slx-footer-grid">
+      <div>
+        <div class="slx-footer-brand"><span class="slx-footer-mark" aria-hidden="true"><span>⚡</span></span><span>SmartLicit</span></div>
+        <p style="margin-top:14px;max-width:320px">Una sola inteligencia, múltiples soluciones para resolver trabajo profesional complejo.</p>
+      </div>
+      <div><h4>Soluciones</h4><a class="slx-footer-product" href="../tender.html" target="_top"><span>⚡</span> Tender</a><a class="slx-footer-product" href="../pricing.html" target="_top"><span>⚡</span> Pricing</a><a class="slx-footer-product" href="../file.html" target="_top"><span>⚡</span> File</a><a class="slx-footer-product" href="../lex.html" target="_top"><span>⚡</span> Lex</a></div>
+      <div><h4>Gobierno</h4><a class="slx-footer-gov" href="../tender-gov.html" target="_top"><span>⚡</span> Tender Gov</a><a class="slx-footer-gov" href="../pricing-gov.html" target="_top"><span>⚡</span> Pricing Gov</a><a href="../ipg.html" target="_top">IPG</a></div>
+      <div><h4>Plataforma</h4><a class="slx-footer-efile" href="../efile.html" target="_top"><span>⚡</span> eFile</a><a href="../planes.html" target="_top">Planes</a><a href="../blog.html" target="_top">Blog</a><a href="../mi-cuenta.html" target="_top">Mi Cuenta</a></div>
+      <div><h4>Workspace</h4><a class="slx-footer-drive" href="../gDrive.html" target="_top"><span>▰</span> Google Drive Workspace</a><a href="../mi-cuenta.html#facturacion" target="_top">Facturación</a><a href="../planes.html#tokens" target="_top">Tokens</a><a href="../mi-cuenta.html#integraciones" target="_top">Integraciones</a></div>
+    </div>
+    <div class="slx-footer-bottom"><span>© SmartLicit</span><span>Minimal premium · trazable · accionable.</span></div>
+  </div>
+</footer>
+
+</body>
+</html>

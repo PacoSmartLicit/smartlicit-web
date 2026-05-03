@@ -1,0 +1,528 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Smart Lex · SmartLicit</title>
+<meta name="description" content="Prototipo HTML navegable de Smart Lex para SmartLicit" />
+<style>
+:root{
+  --lime:#B5F857;
+  --ink:#041912;
+  --green:#04560C;
+  --action:#1A990F;
+  --bg:#F9F8F3;
+  --surface:#FFFFFF;
+  --surface-soft:#FBFAF6;
+  --warm:#EBEAE5;
+  --warm-2:#CDCABF;
+  --muted:#66736D;
+  --muted-2:#8A948F;
+  --line:rgba(4,25,18,.10);
+  --line-2:rgba(4,25,18,.16);
+  --coral:#F7645C;
+  --yellow:#F7BA14;
+  --blue:#5462E2;
+  --blue-soft:#BBC0F3;
+
+  --lex-night:#170406;
+  --lex-deep:#550415;
+  --lex-soft:#F9ACB6;
+  --lex:#F8596D;
+
+  --efile-night:#060517;
+  --efile-deep:#080353;
+  --efile:#5959F7;
+  --efile-soft:#ADBBF8;
+
+  --shadow:0 18px 46px rgba(4,25,18,.06);
+  --shadow-soft:0 8px 20px rgba(4,25,18,.045);
+  --header:72px;
+  --side:286px;
+  --radius:20px;
+  --radius-sm:14px;
+  --font:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  color:var(--ink);
+  background:
+    radial-gradient(circle at 84% 8%, rgba(248,89,109,.10), transparent 26rem),
+    radial-gradient(circle at 8% 92%, rgba(173,187,248,.16), transparent 28rem),
+    var(--bg);
+  font-family:var(--font);
+  letter-spacing:-.012em;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:geometricPrecision;
+}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+a{color:inherit;text-decoration:none}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+.hidden{display:none!important}
+
+.ico{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.bolt-svg{width:16px;height:16px;fill:currentColor;flex:none}
+.brand-mark{
+  --mark-bg:var(--lex-night);
+  --mark-bolt:var(--lex);
+  width:36px;height:36px;display:inline-grid;place-items:center;position:relative;flex:0 0 auto;color:var(--mark-bolt);
+}
+.brand-mark:before{
+  content:"";position:absolute;inset:0;background:var(--mark-bg);
+  clip-path:polygon(50% 0%,61% 32%,100% 50%,61% 68%,50% 100%,39% 68%,0% 50%,39% 32%);
+}
+.brand-mark .bolt-char{position:relative;z-index:1;font-weight:950;font-size:18px;line-height:1;transform:translateY(-1px)}
+.brand-mark.b2b{--mark-bg:var(--ink);--mark-bolt:var(--lime)}
+.brand-mark.efile{--mark-bg:var(--efile-night);--mark-bolt:var(--efile)}
+.brand-mark.small{width:26px;height:26px}.brand-mark.small .bolt-char{font-size:13px}
+
+.topbar{
+  height:var(--header);position:fixed;inset:0 0 auto 0;z-index:80;
+  display:flex;align-items:center;gap:14px;padding:0 22px;
+  background:rgba(255,255,255,.91);backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--line);
+}
+.mobile-toggle{display:none;width:40px;height:40px;border:1px solid var(--line);border-radius:14px;background:#fff;color:var(--ink)}
+.brand{display:flex;align-items:center;gap:10px;font-weight:840;font-size:19px;letter-spacing:-.035em;white-space:nowrap}
+.topnav{display:flex;align-items:center;gap:3px;margin-left:10px}
+.topnav a{font-size:13px;font-weight:770;color:var(--muted);padding:8px 10px;border-radius:999px;border:1px solid transparent}
+.topnav a:hover{background:#F6F5F0;color:var(--ink);border-color:var(--line)}
+.topnav a.active{background:rgba(248,89,109,.12);border-color:rgba(248,89,109,.25);color:var(--lex-deep)}
+.solution-pill{height:38px;border:1px solid rgba(85,4,21,.22);border-radius:999px;background:#fff;color:var(--lex-deep);display:flex;align-items:center;gap:8px;padding:0 12px;font-weight:870;font-size:12.5px;white-space:nowrap}
+.search{position:relative;flex:1;min-width:240px;max-width:680px;margin-left:auto}
+.search .ico{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--muted)}
+.search input{width:100%;height:42px;border:1px solid var(--line);border-radius:999px;background:#FBFBF8;outline:0;padding:0 16px 0 42px;font-size:13px;color:var(--ink)}
+.search input:focus{border-color:rgba(248,89,109,.35);box-shadow:0 0 0 4px rgba(248,89,109,.12);background:#fff}
+.topstatus{display:flex;align-items:center;gap:8px;margin-left:2px}
+.pill{height:32px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--muted);display:inline-flex;align-items:center;gap:7px;padding:0 10px;font-size:11.5px;font-weight:850;white-space:nowrap}
+.pill.lex{background:rgba(248,89,109,.10);border-color:rgba(248,89,109,.20);color:var(--lex-deep)}
+.pill.file{background:rgba(173,187,248,.24);border-color:rgba(89,89,247,.18);color:var(--efile-deep)}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--action);display:inline-block}.dot.lex{background:var(--lex)}.dot.warn{background:var(--yellow)}.dot.file{background:var(--efile)}
+.bell,.acct{height:40px;border:1px solid var(--line);background:#fff;color:var(--muted);display:grid;place-items:center;position:relative}
+.bell{width:40px;border-radius:14px}.bell:after{content:"";position:absolute;right:9px;top:9px;width:7px;height:7px;border-radius:50%;background:var(--lex);border:1px solid #fff}
+.acct{display:flex;gap:8px;align-items:center;border-radius:999px;padding:0 10px 0 6px;color:var(--ink);font-size:13px;font-weight:840}
+.avatar{width:28px;height:28px;border-radius:50%;background:var(--lex-night);color:#fff;display:grid;place-items:center;font-size:11px;font-weight:950}
+
+.sidebar{
+  position:fixed;top:var(--header);left:0;bottom:0;width:var(--side);z-index:60;
+  background:rgba(255,255,255,.89);backdrop-filter:blur(18px);border-right:1px solid var(--line);
+  padding:18px 13px;overflow:auto;
+}
+.sidehead{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;padding:0 8px 15px}
+.sidehead span{display:block;font-size:11px;color:var(--lex-deep);font-weight:950;text-transform:uppercase;letter-spacing:.1em}
+.sidehead strong{display:block;margin-top:4px;color:var(--muted);font-size:13px;line-height:1.3}
+.collapse{width:32px;height:32px;border:1px solid var(--line);border-radius:11px;background:#fff;color:var(--muted)}
+.side-nav{display:grid;gap:4px}
+.side-nav button,.recent-project{
+  width:100%;border:0;background:transparent;color:var(--muted);display:flex;align-items:center;gap:10px;text-align:left;border-radius:14px;padding:10px 11px;font-size:13px;font-weight:790;position:relative;
+}
+.side-nav button:hover,.recent-project:hover{background:#F4F3EE;color:var(--ink)}
+.side-nav button.active{background:rgba(248,89,109,.10);color:var(--lex-deep)}
+.side-nav button.active:before{content:"";position:absolute;left:0;top:10px;bottom:10px;width:3px;border-radius:999px;background:var(--lex)}
+.nav-count{margin-left:auto;min-width:22px;height:21px;border-radius:999px;background:#F2F2EE;color:var(--muted);display:grid;place-items:center;font-size:10.5px;font-weight:950}
+.side-section-title{margin:20px 8px 8px;color:var(--muted-2);font-size:10.5px;text-transform:uppercase;letter-spacing:.09em;font-weight:950}
+.recent-list{display:grid;gap:3px}.recent-project{align-items:flex-start;padding:10px 10px}
+.recent-project strong{display:block;color:var(--ink);font-size:12.5px;line-height:1.2;font-weight:880}.recent-project span{display:block;margin-top:4px;color:var(--muted);font-size:11.3px}.recent-project .mini-state{margin-left:auto;font-size:10px;border-radius:999px;padding:4px 7px;background:#F2F2EE;color:var(--muted);font-weight:900}.recent-project .mini-state.critical{background:rgba(248,89,109,.12);color:var(--lex-deep)}.recent-project .mini-state.file{background:rgba(173,187,248,.28);color:var(--efile-deep)}
+.sidecard{margin:18px 2px 0;padding:14px;background:#FBFBF8;border:1px solid var(--line);border-radius:18px}.sidecard h4{margin:0 0 9px;font-size:13px}.planrow{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-top:1px solid var(--line);font-size:12px;color:var(--muted)}.planrow strong{color:var(--ink)}.progress-line{height:8px;background:#F0EFE9;border-radius:999px;overflow:hidden;margin-top:10px}.progress-line span{display:block;height:100%;width:73%;background:var(--lex);border-radius:inherit}
+
+.main{margin-left:var(--side);padding:96px 28px 46px;min-height:100vh}.view{display:none}.view.active{display:block}.content-max{max-width:1440px;margin:0 auto}
+.head{display:flex;justify-content:space-between;gap:18px;align-items:flex-start;margin-bottom:16px}.crumb{display:inline-flex;align-items:center;gap:8px;color:var(--lex-deep);font-size:11px;font-weight:950;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}.spark{width:8px;height:8px;border-radius:50%;background:var(--lex);box-shadow:0 0 0 3px rgba(248,89,109,.18)}
+h1,h2,h3,p{margin:0}h1{font-size:clamp(28px,2.7vw,38px);line-height:1.08;letter-spacing:-.055em;font-weight:850}.lead{margin:9px 0 0;color:var(--muted);font-size:14px;line-height:1.55;max-width:780px}.actions-head{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}.btn{min-height:38px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink);padding:0 12px;display:inline-flex;gap:8px;align-items:center;justify-content:center;font-size:12.5px;font-weight:870;text-decoration:none;white-space:nowrap}.btn:hover{border-color:rgba(4,25,18,.24);box-shadow:var(--shadow-soft);transform:translateY(-1px)}.btn.primary{background:var(--lex-night);border-color:var(--lex-night);color:#fff}.btn.primary .bolt-svg{color:var(--lex)}.btn.soft{background:rgba(248,89,109,.10);border-color:rgba(248,89,109,.18);color:var(--lex-deep)}.btn.file{background:rgba(173,187,248,.26);border-color:rgba(89,89,247,.18);color:var(--efile-deep)}.btn.ghost{background:transparent}.btn.slim{min-height:32px;border-radius:10px;font-size:11.5px;padding:0 9px}.btn.good{background:rgba(26,153,15,.08);border-color:rgba(26,153,15,.18);color:var(--green)}.btn.warn{background:rgba(247,186,20,.13);border-color:rgba(247,186,20,.22);color:#7A5200}.btn.danger{background:rgba(247,100,92,.10);border-color:rgba(247,100,92,.18);color:#8a1d16}
+
+.kpis{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-bottom:14px}.kpi,.card,.table-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow-soft)}.kpi{padding:15px;min-height:126px;display:flex;flex-direction:column;justify-content:space-between}.ktop{display:flex;justify-content:space-between;gap:10px;align-items:center}.kpi h3{color:var(--muted);font-size:11.5px;font-weight:950;text-transform:uppercase;letter-spacing:.06em}.kicon{width:32px;height:32px;border-radius:12px;background:rgba(248,89,109,.12);color:var(--lex-deep);display:grid;place-items:center}.kicon.file{background:rgba(173,187,248,.25);color:var(--efile-deep)}.kicon.warn{background:rgba(247,186,20,.13);color:#7A5200}.num{font-size:30px;font-weight:950;letter-spacing:-.06em;margin-top:10px}.kpi p{margin-top:4px;color:var(--muted);font-size:12px;line-height:1.35}.trend{align-self:flex-start;border:1px solid rgba(248,89,109,.18);background:rgba(248,89,109,.08);color:var(--lex-deep);border-radius:999px;padding:4px 8px;font-size:10.5px;font-weight:950;margin-top:10px}.trend.file{border-color:rgba(89,89,247,.18);background:rgba(173,187,248,.24);color:var(--efile-deep)}.trend.warn{border-color:rgba(247,186,20,.24);background:rgba(247,186,20,.12);color:#7A5200}.trend.good{border-color:rgba(26,153,15,.18);background:rgba(26,153,15,.08);color:var(--green)}
+.grid-2{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(320px,.75fr);gap:14px}.grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.grid-4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.stack{display:grid;gap:12px}.card{padding:16px}.card-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;margin-bottom:12px}.card h2{font-size:18px;letter-spacing:-.035em}.card h3{font-size:15px;letter-spacing:-.025em}.card p{color:var(--muted);font-size:12.5px;line-height:1.45;margin-top:5px}.section-label{color:var(--muted-2);font-size:10.5px;text-transform:uppercase;letter-spacing:.09em;font-weight:950;margin-bottom:8px}.microcopy{color:var(--muted);font-size:12px;line-height:1.45}.divider{height:1px;background:var(--line);margin:14px 0}.badge{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:5px 8px;font-size:11px;font-weight:950;white-space:nowrap;border:1px solid var(--line);background:#F7F6F1;color:var(--muted)}.badge.critical{background:rgba(248,89,109,.10);color:var(--lex-deep);border-color:rgba(248,89,109,.20)}.badge.active{background:rgba(26,153,15,.08);color:var(--green);border-color:rgba(26,153,15,.18)}.badge.warn{background:rgba(247,186,20,.13);color:#7A5200;border-color:rgba(247,186,20,.22)}.badge.file{background:rgba(173,187,248,.25);color:var(--efile-deep);border-color:rgba(89,89,247,.18)}.badge.dark{background:var(--lex-night);color:#fff;border-color:var(--lex-night)}
+
+.filters{display:grid;grid-template-columns:1.4fr repeat(4,minmax(120px,1fr)) auto;gap:8px;align-items:end;background:#fff;border:1px solid var(--line);border-radius:18px;padding:12px;box-shadow:var(--shadow-soft);margin-bottom:14px}.field label{display:block;font-size:10.5px;color:var(--muted);font-weight:950;text-transform:uppercase;letter-spacing:.07em;margin-bottom:5px}.control{width:100%;height:38px;border:1px solid var(--line);background:#FBFBF8;border-radius:12px;padding:0 10px;outline:0;color:var(--ink);font-size:12.5px}.control:focus,textarea:focus{border-color:rgba(248,89,109,.32);box-shadow:0 0 0 3px rgba(248,89,109,.12);background:#fff}.filter-chips{display:flex;gap:7px;flex-wrap:wrap}.chip{height:31px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--muted);display:inline-flex;align-items:center;gap:6px;padding:0 10px;font-size:11.5px;font-weight:870}.chip.active,.chip:hover{background:rgba(248,89,109,.10);border-color:rgba(248,89,109,.20);color:var(--lex-deep)}.chip.file.active,.chip.file:hover{background:rgba(173,187,248,.25);border-color:rgba(89,89,247,.18);color:var(--efile-deep)}
+.table-wrap{overflow:auto;background:#fff;border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow-soft)}table{width:100%;border-collapse:collapse;min-width:980px}th,td{padding:13px 14px;border-bottom:1px solid rgba(4,25,18,.07);text-align:left;font-size:12.5px;vertical-align:middle}th{color:var(--muted);font-size:10.5px;text-transform:uppercase;letter-spacing:.07em;font-weight:950;background:#FBFBF8}tr:last-child td{border-bottom:0}tbody tr:hover{background:#FCFCFA}.project-name{font-weight:900;font-size:13.5px;line-height:1.25}.sub{display:flex;gap:7px;flex-wrap:wrap;margin-top:5px;color:var(--muted);font-size:11.5px;font-weight:680}.cell-muted{color:var(--muted)}.row-actions{display:flex;gap:6px;justify-content:flex-end}.ray{height:34px;border:1px solid rgba(89,89,247,.20);background:#fff;color:var(--efile-deep);border-radius:12px;padding:0 9px;display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:950;white-space:nowrap;position:relative}.ray:hover{background:rgba(173,187,248,.24)}.ray.lex{border-color:rgba(248,89,109,.22);color:var(--lex-deep)}.ray.lex:hover{background:rgba(248,89,109,.10)}.ray.done{border-color:rgba(26,153,15,.18);color:var(--green);background:rgba(26,153,15,.07)}.ray .tip{visibility:hidden;opacity:0;position:absolute;right:0;bottom:calc(100% + 9px);width:248px;background:var(--ink);color:#fff;border-radius:13px;padding:10px 11px;font-size:11px;line-height:1.42;font-weight:650;text-align:left;box-shadow:var(--shadow);transition:.15s;z-index:20}.ray:hover .tip{visibility:visible;opacity:1}
+
+.activity-list{display:grid;gap:10px}.activity{display:grid;grid-template-columns:54px 1fr;gap:10px;padding:11px;border:1px solid var(--line);border-radius:16px;background:#FBFBF8}.activity time{font-size:11px;color:var(--lex-deep);font-weight:950}.activity strong{display:block;font-size:12.6px}.activity span{display:block;margin-top:4px;color:var(--muted);font-size:11.7px;line-height:1.35}.quick-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.quick{border:1px solid var(--line);border-radius:16px;background:#fff;padding:13px;display:flex;gap:10px;align-items:flex-start;text-align:left}.quick:hover{background:#FBFAF6}.quick strong{display:block;font-size:12.8px}.quick span{display:block;margin-top:4px;font-size:11.5px;color:var(--muted)}
+.empty-state{display:grid;place-items:center;text-align:center;background:#fff;border:1px dashed var(--warm-2);border-radius:24px;min-height:420px;padding:38px;box-shadow:var(--shadow-soft)}.empty-state .brand-mark{margin-bottom:16px}.empty-state h2{font-size:23px;letter-spacing:-.035em}.empty-state p{max-width:560px;margin:9px 0 18px;color:var(--muted);font-size:13.5px;line-height:1.55}.empty-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;width:min(780px,100%);margin-top:12px}.empty-steps article{border:1px solid var(--line);border-radius:18px;background:#FBFBF8;padding:14px;text-align:left}.empty-steps strong{display:block;font-size:13px}.empty-steps span{display:block;color:var(--muted);font-size:12px;margin-top:4px}
+
+.stepper{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:14px}.step-pill{border:1px solid var(--line);border-radius:17px;background:#fff;padding:13px;display:flex;align-items:center;gap:10px}.step-pill .n{width:28px;height:28px;border-radius:11px;background:#F3F2ED;color:var(--muted);display:grid;place-items:center;font-weight:950;font-size:12px}.step-pill.active{border-color:rgba(248,89,109,.22);background:rgba(248,89,109,.08)}.step-pill.active .n{background:var(--lex-night);color:#fff}.step-pill.done .n{background:rgba(26,153,15,.10);color:var(--green)}.step-pill strong{font-size:12.8px}.wizard-content{display:none}.wizard-content.active{display:block}.dropzone{min-height:280px;border:1.5px dashed rgba(85,4,21,.30);background:rgba(248,89,109,.05);border-radius:24px;display:grid;place-items:center;text-align:center;padding:36px}.dropzone h2{font-size:22px;letter-spacing:-.04em}.dropzone p{max-width:520px;color:var(--muted);font-size:13px;line-height:1.5;margin:9px auto 18px}.doc-cats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.doc-cat{border:1px solid var(--line);background:#fff;border-radius:18px;padding:15px}.doc-cat strong{display:block;font-size:13.5px}.doc-cat span{display:block;margin-top:6px;color:var(--muted);font-size:12px}.reading-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:14px}.big-progress{height:12px;border-radius:999px;background:#F0EFEA;overflow:hidden;margin:12px 0}.big-progress span{display:block;height:100%;width:68%;background:var(--lex);border-radius:inherit}.status-list{display:grid;gap:8px}.status-row{display:flex;justify-content:space-between;gap:12px;border:1px solid var(--line);border-radius:14px;padding:10px;background:#FBFBF8;font-size:12.5px}.status-row strong{font-weight:900}.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.form-card .control{height:42px}.source-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.source-card{border:1px solid var(--line);border-radius:16px;background:#FBFBF8;padding:13px}.source-card strong{font-size:13px}.source-card span{display:block;margin-top:5px;font-size:12px;color:var(--muted)}
+
+.doc-summary{display:grid;grid-template-columns:1fr 320px;gap:14px}.side-stats{display:grid;gap:10px}.side-stat{border:1px solid var(--line);border-radius:18px;background:#fff;padding:14px}.side-stat strong{display:block;font-size:22px;letter-spacing:-.04em}.side-stat span{display:block;margin-top:4px;color:var(--muted);font-size:12px}
+
+.project-header{background:#fff;border:1px solid var(--line);border-radius:24px;padding:16px;box-shadow:var(--shadow-soft);margin-bottom:14px}.project-top{display:flex;justify-content:space-between;gap:16px;align-items:flex-start}.project-title h1{font-size:28px}.project-meta{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}.project-tabs{display:flex;gap:5px;overflow:auto;padding:12px 0 0;margin-top:12px;border-top:1px solid var(--line)}.project-tabs button{border:0;background:transparent;color:var(--muted);border-radius:11px;padding:9px 10px;font-size:12px;font-weight:870;white-space:nowrap}.project-tabs button.active{background:rgba(248,89,109,.10);color:var(--lex-deep)}.project-tabs button.file.active{background:rgba(173,187,248,.25);color:var(--efile-deep)}.project-shell{display:grid;grid-template-columns:250px minmax(0,1fr) 330px;gap:14px;align-items:start}.project-left,.project-center,.project-right{display:grid;gap:12px}.mini-nav{display:grid;gap:5px}.mini-nav button{border:0;background:transparent;border-radius:12px;color:var(--muted);font-size:12px;font-weight:850;text-align:left;padding:9px 10px}.mini-nav button.active{background:rgba(248,89,109,.10);color:var(--lex-deep)}.mini-nav button.file.active{background:rgba(173,187,248,.24);color:var(--efile-deep)}.stat-mini{display:grid;grid-template-columns:1fr auto;gap:10px;padding:9px 0;border-bottom:1px solid rgba(4,25,18,.07);font-size:12px}.stat-mini:last-child{border-bottom:0}.stat-mini span{color:var(--muted)}.stat-mini strong{text-align:right}.bar{height:8px;border-radius:999px;background:#F0EFEA;overflow:hidden}.bar span{display:block;height:100%;border-radius:inherit;background:var(--lex);width:72%}.project-tab{display:none}.project-tab.active{display:block}.split{display:grid;grid-template-columns:1fr 280px;gap:12px}.info-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.info-card{border:1px solid var(--line);border-radius:18px;background:#FBFBF8;padding:14px}.info-card strong{display:block;font-size:18px;letter-spacing:-.04em}.info-card span{display:block;margin-top:4px;color:var(--muted);font-size:12px}.bullet-list{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:8px}.bullet-list li{font-size:12.8px;line-height:1.4;display:flex;gap:8px}.bullet-list li:before{content:"";width:7px;height:7px;border-radius:99px;background:var(--lex);margin-top:5px;flex:none}.bullet-list.file li:before{background:var(--efile)}.timeline{position:relative;display:grid;gap:12px}.timeline:before{content:"";position:absolute;left:48px;top:8px;bottom:8px;width:1px;background:var(--line)}.time-item{display:grid;grid-template-columns:70px 1fr;gap:14px;position:relative}.time-item time{font-size:11px;font-weight:950;color:var(--lex-deep);padding-top:2px}.time-dot{position:absolute;left:44px;top:4px;width:9px;height:9px;border-radius:99px;background:var(--lex);border:2px solid #fff;box-shadow:0 0 0 2px rgba(248,89,109,.20)}.time-card{border:1px solid var(--line);border-radius:17px;background:#FBFBF8;padding:12px}.time-card strong{display:block;font-size:13px}.time-card span{display:block;color:var(--muted);font-size:12px;margin-top:4px}.analysis-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.analysis-box{border:1px solid var(--line);border-radius:18px;background:#FBFBF8;padding:14px}.analysis-box h3{font-size:14px}.source-tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.strategy-card{border:1px solid rgba(248,89,109,.20);background:rgba(248,89,109,.06);border-radius:18px;padding:14px;margin-top:10px}.strategy-item{display:grid;grid-template-columns:28px 1fr auto;gap:10px;align-items:start;padding:10px 0;border-bottom:1px solid rgba(85,4,21,.10)}.strategy-item:last-child{border-bottom:0}.strategy-item .n{width:26px;height:26px;border-radius:10px;background:var(--lex-night);color:#fff;display:grid;place-items:center;font-size:11px;font-weight:950}.strategy-item strong{font-size:13px}.strategy-item span{display:block;color:var(--muted);font-size:12px;margin-top:4px}.notice{border:1px solid rgba(247,186,20,.24);background:rgba(247,186,20,.12);border-radius:16px;padding:12px;font-size:12.5px;color:#6B4800;line-height:1.45;margin-top:12px}.writer-grid{display:grid;grid-template-columns:260px 1fr;gap:12px}.template-list{display:grid;gap:7px}.template-list button{height:37px;border:1px solid var(--line);background:#fff;border-radius:12px;text-align:left;padding:0 10px;color:var(--muted);font-size:12px;font-weight:850}.template-list button.active{border-color:rgba(248,89,109,.22);background:rgba(248,89,109,.08);color:var(--lex-deep)}.draft{border:1px solid var(--line);background:#FBFBF8;border-radius:18px;padding:16px;min-height:230px;font-size:13px;line-height:1.58;color:var(--ink)}.draft h3{font-size:14px;margin-bottom:8px}.draft p{font-size:13px;color:var(--ink);margin:0 0 10px}.draft .placeholder{color:var(--muted);background:#fff;border:1px dashed var(--warm-2);border-radius:8px;padding:1px 6px}.file-panel{border:1px solid rgba(89,89,247,.18);background:linear-gradient(180deg,rgba(173,187,248,.16),#fff 36%);border-radius:22px;padding:16px}.file-panel h2,.file-panel h3{color:var(--efile-deep)}.file-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}.file-feed{display:grid;gap:10px;margin-top:12px}.file-event{display:grid;grid-template-columns:44px 1fr;gap:10px;border:1px solid rgba(89,89,247,.15);background:rgba(173,187,248,.12);border-radius:16px;padding:12px}.file-event time{font-size:11px;color:var(--efile-deep);font-weight:950}.file-event strong{font-size:13px}.file-event span{display:block;color:var(--muted);font-size:12px;margin-top:4px}.comment-list{display:grid;gap:10px}.comment{border:1px solid var(--line);border-radius:18px;background:#FBFBF8;padding:13px}.comment-head{display:flex;justify-content:space-between;gap:10px;align-items:center}.comment strong{font-size:13px}.comment p{margin-top:7px;color:var(--ink);font-size:12.7px;line-height:1.42}.checklist{display:grid;gap:8px}.check{display:flex;align-items:center;gap:8px;font-size:12.5px}.check input{accent-color:var(--lex)}.assistant-card{border:1px solid var(--line);border-radius:20px;background:#fff;padding:15px;box-shadow:var(--shadow-soft)}.assistant-card h3{font-size:15px}.assistant-card p{font-size:12px;color:var(--muted);line-height:1.45;margin-top:5px}.assistant-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}textarea.note{width:100%;min-height:90px;border:1px solid var(--line);border-radius:14px;background:#FBFBF8;padding:10px;resize:vertical;outline:0;color:var(--ink);font-size:12px;line-height:1.4}.autosave{display:flex;justify-content:space-between;gap:12px;align-items:center;border:1px solid rgba(26,153,15,.16);background:rgba(26,153,15,.06);border-radius:16px;padding:11px;font-size:12px;color:var(--green);font-weight:850}
+
+.alert-feed{display:grid;gap:10px}.alert-card{border:1px solid var(--line);border-radius:18px;background:#fff;padding:14px;display:grid;grid-template-columns:1fr auto;gap:12px;align-items:start}.alert-card strong{font-size:14px}.alert-card p{margin-top:5px;color:var(--muted);font-size:12.5px;line-height:1.45}.alert-card[data-type="file"]{border-color:rgba(89,89,247,.18);background:rgba(173,187,248,.10)}
+.plan-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.plan{border:1px solid var(--line);border-radius:20px;background:#fff;padding:16px}.plan.featured{border-color:rgba(248,89,109,.24);background:rgba(248,89,109,.06)}.plan h3{font-size:18px}.plan .big{font-size:30px;font-weight:950;letter-spacing:-.06em;margin-top:12px}.plan p{font-size:12px;color:var(--muted);line-height:1.45;margin-top:5px}.note-list{display:grid;gap:8px;margin-top:10px}.note-list div{border:1px solid var(--line);border-radius:14px;background:#FBFBF8;padding:10px;font-size:12px;color:var(--muted)}
+.toast{position:fixed;right:20px;bottom:20px;z-index:120;transform:translateY(24px);opacity:0;pointer-events:none;background:var(--ink);color:#fff;border-radius:16px;padding:12px 14px;box-shadow:var(--shadow);font-size:12.5px;font-weight:780;max-width:360px;transition:.2s}.toast.show{opacity:1;transform:translateY(0)}
+
+@media(max-width:1420px){.kpis{grid-template-columns:repeat(3,minmax(0,1fr))}.project-shell{grid-template-columns:220px minmax(0,1fr)}.project-right{grid-column:1/-1;grid-template-columns:repeat(3,minmax(0,1fr))}.split,.writer-grid{grid-template-columns:1fr}.doc-summary{grid-template-columns:1fr}.side-stats{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:1120px){.topnav,.topstatus .pill,.solution-pill{display:none}.sidebar{width:86px}.sidehead div,.sidecard,.side-section-title,.recent-list,.side-nav span:not(.nav-count),.nav-count{display:none}.side-nav button{justify-content:center}.main{margin-left:86px;padding-left:20px;padding-right:20px}.filters{grid-template-columns:repeat(3,minmax(0,1fr))}.grid-2,.reading-grid,.source-grid,.project-shell,.analysis-grid,.plan-grid{grid-template-columns:1fr}.project-right{grid-template-columns:1fr}.doc-cats,.grid-4{grid-template-columns:repeat(2,minmax(0,1fr))}.file-form,.form-grid{grid-template-columns:1fr}.search{max-width:none}}
+@media(max-width:760px){.mobile-toggle{display:grid;place-items:center}.brand span:last-child{display:none}.search,.topstatus{display:none}.sidebar{transform:translateX(-105%);transition:.2s;width:286px;box-shadow:var(--shadow)}body.sideopen .sidebar{transform:translateX(0)}.sidebar .sidehead div,.sidebar .sidecard,.sidebar .side-section-title,.sidebar .recent-list,.sidebar .side-nav span:not(.nav-count),.sidebar .nav-count{display:block}.sidebar .side-nav button{justify-content:flex-start}.main{margin-left:0;padding:92px 14px 32px}.head,.project-top{display:block}.actions-head{justify-content:flex-start;margin-top:14px}.kpis,.grid-2,.grid-3,.grid-4,.doc-cats,.stepper,.empty-steps,.info-grid,.project-right,.side-stats,.plan-grid{grid-template-columns:1fr}.filters{grid-template-columns:1fr}.table-wrap{border-radius:18px}.project-header{border-radius:20px}.project-shell{gap:10px}.topbar{padding:0 14px}.doc-summary{grid-template-columns:1fr}.toast{left:14px;right:14px;bottom:14px}}
+.site-nav .nav-bolt,.topnav .nav-bolt.b2b{color:#81C91C!important}.site-nav .gov-tender .nav-bolt,.site-nav .gov-pricing .nav-bolt,.topnav .nav-bolt.gov{color:#C62118!important}</style>
+
+<style id="slx-global-footer-style">
+.slx-global-footer{margin-top:42px;padding:44px 0 32px;border-top:1px solid var(--line,rgba(4,25,18,.10));background:#fff;color:var(--ink,#041912);clear:both}.slx-global-footer .slx-footer-container{width:min(1180px,calc(100% - 48px));margin-inline:auto}.slx-footer-grid{display:grid;grid-template-columns:1.25fr repeat(4,1fr);gap:24px}.slx-footer-brand{display:inline-flex;align-items:center;gap:10px;font-weight:850;letter-spacing:-.035em;font-size:20px;white-space:nowrap}.slx-footer-mark{--symbol-bg:#04560C;--symbol-bolt:#B5F857;width:34px;height:34px;position:relative;display:inline-grid;place-items:center;flex:none}.slx-footer-mark:before{content:"";position:absolute;inset:0;background:var(--symbol-bg);clip-path:polygon(50% 0%,61% 32%,100% 50%,61% 68%,50% 100%,39% 68%,0% 50%,39% 32%)}.slx-footer-mark span{position:relative;z-index:1;color:var(--symbol-bolt);font-weight:950;font-size:17px}.slx-global-footer h4{margin:0 0 12px;font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted2,var(--muted-2,#8A948F))}.slx-global-footer a,.slx-global-footer p{display:block;margin:0 0 9px;color:var(--muted,#66736D);font-size:14px;line-height:1.45;text-decoration:none}.slx-global-footer a:hover{color:var(--ink,#041912)}.slx-footer-bottom{margin-top:34px;display:flex;justify-content:space-between;gap:16px;color:var(--muted2,var(--muted-2,#8A948F));font-size:13px}.slx-footer-efile,.slx-footer-efile span{color:#063C83!important;font-weight:850}.slx-footer-gov span{color:#C62118}.slx-footer-product span{color:#81C91C}.slx-footer-drive span{color:#063C83;font-weight:900}@media (max-width:1080px){.slx-footer-grid{grid-template-columns:repeat(2,1fr)}}@media (max-width:700px){.slx-global-footer .slx-footer-container{width:min(100% - 24px,1180px)}.slx-footer-grid{grid-template-columns:1fr}.slx-footer-bottom{flex-direction:column}}
+</style>
+</head>
+<body>
+<svg style="display:none" aria-hidden="true">
+  <symbol id="bolt" viewBox="0 0 24 24"><path d="M13.5 2.8 4.4 14.2h6.4l-1.2 7 10.2-12.8h-6.6l.3-5.6Z"/></symbol>
+  <symbol id="search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+  <symbol id="grid" viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="7" rx="2"/><rect x="13" y="4" width="7" height="7" rx="2"/><rect x="4" y="13" width="7" height="7" rx="2"/><rect x="13" y="13" width="7" height="7" rx="2"/></symbol>
+  <symbol id="file" viewBox="0 0 24 24"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v5h5"/></symbol>
+  <symbol id="clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v6l4 2"/></symbol>
+  <symbol id="bell" viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></symbol>
+  <symbol id="check" viewBox="0 0 24 24"><path d="m20 6-11 11-5-5"/></symbol>
+  <symbol id="archive" viewBox="0 0 24 24"><path d="M4 7h16v14H4z"/><path d="M3 3h18v4H3z"/><path d="M9 12h6"/></symbol>
+  <symbol id="settings" viewBox="0 0 24 24"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/><path d="M19 15a2 2 0 0 0 .4 2.2l.1.1-2.2 2.2-.1-.1A2 2 0 0 0 15 19l-.2.1-.8 2.9h-4l-.8-2.9L9 19a2 2 0 0 0-2.2.4l-.1.1-2.2-2.2.1-.1A2 2 0 0 0 5 15l-.1-.2-2.9-.8v-4l2.9-.8L5 9a2 2 0 0 0-.4-2.2l-.1-.1 2.2-2.2.1.1A2 2 0 0 0 9 5l.2-.1.8-2.9h4l.8 2.9.2.1a2 2 0 0 0 2.2-.4l.1-.1 2.2 2.2-.1.1A2 2 0 0 0 19 9l.1.2 2.9.8v4l-2.9.8-.1.2Z"/></symbol>
+  <symbol id="users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+</svg>
+
+<header class="topbar" aria-label="Navegación principal">
+  <button class="mobile-toggle" id="mobileToggle" aria-label="Abrir navegación">☰</button>
+  <a class="brand" href="#dashboard" data-route="dashboard" aria-label="SmartLicit inicio">
+    <span class="brand-mark"><span class="bolt-char">⚡</span></span>
+    <span>SmartLicit</span>
+  </a>
+  <nav class="topnav" aria-label="Productos SmartLicit">
+    <a href="#">Tender</a><a href="#">Pricing</a><a href="#">File</a><a class="active" href="#project" data-route="project">Lex</a><a href="#">IPG</a><a href="#">Mi Cuenta</a>
+  </nav>
+  <button class="solution-pill"><svg class="bolt-svg"><use href="#bolt"/></svg>Smart Lex</button>
+  <label class="search"><svg class="ico"><use href="#search"/></svg><input placeholder="Buscar proyecto, cliente, autoridad o expediente…" /></label>
+  <div class="topstatus">
+    <span class="pill lex"><span class="dot lex"></span>Lex activo</span>
+    <span class="pill file"><span class="dot file"></span>Smart File 6</span>
+    <span class="pill">13 abr 2026</span>
+    <button class="bell" aria-label="Notificaciones"><svg class="ico"><use href="#bell"/></svg></button>
+    <button class="acct"><span class="avatar">PM</span>Mi Cuenta</button>
+  </div>
+</header>
+
+<aside class="sidebar" aria-label="Navegación Smart Lex">
+  <div class="sidehead">
+    <div><span>Smart Lex</span><strong>IA jurídica para despachos</strong></div>
+    <button class="collapse" id="closeMobile" aria-label="Cerrar navegación">‹</button>
+  </div>
+  <nav class="side-nav">
+    <button class="active" data-route="dashboard"><svg class="ico"><use href="#grid"/></svg><span>Dashboard</span></button>
+    <button data-route="projects"><svg class="ico"><use href="#file"/></svg><span>Proyectos</span><span class="nav-count">11</span></button>
+    <button data-route="new"><svg class="bolt-svg"><use href="#bolt"/></svg><span>Nuevo proyecto</span></button>
+    <button data-route="documents"><svg class="ico"><use href="#file"/></svg><span>Centro documental</span><span class="nav-count">43</span></button>
+    <button data-route="alerts"><svg class="ico"><use href="#bell"/></svg><span>Alertas</span><span class="nav-count">9</span></button>
+    <button data-route="archived"><svg class="ico"><use href="#archive"/></svg><span>Archivados / cerrados</span></button>
+    <button data-route="account"><svg class="ico"><use href="#settings"/></svg><span>Cuenta / capacidad</span></button>
+  </nav>
+
+  <div class="side-section-title">Proyectos recientes</div>
+  <div class="recent-list">
+    <button class="recent-project" data-route="project"><div><strong>Amparo fiscal</strong><span>Grupo Atlas · Fiscal</span></div><em class="mini-state critical">Crítico</em></button>
+    <button class="recent-project" data-route="project"><div><strong>Daño civil</strong><span>Torres vs Segura · Civil</span></div><em class="mini-state">Activo</em></button>
+    <button class="recent-project" data-route="project" data-open-file="true"><div><strong>Cobro mercantil</strong><span>BLC · Mercantil</span></div><em class="mini-state file">Vinc.</em></button>
+    <button class="recent-project" data-route="project"><div><strong>Despido laboral</strong><span>Mendoza vs Insite · Laboral</span></div><em class="mini-state">Activo</em></button>
+    <button class="recent-project" data-route="project"><div><strong>Recurso administrativo</strong><span>Tecnova · Administrativo</span></div><em class="mini-state">Valid.</em></button>
+  </div>
+
+  <div class="sidecard">
+    <h4>Plan Despacho</h4>
+    <div class="planrow"><span>Proyectos activos</span><strong>11 / 15</strong></div>
+    <div class="planrow"><span>Capacidad libre</span><strong>4</strong></div>
+    <div class="progress-line"><span></span></div>
+  </div>
+</aside>
+
+<main class="main">
+  <div class="content-max">
+    <section class="view active" id="dashboardView">
+      <div id="dashboardData">
+        <div class="head">
+          <div>
+            <div class="crumb"><span class="spark"></span>Smart Lex / Dashboard</div>
+            <h1>Smart Lex</h1>
+            <p class="lead">IA jurídica para despachos y equipos legales. Organiza expedientes, clasifica documentos, detecta riesgos, genera borradores y conecta seguimiento procesal con Smart File.</p>
+          </div>
+          <div class="actions-head">
+            <button class="btn soft" data-route="new"><svg class="bolt-svg"><use href="#bolt"/></svg>Crear proyecto</button>
+            <button class="btn" data-route="projects">Ver proyectos</button>
+            <button class="btn ghost" id="showEmpty">Ver estado vacío</button>
+          </div>
+        </div>
+
+        <section class="kpis" aria-label="Indicadores Smart Lex">
+          <article class="kpi"><div><div class="ktop"><h3>Proyectos activos</h3><span class="kicon"><svg class="ico"><use href="#grid"/></svg></span></div><div class="num">11</div><p>7 con documentación completa</p></div><span class="trend good">Plan operativo</span></article>
+          <article class="kpi"><div><div class="ktop"><h3>Plazos críticos</h3><span class="kicon warn"><svg class="ico"><use href="#clock"/></svg></span></div><div class="num">4</div><p>2 vencen en 72 horas</p></div><span class="trend warn">Ventana crítica</span></article>
+          <article class="kpi"><div><div class="ktop"><h3>Documentos por revisar</h3><span class="kicon"><svg class="ico"><use href="#file"/></svg></span></div><div class="num">18</div><p>OCR y clasificación pendientes</p></div><span class="trend">Validación humana</span></article>
+          <article class="kpi"><div><div class="ktop"><h3>Smart File vinculado</h3><span class="kicon file"><svg class="bolt-svg"><use href="#bolt"/></svg></span></div><div class="num">6</div><p>3 expedientes con alertas nuevas</p></div><span class="trend file">Sincronizados</span></article>
+          <article class="kpi"><div><div class="ktop"><h3>Capacidad disponible</h3><span class="kicon"><svg class="ico"><use href="#check"/></svg></span></div><div class="num">4</div><p>Proyectos legales libres</p></div><span class="trend good">Despacho</span></article>
+        </section>
+
+        <div class="grid-2">
+          <section class="card">
+            <div class="card-head">
+              <div><h2>Cartera activa</h2><p>Cada proyecto entra por carga documental, lectura IA y seguimiento operativo.</p></div>
+              <button class="btn slim" data-route="projects">Listado maestro</button>
+            </div>
+            <div class="table-wrap">
+              <table aria-label="Cartera activa">
+                <thead><tr><th>Proyecto</th><th>Materia</th><th>Etapa</th><th>Autoridad</th><th>Fecha clave</th><th>Urgencia</th><th>Smart File</th><th>Acción</th></tr></thead>
+                <tbody>
+                  <tr><td><div class="project-name">Amparo fiscal / Grupo Atlas</div></td><td>Fiscal</td><td>Prevención</td><td>Juzgado de Distrito</td><td>18 abr</td><td><span class="badge critical">Crítico</span></td><td><span class="badge">Pendiente</span></td><td><button class="btn slim primary" data-route="project">Abrir</button></td></tr>
+                  <tr><td><div class="project-name">Daño civil / Torres vs Segura</div></td><td>Civil</td><td>Pruebas</td><td>Sala civil</td><td>22 abr</td><td><span class="badge active">Activo</span></td><td><span class="badge">Pendiente</span></td><td><button class="btn slim" data-route="project">Abrir</button></td></tr>
+                  <tr><td><div class="project-name">Cobro mercantil / Proveedora BLC</div></td><td>Mercantil</td><td>Demanda</td><td>Juzgado mercantil</td><td>30 abr</td><td><span class="badge active">Activo</span></td><td><span class="badge file">Vinculado</span></td><td><button class="btn slim" data-route="project" data-open-file="true">Abrir</button></td></tr>
+                  <tr><td><div class="project-name">Despido laboral / Mendoza vs Insite</div></td><td>Laboral</td><td>Contestación</td><td>Junta local</td><td>03 may</td><td><span class="badge active">Activo</span></td><td><span class="badge">Pendiente</span></td><td><button class="btn slim" data-route="project">Abrir</button></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <aside class="stack">
+            <section class="card">
+              <div class="card-head"><div><h2>Actividad reciente</h2><p>Últimos movimientos jurídicos y lectura de documentos.</p></div></div>
+              <div class="activity-list">
+                <div class="activity"><time>10:42</time><div><strong>Clasificación completada</strong><span>Amparo fiscal / Grupo Atlas quedó en etapa de prevención.</span></div></div>
+                <div class="activity"><time>09:18</time><div><strong>Nuevo PDF detectado</strong><span>Se agregó Contestación SAT.pdf al proyecto fiscal.</span></div></div>
+                <div class="activity"><time>Ayer</time><div><strong>Alerta Smart File</strong><span>Cobro mercantil / Proveedora BLC recibió movimiento oficial.</span></div></div>
+                <div class="activity"><time>Ayer</time><div><strong>Borrador actualizado</strong><span>Promoción de subsanación quedó en versión 2.</span></div></div>
+              </div>
+            </section>
+            <section class="card">
+              <div class="card-head"><div><h2>Accesos rápidos</h2><p>Componentes persistentes del sistema.</p></div></div>
+              <div class="quick-grid">
+                <button class="quick" data-route="new"><span class="brand-mark small"><span class="bolt-char">⚡</span></span><div><strong>Subir demanda</strong><span>Crear proyecto</span></div></button>
+                <button class="quick" data-route="alerts"><span class="brand-mark small"><span class="bolt-char">⚡</span></span><div><strong>Revisar plazos</strong><span>Alertas críticas</span></div></button>
+                <button class="quick" data-route="project" data-tab="writing"><span class="brand-mark small"><span class="bolt-char">⚡</span></span><div><strong>Generar escrito</strong><span>Borrador base</span></div></button>
+                <button class="quick" data-route="project" data-tab="file"><span class="brand-mark small efile"><span class="bolt-char">⚡</span></span><div><strong>Vincular Smart File</strong><span>Seguimiento</span></div></button>
+              </div>
+            </section>
+          </aside>
+        </div>
+      </div>
+
+      <div id="dashboardEmpty" class="hidden">
+        <div class="head">
+          <div><div class="crumb"><span class="spark"></span>Smart Lex / Dashboard</div><h1>Estado vacío del dashboard</h1><p class="lead">Ruta de onboarding para despachos que aún no han creado proyectos.</p></div>
+          <div class="actions-head"><button class="btn" id="showData">Volver al dashboard</button></div>
+        </div>
+        <section class="empty-state">
+          <span class="brand-mark"><span class="bolt-char">⚡</span></span>
+          <h2>Todavía no hay proyectos activos en Smart Lex</h2>
+          <p>Crea tu primer proyecto subiendo una demanda o una notificación de demanda. Después podrás cargar documentos complementarios, leer el asunto con IA y activar Smart File desde el rayo del proyecto.</p>
+          <div class="actions-head" style="justify-content:center"><button class="btn primary" data-route="new"><svg class="bolt-svg"><use href="#bolt"/></svg>Crear primer proyecto</button><button class="btn" data-route="new">Subir demanda</button></div>
+          <div class="empty-steps"><article><strong>1. Carga base</strong><span>Demanda o notificación</span></article><article><strong>2. Clasificación IA</strong><span>Materia, autoridad, partes y etapa</span></article><article><strong>3. Trabajo jurídico</strong><span>Análisis, escritos, alertas y Smart File</span></article></div>
+        </section>
+      </div>
+    </section>
+
+    <section class="view" id="projectsView">
+      <div class="head">
+        <div><div class="crumb"><span class="spark"></span>Smart Lex / Proyectos</div><h1>Listado maestro de proyectos</h1><p class="lead">Busca por cliente, materia, autoridad, expediente o estado de integración con Smart File.</p></div>
+        <div class="actions-head"><button class="btn soft" data-route="new"><svg class="bolt-svg"><use href="#bolt"/></svg>Crear proyecto</button></div>
+      </div>
+      <section class="filters">
+        <div class="field"><label>Buscar</label><input class="control" placeholder="cliente, materia, autoridad o expediente"></div>
+        <div class="field"><label>Materia</label><select class="control"><option>Todas</option><option>Fiscal</option><option>Civil</option><option>Mercantil</option><option>Laboral</option></select></div>
+        <div class="field"><label>Etapa</label><select class="control"><option>Todas</option><option>Prevención</option><option>Pruebas</option><option>Demanda</option></select></div>
+        <div class="field"><label>Urgencia</label><select class="control"><option>Todas</option><option>Crítico</option><option>Activo</option><option>Por validar</option></select></div>
+        <div class="field"><label>Smart File</label><select class="control"><option>Todos</option><option>Pendiente</option><option>Vinculado</option></select></div>
+        <button class="btn primary">Actualizar</button>
+      </section>
+      <div class="card" style="margin-bottom:14px">
+        <div class="filter-chips" aria-label="Filtros visuales de proyectos">
+          <button class="chip active" data-project-filter="all">Todos</button>
+          <button class="chip" data-project-filter="active">Activos</button>
+          <button class="chip file" data-project-filter="file">Con Smart File</button>
+          <button class="chip" data-project-filter="critical">Críticos</button>
+          <button class="chip" data-project-filter="pending">Smart File pendiente</button>
+        </div>
+      </div>
+      <section class="table-wrap">
+        <table aria-label="Listado maestro de proyectos">
+          <thead><tr><th>Proyecto</th><th>Materia</th><th>Etapa</th><th>Autoridad</th><th>Contraparte</th><th>Fecha clave</th><th>Estado</th><th>Smart File</th><th>Acción</th></tr></thead>
+          <tbody id="projectRows">
+            <tr data-status="critical pending"><td><div class="project-name">Amparo fiscal / Grupo Atlas</div><div class="sub"><span>Fiscal · Prevención · 8 docs</span></div></td><td>Fiscal</td><td>Prevención</td><td>Juzgado de Distrito</td><td>SAT</td><td>18 abr</td><td><span class="badge critical">Crítico</span></td><td><button class="ray"><span class="brand-mark small efile"><span class="bolt-char">⚡</span></span>Vincular<span class="tip">Vincular con Smart File</span></button></td><td><button class="btn slim primary" data-route="project">Abrir</button></td></tr>
+            <tr data-status="active pending"><td><div class="project-name">Daño civil / Torres vs Segura</div><div class="sub"><span>Civil · Pruebas · 5 docs</span></div></td><td>Civil</td><td>Pruebas</td><td>Sala civil</td><td>Segura</td><td>22 abr</td><td><span class="badge active">Activo</span></td><td><button class="ray"><span class="brand-mark small efile"><span class="bolt-char">⚡</span></span>Vincular<span class="tip">Vincular con Smart File</span></button></td><td><button class="btn slim" data-route="project">Abrir</button></td></tr>
+            <tr data-status="active pending"><td><div class="project-name">Fraude corporativo / Operadora Norte</div><div class="sub"><span>Penal · Análisis · 9 docs</span></div></td><td>Penal</td><td>Análisis</td><td>Fiscalía</td><td>O. Norte</td><td>26 abr</td><td><span class="badge active">Activo</span></td><td><button class="ray"><span class="brand-mark small efile"><span class="bolt-char">⚡</span></span>Vincular<span class="tip">Activar seguimiento en Smart File</span></button></td><td><button class="btn slim" data-route="project">Abrir</button></td></tr>
+            <tr data-status="active file"><td><div class="project-name">Cobro mercantil / Proveedora BLC</div><div class="sub"><span>Mercantil · Demanda · 4 docs</span></div></td><td>Mercantil</td><td>Demanda</td><td>Juzgado mercantil</td><td>BLC</td><td>30 abr</td><td><span class="badge active">Activo</span></td><td><span class="badge file">Sincronizado</span></td><td><button class="btn slim" data-route="project" data-open-file="true">Abrir</button></td></tr>
+            <tr data-status="active pending"><td><div class="project-name">Despido laboral / Mendoza vs Insite</div><div class="sub"><span>Laboral · Contestación · 7 docs</span></div></td><td>Laboral</td><td>Contestación</td><td>Junta local</td><td>Insite</td><td>03 may</td><td><span class="badge active">Activo</span></td><td><button class="ray"><span class="brand-mark small efile"><span class="bolt-char">⚡</span></span>Vincular<span class="tip">Vincular con Smart File</span></button></td><td><button class="btn slim" data-route="project">Abrir</button></td></tr>
+            <tr data-status="pending"><td><div class="project-name">Recurso administrativo / Tecnova</div><div class="sub"><span>Administrativa · Análisis · 3 docs</span></div></td><td>Administrativa</td><td>Análisis</td><td>Tribunal administrativo</td><td>Autoridad</td><td>07 may</td><td><span class="badge warn">Por validar</span></td><td><button class="ray"><span class="brand-mark small efile"><span class="bolt-char">⚡</span></span>Vincular<span class="tip">Vincular con Smart File</span></button></td><td><button class="btn slim" data-route="project">Abrir</button></td></tr>
+          </tbody>
+        </table>
+      </section>
+    </section>
+
+    <section class="view" id="newView">
+      <div class="head"><div><div class="crumb"><span class="spark"></span>Smart Lex / Nuevo proyecto</div><h1>Alta de proyecto</h1><p class="lead">Flujo de 4 pasos: documento inicial, complementarios, lectura IA y confirmación humana.</p></div><div class="actions-head"><button class="btn" data-route="dashboard">Cancelar</button></div></div>
+      <div class="stepper">
+        <div class="step-pill active" data-step-pill="1"><span class="n">1</span><strong>Documento inicial</strong></div>
+        <div class="step-pill" data-step-pill="2"><span class="n">2</span><strong>Complementarios</strong></div>
+        <div class="step-pill" data-step-pill="3"><span class="n">3</span><strong>Lectura IA</strong></div>
+        <div class="step-pill" data-step-pill="4"><span class="n">4</span><strong>Confirmación</strong></div>
+      </div>
+      <section class="wizard-content active" data-step="1">
+        <div class="grid-2">
+          <div class="dropzone"><div><span class="brand-mark"><span class="bolt-char">⚡</span></span><h2>Arrastra aquí la demanda inicial o notificación de demanda</h2><p>PDF nativo, escaneado u Office convertido a PDF. Smart Lex aplicará OCR cuando sea necesario. El proyecto se crea formalmente después de la lectura IA.</p><button class="btn primary">Seleccionar archivo</button><div class="source-tags" style="justify-content:center"><span class="badge">PDF</span><span class="badge">OCR</span><span class="badge">Office convertido a PDF</span></div></div></div>
+          <aside class="stack"><div class="card"><h2>Reglas de alta</h2><ul class="bullet-list"><li>El flujo debe ser claro incluso con un solo documento.</li><li>El documento inicial define primeras etiquetas del asunto.</li><li>Materia, autoridad y expediente pueden venir vacíos y corregirse después.</li><li>Si un dato no se confirma, mostrar Supuesto configurable.</li></ul></div><div class="card"><h2>Metadatos básicos</h2><div class="source-grid"><div class="source-card"><strong>Demanda inicial.pdf</strong><span>Documento base del proyecto.</span></div><div class="source-card"><strong>Notificación de demanda.pdf</strong><span>También permitido como disparador.</span></div></div></div></aside>
+        </div>
+      </section>
+      <section class="wizard-content" data-step="2">
+        <div class="grid-2"><div class="card"><h2>Carga de documentos complementarios</h2><p>Contestaciones, acuerdos, pruebas y demás piezas que dan contexto al proyecto.</p><div class="doc-cats" style="margin-top:14px"><div class="doc-cat"><strong>Contestaciones</strong><span>2 archivos</span></div><div class="doc-cat"><strong>Acuerdos</strong><span>3 archivos</span></div><div class="doc-cat"><strong>Pruebas</strong><span>4 archivos</span></div><div class="doc-cat"><strong>Sentencias</strong><span>0 archivos</span></div><div class="doc-cat"><strong>Anexos</strong><span>5 archivos</span></div><div class="doc-cat"><strong>Poderes / oficios</strong><span>2 archivos</span></div></div><div class="notice">Lote cargado · 8 documentos · 2 versiones · 1 duplicado potencial</div></div><aside class="card"><h2>Criterios de lectura</h2><ul class="bullet-list"><li>Ordenar por tipo documental, fecha y proyecto.</li><li>Detectar documentos repetidos o versiones posteriores.</li><li>Marcar soporte sensible: poderes, identificaciones, anexos fiscales.</li><li>Preservar cada archivo como evidencia del expediente del usuario.</li></ul></aside></div>
+      </section>
+      <section class="wizard-content" data-step="3">
+        <div class="reading-grid"><div class="card"><h2>Proceso de lectura documental</h2><p>Smart Lex lee, clasifica y deja trazabilidad suficiente para el usuario.</p><div class="big-progress"><span></span></div><strong style="font-size:28px;letter-spacing:-.05em">68%</strong><div class="status-list" style="margin-top:14px"><div class="status-row"><span>OCR y parsing</span><strong>Completo</strong></div><div class="status-row"><span>Clasificación documental</span><strong>Completo</strong></div><div class="status-row"><span>Extracción de entidades</span><strong>En proceso</strong></div><div class="status-row"><span>Sugerencia de proyecto</span><strong>En proceso</strong></div></div></div><aside class="card"><h2>Extracción visible</h2><div class="stat-mini"><span>Proyecto sugerido</span><strong>Amparo fiscal / Grupo Atlas</strong></div><div class="stat-mini"><span>Materia</span><strong>Fiscal</strong></div><div class="stat-mini"><span>Autoridad</span><strong>Juzgado de Distrito</strong></div><div class="stat-mini"><span>Expediente</span><strong>302/2026</strong></div><div class="stat-mini"><span>Fecha clave</span><strong>18 abr 2026</strong></div><div class="notice">El plazo crítico vence en 6 días. Faltan anexos para acreditar personería. Existe soporte documental suficiente para crear el proyecto.</div></aside></div>
+      </section>
+      <section class="wizard-content" data-step="4">
+        <div class="grid-2"><div class="card form-card"><h2>Validación humana de la clasificación</h2><p>Todos los campos quedan editables antes de confirmar el proyecto.</p><div class="form-grid" style="margin-top:14px"><div class="field"><label>Nombre del proyecto</label><input class="control" value="Amparo fiscal / Grupo Atlas"></div><div class="field"><label>Materia</label><input class="control" value="Fiscal"></div><div class="field"><label>Submateria</label><input class="control" value="Amparo"></div><div class="field"><label>Jurisdicción</label><input class="control" value="Federal"></div><div class="field"><label>Autoridad</label><input class="control" value="Juzgado Décimo de Distrito"></div><div class="field"><label>Expediente</label><input class="control" value="302/2026"></div><div class="field"><label>Actor / promovente</label><input class="control" value="Grupo Atlas"></div><div class="field"><label>Demandado</label><input class="control" value="SAT"></div><div class="field"><label>Etapa procesal</label><input class="control" value="Prevención"></div><div class="field"><label>Fecha clave</label><input class="control" value="18 abr 2026"></div><div class="field"><label>Urgencia</label><input class="control" value="Alta"></div><div class="field"><label>Riesgo preliminar</label><input class="control" value="Medio - alto"></div></div></div><aside class="stack"><div class="card"><h2>Fuentes utilizadas</h2><div class="source-grid"><div class="source-card"><strong>Expediente del usuario</strong><span>Demanda inicial.pdf · Oficio de prevención.pdf</span></div><div class="source-card"><strong>Corpus jurídico</strong><span>Ley de Amparo · referencia separada</span></div></div><div class="divider"></div><div class="stat-mini"><span>Confianza de clasificación</span><strong>84%</strong></div></div><button class="btn primary" id="confirmProject"><svg class="bolt-svg"><use href="#bolt"/></svg>Confirmar proyecto</button></aside></div>
+      </section>
+      <div class="actions-head" style="margin-top:14px"><button class="btn" id="prevStep">Anterior</button><button class="btn primary" id="nextStep">Continuar</button></div>
+    </section>
+
+    <section class="view" id="documentsView">
+      <div class="head"><div><div class="crumb"><span class="spark"></span>Smart Lex / Centro documental</div><h1>Centro documental global</h1><p class="lead">Todos los documentos de todos los proyectos. El centro global no reemplaza la vista documental por proyecto.</p></div><div class="actions-head"><button class="btn soft">Subir documento</button><button class="btn">Exportar índice</button></div></div>
+      <div class="doc-summary"><section class="table-wrap"><table><thead><tr><th>Archivo</th><th>Proyecto</th><th>Tipo documental</th><th>Fecha</th><th>Versión</th><th>Estado IA</th><th>Riesgo / sensibilidad</th><th>Acción</th></tr></thead><tbody><tr><td><strong>Demanda inicial.pdf</strong></td><td>Amparo fiscal / Grupo Atlas</td><td>Demanda</td><td>10 abr</td><td>v1</td><td><span class="badge active">Indexado</span></td><td>Medio</td><td><button class="btn slim">Abrir</button></td></tr><tr><td><strong>Oficio de prevención.pdf</strong></td><td>Amparo fiscal / Grupo Atlas</td><td>Acuerdo</td><td>12 abr</td><td>v1</td><td><span class="badge active">Indexado</span></td><td>Crítico</td><td><button class="btn slim">Abrir</button></td></tr><tr><td><strong>Contestación SAT.pdf</strong></td><td>Amparo fiscal / Grupo Atlas</td><td>Contestación</td><td>13 abr</td><td>v2</td><td><span class="badge warn">OCR</span></td><td>Medio</td><td><button class="btn slim">Abrir</button></td></tr><tr><td><strong>Poder notarial.pdf</strong></td><td>Amparo fiscal / Grupo Atlas</td><td>Soporte</td><td>10 abr</td><td>v1</td><td><span class="badge active">Indexado</span></td><td><span class="badge critical">Sensible</span></td><td><button class="btn slim">Abrir</button></td></tr><tr><td><strong>Anexo fiscal.xlsx</strong></td><td>Amparo fiscal / Grupo Atlas</td><td>Anexo</td><td>13 abr</td><td>v2</td><td><span class="badge">Versión</span></td><td>Medio</td><td><button class="btn slim">Abrir</button></td></tr></tbody></table></section><aside class="side-stats"><div class="side-stat"><strong>5</strong><span>Documentos sensibles</span></div><div class="side-stat"><strong>7</strong><span>Pendientes de OCR</span></div><div class="side-stat"><strong>4</strong><span>Versiones detectadas</span></div></aside></div>
+    </section>
+
+    <section class="view" id="projectView">
+      <header class="project-header">
+        <div class="project-top"><div class="project-title"><div class="crumb"><span class="spark"></span>Smart Lex / Proyectos / Amparo fiscal</div><h1>Amparo fiscal / Grupo Atlas</h1><div class="project-meta"><span class="badge critical">Fiscal</span><span class="badge critical">Prevención</span><span class="badge critical">Crítico</span><span class="badge">Última lectura IA · 13 abr · 10:42</span><span class="badge" id="projectFileBadge">Smart File pendiente</span><span class="badge warn">Fecha clave · 18 abr 2026</span></div></div><div class="actions-head"><button class="btn primary" data-project-tab="writing"><svg class="bolt-svg"><use href="#bolt"/></svg>Generar escrito</button><button class="btn file" data-project-tab="file">Vincular Smart File</button></div></div>
+        <nav class="project-tabs" aria-label="Tabs del proyecto"><button class="active" data-project-tab="summary">Resumen</button><button data-project-tab="docs">Documentos</button><button data-project-tab="timeline">Línea de tiempo</button><button data-project-tab="analysis">Análisis</button><button data-project-tab="writing">Escritos</button><button class="file" data-project-tab="file">Smart File</button><button data-project-tab="collab">Colaboración</button></nav>
+      </header>
+      <div class="project-shell">
+        <aside class="project-left">
+          <section class="card"><div class="section-label">Proyecto abierto</div><nav class="mini-nav"><button class="active" data-project-tab="summary">Resumen</button><button data-project-tab="docs">Documentos</button><button data-project-tab="timeline">Línea de tiempo</button><button data-project-tab="analysis">Análisis + estrategia</button><button data-project-tab="writing">Escritos</button><button class="file" data-project-tab="file">Smart File</button><button data-project-tab="collab">Colaboración</button></nav></section>
+          <section class="card"><h3>Ficha breve</h3><div class="stat-mini"><span>Materia</span><strong>Fiscal</strong></div><div class="stat-mini"><span>Autoridad</span><strong>Juzgado de Distrito</strong></div><div class="stat-mini"><span>Contraparte</span><strong>SAT</strong></div><div class="stat-mini"><span>Smart File</span><strong>Pendiente</strong></div></section>
+          <section class="card"><h3>Progreso documental</h3><div class="bar" style="margin:12px 0 6px"><span></span></div><p>72% completo · 8 documentos · 3 versiones · 1 pendiente</p><div class="divider"></div><div class="stat-mini"><span>Plazo fatal</span><strong>6 días</strong></div><div class="stat-mini"><span>Revisión interna</span><strong>16 abr</strong></div></section>
+        </aside>
+
+        <section class="project-center">
+          <article class="project-tab active" id="tab-summary">
+            <div class="card"><div class="card-head"><div><h2>Resumen ejecutivo del caso</h2><p>Lectura corta que prioriza hechos, plazos, riesgo y acción.</p></div><span class="badge critical">Riesgo medio-alto</span></div><div class="split"><div><h3>Hechos clave</h3><ul class="bullet-list"><li>La autoridad previno anexos y acreditación de personería.</li><li>El plazo crítico vence el 18 de abril de 2026.</li><li>Existe soporte documental suficiente para subsanar.</li></ul><h3 style="margin-top:16px">Problema jurídico</h3><p style="font-size:13px;color:var(--ink);line-height:1.55;margin-top:8px">Riesgo de desechamiento parcial si no se cumple el requerimiento. Conviene preparar subsanación y revisar suspensión.</p></div><aside class="stack"><div class="info-grid" style="grid-template-columns:1fr"><div class="info-card"><strong>72%</strong><span>Completitud documental</span></div><div class="info-card"><strong>6 días</strong><span>Plazo disponible</span></div><div class="info-card"><strong>Medio-alto</strong><span>Riesgo preliminar</span></div></div></aside></div><div class="divider"></div><div class="actions-head" style="justify-content:flex-start"><button class="btn soft" data-project-tab="analysis">Abrir análisis</button><button class="btn primary" data-project-tab="writing">Generar escrito</button><button class="btn file" data-project-tab="file">Vincular Smart File</button></div></div>
+          </article>
+
+          <article class="project-tab" id="tab-docs">
+            <div class="card"><div class="card-head"><div><h2>Documentos clasificados por tipo</h2><p>Todas las piezas del proyecto viven con versión, fecha y estado de lectura.</p></div><button class="btn slim">Subir documento</button></div><div class="table-wrap"><table><thead><tr><th>Archivo</th><th>Tipo</th><th>Versión</th><th>Estado</th><th>Riesgo</th><th>Acción</th></tr></thead><tbody><tr><td><strong>Demanda inicial.pdf</strong></td><td>Demanda</td><td>v1</td><td><span class="badge active">Indexado</span></td><td>Medio</td><td><button class="btn slim">Ver ficha</button></td></tr><tr><td><strong>Contestación SAT.pdf</strong></td><td>Contestación</td><td>v2</td><td><span class="badge warn">OCR</span></td><td>Medio</td><td><button class="btn slim">Ver ficha</button></td></tr><tr><td><strong>Oficio de prevención.pdf</strong></td><td>Acuerdo</td><td>v1</td><td><span class="badge active">Indexado</span></td><td><span class="badge critical">Crítico</span></td><td><button class="btn slim">Ver ficha</button></td></tr><tr><td><strong>Poder notarial.pdf</strong></td><td>Soporte</td><td>v1</td><td><span class="badge active">Indexado</span></td><td>Sensible</td><td><button class="btn slim">Ver ficha</button></td></tr><tr><td><strong>Anexo fiscal.xlsx</strong></td><td>Anexo</td><td>v2</td><td><span class="badge">Versión</span></td><td>Medio</td><td><button class="btn slim">Ver ficha</button></td></tr></tbody></table></div><div class="grid-2" style="margin-top:12px"><div class="card" style="box-shadow:none"><h3>Ficha jurídica automática</h3><div class="stat-mini"><span>Tipo documental</span><strong>Acuerdo</strong></div><div class="stat-mini"><span>Fecha</span><strong>12 abr 2026</strong></div><div class="stat-mini"><span>Partes</span><strong>Grupo Atlas / SAT</strong></div><div class="stat-mini"><span>Riesgo</span><strong>Desechamiento parcial</strong></div><div class="stat-mini"><span>Fuente</span><strong>Expediente del usuario</strong></div></div><div class="card" style="box-shadow:none"><h3>Trazabilidad documental</h3><ul class="bullet-list"><li>Versión 2 detectada para Contestación SAT.pdf.</li><li>Anexo fiscal.xlsx conserva histórico de cambios.</li><li>Identificación representante.pdf sigue pendiente de validación.</li></ul></div></div></div>
+          </article>
+
+          <article class="project-tab" id="tab-timeline">
+            <div class="card"><div class="card-head"><div><h2>Línea de tiempo procesal + alertas</h2><p>Reúne documentos, movimientos, recordatorios y próximos pasos del mismo proyecto.</p></div><div class="actions-head"><button class="btn slim soft">Crear alerta</button><button class="btn slim">Marcar hito</button></div></div><div class="split"><div class="timeline"><div class="time-item"><time>10 abr</time><span class="time-dot"></span><div class="time-card"><strong>Demanda presentada</strong><span>Se cargó demanda inicial y se abrió el análisis del caso.</span></div></div><div class="time-item"><time>12 abr</time><span class="time-dot"></span><div class="time-card"><strong>Prevención emitida</strong><span>La autoridad solicita anexos y acreditación de personería.</span></div></div><div class="time-item"><time>13 abr</time><span class="time-dot"></span><div class="time-card"><strong>Lectura IA completada</strong><span>Proyecto clasificado y listo para validación humana.</span></div></div><div class="time-item"><time>18 abr</time><span class="time-dot"></span><div class="time-card"><strong>Plazo fatal</strong><span>Fecha crítica para subsanar y evitar afectación procesal.</span></div></div></div><aside class="stack"><div class="info-card"><strong>Prevención</strong><span>Estado actual</span></div><div class="info-card"><strong>Preparar escrito</strong><span>Próximo paso sugerido</span></div><div class="info-card"><strong>18 abr · fatal</strong><span>Plazos y recordatorios</span></div><div class="card" style="box-shadow:none"><h3>Alertas del proyecto</h3><ul class="bullet-list"><li>Plazo crítico detectado</li><li>Documento pendiente</li><li>Observación interna</li><li>Smart File pendiente</li></ul><button class="btn slim" style="margin-top:10px">Marcar resuelto</button></div></aside></div></div>
+          </article>
+
+          <article class="project-tab" id="tab-analysis">
+            <div class="card"><div class="card-head"><div><h2>Análisis jurídico + estrategia</h2><p>Hechos, problema jurídico, riesgos, evidencia y recomendación priorizada en una sola vista.</p></div><span class="badge">Fuente separada</span></div><div class="analysis-grid"><div class="analysis-box"><h3>Hechos relevantes</h3><ul class="bullet-list"><li>La autoridad requirió anexos complementarios y personería.</li><li>La notificación ya se encuentra documentada en el proyecto.</li></ul></div><div class="analysis-box"><h3>Problema jurídico</h3><p>Cómo subsanar la prevención sin afectar la acción principal. Qué elementos faltan para sostener una solicitud de suspensión.</p></div><div class="analysis-box"><h3>Riesgos</h3><div class="source-tags"><span class="badge critical">Desechamiento</span><span class="badge warn">Plazo fatal</span><span class="badge">Personería</span></div></div><div class="analysis-box"><h3>Evidencia disponible</h3><div class="source-tags"><span class="badge">Demanda inicial</span><span class="badge">Oficio de prevención</span><span class="badge">Poder notarial</span></div></div><div class="analysis-box"><h3>Evidencia faltante</h3><div class="source-tags"><span class="badge warn">Anexo fiscal actualizado</span><span class="badge warn">Validación de identidad</span></div></div><div class="analysis-box"><h3>Fuentes</h3><div class="source-tags"><span class="badge">Expediente del usuario</span><span class="badge">Corpus jurídico</span><span class="badge">Inferencia estratégica</span></div></div></div><div class="strategy-card"><h3>Estrategia recomendada</h3><div class="strategy-item"><span class="n">1</span><div><strong>Subsanar prevención</strong><span>Preparar escrito, revisar anexos y calendarizar entrega.</span></div><span class="badge critical">Alta</span></div><div class="strategy-item"><span class="n">2</span><div><strong>Reforzar personería</strong><span>Validar poderes, anexos y documento de identificación.</span></div><span class="badge warn">Media</span></div><div class="strategy-item"><span class="n">3</span><div><strong>Preparar defensa complementaria</strong><span>Mantener borrador y notas para escenarios posteriores.</span></div><span class="badge">Media</span></div></div><div class="notice">Smart Lex asiste el análisis. La revisión y decisión final corresponde al abogado.</div></div>
+          </article>
+
+          <article class="project-tab" id="tab-writing">
+            <div class="card"><div class="card-head"><div><h2>Escritos / borradores</h2><p>El abogado define alcance, fuentes y tono antes de generar.</p></div><div class="actions-head"><button class="btn slim soft" id="generateDraft">Generar borrador</button><button class="btn slim">Guardar base</button><button class="btn slim">Exportar</button></div></div><div class="writer-grid"><aside><div class="section-label">Tipo de escrito</div><div class="template-list"><button class="active">Contestación</button><button>Promoción</button><button>Escrito libre</button><button>Resumen ejecutivo</button><button>Matriz de riesgo</button></div><div class="divider"></div><div class="field"><label>Objetivo</label><input class="control" value="Subsanar prevención"></div><div class="field" style="margin-top:8px"><label>Tono</label><input class="control" value="Formal técnico"></div><div class="field" style="margin-top:8px"><label>Fuentes</label><input class="control" value="Expediente + corpus"></div><div class="field" style="margin-top:8px"><label>Extensión</label><input class="control" value="Breve"></div></aside><div><div class="analysis-box"><h3>Vista previa de estructura</h3><ol class="microcopy" style="line-height:1.7;margin-bottom:0"><li>Encabezado y partes</li><li>Antecedentes relevantes</li><li>Atención a la prevención</li><li>Fundamento legal</li><li>Petitorios</li></ol></div><div class="draft" style="margin-top:12px"><h3>Borrador editable</h3><p><strong>HECHOS</strong></p><p>1. Con fecha 12 de abril se notificó prevención a la parte actora respecto de anexos y personería.</p><p>2. Del expediente y de los documentos cargados se advierte que la omisión puede subsanarse dentro del plazo fatal.</p><p><strong>FUNDAMENTO</strong></p><p>Se cita la norma aplicable y se identifican por separado los documentos del expediente del usuario y el corpus jurídico. <span class="placeholder">Espacio editable para datos no confirmados</span>.</p></div></div></div></div>
+          </article>
+
+          <article class="project-tab" id="tab-file">
+            <div class="file-panel" id="filePending"><div class="card-head"><div><h2>Smart File como integración</h2><p>Smart File aparece como integración vinculable, no como módulo confundido con Smart Lex.</p></div><span class="brand-mark efile"><span class="bolt-char">⚡</span></span></div><div class="grid-2"><div><ul class="bullet-list file"><li>Monitorea movimientos oficiales del expediente en portales o fuentes conectadas.</li><li>Trae alertas procesales de vuelta al proyecto legal en Smart Lex.</li><li>Permite mantener análisis, escritos y seguimiento en un solo flujo.</li></ul><div class="notice" style="border-color:rgba(89,89,247,.22);background:rgba(173,187,248,.20);color:var(--efile-deep)">Este proyecto aún no está vinculado a Smart File. Si la fuente no puede validarse, mantener estado pendiente.</div></div><aside><h3>Datos del expediente a vincular</h3><div class="file-form"><div class="field"><label>No. expediente</label><input class="control" value="302/2026"></div><div class="field"><label>Fuente / portal</label><input class="control" value="Supuesto configurable"></div><div class="field"><label>Autoridad</label><input class="control" value="Juzgado Décimo de Distrito"></div><div class="field"><label>Cliente / actor</label><input class="control" value="Grupo Atlas"></div><div class="field"><label>Contraparte</label><input class="control" value="SAT"></div><div class="field"><label>Responsable</label><input class="control" value="Socio líder"></div></div><button class="btn file" id="linkFile" style="margin-top:12px">Vincular expediente</button></aside></div></div>
+            <div class="file-panel hidden" id="fileLinked"><div class="card-head"><div><h2>Expediente conectado</h2><p>Fuente, última actualización y alertas activas sincronizadas.</p></div><span class="badge file">3 alertas activas</span></div><div class="info-grid"><div class="info-card"><strong>845/2025</strong><span>No. expediente</span></div><div class="info-card"><strong>Portal judicial</strong><span>Fuente conectada</span></div><div class="info-card"><strong>Hoy · 08:47</strong><span>Última actualización</span></div></div><div class="file-feed"><div class="file-event"><time>Hoy</time><div><strong>Nuevo acuerdo</strong><span>Se agregó un movimiento con acuerdo de trámite en el expediente.</span></div></div><div class="file-event"><time>Ayer</time><div><strong>Notificación recibida</strong><span>Smart File detectó una notificación con efecto procesal.</span></div></div><div class="file-event"><time>08 abr</time><div><strong>Cambio de estatus</strong><span>El asunto cambió a “en revisión”.</span></div></div></div><div class="actions-head" style="justify-content:flex-start;margin-top:12px"><button class="btn file">Actualizar timeline</button><button class="btn file">Crear alerta</button><button class="btn">Revisar borrador</button><button class="btn ghost" id="unlinkFile">Ver estado pendiente</button></div></div>
+          </article>
+
+          <article class="project-tab" id="tab-collab">
+            <div class="card"><div class="card-head"><div><h2>Colaboración</h2><p>Comentarios internos, responsables, checklist y siguiente corte del asunto.</p></div><div class="actions-head"><button class="btn slim soft">Agregar nota</button><button class="btn slim">Asignar tarea</button><button class="btn slim">Exportar resumen</button><button class="btn slim">Archivar proyecto</button></div></div><div class="grid-2"><div class="comment-list"><div class="comment"><div class="comment-head"><strong>Socio líder</strong><span class="badge warn">Pendiente</span></div><p>Definir hoy si se prepara también suspensión provisional.</p></div><div class="comment"><div class="comment-head"><strong>Asociado</strong><span class="badge warn">Pendiente</span></div><p>Falta validar anexo fiscal actualizado y la identificación del representante.</p></div><div class="comment"><div class="comment-head"><strong>Smart Lex</strong><span class="badge active">Hecho</span></div><p>Se detectó coherencia suficiente para generar borrador base con fuentes separadas.</p></div></div><aside class="stack"><div class="card" style="box-shadow:none"><h3>Responsables</h3><div class="stat-mini"><span>Socio líder</span><strong>Principal</strong></div><div class="stat-mini"><span>Asociado</span><strong>Revisión jurídica</strong></div><div class="stat-mini"><span>Pasante</span><strong>Control documental</strong></div><div class="stat-mini"><span>Próximo corte</span><strong>15 abr 2026</strong></div></div><div class="card" style="box-shadow:none"><h3>Checklist</h3><div class="checklist"><label class="check"><input type="checkbox"> Validar personería</label><label class="check"><input type="checkbox"> Adjuntar anexo fiscal</label><label class="check"><input type="checkbox"> Aprobar borrador base</label><label class="check"><input type="checkbox"> Definir vínculo Smart File</label></div></div></aside></div></div>
+          </article>
+        </section>
+
+        <aside class="project-right">
+          <section class="assistant-card"><h3>Asistente Smart Lex</h3><p>Observaciones y acciones recomendadas para el proyecto activo.</p><div class="assistant-actions"><button class="chip active">Subsanar</button><button class="chip">Revisar anexos</button><button class="chip file">Smart File</button><button class="chip">Borrador</button></div><div class="divider"></div><ul class="bullet-list"><li>Próxima acción: preparar escrito de subsanación.</li><li>Confirmar anexo fiscal actualizado.</li><li>Definir si procede suspensión provisional.</li></ul></section>
+          <section class="assistant-card"><h3>Observaciones</h3><textarea class="note">Revisar si la prevención modifica el alcance de la suspensión. Confirmar fuente antes de activar Smart File.</textarea></section>
+          <section class="assistant-card"><h3>Checklist operativo</h3><div class="checklist"><label class="check"><input type="checkbox" checked> Demanda clasificada</label><label class="check"><input type="checkbox" checked> Oficio de prevención indexado</label><label class="check"><input type="checkbox"> Validar personería</label><label class="check"><input type="checkbox"> Aprobar borrador</label></div></section>
+          <div class="autosave"><span>Autosave activo</span><span>Drive listo · 10:42</span></div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="view" id="alertsView">
+      <div class="head"><div><div class="crumb"><span class="spark"></span>Smart Lex / Alertas</div><h1>Alertas globales</h1><p class="lead">La sección global muestra alertas de todos los proyectos. Dentro de proyecto, las alertas viven con línea de tiempo.</p></div><button class="btn soft">Crear recordatorio</button></div>
+      <div class="card" style="margin-bottom:14px"><div class="filter-chips"><button class="chip active" data-alert-filter="all">Todas</button><button class="chip" data-alert-filter="critical">Críticas</button><button class="chip file" data-alert-filter="file">Smart File</button><button class="chip" data-alert-filter="docs">Documentos</button><button class="chip" data-alert-filter="internal">Internas</button><button class="chip" data-alert-filter="resolved">Resueltas</button></div></div>
+      <div class="alert-feed" id="alertFeed"><article class="alert-card" data-type="critical"><div><strong>Plazo crítico · Amparo fiscal / Grupo Atlas</strong><p>La prevención vence el 18 de abril y requiere anexos faltantes.</p></div><span class="badge critical">Alta</span></article><article class="alert-card" data-type="docs"><div><strong>Documento pendiente · Identificación representante</strong><p>Sigue sin validación documental dentro del proyecto fiscal.</p></div><span class="badge warn">Media</span></article><article class="alert-card" data-type="file"><div><strong>Movimiento Smart File · Cobro mercantil / BLC</strong><p>Nuevo acuerdo detectado por expediente conectado.</p></div><span class="badge file">Smart File</span></article><article class="alert-card" data-type="internal"><div><strong>Observación interna · Daño civil</strong><p>Revisar si conviene ampliar pruebas antes del próximo corte.</p></div><span class="badge">Interna</span></article><article class="alert-card" data-type="resolved"><div><strong>OCR completado · Recurso administrativo</strong><p>Documento técnico quedó listo para revisión humana.</p></div><span class="badge active">Resuelta</span></article></div>
+    </section>
+
+    <section class="view" id="archivedView">
+      <div class="head"><div><div class="crumb"><span class="spark"></span>Smart Lex / Archivados</div><h1>Archivados y cerrados</h1><p class="lead">Proyectos que liberan capacidad o conservan trazabilidad consultable.</p></div></div>
+      <section class="filters"><div class="field"><label>Buscar</label><input class="control" placeholder="cliente, materia, autoridad o expediente"></div><div class="field"><label>Materia</label><select class="control"><option>Todas</option></select></div><div class="field"><label>Etapa</label><select class="control"><option>Archivados</option><option>Cerrados</option><option>Reactivables</option></select></div><div class="field"><label>Urgencia</label><select class="control"><option>Todas</option></select></div><button class="btn primary">Filtrar</button></section>
+      <section class="table-wrap"><table><thead><tr><th>Proyecto</th><th>Materia</th><th>Motivo de cierre</th><th>Fecha</th><th>Responsable</th><th>Acción</th></tr></thead><tbody><tr><td><strong>Cobro mercantil / Proveedora BLC</strong></td><td>Mercantil</td><td>Convenio logrado</td><td>02 abr</td><td>Socio líder</td><td><button class="btn slim">Reactivar</button></td></tr><tr><td><strong>Recurso administrativo / Tecnova</strong></td><td>Administrativa</td><td>Sin continuidad procesal</td><td>28 mar</td><td>Equipo fiscal</td><td><button class="btn slim">Ver detalle</button></td></tr><tr><td><strong>Daño civil / Torres vs Segura</strong></td><td>Civil</td><td>Sentencia ejecutoriada</td><td>14 mar</td><td>Socio litigio</td><td><button class="btn slim">Ver detalle</button></td></tr><tr><td><strong>Consulta corporativa / Norte</strong></td><td>Corporativo</td><td>Proyecto cerrado por cliente</td><td>07 mar</td><td>Área corporativa</td><td><button class="btn slim">Reactivar</button></td></tr></tbody></table></section>
+    </section>
+
+    <section class="view" id="accountView">
+      <div class="head"><div><div class="crumb"><span class="spark"></span>Smart Lex / Cuenta / Capacidad</div><h1>Capacidad operativa de Smart Lex</h1><p class="lead">Smart Lex se cobra por proyecto legal. No usa tokens ni add-on WhatsApp.</p></div><button class="btn soft">Gestionar capacidad</button></div>
+      <section class="kpis" style="grid-template-columns:repeat(4,minmax(0,1fr))"><article class="kpi"><div><h3>Plan activo</h3><div class="num">Despacho</div><p>Operación media</p></div><span class="trend">Activo</span></article><article class="kpi"><div><h3>Uso actual</h3><div class="num">11 / 15</div><p>Proyectos activos</p></div><span class="trend warn">73%</span></article><article class="kpi"><div><h3>Disponibles</h3><div class="num">4</div><p>Capacidad libre</p></div><span class="trend good">Libre</span></article><article class="kpi"><div><h3>Semáforo</h3><div class="num">Activo</div><p>Sin bloqueo operativo</p></div><span class="trend good">OK</span></article></section>
+      <div class="plan-grid"><article class="plan"><h3>Free</h3><div class="big">1</div><p>Proyecto individual. Entrada individual. Sin tokens · sin WA.</p></article><article class="plan"><h3>Profesional</h3><div class="big">10</div><p>Práctica o despacho pequeño. Capacidad por proyecto.</p></article><article class="plan featured"><h3>Despacho</h3><div class="big">15</div><p>Plan activo. Operación media. Capacidad por proyecto.</p></article><article class="plan"><h3>Gran Despacho</h3><div class="big">30</div><p>Alta capacidad. Capacidad por proyecto.</p></article></div>
+      <div class="grid-2" style="margin-top:14px"><section class="card"><h2>Proyectos próximos a cierre</h2><ul class="bullet-list"><li>Cobro mercantil / Proveedora BLC · listo para archivado</li><li>Daño civil / Torres vs Segura · sin movimientos en 21 días</li><li>Recurso administrativo / Tecnova · pendiente de confirmación</li></ul></section><aside class="card"><h2>Notas de producto</h2><div class="note-list"><div>Smart Lex se cobra por proyecto legal.</div><div>No usar tokens.</div><div>No usar add-on WhatsApp.</div><div>Capacidad liberable al archivar/cerrar proyectos.</div></div></aside></div>
+    </section>
+  </div>
+</main>
+
+<div class="toast" id="toast">Estado guardado</div>
+<script>
+const routes={dashboard:'dashboardView',projects:'projectsView',new:'newView',documents:'documentsView',project:'projectView',alerts:'alertsView',archived:'archivedView',account:'accountView'};
+const labels={dashboard:'Dashboard',projects:'Proyectos',new:'Nuevo proyecto',documents:'Centro documental',project:'Proyecto abierto',alerts:'Alertas',archived:'Archivados / cerrados',account:'Cuenta / capacidad'};
+function toast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');clearTimeout(window.__toast);window.__toast=setTimeout(()=>el.classList.remove('show'),2200)}
+function showRoute(route, push=true){
+  if(!routes[route]) route='dashboard';
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById(routes[route]).classList.add('active');
+  document.querySelectorAll('[data-route]').forEach(b=>b.classList.toggle('active', b.dataset.route===route && b.closest('.side-nav')));
+  if(push) history.replaceState(null,'','#'+route);
+  document.body.classList.remove('sideopen');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+document.addEventListener('click',e=>{
+  const routeBtn=e.target.closest('[data-route]');
+  if(routeBtn){e.preventDefault();showRoute(routeBtn.dataset.route);if(routeBtn.dataset.tab) showProjectTab(routeBtn.dataset.tab);if(routeBtn.dataset.openFile) showProjectTab('file');}
+  const tabBtn=e.target.closest('[data-project-tab]');
+  if(tabBtn){e.preventDefault();showProjectTab(tabBtn.dataset.projectTab);}
+});
+function showProjectTab(tab){
+  const map={summary:'tab-summary',docs:'tab-docs',timeline:'tab-timeline',analysis:'tab-analysis',writing:'tab-writing',file:'tab-file',collab:'tab-collab'};
+  if(!map[tab]) tab='summary';
+  showRoute('project',false);
+  document.querySelectorAll('.project-tab').forEach(x=>x.classList.remove('active'));
+  document.getElementById(map[tab]).classList.add('active');
+  document.querySelectorAll('[data-project-tab]').forEach(x=>x.classList.toggle('active',x.dataset.projectTab===tab));
+  history.replaceState(null,'','#project/'+tab);
+}
+let step=1;
+function renderStep(){
+  document.querySelectorAll('.wizard-content').forEach(x=>x.classList.toggle('active',Number(x.dataset.step)===step));
+  document.querySelectorAll('.step-pill').forEach(x=>{const n=Number(x.dataset.stepPill);x.classList.toggle('active',n===step);x.classList.toggle('done',n<step)});
+  document.getElementById('prevStep').style.visibility=step===1?'hidden':'visible';
+  document.getElementById('nextStep').textContent=step===4?'Listo':'Continuar';
+}
+document.getElementById('nextStep').onclick=()=>{if(step<4){step++;renderStep()}else{toast('Proyecto listo para confirmación humana')}};
+document.getElementById('prevStep').onclick=()=>{if(step>1){step--;renderStep()}};
+document.querySelectorAll('.step-pill').forEach(p=>p.onclick=()=>{step=Number(p.dataset.stepPill);renderStep()});
+renderStep();
+
+document.getElementById('confirmProject').onclick=()=>{toast('Proyecto guardado correctamente');showProjectTab('summary')};
+document.getElementById('generateDraft').onclick=()=>toast('Borrador generado · listo para revisión humana');
+
+document.getElementById('linkFile').onclick=()=>{document.getElementById('filePending').classList.add('hidden');document.getElementById('fileLinked').classList.remove('hidden');document.getElementById('projectFileBadge').textContent='Smart File vinculado';document.getElementById('projectFileBadge').classList.add('file');toast('Expediente vinculado con Smart File')};
+document.getElementById('unlinkFile').onclick=()=>{document.getElementById('fileLinked').classList.add('hidden');document.getElementById('filePending').classList.remove('hidden');document.getElementById('projectFileBadge').textContent='Smart File pendiente';document.getElementById('projectFileBadge').classList.remove('file');toast('Vista pendiente restaurada')};
+
+document.querySelectorAll('[data-project-filter]').forEach(btn=>btn.onclick=()=>{document.querySelectorAll('[data-project-filter]').forEach(b=>b.classList.remove('active'));btn.classList.add('active');const f=btn.dataset.projectFilter;document.querySelectorAll('#projectRows tr').forEach(r=>{const s=r.dataset.status||'';r.classList.toggle('hidden',!(f==='all'||s.includes(f)))})});
+document.querySelectorAll('[data-alert-filter]').forEach(btn=>btn.onclick=()=>{document.querySelectorAll('[data-alert-filter]').forEach(b=>b.classList.remove('active'));btn.classList.add('active');const f=btn.dataset.alertFilter;document.querySelectorAll('#alertFeed .alert-card').forEach(a=>a.classList.toggle('hidden',!(f==='all'||a.dataset.type===f))) });
+
+document.getElementById('showEmpty').onclick=()=>{document.getElementById('dashboardData').classList.add('hidden');document.getElementById('dashboardEmpty').classList.remove('hidden')};
+document.getElementById('showData').onclick=()=>{document.getElementById('dashboardEmpty').classList.add('hidden');document.getElementById('dashboardData').classList.remove('hidden')};
+document.getElementById('mobileToggle').onclick=()=>document.body.classList.toggle('sideopen');
+document.getElementById('closeMobile').onclick=()=>document.body.classList.remove('sideopen');
+
+window.addEventListener('hashchange',()=>{const hash=location.hash.replace('#','');const [route,tab]=hash.split('/');if(routes[route]){tab?showProjectTab(tab):showRoute(route,false)}});
+(function init(){const hash=location.hash.replace('#','');const [route,tab]=hash.split('/');if(route&&routes[route]){tab?showProjectTab(tab):showRoute(route,false)}})();
+</script>
+
+<footer class="slx-global-footer" aria-label="Footer SmartLicit">
+  <div class="slx-footer-container">
+    <div class="slx-footer-grid">
+      <div>
+        <div class="slx-footer-brand"><span class="slx-footer-mark" aria-hidden="true"><span>⚡</span></span><span>SmartLicit</span></div>
+        <p style="margin-top:14px;max-width:320px">Una sola inteligencia, múltiples soluciones para resolver trabajo profesional complejo.</p>
+      </div>
+      <div><h4>Soluciones</h4><a class="slx-footer-product" href="../tender.html" target="_top"><span>⚡</span> Tender</a><a class="slx-footer-product" href="../pricing.html" target="_top"><span>⚡</span> Pricing</a><a class="slx-footer-product" href="../file.html" target="_top"><span>⚡</span> File</a><a class="slx-footer-product" href="../lex.html" target="_top"><span>⚡</span> Lex</a></div>
+      <div><h4>Gobierno</h4><a class="slx-footer-gov" href="../tender-gov.html" target="_top"><span>⚡</span> Tender Gov</a><a class="slx-footer-gov" href="../pricing-gov.html" target="_top"><span>⚡</span> Pricing Gov</a><a href="../ipg.html" target="_top">IPG</a></div>
+      <div><h4>Plataforma</h4><a class="slx-footer-efile" href="../efile.html" target="_top"><span>⚡</span> eFile</a><a href="../planes.html" target="_top">Planes</a><a href="../blog.html" target="_top">Blog</a><a href="../mi-cuenta.html" target="_top">Mi Cuenta</a></div>
+      <div><h4>Workspace</h4><a class="slx-footer-drive" href="../gDrive.html" target="_top"><span>▰</span> Google Drive Workspace</a><a href="../mi-cuenta.html#facturacion" target="_top">Facturación</a><a href="../planes.html#tokens" target="_top">Tokens</a><a href="../mi-cuenta.html#integraciones" target="_top">Integraciones</a></div>
+    </div>
+    <div class="slx-footer-bottom"><span>© SmartLicit</span><span>Minimal premium · trazable · accionable.</span></div>
+  </div>
+</footer>
+
+</body>
+</html>
